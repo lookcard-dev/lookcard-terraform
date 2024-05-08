@@ -1,0 +1,26 @@
+output "ekyc_data" {
+  value = aws_s3_bucket.ekyc_data
+}
+
+output "alb_log" {
+  value = aws_s3_bucket.alb_log
+
+}
+output "cloudfront_log" {
+  value = aws_s3_bucket.cloudfront_log
+
+}
+
+output "vpc_flow_log" {
+  value = aws_s3_bucket.vpc_flow_log
+
+}
+
+output "aml_code" {
+  value = aws_s3_bucket.aml_code.bucket
+
+}
+output "front_end_endpoint" {
+  value = aws_s3_bucket.front_end_endpoint
+
+}

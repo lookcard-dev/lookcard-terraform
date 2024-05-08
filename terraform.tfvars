@@ -1,5 +1,6 @@
 general_config = {
   env = "testing"
+  domain = "lookcard.io"
 }
 
 aws_provider = {
@@ -8,10 +9,14 @@ aws_provider = {
 }
 
 s3_bucket = {
-  ekyc_data      = "look-card-uat-new-upload"
-  alb_log        = "look-card-load-balancer-uat-new-log"
-  front_end      = "uat.lookcard.io"
-  cloudfront_log = "cloudfront-logs-lookcard-uat"
-  vpc_flow_log   = "vpc-flow-logs-lookcard-uat"
-  aml_code       = "aml-code"
+  ekyc_data      = "lookcard-ekyc"
+  alb_log        = "lookcard-alb-logging"
+  cloudfront_log = "lookcard-cloudfront-logging"
+  vpc_flow_log   = "lookcard-vpc-flowlog-lookcard"
+  aml_code       = "lookcard-lambda-aml-code"
 }
+
+
+
+
+front_end_endpoint = "testing.lookcard.io"

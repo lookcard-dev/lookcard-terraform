@@ -14,10 +14,13 @@ variable "s3_bucket" {
   type = object({
     ekyc_data      = string
     alb_log        = string
-    front_end      = string
     cloudfront_log = string
     vpc_flow_log   = string
     aml_code       = string
   })
+}
+
+variable front_end_endpoint {
+  type = string
 }
 
