@@ -1,3 +1,4 @@
+
 variable "general_config" {
   type = object({
     env = string
@@ -10,6 +11,15 @@ variable "aws_provider" {
   })
 }
 
+variable "network" {
+  type = object({
+    vpc_cidr                   = string
+    public_subnet_cidr_list   = list(string)
+    private_subnet_cidr_list  = list(string)
+    database_subnet_cidr_list = list(string)
+    isolated_subnet_cidr_list = list(string)
+  })
+}
 variable "s3_bucket" {
   type = object({
     ekyc_data      = string
@@ -20,7 +30,9 @@ variable "s3_bucket" {
   })
 }
 
-variable front_end_endpoint {
+variable "front_end_endpoint" {
   type = string
 }
+
+
 

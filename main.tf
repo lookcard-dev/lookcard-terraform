@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "lookcard-testing-tf"
+    bucket         = "lookcard-terraform-backend-testing"
     key            = "state/terraform.tfstate"
     region         = "ap-southeast-1"
     encrypt        = true
@@ -30,3 +30,25 @@ module "S3" {
 module "rds" {
   source = "./modules/database"
 }
+
+module "VPC" {
+  source                    = "./modules/network"
+  vpc_cidr                  = var.network.vpc_cidr
+  public_subnet_cidr_list   = var.network.public_subnet_cidr_list
+  private_subnet_cidr_list  = var.network.private_subnet_cidr_list
+  database_subnet_cidr_list = var.network.database_subnet_cidr_list
+  isolated_subnet_cidr_list = var.network.isolated_subnet_cidr_list
+  network_config = {
+    replica_number = 3
+    gateway_enabled = true
+  }
+  # route_table_name_public     = var.route_table_name_public
+  # route_table_name_private    = var.route_table_name_private
+  # igw_name                    = var.igw_name
+  # security_group_name         = var.security_group_name
+  # aws_provider                = var.aws_provider
+  # iam_role_arn                = module.IAM_Role.vpc_log
+  # log_bucket                  = module.S3.vpc_bucket_arn
+}
+
+
