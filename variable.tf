@@ -13,7 +13,7 @@ variable "aws_provider" {
 
 variable "network" {
   type = object({
-    vpc_cidr                   = string
+    vpc_cidr                  = string
     public_subnet_cidr_list   = list(string)
     private_subnet_cidr_list  = list(string)
     database_subnet_cidr_list = list(string)
@@ -34,5 +34,11 @@ variable "front_end_endpoint" {
   type = string
 }
 
-
+variable "dns_config" {
+  type = object({
+    api_host_name   = string
+    admin_host_name = string
+    host_name       = string
+  })
+}
 

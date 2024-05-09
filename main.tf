@@ -39,16 +39,19 @@ module "VPC" {
   database_subnet_cidr_list = var.network.database_subnet_cidr_list
   isolated_subnet_cidr_list = var.network.isolated_subnet_cidr_list
   network_config = {
-    replica_number = 3
+    replica_number  = 3
     gateway_enabled = true
   }
-  # route_table_name_public     = var.route_table_name_public
-  # route_table_name_private    = var.route_table_name_private
-  # igw_name                    = var.igw_name
-  # security_group_name         = var.security_group_name
-  # aws_provider                = var.aws_provider
   # iam_role_arn                = module.IAM_Role.vpc_log
   # log_bucket                  = module.S3.vpc_bucket_arn
 }
 
+module "dns" {
+  source                = "./modules/dns-config"
+  vpc_id                = module.VPC.vpc
+  # alb_route             = module.ECS.alb_dns_name
+  host_name             = "${var.dns_config.host_name}.${var.general_config.domain}"
+  api_host_name         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
+  admin_panel_host_name = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
 
+}
