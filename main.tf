@@ -32,12 +32,8 @@ module "rds" {
 }
 
 module "VPC" {
-  source                    = "./modules/network"
-  vpc_cidr                  = var.network.vpc_cidr
-  public_subnet_cidr_list   = var.network.public_subnet_cidr_list
-  private_subnet_cidr_list  = var.network.private_subnet_cidr_list
-  database_subnet_cidr_list = var.network.database_subnet_cidr_list
-  isolated_subnet_cidr_list = var.network.isolated_subnet_cidr_list
+  source  = "./modules/network"
+  network = var.network
   network_config = {
     replica_number  = 3
     gateway_enabled = true
@@ -46,12 +42,19 @@ module "VPC" {
   # log_bucket                  = module.S3.vpc_bucket_arn
 }
 
-module "dns" {
-  source                = "./modules/dns-config"
-  vpc_id                = module.VPC.vpc
-  # alb_route             = module.ECS.alb_dns_name
-  host_name             = "${var.dns_config.host_name}.${var.general_config.domain}"
-  api_host_name         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
-  admin_panel_host_name = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
-
+module "application" {
+  source             = "./modules/application"
+  network            = module.VPC
+  alb_logging_bucket = module.S3.alb_log.id
+  domain             = var.general_config.domain
+  dns_config         = var.dns_config
 }
+
+# module "dns" {
+#   source                = "./modules/dns-config"
+#   vpc_id                = module.VPC.vpc
+#   # alb_route             = module.ECS.alb_dns_name
+#   host_name             = "${var.dns_config.host_name}.${var.general_config.domain}"
+#   api_host_name         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
+#   admin_panel_host_name = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
+# }

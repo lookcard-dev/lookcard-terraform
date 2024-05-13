@@ -1,12 +1,15 @@
 # # Output for Public Subnet IDs
 
-# output "vpc" {
-#   value = aws_vpc.look-card.id
+output "vpc" {
+  value = aws_vpc.look-card.id
+}
 
-# }
-# output "public_subnet_ids" {
-#   value = aws_subnet.look-card-Public-Sub[*].id
-# }
+output "public_subnet_ids" {
+  value = aws_subnet.look-card-public-subnet[*].id
+}
+output "private_subnet_ids" {
+  value = aws_subnet.look-card-private-subnet[*].id
+}
 
 # output "Database_Sub_ids" {
 #   value = aws_subnet.look-card-Database-Sub[*].id
@@ -14,9 +17,6 @@
 # }
 
 # # Output for Private Subnet IDs
-# output "private_subnet_ids" {
-#   value = aws_subnet.look-card-Private-Sub[*].id
-# }
 
 # # Output for Internet Gateway ID
 # output "internet_gateway_id" {

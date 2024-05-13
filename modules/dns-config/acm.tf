@@ -12,7 +12,7 @@ resource "aws_route53_record" "lookcard_certs" {
   name            = tolist(aws_acm_certificate.lookcard.domain_validation_options)[0].resource_record_name
   records         = [tolist(aws_acm_certificate.lookcard.domain_validation_options)[0].resource_record_value]
   type            = tolist(aws_acm_certificate.lookcard.domain_validation_options)[0].resource_record_type
-  zone_id         = data.aws_route53_zone.production_api.zone_id
+  zone_id         = data.aws_route53_zone.api.zone_id
   ttl             = 60
 }
 
@@ -36,7 +36,7 @@ resource "aws_route53_record" "admin_panel_certs" {
   name            = tolist(aws_acm_certificate.admin_panel.domain_validation_options)[0].resource_record_name
   records         = [tolist(aws_acm_certificate.admin_panel.domain_validation_options)[0].resource_record_value]
   type            = tolist(aws_acm_certificate.admin_panel.domain_validation_options)[0].resource_record_type
-  zone_id         = aws_route53_zone.production_admin_panel.zone_id
+  zone_id         = aws_route53_zone.admin_panel.zone_id
   ttl             = 60
 }
 

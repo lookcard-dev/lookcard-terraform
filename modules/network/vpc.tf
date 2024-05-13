@@ -1,5 +1,5 @@
 resource "aws_vpc" "look-card" {
-  cidr_block                       = var.vpc_cidr
+  cidr_block                       = var.network.vpc_cidr
   enable_dns_hostnames             = "true"
   enable_dns_support               = "true"
   assign_generated_ipv6_cidr_block = "true"

@@ -1,6 +1,6 @@
 general_config = {
   env    = "testing"
-  domain = "lookcard.io"
+  domain = "test.lookcard.io"
 }
 
 aws_provider = {
@@ -27,7 +27,7 @@ network = {
 front_end_endpoint = "testing.lookcard.io"
 
 dns_config = {
-  host_name       = "app.testing"
-  api_host_name   = "api.testing"
-  admin_host_name = "admin.testing"
+  host_name       = "app"
+  api_host_name   = "api"
+  admin_host_name = "admin"
 }

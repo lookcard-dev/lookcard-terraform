@@ -1,11 +1,7 @@
 data "aws_availability_zones" "available" {}
 
-variable "vpc_cidr" {}
-variable "public_subnet_cidr_list" {}
-variable "private_subnet_cidr_list" {}
-variable "database_subnet_cidr_list" {}
-variable "isolated_subnet_cidr_list" {}
 
+variable "network" {}
 variable "network_config" {
   type = object({
     replica_number  = optional(number)

@@ -1,7 +1,8 @@
 
 variable "general_config" {
   type = object({
-    env = string
+    env    = string
+    domain = string
   })
 }
 variable "aws_provider" {

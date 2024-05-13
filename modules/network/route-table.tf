@@ -1,5 +1,4 @@
 # Public Route Table 
-
 resource "aws_route_table" "public-route-table" {
   vpc_id = aws_vpc.look-card.id
 
@@ -15,7 +14,6 @@ resource "aws_route_table" "public-route-table" {
 
 
 # Nat Gateway Route Table
-
 resource "aws_route_table" "private-route-table" {
 
   count  = var.network_config.replica_number

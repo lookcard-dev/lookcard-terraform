@@ -1,3 +1,4 @@
+data "aws_caller_identity" "current" {}
 variable "environment" {}
 
 variable "ekyc_data" {}
