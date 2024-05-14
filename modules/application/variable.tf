@@ -14,6 +14,13 @@ variable "dns_config" {
   })
 }
 
+variable "ecs_cluster_config" {
+  type = object({
+    enable = bool
+  })
+}
+
+
 variable "ecr_names" {
   description = "Map of ECR names"
   type        = map(string)

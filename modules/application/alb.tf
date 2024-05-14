@@ -2,7 +2,7 @@ data "aws_route53_zone" "hosted_zone_id" {
   name = var.domain
 }
 
-resource "aws_alb" "Admin_panel" {
+resource "aws_alb" "admin_panel" {
   name               = "admin-panel"
   internal           = false
   load_balancer_type = "application"
@@ -46,12 +46,13 @@ resource "aws_alb" "look-card" {
 }
 
 resource "aws_route53_record" "admin_panel_record" {
-  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
-  name    = var.dns_config.admin_host_name
-  type    = "A"
+  depends_on = [aws_alb.admin_panel]
+  zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
+  name       = var.dns_config.admin_host_name
+  type       = "A"
   alias {
-    name                   = aws_alb.Admin_panel.dns_name
-    zone_id                = aws_alb.Admin_panel.zone_id
+    name                   = aws_alb.admin_panel.dns_name
+    zone_id                = aws_alb.admin_panel.zone_id
     evaluate_target_health = true
   }
 }
@@ -64,9 +65,10 @@ resource "aws_route53_record" "admin_panel_record" {
 
 
 resource "aws_route53_record" "route53_record" {
-  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
-  name    = var.dns_config.api_host_name
-  type    = "A"
+  depends_on = [aws_alb.look-card]
+  zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
+  name       = var.dns_config.api_host_name
+  type       = "A"
   alias {
     name                   = aws_alb.look-card.dns_name
     zone_id                = aws_alb.look-card.zone_id

@@ -24,7 +24,7 @@ module "S3" {
   cloudfront_log     = var.s3_bucket.cloudfront_log
   vpc_flow_log       = var.s3_bucket.vpc_flow_log
   aml_code           = var.s3_bucket.aml_code
-  front_end_endpoint = var.front_end_endpoint
+  front_end_endpoint = var.s3_bucket.front_end_endpoint
 }
 
 module "rds" {
@@ -48,13 +48,13 @@ module "application" {
   alb_logging_bucket = module.S3.alb_log.id
   domain             = var.general_config.domain
   dns_config         = var.dns_config
+  ecs_cluster_config = var.ecs_cluster_config
 }
 
-# module "dns" {
-#   source                = "./modules/dns-config"
-#   vpc_id                = module.VPC.vpc
-#   # alb_route             = module.ECS.alb_dns_name
-#   host_name             = "${var.dns_config.host_name}.${var.general_config.domain}"
-#   api_host_name         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
-#   admin_panel_host_name = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
-# }
+module "ssl-cert" {
+  source               = "./modules/ssl-cert"
+  domain               = var.general_config.domain
+  frontend_hostname    = "${var.dns_config.host_name}.${var.general_config.domain}"
+  admin_panel_hostname = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
+  api_hostname         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
+}

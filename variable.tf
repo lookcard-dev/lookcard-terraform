@@ -23,23 +23,28 @@ variable "network" {
 }
 variable "s3_bucket" {
   type = object({
-    ekyc_data      = string
-    alb_log        = string
-    cloudfront_log = string
-    vpc_flow_log   = string
-    aml_code       = string
+    ekyc_data          = string
+    alb_log            = string
+    cloudfront_log     = string
+    vpc_flow_log       = string
+    aml_code           = string
+    front_end_endpoint = string
   })
 }
 
-variable "front_end_endpoint" {
-  type = string
-}
+
 
 variable "dns_config" {
   type = object({
     api_host_name   = string
     admin_host_name = string
     host_name       = string
+  })
+}
+
+variable "ecs_cluster_config" {
+  type = object({
+    enable = bool
   })
 }
 
