@@ -66,3 +66,8 @@ module "cdn" {
   origin_s3_bucket      = module.S3.front_end_endpoint
   cdn_logging_s3_bucket = module.S3.cloudfront_log
 }
+
+module "sns_topic" {
+  source = "./modules/monitor"
+  # sns_email        = [var.sns_email[0], var.sns_email[1], var.sns_email[2]]
+}
