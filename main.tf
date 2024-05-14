@@ -68,6 +68,6 @@ module "cdn" {
 }
 
 module "sns_topic" {
-  source = "./modules/monitor"
-  # sns_email        = [var.sns_email[0], var.sns_email[1], var.sns_email[2]]
+  source                  = "./modules/monitor"
+  sns_subscriptions_email = var.sns_subscriptions_email
 }

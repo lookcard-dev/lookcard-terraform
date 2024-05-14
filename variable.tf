@@ -48,3 +48,6 @@ variable "ecs_cluster_config" {
   })
 }
 
+variable "sns_subscriptions_email" {
+  type = list(string)
+}

@@ -29,8 +29,11 @@ network = {
 }
 
 
-
-
 ecs_cluster_config = {
   enable = false
 }
+
+sns_subscriptions_email = [
+  "scott.li@one2.cloud",
+  "kc.wan@one2.cloud",
+]
