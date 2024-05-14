@@ -5,6 +5,13 @@ variable "general_config" {
     domain = string
   })
 }
+variable "dns_config" {
+  type = object({
+    api_hostname   = string
+    admin_hostname = string
+    hostname       = string
+  })
+}
 variable "aws_provider" {
   type = object({
     region     = string
@@ -34,13 +41,6 @@ variable "s3_bucket" {
 
 
 
-variable "dns_config" {
-  type = object({
-    api_host_name   = string
-    admin_host_name = string
-    host_name       = string
-  })
-}
 
 variable "ecs_cluster_config" {
   type = object({

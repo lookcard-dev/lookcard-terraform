@@ -7,9 +7,9 @@ general_config = {
   domain = "test.lookcard.io"
 }
 dns_config = {
-  host_name       = "app"
-  api_host_name   = "api"
-  admin_host_name = "admin"
+  hostname       = "app"
+  api_hostname   = "api"
+  admin_hostname = "admin"
 }
 s3_bucket = {
   ekyc_data          = "lookcard-ekyc"

@@ -1,3 +1,8 @@
+output "acm_app" {
+  value = aws_acm_certificate.app
+}
+
+
 # output "acm_certificate_arn" {
 #   value = aws_acm_certificate_validation.lookcard_validation.certificate_arn
 # }

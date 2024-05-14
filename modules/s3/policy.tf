@@ -39,3 +39,64 @@ resource "aws_s3_bucket_policy" "alb_log" {
     ]
   })
 }
+
+
+resource "aws_s3_bucket_ownership_controls" "cloudfront_log_ownership" {
+  bucket = aws_s3_bucket.cloudfront_log.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+resource "aws_s3_bucket_acl" "cdn_log_acl" {
+  bucket = aws_s3_bucket.cloudfront_log.id
+  acl    = "private"
+}
+
+
+
+resource "aws_s3_bucket_policy" "vpc_log_s3_policy" {
+  bucket = aws_s3_bucket.vpc_flow_log.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AWSLogDeliveryWrite",
+        Effect = "Allow",
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        },
+        Action   = "s3:PutObject",
+        Resource = "${aws_s3_bucket.vpc_flow_log.arn}/*",
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id,
+            "s3:x-amz-acl"      = "bucket-owner-full-control"
+          },
+          ArnLike = {
+            "aws:SourceArn" = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+          }
+        }
+      },
+      {
+        Sid    = "AWSLogDeliveryAclCheck",
+        Effect = "Allow",
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        },
+        Action = [
+          "s3:GetBucketAcl",
+          "s3:ListBucket"
+        ],
+        Resource = aws_s3_bucket.vpc_flow_log.arn,
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          },
+          ArnLike = {
+            "aws:SourceArn" = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+          }
+        }
+      }
+    ]
+  })
+}

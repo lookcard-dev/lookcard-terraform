@@ -8,9 +8,9 @@ variable "domain" {}
 
 variable "dns_config" {
   type = object({
-    host_name       = string
-    api_host_name   = string
-    admin_host_name = string
+    hostname       = string
+    api_hostname   = string
+    admin_hostname = string
   })
 }
 

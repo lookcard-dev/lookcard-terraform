@@ -48,7 +48,7 @@ resource "aws_alb" "look-card" {
 resource "aws_route53_record" "admin_panel_record" {
   depends_on = [aws_alb.admin_panel]
   zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
-  name       = var.dns_config.admin_host_name
+  name       = var.dns_config.admin_hostname
   type       = "A"
   alias {
     name                   = aws_alb.admin_panel.dns_name
@@ -67,7 +67,7 @@ resource "aws_route53_record" "admin_panel_record" {
 resource "aws_route53_record" "route53_record" {
   depends_on = [aws_alb.look-card]
   zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
-  name       = var.dns_config.api_host_name
+  name       = var.dns_config.api_hostname
   type       = "A"
   alias {
     name                   = aws_alb.look-card.dns_name

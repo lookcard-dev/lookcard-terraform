@@ -1,6 +1,7 @@
 data "aws_caller_identity" "current" {}
-variable "environment" {}
+data "aws_region" "current" {}
 
+variable "environment" {}
 variable "ekyc_data" {}
 variable "alb_log" {}
 variable "cloudfront_log" {}

@@ -52,9 +52,17 @@ module "application" {
 }
 
 module "ssl-cert" {
-  source               = "./modules/ssl-cert"
-  domain               = var.general_config.domain
-  frontend_hostname    = "${var.dns_config.host_name}.${var.general_config.domain}"
-  admin_panel_hostname = "${var.dns_config.admin_host_name}.${var.general_config.domain}"
-  api_hostname         = "${var.dns_config.api_host_name}.${var.general_config.domain}"
+  source         = "./modules/ssl-cert"
+  domain         = var.general_config.domain
+  app_hostname   = "${var.dns_config.hostname}.${var.general_config.domain}"
+  admin_hostname = "${var.dns_config.admin_hostname}.${var.general_config.domain}"
+  api_hostname   = "${var.dns_config.api_hostname}.${var.general_config.domain}"
+}
+
+module "cdn" {
+  source                = "./modules/cdn"
+  app_hostname_cert     = module.ssl-cert.acm_app
+  alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
+  origin_s3_bucket      = module.S3.front_end_endpoint
+  cdn_logging_s3_bucket = module.S3.cloudfront_log
 }
