@@ -17,7 +17,7 @@ module "secret-manager" {
 }
 
 module "S3" {
-  source             = "./modules/S3"
+  source             = "./modules/s3"
   environment        = var.general_config.env
   ekyc_data          = var.s3_bucket.ekyc_data
   alb_log            = var.s3_bucket.alb_log
@@ -70,4 +70,19 @@ module "cdn" {
 module "sns_topic" {
   source                  = "./modules/monitor"
   sns_subscriptions_email = var.sns_subscriptions_email
+}
+
+module "lambda" {
+  source            = "./modules/lambda"
+  ddb_websocket_arn = module.rds.ddb_websocket.arn
+  network = {
+    vpc            = module.VPC.vpc
+    private_subnet = module.VPC.private_subnet_ids
+    public_subnet  = module.VPC.public_subnet_ids
+  }
+  lambda_code = {
+    s3_bucket               = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+    websocket_connect_s3key = var.lambda_code.websocket_connect_s3key
+    elliptic_s3key          = var.lambda_code.elliptic_s3key
+  }
 }
