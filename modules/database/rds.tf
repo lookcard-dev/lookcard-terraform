@@ -18,9 +18,10 @@
 #   subnet_ids = [var.Database-Sub-1[0], var.Database-Sub-2[1], var.Database-Sub-3[2]]
 # }
 
+
 # resource "aws_rds_cluster" "lookcard" {
-#   cluster_identifier     = "look-uat-database"
-#   database_name          = "lookcarduat"
+#   cluster_identifier     = "look-production-db"
+#   database_name          = "lookcardprod"
 #   engine                 = "aurora-postgresql" # Change to aurora-postgresql
 #   engine_version         = "16.1"              # Change to a supported version of PostgreSQL
 #   master_username        = "lookcard"
@@ -33,15 +34,17 @@
 #   storage_encrypted      = true
 
 
+
 # }
 
-
-
 # resource "aws_rds_cluster_instance" "lookcard_instance" {
-#   count               = 1
-#   identifier          = "lookcard-database-instance-${count.index}"
-#   cluster_identifier  = aws_rds_cluster.lookcard.id
-#   instance_class      = "db.t4g.medium"     # Adjust as needed
-#   engine              = "aurora-postgresql" # Change to aurora-postgresql
-#   publicly_accessible = false
+#   count                        = 2
+#   identifier                   = "lookcard-database-instance-${count.index}"
+#   cluster_identifier           = aws_rds_cluster.lookcard.id
+#   instance_class               = count.index == 0 ? "db.t4g.large" : "db.r6g.large" # Adjust as needed
+#   engine                       = "aurora-postgresql"                                # Change to aurora-postgresql
+#   publicly_accessible          = false
+#   availability_zone            = element(["ap-southeast-1a", "ap-southeast-1b"], count.index)
+#   performance_insights_enabled = true
+#   monitoring_interval = 60
 # }

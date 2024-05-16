@@ -61,6 +61,7 @@ module "ssl-cert" {
 
 module "cdn" {
   source                = "./modules/cdn"
+  domain                = var.general_config.domain
   app_hostname_cert     = module.ssl-cert.acm_app
   alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
   origin_s3_bucket      = module.S3.front_end_endpoint

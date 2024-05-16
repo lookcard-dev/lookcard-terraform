@@ -59,6 +59,19 @@ resource "aws_cloudfront_distribution" "look-card-cdn" {
 }
 
 
+data "aws_route53_zone" "hosted_zone_id" {
+  name = var.domain
+}
+
+
+
+resource "aws_route53_record" "app_record" {
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = "app"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_cloudfront_distribution.look-card-cdn.domain_name]
+}
 
 
 

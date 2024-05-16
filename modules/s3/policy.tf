@@ -40,7 +40,6 @@ resource "aws_s3_bucket_policy" "alb_log" {
   })
 }
 
-
 resource "aws_s3_bucket_ownership_controls" "cloudfront_log_ownership" {
   bucket = aws_s3_bucket.cloudfront_log.id
   rule {
@@ -51,9 +50,6 @@ resource "aws_s3_bucket_acl" "cdn_log_acl" {
   bucket = aws_s3_bucket.cloudfront_log.id
   acl    = "private"
 }
-
-
-
 resource "aws_s3_bucket_policy" "vpc_log_s3_policy" {
   bucket = aws_s3_bucket.vpc_flow_log.id
   policy = jsonencode({
