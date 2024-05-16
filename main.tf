@@ -82,8 +82,14 @@ module "lambda" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   lambda_code = {
-    s3_bucket               = "${var.s3_bucket.aml_code}-${var.general_config.env}"
-    websocket_connect_s3key = var.lambda_code.websocket_connect_s3key
-    elliptic_s3key          = var.lambda_code.elliptic_s3key
+    s3_bucket                  = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+    data_process_s3key         = var.lambda_code.data_process_s3key
+    elliptic_s3key             = var.lambda_code.elliptic_s3key
+    websocket_connect_s3key    = var.lambda_code.websocket_connect_s3key
+    websocket_disconnect_s3key = var.lambda_code.websocket_disconnect_s3key
+    push_message_s3key         = var.lambda_code.push_message_s3key
+    push_notification_s3key    = var.lambda_code.push_notification_s3key
+    withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
+  secret_arn_list = module.secret-manager.secret_arns
 }

@@ -21,12 +21,13 @@ s3_bucket = {
 }
 
 lambda_code = {
-  websocket_connect_s3key    = "lookcard-websocket.zip"
-  websocket_disconnect_s3key = "lookcard-websocket.zip"
+  websocket_connect_s3key    = "AM_Websocket_connection.zip"
+  websocket_disconnect_s3key = "AM_Websocket_disconnect.zip"
   data_process_s3key         = "lookcard-dataprocess.zip"
   elliptic_s3key             = "lookcard-elliptic.zip"
-  push_message_s3key         = ""
+  push_message_s3key         = "lookcard-websocket.zip"
   push_notification_s3key    = "lookcard-pushnoification.zip"
+  withdrawal_s3key           = "lookcard-withdrawal.zip"
 }
 
 network = {

@@ -8,23 +8,23 @@
 
 # }
 
-# output "web_socket_invoke" {
-#   value = aws_lambda_function.web_socket_id.invoke_arn
+# output "websocket_invoke" {
+#   value = aws_lambda_function.websocket_id.invoke_arn
 
 # }
 
-# output "web_socket_function" {
-#   value = aws_lambda_function.web_socket_id.function_name
+# output "websocket_function" {
+#   value = aws_lambda_function.websocket_id.function_name
 
 # }
 
-# output "web_socket_disconnect_invoke" {
-#   value = aws_lambda_function.web_socket_Remove_id.invoke_arn
+# output "websocket_disconnect_invoke" {
+#   value = aws_lambda_function.websocket_Remove_id.invoke_arn
 
 # }
 
-# output "web_socket_disconnect_function" {
-#   value = aws_lambda_function.web_socket_Remove_id.function_name
+# output "websocket_disconnect_function" {
+#   value = aws_lambda_function.websocket_Remove_id.function_name
 
 # }
 

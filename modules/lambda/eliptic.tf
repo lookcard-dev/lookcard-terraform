@@ -60,17 +60,9 @@ resource "aws_iam_policy" "eliptic_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:271609687710:secret:prod/lookcard/db-3U0Uzk"
+        "Resource" : var.secret_arn_list
       },
-      {
-        "Sid" : "Statement1",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:271609687710:secret:aml_env-R4SD1n"
-      }
+
     ]
   })
 }

@@ -23,7 +23,11 @@ variable "lambda_code" {
   type = object({
     websocket_connect_s3key    = string
     websocket_disconnect_s3key = string
+    data_process_s3key         = string
     elliptic_s3key             = string
+    push_message_s3key         = string
+    push_notification_s3key    = string
+    withdrawal_s3key           = string
   })
 }
 variable "network" {
