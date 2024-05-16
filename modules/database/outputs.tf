@@ -3,6 +3,6 @@
 
 # }
 
-output "dynamodb_table_arn" {
-  value = aws_dynamodb_table.websocket.arn
+output "ddb_websocket" {
+  value = aws_dynamodb_table.websocket
 }

@@ -20,6 +20,15 @@ s3_bucket = {
   front_end_endpoint = "testing.lookcard.io"
 }
 
+lambda_code = {
+  websocket_connect_s3key    = "lookcard-websocket.zip"
+  websocket_disconnect_s3key = "lookcard-websocket.zip"
+  data_process_s3key         = "lookcard-dataprocess.zip"
+  elliptic_s3key             = "lookcard-elliptic.zip"
+  push_message_s3key         = ""
+  push_notification_s3key    = "lookcard-pushnoification.zip"
+}
+
 network = {
   vpc_cidr                  = "10.0.0.0/16"
   public_subnet_cidr_list   = ["10.0.24.0/23", "10.0.26.0/23", "10.0.28.0/23"]

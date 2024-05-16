@@ -19,6 +19,13 @@ variable "aws_provider" {
   })
 }
 
+variable "lambda_code" {
+  type = object({
+    websocket_connect_s3key    = string
+    websocket_disconnect_s3key = string
+    elliptic_s3key             = string
+  })
+}
 variable "network" {
   type = object({
     vpc_cidr                  = string
@@ -38,9 +45,6 @@ variable "s3_bucket" {
     front_end_endpoint = string
   })
 }
-
-
-
 
 variable "ecs_cluster_config" {
   type = object({
