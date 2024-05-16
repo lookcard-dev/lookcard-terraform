@@ -4,7 +4,7 @@ resource "aws_lambda_function" "websocket_disconnect" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
   s3_bucket     = var.lambda_code.s3_bucket
-  s3_key        = var.lambda_code.websocket_connect_s3key
+  s3_key        = var.lambda_code.websocket_disconnect_s3key
   timeout       = 300
 }
 
