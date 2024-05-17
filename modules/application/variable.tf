@@ -35,43 +35,6 @@ variable "ecr_names" {
     "users-api"          = "users-api"
     "admin-panel-api"    = "admin-panel-api"
     "aml-tron"           = "aml-tron"
+    "crypto-api"         = "crypto-api"
   }
 }
-
-
-
-# variable "Private-Subnet-1" {}
-
-# variable "Private-Subnet-2" {}
-
-# variable "Private-Subnet-3" {}
-
-# variable "subnet-pub-2" {}
-
-# variable "subnet-pub-1" {}
-
-# variable "ecs_security_groups" {}
-
-# variable "iam_role" {}
-
-# variable "ssl" {}
-
-# variable "alb_security_groups" {}
-
-# variable "subnet-pub-3" {}
-
-# variable "api_zone_id" {}
-
-# variable "admin_panel_domain" {}
-
-# variable "log_bucket" {}
-
-# variable "env" {}
-
-# variable "alb_waf" {}
-
-# variable "admin_alb_waf" {}
-
-# variable "admin_zone_id" {}
-
-# variable "admin_panel_alb_security_group" {}

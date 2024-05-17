@@ -45,6 +45,7 @@ resource "aws_alb" "look-card" {
   }
 }
 
+
 resource "aws_route53_record" "admin_panel_record" {
   depends_on = [aws_alb.admin_panel]
   zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
