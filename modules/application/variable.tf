@@ -5,6 +5,9 @@ variable "network" {}
 variable "alb_logging_bucket" {}
 
 variable "domain" {}
+data "aws_route53_zone" "hosted_zone_id" {
+  name = var.domain
+}
 
 variable "dns_config" {
   type = object({
@@ -36,5 +39,6 @@ variable "ecr_names" {
     "admin-panel-api"    = "admin-panel-api"
     "aml-tron"           = "aml-tron"
     "crypto-api"         = "crypto-api"
+    "hello-world"        = "hello-world"
   }
 }

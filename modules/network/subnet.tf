@@ -11,7 +11,6 @@ resource "aws_subnet" "look-card-public-subnet" {
   tags = {
     Name = "look-card-public-subnet-${count.index}"
   }
-
 }
 
 

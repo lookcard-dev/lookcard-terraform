@@ -14,6 +14,32 @@ resource "aws_route_table" "public-route-table" {
 
 
 # Nat Gateway Route Table
+resource "aws_route_table" "private-route-table" {
+
+  count  = var.network_config.replica_number
+  vpc_id = aws_vpc.look-card.id
+
+  route {
+    cidr_block           = "0.0.0.0/0"
+    network_interface_id = aws_instance.nat.primary_network_interface_id
+  }
+
+  lifecycle {
+    ignore_changes = [
+      route,
+    ]
+  }
+
+  tags = {
+    Name = "Private-Subnet-Route-Table-${aws_subnet.look-card-private-subnet[count.index].availability_zone}"
+  }
+}
+
+resource "aws_route_table_association" "private_subnet_association" {
+  count          = length(aws_subnet.look-card-private-subnet) # Ensure count matches the number of subnets
+  subnet_id      = aws_subnet.look-card-private-subnet[count.index].id
+  route_table_id = aws_route_table.private-route-table[0].id
+}
 # resource "aws_route_table" "private-route-table" {
 
 #   count  = var.network_config.replica_number

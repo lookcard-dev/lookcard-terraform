@@ -35,7 +35,7 @@ module "VPC" {
   source  = "./modules/network"
   network = var.network
   network_config = {
-    replica_number  = 3
+    replica_number  = 1
     gateway_enabled = true
   }
   # iam_role_arn                = module.IAM_Role.vpc_log
