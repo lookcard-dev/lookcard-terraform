@@ -59,3 +59,13 @@ variable "ecs_cluster_config" {
 variable "sns_subscriptions_email" {
   type = list(string)
 }
+
+variable "env" {
+  default = "testing"
+}
+
+variable "env_secrets" {
+  description = "A map of secrets to store in the env secret"
+  type        = map(string)
+  sensitive   = true
+}

@@ -33,7 +33,6 @@ resource "aws_dynamodb_table" "did_temp_storage_table" {
   }
 }
 
-
 resource "aws_dynamodb_table" "websocket" {
   name     = var.websoclet_table_name
   hash_key = "user_ID"

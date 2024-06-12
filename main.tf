@@ -14,6 +14,7 @@ provider "aws" {
 
 module "secret-manager" {
   source = "./modules/secret-manager"
+  env_secrets = var.env_secrets
 }
 
 module "S3" {
@@ -44,11 +45,22 @@ module "VPC" {
 
 module "application" {
   source             = "./modules/application"
-  network            = module.VPC
   alb_logging_bucket = module.S3.alb_log.id
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
+  # Private-Subnet-1    = module.VPC.private_subnet_ids
+  # Private-Subnet-2    = module.VPC.private_subnet_ids
+  # Private-Subnet-3    = module.VPC.private_subnet_ids
+  network = {
+    vpc              = module.VPC.vpc
+    private_subnet   = module.VPC.private_subnet_ids
+    public_subnet    = module.VPC.public_subnet_ids
+  }
+  sqs_withdrawal     = module.lambda.withdrawal_sqs
+  lookcard_notification_sqs_url = module.lambda.lookcard_notification_sqs_url
+  crypto_fund_withdrawal_sqs_url = module.lambda.crypto_fund_withdrawal_sqs_url
+  # env                = var.env
 }
 
 module "ssl-cert" {
@@ -81,6 +93,7 @@ module "lambda" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
+  vpc_id           = module.VPC.vpc
   lambda_code = {
     s3_bucket                  = "${var.s3_bucket.aml_code}-${var.general_config.env}"
     data_process_s3key         = var.lambda_code.data_process_s3key

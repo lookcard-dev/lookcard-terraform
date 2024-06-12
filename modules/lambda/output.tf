@@ -37,3 +37,17 @@
 #   value = aws_sqs_queue.withdrawl.arn
 
 # }
+
+output "withdrawal_sqs" {
+  value = aws_sqs_queue.Withdrawal.arn
+  
+}
+
+output "lookcard_notification_sqs_url" {
+  value = aws_sqs_queue.Lookcard_Notification_Queue.url
+}
+
+output "crypto_fund_withdrawal_sqs_url" {
+  value = aws_sqs_queue.Crypto_Fund_Withdrawal_Queue.url
+}
+

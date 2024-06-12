@@ -1,3 +1,12 @@
+
+
+# output "lookcardlocal_namespace_arn" {
+#   value = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.arn
+# }
+
+# output "lookcardlocal_namespace_id" {
+#   value = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+# }
 # output "alb_dns_name" {
 #   value = aws_alb.look-card.dns_name
 # }

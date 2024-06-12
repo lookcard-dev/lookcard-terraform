@@ -3,7 +3,7 @@ resource "aws_lb" "nlb" {
   name               = "nlb"
   internal           = true
   load_balancer_type = "network"
-  subnets            = var.network.private_subnet_ids
+  subnets            = var.network.private_subnet
 }
 
 # Create NLB Target Group
@@ -102,13 +102,13 @@ resource "aws_lb_listener" "nlb_listener" {
 #   resource_arn = aws_alb.Admin_panel.arn
 #   web_acl_arn  = var.admin_alb_waf
 # }
-
+#  ******************************************************
 resource "aws_alb" "look-card" {
   name               = "look-card"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.api_alb_sg.id]
-  subnets            = var.network.private_subnet_ids
+  subnets            = var.network.private_subnet
 
   enable_deletion_protection = true
   preserve_host_header       = true
@@ -120,7 +120,7 @@ resource "aws_alb" "look-card" {
 
   access_logs {
     bucket  = var.alb_logging_bucket
-    enabled = true
+    enabled = true                                                                                                                              
   }
 }
 
@@ -154,6 +154,37 @@ resource "aws_security_group" "api_alb_sg" {
     Name = "look-card-ALB-SG"
   }
 }
+# **********************************
+
+resource "aws_lb_target_group" "lookcard_tg" {
+  
+  name        = "Authentication"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.network.vpc
+
+  lifecycle {
+      create_before_destroy = true
+  }
+
+}
+
+resource "aws_lb_listener" "look-card" {
+  load_balancer_arn = aws_alb.look-card.arn
+  port              = 80
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.lookcard_tg.arn
+  }
+  # depends_on        = [var.ssl]
+  # port            = 443
+  # protocol        = "HTTPS"
+  # ssl_policy      = "ELBSecurityPolicy-2016-08"
+  # certificate_arn = var.ssl
+}
+# *****************************************
 
 # resource "aws_wafv2_web_acl_association" "alb_web_acl_association" {
 #   resource_arn = aws_alb.look-card.arn

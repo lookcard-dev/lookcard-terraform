@@ -1,8 +1,17 @@
 
 
-variable "network" {}
-
+# variable "network" {}
+variable "network" {
+  description = "Network configuration"
+  type = object({
+    vpc            = string
+    private_subnet = list(string)
+    public_subnet  = list(string)
+  })
+}
+# variable "cluster" {}
 variable "alb_logging_bucket" {}
+# variable "env" {}
 
 variable "domain" {}
 data "aws_route53_zone" "hosted_zone_id" {
@@ -42,3 +51,8 @@ variable "ecr_names" {
     "hello-world"        = "hello-world"
   }
 }
+
+variable "sqs_withdrawal" {}
+
+variable "lookcard_notification_sqs_url" {}
+variable "crypto_fund_withdrawal_sqs_url" {}

@@ -17,7 +17,8 @@
 # variable "Push_Message_web_security_group" {}
 # variable "web_scoket_security_group" {}
 # variable "web_scoket_disconnect_security_group" {}
-
+# variable "Aggregator_Tron_sg" {}
+variable "vpc_id" {}
 variable "ddb_websocket_arn" {
 
 }
