@@ -51,3 +51,27 @@ output "crypto_fund_withdrawal_sqs_url" {
   value = aws_sqs_queue.Crypto_Fund_Withdrawal_Queue.url
 }
 
+output "push_message_web_invoke" {
+  value = aws_lambda_function.push_message_web_function.invoke_arn
+}
+
+output "push_message_web_function" {
+  value = aws_lambda_function.push_message_web_function.function_name
+}
+
+output "web_socket_function" {
+  value = aws_lambda_function.web_socket_id.function_name
+}
+
+output "web_socket_invoke" {
+  value = aws_lambda_function.web_socket_id.invoke_arn
+
+}
+
+output "web_socket_disconnect_invoke" {
+  value = aws_lambda_function.websocket_disconnect.invoke_arn
+}
+
+output "web_socket_disconnect_function" {
+  value = aws_lambda_function.websocket_disconnect.function_name
+}

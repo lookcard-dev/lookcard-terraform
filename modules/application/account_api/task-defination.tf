@@ -33,52 +33,52 @@ resource "aws_ecs_task_definition" "Account_API" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-    #   secrets = [
-    #     {
-    #       name          = "DATABASE_URL"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.CryptoAPI_secret.arn}:DATABASE_URL::"
-    #     },
-    #     {
-    #       name          = "FIREBASE_PROJECT_ID"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:PROJECT_ID::"
-    #     },
-    #     {
-    #       name          = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
-    #     },
-    #     {
-    #       name          = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
-    #     },
-    #     {
-    #       name          = "FIREBASE_CREDENTIALS"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:CREDENTIALS::"
-    #     },
-    #     {
-    #       name          = "API_KEY"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.ELLIPTIC_secret.arn}:API_KEY::"
-    #     },
-    #     {
-    #       name          = "API_SECRET"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.ELLIPTIC_secret.arn}:API_SECRET::"
-    #     },
-    #     {
-    #       name          = "DATABASE_ENDPOINT"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:host::"
-    #     },
-    #     {
-    #       name          = "DATABASE_USERNAME"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:username::"
-    #     },
-    #     {
-    #       name          = "DATABASE_PASSWORD"
-    #       valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:password::"
-    #     }
-    #   ]
+      secrets = [
+         {
+          name          = "DATABASE_URL"
+          valueFrom     = "${var.crypto_api_secret_arn}:DATABASE_URL::"
+        },
+        {
+          name          = "FIREBASE_PROJECT_ID"
+          valueFrom     = "${var.firebase_secret_arn}:PROJECT_ID::"
+        },
+        {
+          name          = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
+          valueFrom     = "${var.firebase_secret_arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
+        },
+         {
+          name          = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
+          valueFrom     = "${var.firebase_secret_arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
+        },
+        {
+          name          = "FIREBASE_CREDENTIALS"
+          valueFrom     = "${var.firebase_secret_arn}:CREDENTIALS::"
+        },
+         {
+          name          = "API_KEY"
+          valueFrom     = "${var.elliptic_secret_arn}:API_KEY::"
+        },
+        {
+          name          = "API_SECRET"
+          valueFrom     = "${var.elliptic_secret_arn}:API_SECRET::"
+        },
+         {
+          name          = "DATABASE_ENDPOINT"
+          valueFrom     = "${var.db_secret_secret_arn}:host::"
+        },
+        {
+          name          = "DATABASE_USERNAME"
+          valueFrom     = "${var.db_secret_secret_arn}:username::"
+        },
+        {
+          name          = "DATABASE_PASSWORD"
+          valueFrom     = "${var.db_secret_secret_arn}:password::"
+        }
+      ]
       environment = [
         {
           name  = "CRYPTO_API_URL"
-          value = "https://api.uat.lookcard.io"
+          value = "https://api.test.lookcard.io"
         },
         {
           name  = "DATABASE_NAME"

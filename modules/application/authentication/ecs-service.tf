@@ -1,20 +1,3 @@
-
-# resource "aws_lb_listener" "look-card" {
-#   depends_on  = [aws_lb_target_group.Authentication_TGP]
-#   load_balancer_arn = var.alb_arn
-#   port              = 80
-#   protocol          = "HTTP"
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.Authentication_TGP.arn
-#   }
-#   # depends_on        = [var.ssl]
-#   # port            = 443
-#   # protocol        = "HTTPS"
-#   # ssl_policy      = "ELBSecurityPolicy-2016-08"
-#   # certificate_arn = var.ssl
-# }
-
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecstaskrole"
 
@@ -48,11 +31,10 @@ resource "aws_iam_role_policy_attachment" "ecs_role" {
 
 resource "aws_lb_listener_rule" "Authentication_listener_rule" {
   depends_on   = [var.vpc_id]
-#   listener_arn = aws_lb_listener.look-card.arn
   listener_arn = var.aws_lb_listener_arn
   action {
     type             = "forward"
-    target_group_arn = var.aws_lb_target_group_lookcard_tg_arn
+    target_group_arn = aws_lb_target_group.authentication_tgp.arn
   }
   tags = {
     Name        = "Authentication-rule"
@@ -145,25 +127,26 @@ resource "aws_iam_policy_attachment" "Withdrawal__SQS_attachment" {
 
 
 # *********************
-# resource "aws_lb_target_group" "Authentication_TGP" {
-#   depends_on  = [var.vpc_id]
-#   name        = "Authentication-${var.env}"
-#   port        = 80
-#   protocol    = "HTTP"
-#   target_type = "ip"
-#   vpc_id      = var.vpc_id
+resource "aws_lb_target_group" "authentication_tgp" {
+  depends_on  = [var.network]
+  name        = "Authentication"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.network.vpc
 
-#   health_check {
-#     enabled             = true
-#     path                = "/"
-#     protocol            = "HTTP"
-#     healthy_threshold   = 2
-#     unhealthy_threshold = 2
-#     timeout             = 5
-#     interval            = 30
-#     matcher             = "200"
-#   }
-# }
+  health_check {
+    enabled             = true
+    path                = "/"
+    protocol            = "HTTP"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    matcher             = "200"
+  }
+}
+
 # *********************
 resource "aws_ecs_service" "Authentication" {
   name            = "Authentication"
@@ -171,14 +154,12 @@ resource "aws_ecs_service" "Authentication" {
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
-
   network_configuration {
     subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] # Replace with your subnet IDs
-    # security_groups = [var.ecs_security_groups]
     security_groups = [aws_security_group.Authentication.id]                                                   # Replace with your security group ID
   }
   load_balancer {
-    target_group_arn = var.aws_lb_target_group_lookcard_tg_arn
+    target_group_arn = aws_lb_target_group.authentication_tgp.arn
     container_name   = "Authentication"
     container_port   = "8000"
   }

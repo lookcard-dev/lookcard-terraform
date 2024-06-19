@@ -12,3 +12,16 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
+
+variable "secret_arns" {
+  description = "List of ARN for Secrets Manager"
+  type        = list(string)
+}
+
+variable "crypto_api_secret_arn" {}
+
+variable "firebase_secret_arn" {}
+
+variable "elliptic_secret_arn" {}
+
+variable "db_secret_secret_arn" {}

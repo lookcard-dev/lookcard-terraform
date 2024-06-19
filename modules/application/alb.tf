@@ -156,19 +156,20 @@ resource "aws_security_group" "api_alb_sg" {
 }
 # **********************************
 
-resource "aws_lb_target_group" "lookcard_tg" {
+# resource "aws_lb_target_group" "lookcard_tg" {
   
-  name        = "Authentication"
-  port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.network.vpc
+#   name        = "Authentication"
+#   port        = 80
+#   protocol    = "HTTP"
+#   target_type = "ip"
+#   vpc_id      = var.network.vpc
 
-  lifecycle {
-      create_before_destroy = true
-  }
+#   lifecycle {
+#       create_before_destroy = true
+#   }
 
-}
+# }
+
 
 resource "aws_lb_listener" "look-card" {
   load_balancer_arn = aws_alb.look-card.arn
@@ -176,7 +177,8 @@ resource "aws_lb_listener" "look-card" {
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.lookcard_tg.arn
+    target_group_arn = module.authentication.authentication_tgp_arn
+    # target_group_arn = aws_lb_target_group.lookcard_tgdsadsadsadsadsadsa.arn
   }
   # depends_on        = [var.ssl]
   # port            = 443

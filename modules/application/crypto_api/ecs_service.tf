@@ -145,17 +145,11 @@ resource "aws_ecs_service" "crypto_api" {
 }
 
 resource "aws_lb_target_group" "crypto_api_target_group" {
-  
   name        = "crypto-api"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.network.vpc
-
-  lifecycle {
-      create_before_destroy = true
-  }
-
 }
 
 

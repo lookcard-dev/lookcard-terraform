@@ -7,7 +7,6 @@
 #   value = aws_lb_target_group.Authentication_TGP.arn_suffix
 # }
 
-# output "auth_service" {
-#   value = aws_ecs_service.Authentication.name
-
-# }
+output "authentication_tgp_arn" {
+  value = aws_lb_target_group.authentication_tgp.arn
+}

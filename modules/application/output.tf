@@ -59,3 +59,11 @@
 #   value = aws_ecs_cluster.Admin_panel.name
 
 # }
+
+# output "authentication_tgp_arn" {
+#   value = aws_lb_target_group.authentication_tgp.arn
+# }
+
+# output "authentication_tgp_arn" {
+#   value = module.application.authentication_tgp_arn
+# }

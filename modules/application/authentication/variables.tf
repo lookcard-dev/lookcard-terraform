@@ -1,7 +1,7 @@
 
 variable "vpc_id" {}
 variable "aws_lb_listener_arn" {}
-variable "aws_lb_target_group_lookcard_tg_arn" {}
+# variable "aws_lb_target_group_lookcard_tg_arn" {}
 
 # variable "env" {}
 # variable "Private-Subnet-1" {}

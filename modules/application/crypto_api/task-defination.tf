@@ -5,7 +5,7 @@ data "aws_ecr_image" "latest" {
 
 
 resource "aws_security_group" "crypto-api-sg" {
-  # depends_on  = [var.network.vpc]
+  depends_on  = [var.network]
   name        = "crypto-api-service-security-group"
   description = "Security group for Crypto API services"
   vpc_id      = var.network.vpc
@@ -69,40 +69,49 @@ resource "aws_ecs_task_definition" "crypto-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      # secrets = [
-      #   {
-      #     name          = "DATABASE_URL"
-      #     valueFrom     = "${data.aws_secretsmanager_secret.CryptoAPI_secret.arn}:DATABASE_URL::"
-      #   },
-      #   {
-      #     name          = "FIREBASE_CREDENTIALS"
-      #     valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:CREDENTIALS::"
-      #   },
-      #   {
-      #     name          = "DATABASE_ENDPOINT"
-      #     valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:host::"
-      #   },
-      #   {
-      #     name          = "DATABASE_USERNAME"
-      #     valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:username::"
-      #   },
-      #   {
-      #     name          = "DATABASE_PASSWORD"
-      #     valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:password::"
-      #   },
-      #   # {
-      #   #   name          = "DATABASE_NAME"
-      #   #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:dbname::"
-      #   # },
-      #   # {
-      #   #   name          = "DATABASE_SCHEMA"
-      #   #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:d::"
-      #   # },
-      #   # {
-      #   #   name          = "DATABASE_ARGS"
-      #   #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:d::"
-      #   # }
-      # ]
+      secrets = [
+         {
+          name          = "DATABASE_URL"
+          valueFrom     = "${var.crypto_api_secret_arn}:DATABASE_URL::"
+        },
+        {
+          name          = "FIREBASE_CREDENTIALS"
+          valueFrom     = "${var.firebase_secret_arn}:CREDENTIALS::"
+        },
+        {
+          name          = "DATABASE_ENDPOINT"
+          valueFrom     = "${var.db_secret_secret_arn}:host::"
+        },
+        {
+          name          = "DATABASE_USERNAME"
+          valueFrom     = "${var.db_secret_secret_arn}:username::"
+        },
+        {
+          name          = "DATABASE_PASSWORD"
+          valueFrom     = "${var.db_secret_secret_arn}:password::"
+        }
+        # {
+        #   name          = "DATABASE_URL"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.CryptoAPI_secret.arn}:DATABASE_URL::"
+        # },
+        # {
+        #   name          = "FIREBASE_CREDENTIALS"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:CREDENTIALS::"
+        # },
+        # {
+        #   name          = "DATABASE_ENDPOINT"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:host::"
+        # },
+        # {
+        #   name          = "DATABASE_USERNAME"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:username::"
+        # },
+        # {
+        #   name          = "DATABASE_PASSWORD"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:password::"
+        # }
+
+      ]
       environment = [
         {
           name  = "AWS_REGION"

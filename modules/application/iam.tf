@@ -26,11 +26,6 @@ resource "aws_iam_role_policy_attachment" "lookcard_ecs_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
-
-
-/////////////////////////////////////////////////////////////////
-
 resource "aws_iam_policy" "lookcard_secrets_manager_read_policy" {
   name        = "lookcard-SecretsManagerReadOnlyPolicy"
   description = "Allows read-only access to Secrets Manager"

@@ -72,12 +72,8 @@ resource "aws_iam_policy" "Account_API_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:CryptoAPI-env-Q2vusb",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:FIREBASE-fgDqIW",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:uat/db/secret-8KkFTx",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
-        ]
+        "Resource" : var.secret_arns
+
       }
     ]
   })
@@ -123,8 +119,8 @@ resource "aws_iam_policy" "Account_API_SQS_SendMessage" {
           "sqs:SendMessage"
         ],
         "Resource" : [
-                "arn:aws:sqs:ap-southeast-1:975050173595:Lookcard_Notification.fifo",
-                "arn:aws:sqs:ap-southeast-1:975050173595:Crypto_Fund_Withdrawal.fifo"
+                "arn:aws:sqs:ap-southeast-1:576293270682:Lookcard_Notification.fifo",
+                "arn:aws:sqs:ap-southeast-1:576293270682:Crypto_Fund_Withdrawal.fifo"
         ]
       }
     ]

@@ -10,8 +10,6 @@ resource "aws_ecs_task_definition" "Authentication" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "512"
   memory                   = "1024"
-  # task_role_arn            = var.iam_role
-  # execution_role_arn       = var.iam_role
   task_role_arn            = var.iam_role
   execution_role_arn       = var.iam_role
   runtime_platform {

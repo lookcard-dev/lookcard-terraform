@@ -61,3 +61,11 @@ data "aws_iam_policy_document" "lambda_sts_policy" {
     actions = ["sts:AssumeRole"]
   }
 }
+
+variable "dynamodb_table_arn" {}
+
+
+# variable "web_scoket_iam" {}
+
+# variable "dynamodb_table_arn" {}
+# variable "web_socket_iam" {}

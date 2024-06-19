@@ -13,8 +13,21 @@ provider "aws" {
 }
 
 module "secret-manager" {
-  source = "./modules/secret-manager"
-  env_secrets = var.env_secrets
+  source                           = "./modules/secret-manager"
+  env_secrets                      = var.env_secrets
+  notification_env_secrets         = var.notification_env_secrets
+  tron_secrets                     = var.tron_secrets
+  coinranking_secrets              = var.coinranking_secrets
+  crypto_api_worker_wallet_secrets = var.crypto_api_worker_wallet_secrets
+  elliptic_secrets                 = var.elliptic_secrets
+  reap_secrets                     = var.reap_secrets
+  did_processor_lambda_secrets     = var.did_processor_lambda_secrets
+  token_secrets                    = var.token_secrets
+  aml_env_secrets                  = var.aml_env_secrets
+  aggregator_env_secrets           = var.aggregator_env_secrets
+  db_secrets                       = var.db_secrets
+  firebase_secrets                 = var.firebase_secrets
+  crypto_api_env_secrets           = var.crypto_api_env_secrets
 }
 
 module "S3" {
@@ -30,6 +43,12 @@ module "S3" {
 
 module "rds" {
   source = "./modules/database"
+  network = {
+    vpc            = module.VPC.vpc
+    private_subnet = module.VPC.private_subnet_ids
+    public_subnet  = module.VPC.public_subnet_ids
+  }
+  lookcard_db_secret = module.secret-manager.lookcard_db_secret
 }
 
 module "VPC" {
@@ -49,18 +68,27 @@ module "application" {
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
-  # Private-Subnet-1    = module.VPC.private_subnet_ids
-  # Private-Subnet-2    = module.VPC.private_subnet_ids
-  # Private-Subnet-3    = module.VPC.private_subnet_ids
+  # authentication_tgp_arn = module.application.authentication.authentication_tgp_arn
+  secret_arns        = var.secret_arns
+  crypto_api_secret_arn = module.secret-manager.crypto_api_secret_arn
+  firebase_secret_arn = module.secret-manager.firebase_secret_arn
+  elliptic_secret_arn = module.secret-manager.elliptic_secret_arn
+  db_secret_secret_arn = module.secret-manager.db_secret_secret_arn
   network = {
-    vpc              = module.VPC.vpc
-    private_subnet   = module.VPC.private_subnet_ids
-    public_subnet    = module.VPC.public_subnet_ids
+    vpc            = module.VPC.vpc
+    private_subnet = module.VPC.private_subnet_ids
+    public_subnet  = module.VPC.public_subnet_ids
   }
-  sqs_withdrawal     = module.lambda.withdrawal_sqs
-  lookcard_notification_sqs_url = module.lambda.lookcard_notification_sqs_url
+  sqs_withdrawal                 = module.lambda.withdrawal_sqs
+  lookcard_notification_sqs_url  = module.lambda.lookcard_notification_sqs_url
   crypto_fund_withdrawal_sqs_url = module.lambda.crypto_fund_withdrawal_sqs_url
   # env                = var.env
+  push_message_invoke            = module.lambda.push_message_web_invoke
+  push_message_web_function = module.lambda.push_message_web_function
+  web_socket_function      =  module.lambda.web_socket_function
+  web_socket_invoke              = module.lambda.web_socket_invoke
+  web_socket_disconnect_invoke  = module.lambda.web_socket_disconnect_invoke
+  web_socket_disconnect_function = module.lambda.web_socket_disconnect_function
 }
 
 module "ssl-cert" {
@@ -93,7 +121,7 @@ module "lambda" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  vpc_id           = module.VPC.vpc
+  vpc_id = module.VPC.vpc
   lambda_code = {
     s3_bucket                  = "${var.s3_bucket.aml_code}-${var.general_config.env}"
     data_process_s3key         = var.lambda_code.data_process_s3key
@@ -105,4 +133,6 @@ module "lambda" {
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
   secret_arn_list = module.secret-manager.secret_arns
+  dynamodb_table_arn = module.rds.dynamodb_table_arn
+  # web_scoket_iam = 
 }
