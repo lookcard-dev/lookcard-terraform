@@ -246,11 +246,11 @@ db_secrets = {
   engine   = "postgres"
   host     = "lookcard-standard-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com"
   port     = "5432"
-  dbname   = "lookcardtest"
+  dbname   = "lookcardstandard"
 }
 
 crypto_api_env_secrets = {
-  DATABASE_URL = "postgresql://lookcard:dsauuuFDSADK@lookcard-standard-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5432/lookcardtest?sslmode=require"
+  DATABASE_URL = "postgresql://lookcard:dsauuuFDSADK@lookcard-standard-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5432/lookcardstandard?sslmode=require"
 }
 
 secret_arns = [
