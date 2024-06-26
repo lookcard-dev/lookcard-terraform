@@ -23,7 +23,7 @@ resource "aws_rds_cluster" "lookcard" {
   cluster_identifier      = "lookcard-testing-db"
   database_name           = "lookcardtest"
   engine                  = "aurora-postgresql"
-  engine_mode             = "provisioned" 
+  engine_mode             = "provisioned"
   serverlessv2_scaling_configuration {
     min_capacity           = 2
     max_capacity           = 8
@@ -37,7 +37,33 @@ resource "aws_rds_cluster" "lookcard" {
   storage_encrypted       = true
 }
 
-# Define the RDS Proxy
+# Define the second RDS standard cluster
+resource "aws_rds_cluster" "lookcard_2" {
+  cluster_identifier      = "lookcard-standard-db"
+  database_name           = "lookcardstandard"
+  engine                  = "aurora-postgresql"
+  master_username         = "lookcard"
+  master_password         = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+  db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
+  vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
+  skip_final_snapshot     = true
+  deletion_protection     = false
+  storage_encrypted       = true
+}
+
+# Define the instance for the standard RDS cluster
+resource "aws_rds_cluster_instance" "lookcard_2_instance" {
+  cluster_identifier           = aws_rds_cluster.lookcard_2.id
+  instance_class               = "db.t3.medium"
+  engine                       = "aurora-postgresql"
+  db_subnet_group_name         = aws_db_subnet_group.lookcard_rds_subnet.name
+  publicly_accessible          = false
+  performance_insights_enabled = true
+  monitoring_interval          = 60
+  monitoring_role_arn          = aws_iam_role.rds_monitoring_role.arn
+}
+
+# Define the RDS Proxy for the serverless cluster
 resource "aws_db_proxy" "lookcard_rds_proxy" {
   name                   = "lookcard-rds-proxy"
   engine_family          = "POSTGRESQL"
@@ -51,11 +77,32 @@ resource "aws_db_proxy" "lookcard_rds_proxy" {
   require_tls            = true
 }
 
-# Associate the RDS Cluster with the RDS Proxy
+# Associate the RDS Serverless Cluster with the RDS Proxy
 resource "aws_db_proxy_target" "lookcard_proxy_target" {
   db_proxy_name         = aws_db_proxy.lookcard_rds_proxy.name
   target_group_name     = "default"
   db_cluster_identifier = aws_rds_cluster.lookcard.id
+}
+
+# Define the RDS Proxy for the standard cluster
+resource "aws_db_proxy" "lookcard_rds_proxy_2" {
+  name                   = "lookcard-rds-proxy-2"
+  engine_family          = "POSTGRESQL"
+  role_arn               = aws_iam_role.rds_proxy_role.arn
+  vpc_subnet_ids         = var.network.private_subnet
+  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+  auth {
+    auth_scheme = "SECRETS"
+    secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
+  }
+  require_tls            = true
+}
+
+# Associate the RDS Standard Cluster with the RDS Proxy
+resource "aws_db_proxy_target" "lookcard_proxy_target_2" {
+  db_proxy_name         = aws_db_proxy.lookcard_rds_proxy_2.name
+  target_group_name     = "default"
+  db_cluster_identifier = aws_rds_cluster.lookcard_2.id
 }
 
 # IAM role for RDS Proxy
