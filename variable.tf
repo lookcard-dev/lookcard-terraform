@@ -152,6 +152,7 @@ variable "secret_arns" {
   type        = list(string)
 }
 
+variable "lookcard_rds_password" {}
 
 
 

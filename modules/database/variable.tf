@@ -32,3 +32,6 @@ variable "dynamodb_config" {
 output "dynamodb_table_arn" {
   value = aws_dynamodb_table.websocket.arn
 }
+ 
+
+variable "lookcard_rds_password" {}

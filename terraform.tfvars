@@ -127,7 +127,7 @@ EOF
   AUTH_PROVIDER_X509_CERT_URL   = "https://www.googleapis.com/oauth2/v1/certs"
   CLIENT_X509_CERT_URL          = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zycoo%40lookcard-development.iam.gserviceaccount.com"
   BLOCKCHAIN_MS_URL             = "https://api.test.lookcard.io/v2/api/blc-s1umi0pnk/"
-  SQS_URL                       = "https://sqs.ap-southeast-1.amazonaws.com/975050173595/"
+  SQS_URL                       = "https://sqs.ap-southeast-1.amazonaws.com/576293270682/"
   FIREBASE_AUTH_DOMAIN          = "lookcard-development.firebaseapp.com"
   FIREBASE_MEASUREMENT_ID       = "G-8QSEP19JXE"
   FIREBASE_MESSAGING_SENDING_ID = "630033385979"
@@ -213,8 +213,8 @@ aml_env_secrets = {
   gas_fees                         = "10000000"
   DATA_PROCESS_SQS                 = "https://sqs.ap-southeast-1.amazonaws.com/576293270682/Data-Process"
   TOKEN_API_URL                    = "https://api.test.lookcard.io/v2/api/auth-zqg2muwph/get-firebase-access-token-by-email"
-  NOTIFICATION_SQS_URL             = "https://sqs.ap-southeast-1.amazonaws.com/975050173595/Notification"
-  WEBSOCKET_SQS_URL                = "https://sqs.ap-southeast-1.amazonaws.com/975050173595/Push_Message_Web"
+  NOTIFICATION_SQS_URL             = "https://sqs.ap-southeast-1.amazonaws.com/576293270682/Notification"
+  WEBSOCKET_SQS_URL                = "https://sqs.ap-southeast-1.amazonaws.com/576293270682/Push_Message_Web"
   TRANSACTION_REJECT_API_URL       = "https://api.test.lookcard.io/v2/api/blc-s1umi0pnk/transaction-rejected"
   API_GATWAY_WEBSOCKET_URL         = "https://ozllo33dx8.execute-api.ap-southeast-1.amazonaws.com/UAT/"
   tron_transaction_logs_url        = "https://nile.trongrid.io/wallet/gettransactionbyid"
@@ -229,28 +229,28 @@ aml_env_secrets = {
 
 aggregator_env_secrets = {
   WORKER_WALLET_PRIVATE_KEY = "1796ec1ad3059355b443fe07ea25de3652d6ed7ff8aa648393fa6a8e379a4999"
-WORKER_WALLET_ADDRESS = "TF6htcmXxbwDd4uNgRjJsxsoPBqwfdwsP1"
+  WORKER_WALLET_ADDRESS     = "TF6htcmXxbwDd4uNgRjJsxsoPBqwfdwsP1"
 }
 
 firebase_secrets = {
-  SERVICE_ACCOUNT_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1od959tGk1y8H\nTg640rkPXm7jFq2iXkU3C2LgpigJe1JM2Hl/k3VFdEoWsG1BFT6wxeyaza2mdDGy\n9FTHfAaWH1nyPTGJHrz1XGR5PUeF/S2TFLsNZxJ4EqNoVv0h5r2dy8RierHIjzE0\nWgPVmg9jr0Hm3WbKUg4PF9dcvNfToVvMkK6v3EtkSPOa5zq7ZznjAamXcXTTveCf\nQDGr7XxDpw8W/wBDtb30cMGaY3VvS9wB/Vkmith8GV201MCvgvzIfF3Wz2NCuS6V\nAh4fJH1K+dDnFZKZqBCCYdds2qhKjfXOErgagWccYqTHeO7m8ZUp4uOBe8Z/TZpe\nsBVcgeXXAgMBAAECggEARbQJ3bXlTWPRJfYEO1SO9YFxf4+f8exIlq+1ce4B9mWP\nt3Lp6ZYuzokqt5tcSjo7dT53pw7gobz8p6cRc/66TllYvNhUDsGvlV+wJUDplleL\namLtx95y3YaVlECx4xU4Vnqw8nQQjx24rdUPnKUDW+eRnGYCAQnNYGhvWyUTlKC1\nyKp/te8VRTuKSlGOn3AXOQBoxixgDMiAmqaCrHaRw7SU9eeCYskt1lHH99JAFgyw\nnm+dkMnDn5eEy0WEupqdvFaIhJ1hdh6BB8GZmzTn0pQRjyE3acwjibf2A39huZDA\nIGUpVsRg6UqGV+1VSlKaOwR4puAM5BKgdd+KLVON/QKBgQDf8+SAjydIPmBT3acV\nmJXmqP1lIuIfd5dWKvZkL/KY2WiDrQX45jp7AMH7fvZgVPjmhrwhuDh1zM+sEwc7\nQK83EXQ8I2SVa4rFxKsaY5bEjYWcNQtT0EsApvZLie9ljMqU7xVJZHoE0rgU2MgP\nJgVvria+eyUZp9D+7BmXoZbQcwKBgQDPn6YDXM84bjR7DnvB4iE0wsGdQ4rwZUUo\n2p+/nwNCDdK0U9WX+0GShincu7+8D7cLalM86cVn7aBCjxDRXrstVGrkZeG93sEu\nFcSEyRny0zoyJhW4qVC2NFDlazvIRsd9GF1QTDlQWJV12uBQmoECfNelVEJ+Pgbr\npAQHaf1wDQKBgF97twLxBgiRP7TCHkjg45iSmGcUdmCANq/wZVjV8JMmrp7lmFRE\npM5oxkwaF6V+1RhEfdXKm5fuGOT+v+iNbacG9A3n8Syby3ECpwj7SP7IcBznqMq1\nViUTCpOuXbloS78wKF1AT53a0c1hl/qNdWfmUnKIQosrt7nYpBi4NnrtAoGBAJKe\nsnUDcI7wPH1+T+UuVLbWpjXxwcdcLMfaBCAlIf7eliKkZV0roTXhKuTnbVJYYrJc\nBqYojDCFfbwjHgRM+q/bQpVCYXVdPlzWIG6JOZrikeFiRcqfPxE8xrgMzy3y1ePA\ndf1DpuHXfMy6odgqE9r24K6vXzmZgfecXwABWGltAoGBAK+7fzdN17l0Qi0tmSX7\nYYm58HyTun2LBcTjaSFz3Ze1IgiDaGG+5pW2jtFBOj4nYZGCrFq1xn9SbtAGq1wR\nOWA2SOh9LtF46O3EfPRxDyGWLUBCcpScK2i1vVfmy9Fu74cE8w+fYfHonMiBHE7s\nJ/PFXb0aRPjQjNMwS5YHM9Q3\n-----END PRIVATE KEY-----\n",
-  PROJECT_ID = "lookcard-development",
+  SERVICE_ACCOUNT_PRIVATE_KEY  = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1od959tGk1y8H\nTg640rkPXm7jFq2iXkU3C2LgpigJe1JM2Hl/k3VFdEoWsG1BFT6wxeyaza2mdDGy\n9FTHfAaWH1nyPTGJHrz1XGR5PUeF/S2TFLsNZxJ4EqNoVv0h5r2dy8RierHIjzE0\nWgPVmg9jr0Hm3WbKUg4PF9dcvNfToVvMkK6v3EtkSPOa5zq7ZznjAamXcXTTveCf\nQDGr7XxDpw8W/wBDtb30cMGaY3VvS9wB/Vkmith8GV201MCvgvzIfF3Wz2NCuS6V\nAh4fJH1K+dDnFZKZqBCCYdds2qhKjfXOErgagWccYqTHeO7m8ZUp4uOBe8Z/TZpe\nsBVcgeXXAgMBAAECggEARbQJ3bXlTWPRJfYEO1SO9YFxf4+f8exIlq+1ce4B9mWP\nt3Lp6ZYuzokqt5tcSjo7dT53pw7gobz8p6cRc/66TllYvNhUDsGvlV+wJUDplleL\namLtx95y3YaVlECx4xU4Vnqw8nQQjx24rdUPnKUDW+eRnGYCAQnNYGhvWyUTlKC1\nyKp/te8VRTuKSlGOn3AXOQBoxixgDMiAmqaCrHaRw7SU9eeCYskt1lHH99JAFgyw\nnm+dkMnDn5eEy0WEupqdvFaIhJ1hdh6BB8GZmzTn0pQRjyE3acwjibf2A39huZDA\nIGUpVsRg6UqGV+1VSlKaOwR4puAM5BKgdd+KLVON/QKBgQDf8+SAjydIPmBT3acV\nmJXmqP1lIuIfd5dWKvZkL/KY2WiDrQX45jp7AMH7fvZgVPjmhrwhuDh1zM+sEwc7\nQK83EXQ8I2SVa4rFxKsaY5bEjYWcNQtT0EsApvZLie9ljMqU7xVJZHoE0rgU2MgP\nJgVvria+eyUZp9D+7BmXoZbQcwKBgQDPn6YDXM84bjR7DnvB4iE0wsGdQ4rwZUUo\n2p+/nwNCDdK0U9WX+0GShincu7+8D7cLalM86cVn7aBCjxDRXrstVGrkZeG93sEu\nFcSEyRny0zoyJhW4qVC2NFDlazvIRsd9GF1QTDlQWJV12uBQmoECfNelVEJ+Pgbr\npAQHaf1wDQKBgF97twLxBgiRP7TCHkjg45iSmGcUdmCANq/wZVjV8JMmrp7lmFRE\npM5oxkwaF6V+1RhEfdXKm5fuGOT+v+iNbacG9A3n8Syby3ECpwj7SP7IcBznqMq1\nViUTCpOuXbloS78wKF1AT53a0c1hl/qNdWfmUnKIQosrt7nYpBi4NnrtAoGBAJKe\nsnUDcI7wPH1+T+UuVLbWpjXxwcdcLMfaBCAlIf7eliKkZV0roTXhKuTnbVJYYrJc\nBqYojDCFfbwjHgRM+q/bQpVCYXVdPlzWIG6JOZrikeFiRcqfPxE8xrgMzy3y1ePA\ndf1DpuHXfMy6odgqE9r24K6vXzmZgfecXwABWGltAoGBAK+7fzdN17l0Qi0tmSX7\nYYm58HyTun2LBcTjaSFz3Ze1IgiDaGG+5pW2jtFBOj4nYZGCrFq1xn9SbtAGq1wR\nOWA2SOh9LtF46O3EfPRxDyGWLUBCcpScK2i1vVfmy9Fu74cE8w+fYfHonMiBHE7s\nJ/PFXb0aRPjQjNMwS5YHM9Q3\n-----END PRIVATE KEY-----\n",
+  PROJECT_ID                   = "lookcard-development",
   SERVICE_ACCOUNT_CLIENT_EMAIL = "firebase-adminsdk-zycoo@lookcard-development.iam.gserviceaccount.com",
-  CREDENTIALS = "{   \"type\": \"service_account\",   \"project_id\": \"lookcard-development\",   \"private_key_id\": \"fcd62d5c65803ed835dc80a8d5fca0577e3cca6a\",   \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKhfgXSsSNl/5G\\nvfRuMCDO7KcZFkW1TxcSHMoIjZh/cJagonezQaiWZnyT9HnkfUHAJogsYe6e+coW\\nGrbOETV8PHiCrG3x4eEECyAvTlnks/mDIZli421pUawBjpFewrrE3gXtpoHMoRNQ\\nQ4EDSRGJeUSgAvLHEYKfx6skPNrEYqX0/4hxdW7gzj0woDYpYkCEw0Un7OUZlT3A\\nQFOx7XUZGpX3SmD1DoXhj79kP/GX4Z59JVsguiZJB+g9UWZ5X+KjfVQf7S+MYCCT\\nT0/SdGt0JQcQjhWppMNwqSknQ1sWzsYdNoIhwDLKXbXjb5W3SYfFo1EubzMgL3yi\\nOlrmfC/BAgMBAAECggEAMQsRQZ63C2zvxDTS4O4hu8peSrp0hgwRk67KFBkqAU6E\\nA4FkiFHRoB5Qc8njzLuydPQ/zLOog/IMiJ7Ofwd20s+YBVj5RPaEtaR2Fk6cgUA+\\nH42+5c4aXENNapEaTf7NGMiFWgAU9bdaBHlcYC3NI+PshO1B2og4gDXrkVp1RdII\\n9qd7uHObq+3Ye7Emva5usDZ9BsXhSx8TQ0YG34LNARBCHdPeCd3QaV7TiDn7eLxt\\n+fIoDVP1NKy4Fe/ij3cwwDp6R2oCxtIhKBpEJMp2U4ccZN2ZJPrG5z0ODtjKWP0o\\nre5M/2Hx7pRWcnMfINeqPWHWXuCSlEcFL3zz7mDFAwKBgQD7nGClC+tOLBQnoh+D\\ncCE14wZXIaR+VYkMIiCtzIjhqTX4FoNbMWqK+Fm/GAFclgMtvPEpA9MFkMd/5dFi\\natUMH0I0KTVpS43G5ps2I33YfipUe8QExbOkXPN1sDU0nR1LcZlylnmK1uX/dw82\\nudXJTYnG+iNaN0PesSrRWyoouwKBgQDODmFw4PktNOA1zyCsjGBFu1eohZYwobMh\\nfVNWBma4loNvbcAtYIlqqychX2hGvxLo4peTfkp5sZlUxd2lTN3kBOSFEFIJMp7I\\nAP63X/ZKNlM5LMmle9xY3U1U4IcBXt44/kyP9Nn2mm5AaFWqy9JdUnU2u7aVen0u\\nAOYPEVBPswKBgByiBRWDL7nrpjeEaZWpkv3w4e3UdEW0Mi5hS9q7ZfBYMz4SQcyE\\n6Rz7eisW7kC9CYuQ7ti+CKufeDSD0Lokci44+G27KsrawD2cTJlynIWgheyrUPlC\\nDllsAoCoFsXwAz9spAu4OAimv/G8eMy/hSatXjp4iMFhfKXA/6BngXq1AoGBAMMt\\ncfTW1I+SfzHY4S0vxl0myDBTYODtuVxmdpKMe64qu5LHlXol7+P+/JCq633frUy0\\nnTjTLj45EHDw/zJ9Lcy3KbI0tFAMB8SQ1LTji8ndzVTh7Jr4SM5PyNk12AtfTgUU\\nM3dESVVCEF6ntUWTzM4ite5DPf42yO3TYhcxoi3rAoGAXkYbcXwNOW7EEO2UJeGQ\\nn1paQnxBeiCCIUwnZwKrMI1UhhE3pedhkUjYUGCQmNT2xzMj9nC+hlcUruk8LhL4\\nei4/8WHkkuMSsPx9lokvDWfz3W382pcQQH5Q6Qe3llIVArEHhDJFnOTh6LGkcYBz\\nefb+mV51tjFVI1Y4eXOYZNw=\\n-----END PRIVATE KEY-----\\n\",   \"client_email\": \"firebase-adminsdk-zycoo@lookcard-development.iam.gserviceaccount.com\",   \"client_id\": \"101053514353355045967\",   \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",   \"token_uri\": \"https://oauth2.googleapis.com/token\",   \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",   \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zycoo%40lookcard-development.iam.gserviceaccount.com\",   \"universe_domain\": \"googleapis.com\" }"
-  }
+  CREDENTIALS                  = "{   \"type\": \"service_account\",   \"project_id\": \"lookcard-development\",   \"private_key_id\": \"fcd62d5c65803ed835dc80a8d5fca0577e3cca6a\",   \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKhfgXSsSNl/5G\\nvfRuMCDO7KcZFkW1TxcSHMoIjZh/cJagonezQaiWZnyT9HnkfUHAJogsYe6e+coW\\nGrbOETV8PHiCrG3x4eEECyAvTlnks/mDIZli421pUawBjpFewrrE3gXtpoHMoRNQ\\nQ4EDSRGJeUSgAvLHEYKfx6skPNrEYqX0/4hxdW7gzj0woDYpYkCEw0Un7OUZlT3A\\nQFOx7XUZGpX3SmD1DoXhj79kP/GX4Z59JVsguiZJB+g9UWZ5X+KjfVQf7S+MYCCT\\nT0/SdGt0JQcQjhWppMNwqSknQ1sWzsYdNoIhwDLKXbXjb5W3SYfFo1EubzMgL3yi\\nOlrmfC/BAgMBAAECggEAMQsRQZ63C2zvxDTS4O4hu8peSrp0hgwRk67KFBkqAU6E\\nA4FkiFHRoB5Qc8njzLuydPQ/zLOog/IMiJ7Ofwd20s+YBVj5RPaEtaR2Fk6cgUA+\\nH42+5c4aXENNapEaTf7NGMiFWgAU9bdaBHlcYC3NI+PshO1B2og4gDXrkVp1RdII\\n9qd7uHObq+3Ye7Emva5usDZ9BsXhSx8TQ0YG34LNARBCHdPeCd3QaV7TiDn7eLxt\\n+fIoDVP1NKy4Fe/ij3cwwDp6R2oCxtIhKBpEJMp2U4ccZN2ZJPrG5z0ODtjKWP0o\\nre5M/2Hx7pRWcnMfINeqPWHWXuCSlEcFL3zz7mDFAwKBgQD7nGClC+tOLBQnoh+D\\ncCE14wZXIaR+VYkMIiCtzIjhqTX4FoNbMWqK+Fm/GAFclgMtvPEpA9MFkMd/5dFi\\natUMH0I0KTVpS43G5ps2I33YfipUe8QExbOkXPN1sDU0nR1LcZlylnmK1uX/dw82\\nudXJTYnG+iNaN0PesSrRWyoouwKBgQDODmFw4PktNOA1zyCsjGBFu1eohZYwobMh\\nfVNWBma4loNvbcAtYIlqqychX2hGvxLo4peTfkp5sZlUxd2lTN3kBOSFEFIJMp7I\\nAP63X/ZKNlM5LMmle9xY3U1U4IcBXt44/kyP9Nn2mm5AaFWqy9JdUnU2u7aVen0u\\nAOYPEVBPswKBgByiBRWDL7nrpjeEaZWpkv3w4e3UdEW0Mi5hS9q7ZfBYMz4SQcyE\\n6Rz7eisW7kC9CYuQ7ti+CKufeDSD0Lokci44+G27KsrawD2cTJlynIWgheyrUPlC\\nDllsAoCoFsXwAz9spAu4OAimv/G8eMy/hSatXjp4iMFhfKXA/6BngXq1AoGBAMMt\\ncfTW1I+SfzHY4S0vxl0myDBTYODtuVxmdpKMe64qu5LHlXol7+P+/JCq633frUy0\\nnTjTLj45EHDw/zJ9Lcy3KbI0tFAMB8SQ1LTji8ndzVTh7Jr4SM5PyNk12AtfTgUU\\nM3dESVVCEF6ntUWTzM4ite5DPf42yO3TYhcxoi3rAoGAXkYbcXwNOW7EEO2UJeGQ\\nn1paQnxBeiCCIUwnZwKrMI1UhhE3pedhkUjYUGCQmNT2xzMj9nC+hlcUruk8LhL4\\nei4/8WHkkuMSsPx9lokvDWfz3W382pcQQH5Q6Qe3llIVArEHhDJFnOTh6LGkcYBz\\nefb+mV51tjFVI1Y4eXOYZNw=\\n-----END PRIVATE KEY-----\\n\",   \"client_email\": \"firebase-adminsdk-zycoo@lookcard-development.iam.gserviceaccount.com\",   \"client_id\": \"101053514353355045967\",   \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",   \"token_uri\": \"https://oauth2.googleapis.com/token\",   \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",   \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zycoo%40lookcard-development.iam.gserviceaccount.com\",   \"universe_domain\": \"googleapis.com\" }"
+}
 
 
 db_secrets = {
   username = "lookcarduat"
-password = "Us676VboS6a2t9T4"
-engine = "postgres"
-host = "lookcard-database-instance-0.c2ifylljo98k.ap-southeast-1.rds.amazonaws.com"
-port = "5443"
-dbname = "lookcard"
+  password = "Us676VboS6a2t9T4"
+  engine   = "postgres"
+  host     = "lookcard-database-instance-0.c2ifylljo98k.ap-southeast-1.rds.amazonaws.com"
+  port     = "5432"
+  dbname   = "lookcard"
 }
 
 crypto_api_env_secrets = {
-  DATABASE_URL = "postgresql://lookcardtest:s<C|}`?wu|*4i:;v@lookcard-testing-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5443/main?sslmode=require"
+  DATABASE_URL = "postgresql://lookcard:dsauuuFDSADK@lookcard-testing-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5432/lookcardtest?sslmode=require"
 }
 
 secret_arns = [
@@ -260,3 +260,4 @@ secret_arns = [
   "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:elliptic-ImZyZj"
 ]
 
+lookcard_rds_password = "dsauuuFDSADK"

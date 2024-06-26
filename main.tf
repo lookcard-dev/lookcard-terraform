@@ -49,6 +49,8 @@ module "rds" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   lookcard_db_secret = module.secret-manager.lookcard_db_secret
+  lookcard_rds_password = var.lookcard_rds_password
+
 }
 
 module "VPC" {
@@ -69,11 +71,11 @@ module "application" {
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
   # authentication_tgp_arn = module.application.authentication.authentication_tgp_arn
-  secret_arns        = var.secret_arns
+  secret_arns           = var.secret_arns
   crypto_api_secret_arn = module.secret-manager.crypto_api_secret_arn
-  firebase_secret_arn = module.secret-manager.firebase_secret_arn
-  elliptic_secret_arn = module.secret-manager.elliptic_secret_arn
-  db_secret_secret_arn = module.secret-manager.db_secret_secret_arn
+  firebase_secret_arn   = module.secret-manager.firebase_secret_arn
+  elliptic_secret_arn   = module.secret-manager.elliptic_secret_arn
+  db_secret_secret_arn  = module.secret-manager.db_secret_secret_arn
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids
@@ -84,10 +86,10 @@ module "application" {
   crypto_fund_withdrawal_sqs_url = module.lambda.crypto_fund_withdrawal_sqs_url
   # env                = var.env
   push_message_invoke            = module.lambda.push_message_web_invoke
-  push_message_web_function = module.lambda.push_message_web_function
-  web_socket_function      =  module.lambda.web_socket_function
+  push_message_web_function      = module.lambda.push_message_web_function
+  web_socket_function            = module.lambda.web_socket_function
   web_socket_invoke              = module.lambda.web_socket_invoke
-  web_socket_disconnect_invoke  = module.lambda.web_socket_disconnect_invoke
+  web_socket_disconnect_invoke   = module.lambda.web_socket_disconnect_invoke
   web_socket_disconnect_function = module.lambda.web_socket_disconnect_function
 }
 
@@ -132,7 +134,7 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  secret_arn_list = module.secret-manager.secret_arns
+  secret_arn_list    = module.secret-manager.secret_arns
   dynamodb_table_arn = module.rds.dynamodb_table_arn
   # web_scoket_iam = 
 }

@@ -11,17 +11,17 @@ variable "secret_names" {
     "sumsub",
     "twilio",
     "sendgrid",
-    "crypto-api-worker-wallet",
-    "env",
-    "token",
+    "crypto-api-worker-wallet",//
+    "env",//
+    "token",//
     "db/secret",
-    "aml_env",
-    "crypto-api-env",
-    "notification-env",
+    "aml_env",//evvo
+    "crypto-api-env",//
+    "notification-env",//
     "coinranking",
-    "aggregator-env",
-    "did-processor/lambda",
-    "look-card_db_master_password"
+    "aggregator-env",//
+    "did-processor/lambda",//
+    "look-card_db_master_password"//
 
   ]
 }

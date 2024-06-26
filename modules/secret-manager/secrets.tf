@@ -4,7 +4,7 @@ resource "aws_secretsmanager_secret" "lookcard_secrets" {
   description = "Secret for ${each.value}"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -94,6 +94,7 @@ resource "aws_secretsmanager_secret_version" "db_secret_value" {
   secret_string = jsonencode(var.db_secrets)
 
   depends_on = [aws_secretsmanager_secret.lookcard_secrets]
+
 }
 
 resource "aws_secretsmanager_secret_version" "firebase_secret_value" {
