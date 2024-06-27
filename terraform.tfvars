@@ -241,16 +241,16 @@ firebase_secrets = {
 
 
 db_secrets = {
-  username = "lookcarduat"
-  password = "Us676VboS6a2t9T4"
+  username = "lookcard"
+  password = "dsauuuFDSADK"
   engine   = "postgres"
-  host     = "lookcard-database-instance-0.c2ifylljo98k.ap-southeast-1.rds.amazonaws.com"
+  host     = "lookcard-standard-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com"
   port     = "5432"
-  dbname   = "lookcard"
+  dbname   = "lookcardstandard"
 }
 
 crypto_api_env_secrets = {
-  DATABASE_URL = "postgresql://lookcard:dsauuuFDSADK@lookcard-testing-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5432/lookcardtest?sslmode=require"
+  DATABASE_URL = "postgresql://lookcard:dsauuuFDSADK@lookcard-standard-db.cluster-c2ifylljo98k.ap-southeast-1.rds.amazonaws.com:5432/lookcardstandard?sslmode=require"
 }
 
 secret_arns = [
