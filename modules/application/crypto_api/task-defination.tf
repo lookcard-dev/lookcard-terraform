@@ -90,27 +90,6 @@ resource "aws_ecs_task_definition" "crypto-api" {
           name          = "DATABASE_PASSWORD"
           valueFrom     = "${var.db_secret_secret_arn}:password::"
         }
-        # {
-        #   name          = "DATABASE_URL"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.CryptoAPI_secret.arn}:DATABASE_URL::"
-        # },
-        # {
-        #   name          = "FIREBASE_CREDENTIALS"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.FIREBASE_secret.arn}:CREDENTIALS::"
-        # },
-        # {
-        #   name          = "DATABASE_ENDPOINT"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:host::"
-        # },
-        # {
-        #   name          = "DATABASE_USERNAME"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:username::"
-        # },
-        # {
-        #   name          = "DATABASE_PASSWORD"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.uat_db_secret_secret.arn}:password::"
-        # }
-
       ]
       environment = [
         {
@@ -119,11 +98,11 @@ resource "aws_ecs_task_definition" "crypto-api" {
         },
         {
           name  = "KMS_GENERATOR_KEY_ID"
-          value = "arn:aws:kms:ap-southeast-1:975050173595:key/f71557ab-8443-4308-a825-c1ee6f111aa1"
+          value = "arn:aws:kms:ap-southeast-1:576293270682:key/6a28f5b4-2996-486e-8d24-bbf3a44031d0"
         },
         {
           name  = "KMS_ENCRYPTION_KEY_ID_A"
-          value = "arn:aws:kms:ap-southeast-1:975050173595:key/5ee6de3f-009e-4e3f-9322-db20c30409b5"
+          value = "arn:aws:kms:ap-southeast-1:576293270682:key/f83d712a-19fc-4932-9b98-9e40b7984f16"
         },
         {
           name  = "DATABASE_NAME"
@@ -149,8 +128,6 @@ resource "aws_ecs_task_definition" "crypto-api" {
     }
   ])
 }
-
 resource "aws_cloudwatch_log_group" "crypto_api" {
-  name = "/ecs/crypto_api"
-
+  name = "/ecs/crypto-api"
 }

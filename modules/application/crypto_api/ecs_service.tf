@@ -34,9 +34,9 @@ resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:CryptoAPI-env-Q2vusb",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:FIREBASE-fgDqIW",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:uat/db/secret-8KkFTx"
+                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:crypto-api-env-a24Wh1",
+                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:firebase-JujygD",
+                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
         ]
       }
     ]
@@ -84,8 +84,8 @@ resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
           "kms:GenerateDataKey"
         ],
         "Resource" : [
-            "arn:aws:kms:ap-southeast-1:975050173595:key/5ee6de3f-009e-4e3f-9322-db20c30409b5",
-            "arn:aws:kms:ap-southeast-1:975050173595:key/f71557ab-8443-4308-a825-c1ee6f111aa1"
+            "arn:aws:kms:ap-southeast-1:576293270682:key/f83d712a-19fc-4932-9b98-9e40b7984f16",
+            "arn:aws:kms:ap-southeast-1:576293270682:key/6a28f5b4-2996-486e-8d24-bbf3a44031d0"
         ]
       }
     ]
@@ -121,8 +121,7 @@ resource "aws_service_discovery_service" "crypto_service" {
 
 
 resource "aws_ecs_service" "crypto_api" {
-
-  name            = "crypto_api"
+  name            = "crypto-api"
   task_definition = aws_ecs_task_definition.crypto-api.arn
   launch_type     = "FARGATE"
   desired_count   = 1
