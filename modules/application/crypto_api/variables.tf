@@ -14,5 +14,5 @@ variable "crypto_api_secret_arn" {}
 variable "firebase_secret_arn" {}
 variable "db_secret_secret_arn" {}
 
-# variable "ecs_security_groups" {}
-# variable "vpc_id" {}
+variable "crypto_api_encryption_kms_arn" {}
+variable "crypto_api_generator_kms_arn" {}

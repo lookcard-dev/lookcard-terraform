@@ -6,3 +6,8 @@
 output "ddb_websocket" {
   value = aws_dynamodb_table.websocket
 }
+
+output "dynamodb_crypto_transaction_listener_arn" {
+  value = aws_dynamodb_table.crypto-transaction-listener.arn
+}
+

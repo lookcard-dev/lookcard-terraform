@@ -48,7 +48,7 @@ module "rds" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  lookcard_db_secret = module.secret-manager.lookcard_db_secret
+  lookcard_db_secret    = module.secret-manager.lookcard_db_secret
   lookcard_rds_password = var.lookcard_rds_password
 
 }
@@ -76,6 +76,8 @@ module "application" {
   firebase_secret_arn   = module.secret-manager.firebase_secret_arn
   elliptic_secret_arn   = module.secret-manager.elliptic_secret_arn
   db_secret_secret_arn  = module.secret-manager.db_secret_secret_arn
+  env_secrets_arn       = module.secret-manager.env_secrets_arn
+  token_secrets_arn     = module.secret-manager.token_secrets_arn
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids
@@ -91,6 +93,10 @@ module "application" {
   web_socket_invoke              = module.lambda.web_socket_invoke
   web_socket_disconnect_invoke   = module.lambda.web_socket_disconnect_invoke
   web_socket_disconnect_function = module.lambda.web_socket_disconnect_function
+  aggregator_tron_sqs_url        = module.lambda.aggregator_tron_sqs_url
+  trongrid_secret_arn            = module.secret-manager.trongrid_secret_arn
+  dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
+  aggregator_tron_sqs_arn = module.lambda.aggregator_tron_sqs_arn
 }
 
 module "ssl-cert" {

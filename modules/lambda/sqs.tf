@@ -22,6 +22,13 @@ resource "aws_sqs_queue" "Eliptic" {
   }
 }
 
+resource "aws_sqs_queue" "Aggregator_Tron_Queue" {
+  name                        = "Aggregator_Tron.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  visibility_timeout_seconds  = 900
+  delay_seconds               = 120 
+}
 
 resource "aws_sqs_queue" "notification" {
   name                       = "Notification"
@@ -87,17 +94,10 @@ resource "aws_lambda_event_source_mapping" "Eliptic" {
   batch_size       = 10 # Change as per your requirements
 }
 
-# resource "aws_sqs_queue" "Aggregator_Tron_Queue" {
-#   name                        = "Aggregator_Tron.fifo"
-#   fifo_queue                  = true
-#   content_based_deduplication = true
-#   visibility_timeout_seconds  = 360
-#   delay_seconds               = 120 
-# }
+resource "aws_lambda_event_source_mapping" "Aggregator_Tron_Queue_event" {
+  depends_on       = [aws_lambda_function.aggregator_tron_function]
+  event_source_arn = aws_sqs_queue.Aggregator_Tron_Queue.arn
+  function_name    = aws_lambda_function.aggregator_tron_function.function_name
+  batch_size       = 10 # Change as per your requirements
+}
 
-# resource "aws_lambda_event_source_mapping" "Aggregator_Tron_Queue_event" {
-#   depends_on       = [aws_lambda_function.aggregator_tron_function]
-#   event_source_arn = aws_sqs_queue.Aggregator_Tron_Queue.arn
-#   function_name    = aws_lambda_function.aggregator_tron_function.function_name
-#   batch_size       = 10 # Change as per your requirements
-# }

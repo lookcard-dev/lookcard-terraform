@@ -19,23 +19,48 @@ resource "aws_db_subnet_group" "lookcard_rds_subnet" {
 }
 
 # Define the RDS Aurora Serverless V2 cluster
+# resource "aws_rds_cluster" "lookcard" {
+#   cluster_identifier      = "lookcard-testing-db"
+#   database_name           = "lookcardtest"
+#   engine                  = "aurora-postgresql"
+#   engine_mode             = "provisioned"
+#   serverlessv2_scaling_configuration {
+#     min_capacity           = 2
+#     max_capacity           = 8
+#   }
+#   master_username         = "lookcard"
+# #   master_password         = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+#   master_password         = "dsauuuFDSADK"
+#   db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
+#   vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
+#   skip_final_snapshot     = true
+#   deletion_protection     = false
+#   storage_encrypted       = true
+# }
+
 resource "aws_rds_cluster" "lookcard" {
-  cluster_identifier      = "lookcard-testing-db"
-  database_name           = "lookcardtest"
-  engine                  = "aurora-postgresql"
-  engine_mode             = "provisioned"
-  serverlessv2_scaling_configuration {
-    min_capacity           = 2
-    max_capacity           = 8
-  }
-  master_username         = "lookcard"
-#   master_password         = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-  master_password         = "dsauuuFDSADK"
+  cluster_identifier = "lookcard-testing-db"
+  engine             = "aurora-postgresql"
+  engine_mode        = "provisioned"
+  database_name      = "lookcardtest"
+  master_username    = "lookcard"
+  master_password     = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
   db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
   vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
+  storage_encrypted  = true
   skip_final_snapshot     = true
   deletion_protection     = false
-  storage_encrypted       = true
+  serverlessv2_scaling_configuration {
+    max_capacity = 5.0
+    min_capacity = 0.5
+  }
+}
+
+resource "aws_rds_cluster_instance" "lookcard-serverless-instance" {
+  cluster_identifier = aws_rds_cluster.lookcard.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.lookcard.engine
+  engine_version     = aws_rds_cluster.lookcard.engine_version
 }
 
 # Define the second RDS standard cluster

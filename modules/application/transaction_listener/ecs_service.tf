@@ -17,6 +17,10 @@ resource "aws_security_group" "Transaction-Listener-SG" {
   }
 }
 
+data "aws_secretsmanager_secret" "trongrid_secret" {
+  name = "TRONGRID"
+}
+
 
 resource "aws_iam_role" "Transaction_Listener_Task_Execution_Role" {
   name = "Transaction-Listener-Task-Execution-Role"
@@ -43,7 +47,7 @@ resource "aws_iam_role_policy_attachment" "Transaction_Listener_ECSTaskExecution
 
 resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy" {
   name        = "TransactionListenerSecretsReadOnlyPolicy"
-  description = "Allows read-only access to Secret - TRONGRID"
+  description = "Allows read-only access to Secret - TRON"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -54,7 +58,7 @@ resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy"
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-            "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:TRONGRID-jSYlQH"
+            "${data.aws_secretsmanager_secret.trongrid_secret.arn}"
         ]
       }
     ]
@@ -96,8 +100,11 @@ resource "aws_iam_policy" "Transaction_Listener_ddb_policy" {
           "dynamodb:*"
         ],
         "Resource" : [
-            "arn:aws:dynamodb:ap-southeast-1:975050173595:table/Crypto-Transaction-Listener-Block-Record"
+            var.dynamodb_crypto_transaction_listener_arn
         ]
+        # "Resource" : [
+        #     "arn:aws:dynamodb:ap-southeast-1:576293270682:table/Crypto-Transaction-Listener-Block-Record"
+        # ]
       }
     ]
   })
@@ -115,7 +122,8 @@ resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
         Action    = [
           "sqs:SendMessage"
         ]
-        Resource  = "arn:aws:sqs:ap-southeast-1:975050173595:Aggregator_Tron.fifo"
+        Resource  = var.aggregator_tron_sqs_arn
+        # Resource  = "arn:aws:sqs:ap-southeast-1:576293270682:Aggregator_Tron.fifo"
       },
     ]
   })

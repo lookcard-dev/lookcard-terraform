@@ -3,6 +3,38 @@ data "aws_ecr_image" "latest" {
   most_recent     = true
 }
 
+data "aws_secretsmanager_secret" "env_secret" {
+  name = "ENV"
+}
+data "aws_secretsmanager_secret" "database_secret" {
+  name = "DATABASE"
+}
+data "aws_secretsmanager_secret" "token_secret" {
+  name = "TOKEN"
+}
+
+
+locals {
+  environment_vars = [
+    {
+      name  = "AWS_REGION"
+      value = "ap-southeast-1"
+    },
+    {
+      name  = "AWS_SECRET_ARN"
+      value = data.aws_secretsmanager_secret.env_secret.arn
+    },
+    {
+      name  = "AWS_DB_SECRET_ARN"
+      value = data.aws_secretsmanager_secret.database_secret.arn
+    },
+    {
+      name  = "AWS_TOKEN_SECRET_ARN"
+      value = data.aws_secretsmanager_secret.token_secret.arn
+    }
+  ]
+}
+
 resource "aws_ecs_task_definition" "Reporting" {
   family                   = "Reporting"
   network_mode             = "awsvpc"
@@ -33,6 +65,7 @@ resource "aws_ecs_task_definition" "Reporting" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
+      environment = local.environment_vars
       portMappings = [
         {
           name          = "look-card-reporting-8000-tcp",

@@ -62,6 +62,8 @@ variable "crypto_api_secret_arn" {}
 variable "firebase_secret_arn" {}
 variable "elliptic_secret_arn" {}
 variable "db_secret_secret_arn" {}
+variable "env_secrets_arn" {}
+variable "token_secrets_arn" {}
 
 # variable "authentication_tgp_arn" {}
 variable "push_message_invoke" {}
@@ -70,3 +72,7 @@ variable "web_socket_invoke" {}
 variable "web_socket_function" {}
 variable "web_socket_disconnect_invoke" {}
 variable "web_socket_disconnect_function" {}
+variable "aggregator_tron_sqs_url" {}
+variable "trongrid_secret_arn" {}
+variable "dynamodb_crypto_transaction_listener_arn" {}
+variable "aggregator_tron_sqs_arn" {}

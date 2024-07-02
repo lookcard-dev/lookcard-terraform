@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/Transaction-Listener",
+          "awslogs-group"         = "/ecs/Transaction-Listener-1",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -65,14 +65,15 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
         # todo value var.aggregator_tron_sqs_url
         {
           name  = "INCOMING_TRANSACTION_QUEUE_URL"
-          value = "var.aggregator_tron_sqs_url"
+          value = var.aggregator_tron_sqs_url
         }
-        # todo 
+      
       ]
       secrets = [
         {
           name          = "TRONGRID_API_KEY"
-          valueFrom     = "${data.aws_secretsmanager_secret.TRONGRID_secret.arn}:API_KEY::"
+          valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
+        #   valueFrom     = "${data.aws_secretsmanager_secret.TRONGRID_secret.arn}:API_KEY::"
         }
       ]
       portMappings = [
@@ -88,4 +89,9 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
       command: ["node" ,"listener/tron.js"]
     }
   ])
+}
+
+resource "aws_cloudwatch_log_group" "transaction_listener" {
+  name = "/ecs/Transaction-Listener-1"
+
 }

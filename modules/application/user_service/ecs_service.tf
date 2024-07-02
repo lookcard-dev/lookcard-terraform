@@ -64,7 +64,6 @@ resource "aws_lb_listener_rule" "users_listener_rule" {
   priority = 8
   tags = {
     Name        = "Users-listener-rule"
-    Environment = "UAT"
   }
 }
 

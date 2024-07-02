@@ -23,3 +23,15 @@ output "elliptic_secret_arn" {
 output "db_secret_secret_arn" {
   value = aws_secretsmanager_secret_version.db_secret_value.arn
 }
+
+output "env_secrets_arn" {
+  value = aws_secretsmanager_secret_version.env_secret_value.arn
+}
+
+output "token_secrets_arn" {
+  value = aws_secretsmanager_secret_version.token_secret_value.arn
+}
+
+output "trongrid_secret_arn" {
+  value = aws_secretsmanager_secret_version.tron_secret_value.arn
+}

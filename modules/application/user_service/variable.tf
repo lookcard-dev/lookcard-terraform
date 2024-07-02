@@ -16,3 +16,8 @@ variable "network" {
 variable "default_listener" {}
 
 
+variable "env_secrets_arn" {}
+
+variable "db_secret_secret_arn" {}
+
+variable "token_secrets_arn" {}

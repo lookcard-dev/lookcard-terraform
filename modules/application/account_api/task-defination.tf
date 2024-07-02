@@ -2,6 +2,18 @@ data "aws_ecr_image" "latest" {
   repository_name = "account-api"
   most_recent     = true
 }
+data "aws_secretsmanager_secret" "crypto_api_env_secret" {
+  name = "CRYPTO_API_ENV"
+}
+data "aws_secretsmanager_secret" "firebase_secret" {
+  name = "FIREBASE"
+}
+data "aws_secretsmanager_secret" "elliptic_secret" {
+  name = "ELLIPTIC"
+}
+data "aws_secretsmanager_secret" "database_secret" {
+  name = "DATABASE"
+}
 
 
 resource "aws_ecs_task_definition" "Account_API" {
@@ -36,43 +48,43 @@ resource "aws_ecs_task_definition" "Account_API" {
       secrets = [
          {
           name          = "DATABASE_URL"
-          valueFrom     = "${var.crypto_api_secret_arn}:DATABASE_URL::"
+          valueFrom     = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
         },
         {
           name          = "FIREBASE_PROJECT_ID"
-          valueFrom     = "${var.firebase_secret_arn}:PROJECT_ID::"
+          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:PROJECT_ID::"
         },
         {
           name          = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-          valueFrom     = "${var.firebase_secret_arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
+          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
         },
          {
           name          = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-          valueFrom     = "${var.firebase_secret_arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
+          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
         },
         {
           name          = "FIREBASE_CREDENTIALS"
-          valueFrom     = "${var.firebase_secret_arn}:CREDENTIALS::"
+          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
         },
          {
           name          = "API_KEY"
-          valueFrom     = "${var.elliptic_secret_arn}:API_KEY::"
+          valueFrom     = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_KEY::"
         },
         {
           name          = "API_SECRET"
-          valueFrom     = "${var.elliptic_secret_arn}:API_SECRET::"
+          valueFrom     = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_SECRET::"
         },
          {
           name          = "DATABASE_ENDPOINT"
-          valueFrom     = "${var.db_secret_secret_arn}:host::"
+          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
         },
         {
           name          = "DATABASE_USERNAME"
-          valueFrom     = "${var.db_secret_secret_arn}:username::"
+          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
         },
         {
           name          = "DATABASE_PASSWORD"
-          valueFrom     = "${var.db_secret_secret_arn}:password::"
+          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
         }
       ]
       environment = [

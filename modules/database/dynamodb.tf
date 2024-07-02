@@ -97,3 +97,23 @@ resource "aws_appautoscaling_policy" "dynamodb_write" {
     target_value = 70.0
   }
 }
+
+resource "aws_dynamodb_table" "crypto-transaction-listener" {
+  name           = "Crypto-Transaction-Listener-Block-Record"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 2
+  write_capacity = 2
+  hash_key = "id"
+  range_key = "block_num"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "block_num"
+    type = "N"
+  }
+
+}

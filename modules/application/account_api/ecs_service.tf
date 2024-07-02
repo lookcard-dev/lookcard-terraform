@@ -15,6 +15,20 @@ resource "aws_service_discovery_service" "account_service" {
   }
 }
 
+locals {
+  secrets = [
+    { name = "CRYPTO_API_ENV", description = "CryptoAPI-env" },
+    { name = "FIREBASE", description = "FIREBASE" },
+    { name = "DATABASE", description = "DATABASE" },
+    { name = "ELLIPTIC", description = "ELLIPTIC" }
+  ]
+}
+
+data "aws_secretsmanager_secret" "secrets" {
+  for_each = { for s in local.secrets : s.name => s }
+
+  name = each.value.name
+}
 
 resource "aws_ecs_service" "Account_API" {
   name            = "Account-API"
@@ -72,7 +86,7 @@ resource "aws_iam_policy" "Account_API_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : var.secret_arns
+        "Resource" : [for s in data.aws_secretsmanager_secret.secrets : s.arn]
 
       }
     ]

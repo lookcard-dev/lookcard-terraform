@@ -39,6 +39,41 @@ resource "aws_security_group" "crypto-api-sg" {
   }
 }
 
+data "aws_secretsmanager_secret" "crypto_api_env_secret" {
+  name = "CRYPTO_API_ENV"
+}
+data "aws_secretsmanager_secret" "database_secret" {
+  name = "DATABASE"
+}
+data "aws_secretsmanager_secret" "firebase_secret" {
+  name = "FIREBASE"
+}
+
+locals {
+  secret_vars = [
+    {
+      name          = "DATABASE_URL"
+      valueFrom     = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
+    },
+    {
+      name          = "FIREBASE_CREDENTIALS"
+      valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
+    },
+    {
+      name          = "DATABASE_ENDPOINT"
+      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
+    },
+    {
+      name          = "DATABASE_USERNAME"
+      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
+    },
+    {
+      name          = "DATABASE_PASSWORD"
+      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
+    }
+  ]
+}
+
 
 resource "aws_ecs_task_definition" "crypto-api" {
   family                   = "crypto-api"
@@ -69,45 +104,24 @@ resource "aws_ecs_task_definition" "crypto-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = [
-         {
-          name          = "DATABASE_URL"
-          valueFrom     = "${var.crypto_api_secret_arn}:DATABASE_URL::"
-        },
-        {
-          name          = "FIREBASE_CREDENTIALS"
-          valueFrom     = "${var.firebase_secret_arn}:CREDENTIALS::"
-        },
-        {
-          name          = "DATABASE_ENDPOINT"
-          valueFrom     = "${var.db_secret_secret_arn}:host::"
-        },
-        {
-          name          = "DATABASE_USERNAME"
-          valueFrom     = "${var.db_secret_secret_arn}:username::"
-        },
-        {
-          name          = "DATABASE_PASSWORD"
-          valueFrom     = "${var.db_secret_secret_arn}:password::"
-        }
-      ]
+      secrets = local.secret_vars
       environment = [
         {
           name  = "AWS_REGION"
           value = "ap-southeast-1"
         },
         {
+          name  = "DATABASE_NAME"
+          value = "main"
+        },
+        {
           name  = "KMS_GENERATOR_KEY_ID"
-          value = "arn:aws:kms:ap-southeast-1:576293270682:key/6a28f5b4-2996-486e-8d24-bbf3a44031d0"
+          value = var.crypto_api_encryption_kms_arn
         },
         {
           name  = "KMS_ENCRYPTION_KEY_ID_A"
-          value = "arn:aws:kms:ap-southeast-1:576293270682:key/f83d712a-19fc-4932-9b98-9e40b7984f16"
+          value = var.crypto_api_generator_kms_arn
         },
-        {
-          name  = "DATABASE_NAME"
-          value = "main"
-        }
       ]
       portMappings = [
         {

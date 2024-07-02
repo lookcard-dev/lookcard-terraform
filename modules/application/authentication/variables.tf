@@ -32,6 +32,11 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "sqs_withdrawal" {}
 
+variable "env_secrets_arn" {}
+
+variable "db_secret_secret_arn" {}
+
+variable "token_secrets_arn" {}
 
 # variable "alb_arn" {}
 

@@ -21,6 +21,20 @@ resource "aws_iam_role_policy_attachment" "Crypto_API_ECSTaskExecutionRolePolicy
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+locals {
+  secrets = [
+    { name = "CRYPTO_API_ENV", description = "CryptoAPI-env" },
+    { name = "FIREBASE", description = "FIREBASE" },
+    { name = "DATABASE", description = "DATABASE" },
+  ]
+}
+
+data "aws_secretsmanager_secret" "secrets" {
+  for_each = { for s in local.secrets : s.name => s }
+
+  name = each.value.name
+}
+
 resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
   name        = "CryptoAPISecretsReadOnlyPolicy"
   description = "Allows read-only access to Secret - CryptoAPI-env"
@@ -33,11 +47,12 @@ resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [
-                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:crypto-api-env-a24Wh1",
-                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:firebase-JujygD",
-                "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
-        ]
+        "Resource" : [for s in data.aws_secretsmanager_secret.secrets : s.arn]
+        # "Resource" : [
+        #         "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:crypto-api-env-a24Wh1",
+        #         "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:firebase-JujygD",
+        #         "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
+        # ]
       }
     ]
   })
@@ -84,9 +99,13 @@ resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
           "kms:GenerateDataKey"
         ],
         "Resource" : [
-            "arn:aws:kms:ap-southeast-1:576293270682:key/f83d712a-19fc-4932-9b98-9e40b7984f16",
-            "arn:aws:kms:ap-southeast-1:576293270682:key/6a28f5b4-2996-486e-8d24-bbf3a44031d0"
+          "${var.crypto_api_encryption_kms_arn}",
+          "${var.crypto_api_generator_kms_arn}"
         ]
+        # "Resource" : [
+        #     "arn:aws:kms:ap-southeast-1:576293270682:key/f83d712a-19fc-4932-9b98-9e40b7984f16",
+        #     "arn:aws:kms:ap-southeast-1:576293270682:key/6a28f5b4-2996-486e-8d24-bbf3a44031d0"
+        # ]
       }
     ]
   })

@@ -13,3 +13,8 @@ variable "network" {
 
 variable "lookcardlocal_namespace_id" {}
 variable "cluster" {}
+variable "env_secrets_arn" {}
+
+variable "db_secret_secret_arn" {}
+
+variable "token_secrets_arn" {}

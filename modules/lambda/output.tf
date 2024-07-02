@@ -75,3 +75,11 @@ output "web_socket_disconnect_invoke" {
 output "web_socket_disconnect_function" {
   value = aws_lambda_function.websocket_disconnect.function_name
 }
+
+output "aggregator_tron_sqs_url" {
+  value = aws_sqs_queue.Aggregator_Tron_Queue.url
+}
+
+output "aggregator_tron_sqs_arn" {
+  value = aws_sqs_queue.Aggregator_Tron_Queue.arn
+}

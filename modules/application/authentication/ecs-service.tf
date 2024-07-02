@@ -48,50 +48,79 @@ resource "aws_lb_listener_rule" "Authentication_listener_rule" {
 
 /////////////////////////////////////////////////////////////////
 
+locals {
+  secrets = [
+    "ENV", "TOKEN", "DATABASE", "AML_ENV"
+  ]
+}
+
+data "aws_secretsmanager_secret" "secrets" {
+  for_each = toset(local.secrets)
+  name = each.value
+}
+
 resource "aws_iam_policy" "secrets_manager_read_policy" {
   name        = "SecretsManagerReadOnlyPolicy"
   description = "Allows read-only access to Secrets Manager"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      {
+      for key, secret in data.aws_secretsmanager_secret.secrets : {
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:env-XDmFug"
-      },
-      {
-        "Sid" : "Statement1",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:token-pvSXEu"
-      },
-      {
-        "Sid" : "Statement2",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
-      },
-      {
-        "Sid" : "Statement3",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:aml_env-vKOhgi"
+        "Resource" : secret.arn
       }
     ]
   })
 }
+
+# resource "aws_iam_policy" "secrets_manager_read_policy" {
+#   name        = "SecretsManagerReadOnlyPolicy"
+#   description = "Allows read-only access to Secrets Manager"
+#   policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "secretsmanager:GetSecretValue",
+#           "secretsmanager:DescribeSecret"
+#         ],
+#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:env-XDmFug"
+#       },
+#       {
+#         "Sid" : "Statement1",
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "secretsmanager:GetSecretValue",
+#           "secretsmanager:DescribeSecret"
+#         ],
+#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:token-pvSXEu"
+#       },
+#       {
+#         "Sid" : "Statement2",
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "secretsmanager:GetSecretValue",
+#           "secretsmanager:DescribeSecret"
+#         ],
+#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
+#       },
+#       {
+#         "Sid" : "Statement3",
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "secretsmanager:GetSecretValue",
+#           "secretsmanager:DescribeSecret"
+#         ],
+#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:aml_env-vKOhgi"
+#       }
+#     ]
+#   })
+# }
 
 
 
