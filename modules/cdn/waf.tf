@@ -15,7 +15,7 @@ resource "aws_wafv2_web_acl" "cdn_waf" {
   }
   rule {
     name     = "rate-limit"
-    priority = 0 
+    priority = 0
     action {
       block {}
     }

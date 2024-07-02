@@ -7,7 +7,7 @@ resource "aws_ecs_service" "Notification" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups  = [aws_security_group.Notification.id]
     assign_public_ip = false
   }
@@ -42,7 +42,7 @@ resource "aws_lb_listener_rule" "Notification_listener_rule" {
   }
   priority = 4
   tags = {
-    Name        = "Notification_listener_rule"
+    Name = "Notification_listener_rule"
     # Add more tags as needed
   }
 }
@@ -54,17 +54,17 @@ resource "aws_security_group" "Notification" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 3001
-    to_port         = 3001
-    protocol        = "tcp"
+    from_port   = 3001
+    to_port     = 3001
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id]
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id]
   }

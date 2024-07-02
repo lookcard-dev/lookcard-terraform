@@ -11,10 +11,6 @@ resource "aws_security_group" "Lookcard_Notification_SG" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-
-
-
 resource "aws_iam_role" "lookcard_notification_role" {
   name = "Lookcard-Notification-role"
   assume_role_policy = jsonencode({
@@ -46,14 +42,12 @@ resource "aws_iam_policy" "lookcard_notification_secrets_manager_read_policy" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
+          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
         ]
       }
     ]
   })
 }
-
-
 
 resource "aws_iam_role_policy_attachment" "lookcard_notification_env_secrets_manager_read_attachment" {
   role       = aws_iam_role.lookcard_notification_role.name
@@ -69,13 +63,6 @@ resource "aws_iam_role_policy_attachment" "Lambda_vpc_execution_notification" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-
-
-
-
-
-
-
 data "aws_ecr_image" "lookcard-notification" {
   repository_name = "lookcard-notification"
   most_recent     = true
@@ -88,13 +75,13 @@ resource "aws_lambda_function" "lookcard_notification_function" {
   package_type  = "Image"
   image_uri     = data.aws_ecr_image.lookcard-notification.image_uri
   timeout       = 900
-  memory_size   = 512 
+  memory_size   = 512
 
   environment {
     variables = {
-        "FROM_EMAIL" = "no-reply@lookcard.io"
-        "APP_NAME" = "LOOKCARD"
-        "AWS_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
+      "FROM_EMAIL"     = "no-reply@lookcard.io"
+      "APP_NAME"       = "LOOKCARD"
+      "AWS_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
     }
   }
 

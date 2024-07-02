@@ -103,8 +103,8 @@ resource "aws_dynamodb_table" "crypto-transaction-listener" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 2
   write_capacity = 2
-  hash_key = "id"
-  range_key = "block_num"
+  hash_key       = "id"
+  range_key      = "block_num"
 
   attribute {
     name = "id"

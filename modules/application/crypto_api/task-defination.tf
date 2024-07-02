@@ -11,18 +11,18 @@ resource "aws_security_group" "crypto-api-sg" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 8080
-    to_port         = 8080
-    protocol        = "tcp"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # cidr_blocks = [var.sg_alb_id]
     # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id, aws_security_group.Transaction-Listener-SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Crypto_Fund_Withdrawal_SG.id]
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id, aws_security_group.Transaction-Listener-SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Crypto_Fund_Withdrawal_SG.id]
   }
@@ -52,24 +52,24 @@ data "aws_secretsmanager_secret" "firebase_secret" {
 locals {
   secret_vars = [
     {
-      name          = "DATABASE_URL"
-      valueFrom     = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
+      name      = "DATABASE_URL"
+      valueFrom = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
     },
     {
-      name          = "FIREBASE_CREDENTIALS"
-      valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
+      name      = "FIREBASE_CREDENTIALS"
+      valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
     },
     {
-      name          = "DATABASE_ENDPOINT"
-      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
+      name      = "DATABASE_ENDPOINT"
+      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
     },
     {
-      name          = "DATABASE_USERNAME"
-      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
+      name      = "DATABASE_USERNAME"
+      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
     },
     {
-      name          = "DATABASE_PASSWORD"
-      valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
+      name      = "DATABASE_PASSWORD"
+      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
     }
   ]
 }

@@ -65,9 +65,9 @@ resource "aws_api_gateway_domain_name" "lookcard_domain" {
 }
 
 resource "aws_route53_record" "lookcard_api_record" {
-  zone_id    = data.aws_route53_zone.hosted_zone_id.zone_id
-  name       = var.dns_config.api_hostname
-  type       = "A"
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = var.dns_config.api_hostname
+  type    = "A"
 
   alias {
     name                   = aws_api_gateway_domain_name.lookcard_domain.regional_domain_name
@@ -135,27 +135,27 @@ resource "aws_api_gateway_base_path_mapping" "lookcard_mapping" {
 
 # API Gateway Stage with CloudWatch Logs
 resource "aws_api_gateway_stage" "testing_stage" {
-  deployment_id      = aws_api_gateway_deployment.lookcard_deployment.id
-  rest_api_id        = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name         = "TESTING"
-  variables          = {
+  deployment_id = aws_api_gateway_deployment.lookcard_deployment.id
+  rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
+  stage_name    = "TESTING"
+  variables = {
     "env" = "TESTING"
   }
-  xray_tracing_enabled = true  # 启用 X-Ray 跟踪
+  xray_tracing_enabled = true # 启用 X-Ray 跟踪
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw_logs.arn
     format = jsonencode({
-      requestId       = "$context.requestId",
-      ip              = "$context.identity.sourceIp",
-      caller          = "$context.identity.caller",
-      user            = "$context.identity.user",
-      requestTime     = "$context.requestTime",
-      httpMethod      = "$context.httpMethod",
-      resourcePath    = "$context.resourcePath",
-      status          = "$context.status",
-      protocol        = "$context.protocol",
-      responseLength  = "$context.responseLength"
+      requestId      = "$context.requestId",
+      ip             = "$context.identity.sourceIp",
+      caller         = "$context.identity.caller",
+      user           = "$context.identity.user",
+      requestTime    = "$context.requestTime",
+      httpMethod     = "$context.httpMethod",
+      resourcePath   = "$context.resourcePath",
+      status         = "$context.status",
+      protocol       = "$context.protocol",
+      responseLength = "$context.responseLength"
     })
   }
 }

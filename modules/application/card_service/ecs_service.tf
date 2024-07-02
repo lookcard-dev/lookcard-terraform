@@ -24,7 +24,7 @@ resource "aws_ecs_service" "Card" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups  = [aws_security_group.Card.id]
     assign_public_ip = false
   }
@@ -35,7 +35,7 @@ resource "aws_ecs_service" "Card" {
   }
 
   service_registries {
-    registry_arn   = aws_service_discovery_service.evvo_card_service.arn
+    registry_arn = aws_service_discovery_service.evvo_card_service.arn
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_lb_listener_rule" "Card_listener_rule" {
   }
   priority = 5
   tags = {
-    Name        = "Card_listener_rule"
+    Name = "Card_listener_rule"
     # Add more tags as needed
   }
 }
@@ -76,17 +76,17 @@ resource "aws_security_group" "Card" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
 
   ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

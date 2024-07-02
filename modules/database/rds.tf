@@ -15,7 +15,7 @@ resource "aws_secretsmanager_secret_version" "lookcard_db_secret_version" {
 # Define the DB subnet group
 resource "aws_db_subnet_group" "lookcard_rds_subnet" {
   name       = "lookcard_rds_subnet"
-  subnet_ids = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+  subnet_ids = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
 }
 
 # Define the RDS Aurora Serverless V2 cluster
@@ -39,17 +39,17 @@ resource "aws_db_subnet_group" "lookcard_rds_subnet" {
 # }
 
 resource "aws_rds_cluster" "lookcard" {
-  cluster_identifier = "lookcard-testing-db"
-  engine             = "aurora-postgresql"
-  engine_mode        = "provisioned"
-  database_name      = "lookcardtest"
-  master_username    = "lookcard"
-  master_password     = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-  db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
-  vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
-  storage_encrypted  = true
-  skip_final_snapshot     = true
-  deletion_protection     = false
+  cluster_identifier     = "lookcard-testing-db"
+  engine                 = "aurora-postgresql"
+  engine_mode            = "provisioned"
+  database_name          = "lookcardtest"
+  master_username        = "lookcard"
+  master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+  db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+  storage_encrypted      = true
+  skip_final_snapshot    = true
+  deletion_protection    = false
   serverlessv2_scaling_configuration {
     max_capacity = 5.0
     min_capacity = 0.5
@@ -65,16 +65,16 @@ resource "aws_rds_cluster_instance" "lookcard-serverless-instance" {
 
 # Define the second RDS standard cluster
 resource "aws_rds_cluster" "lookcard_2" {
-  cluster_identifier      = "lookcard-standard-db"
-  database_name           = "lookcardstandard"
-  engine                  = "aurora-postgresql"
-  master_username         = "lookcard"
-  master_password         = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-  db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
-  vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
-  skip_final_snapshot     = true
-  deletion_protection     = false
-  storage_encrypted       = true
+  cluster_identifier     = "lookcard-standard-db"
+  database_name          = "lookcardstandard"
+  engine                 = "aurora-postgresql"
+  master_username        = "lookcard"
+  master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+  db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+  skip_final_snapshot    = true
+  deletion_protection    = false
+  storage_encrypted      = true
 }
 
 # Define the instance for the standard RDS cluster
@@ -100,7 +100,7 @@ resource "aws_db_proxy" "lookcard_rds_proxy" {
     auth_scheme = "SECRETS"
     secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
   }
-  require_tls            = true
+  require_tls = true
 }
 
 # Associate the RDS Serverless Cluster with the RDS Proxy
@@ -121,7 +121,7 @@ resource "aws_db_proxy" "lookcard_rds_proxy_2" {
     auth_scheme = "SECRETS"
     secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
   }
-  require_tls            = true
+  require_tls = true
 }
 
 # Associate the RDS Standard Cluster with the RDS Proxy

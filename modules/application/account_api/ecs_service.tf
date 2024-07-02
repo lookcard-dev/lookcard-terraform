@@ -38,7 +38,7 @@ resource "aws_ecs_service" "Account_API" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups = [aws_security_group.Account-API-SG.id]
   }
 
@@ -49,7 +49,7 @@ resource "aws_ecs_service" "Account_API" {
   }
 
   service_registries {
-    registry_arn   = aws_service_discovery_service.account_service.arn
+    registry_arn = aws_service_discovery_service.account_service.arn
   }
 }
 
@@ -99,7 +99,7 @@ resource "aws_iam_role_policy_attachment" "Account_API_ECSTaskExecutionRolePolic
 }
 
 resource "aws_iam_role_policy_attachment" "Account_API_secrets_manager_read_attachment" {
-  role      = aws_iam_role.Account_API_Task_Execution_Role.name
+  role       = aws_iam_role.Account_API_Task_Execution_Role.name
   policy_arn = aws_iam_policy.Account_API_env_secrets_manager_read_policy.arn
 }
 
@@ -133,8 +133,8 @@ resource "aws_iam_policy" "Account_API_SQS_SendMessage" {
           "sqs:SendMessage"
         ],
         "Resource" : [
-                "arn:aws:sqs:ap-southeast-1:576293270682:Lookcard_Notification.fifo",
-                "arn:aws:sqs:ap-southeast-1:576293270682:Crypto_Fund_Withdrawal.fifo"
+          "arn:aws:sqs:ap-southeast-1:576293270682:Lookcard_Notification.fifo",
+          "arn:aws:sqs:ap-southeast-1:576293270682:Crypto_Fund_Withdrawal.fifo"
         ]
       }
     ]
@@ -142,7 +142,7 @@ resource "aws_iam_policy" "Account_API_SQS_SendMessage" {
 }
 
 resource "aws_iam_role_policy_attachment" "Account_API_SQS_SendMessage_attachment" {
-  role      = aws_iam_role.Account_API_Task_Role.name
+  role       = aws_iam_role.Account_API_Task_Role.name
   policy_arn = aws_iam_policy.Account_API_SQS_SendMessage.arn
 }
 
@@ -182,6 +182,6 @@ resource "aws_lb_listener_rule" "Account_API_listener_rule" {
 
   priority = 150
   tags = {
-    Name        = "Account-API-rule"
+    Name = "Account-API-rule"
   }
 }

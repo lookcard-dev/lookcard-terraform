@@ -1,6 +1,4 @@
-# variable "task_role" {}
-# variable "task_execution_role" {}
-# variable "aggregator_tron_sqs_url" {}
+
 variable "vpc_id" {}
 
 variable "network" {

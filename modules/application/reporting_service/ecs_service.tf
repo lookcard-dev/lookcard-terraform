@@ -36,7 +36,7 @@ resource "aws_ecs_service" "reporting" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups = [aws_security_group.Reporting.id]
   }
 
@@ -55,9 +55,9 @@ resource "aws_security_group" "Reporting" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id]
   }
@@ -66,9 +66,9 @@ resource "aws_security_group" "Reporting" {
 
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id]
   }

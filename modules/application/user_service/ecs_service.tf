@@ -23,7 +23,7 @@ resource "aws_ecs_service" "users" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups = [aws_security_group.Users.id]
   }
 
@@ -34,7 +34,7 @@ resource "aws_ecs_service" "users" {
   }
 
   service_registries {
-    registry_arn   = aws_service_discovery_service.evvo_user_service.arn
+    registry_arn = aws_service_discovery_service.evvo_user_service.arn
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_lb_listener_rule" "users_listener_rule" {
 
   priority = 8
   tags = {
-    Name        = "Users-listener-rule"
+    Name = "Users-listener-rule"
   }
 }
 
@@ -75,18 +75,18 @@ resource "aws_security_group" "Users" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id]
   }
 
 
   ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id]
   }
