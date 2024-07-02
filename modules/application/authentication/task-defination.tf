@@ -1,40 +1,4 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "authentication-api"
-  most_recent     = true
 
-}
-
-data "aws_secretsmanager_secret" "env_secret" {
-  name = "ENV"
-}
-data "aws_secretsmanager_secret" "database_secret" {
-  name = "DATABASE"
-}
-data "aws_secretsmanager_secret" "token_secret" {
-  name = "TOKEN"
-}
-
-
-locals {
-  environment_vars = [
-    {
-      name  = "AWS_REGION"
-      value = "ap-southeast-1"
-    },
-    {
-      name  = "AWS_SECRET_ARN"
-      value = data.aws_secretsmanager_secret.env_secret.arn
-    },
-    {
-      name  = "AWS_DB_SECRET_ARN"
-      value = data.aws_secretsmanager_secret.database_secret.arn
-    },
-    {
-      name  = "AWS_TOKEN_SECRET_ARN"
-      value = data.aws_secretsmanager_secret.token_secret.arn
-    }
-  ]
-}
 
 
 resource "aws_ecs_task_definition" "Authentication" {
@@ -105,9 +69,9 @@ resource "aws_security_group" "Authentication" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    from_port = 8000
+    to_port   = 8000
+    protocol  = "tcp"
     # security_groups = [aws_security_group.ALB_SG.id]
     security_groups = [var.sg_alb_id]
   }

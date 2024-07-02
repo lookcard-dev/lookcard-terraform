@@ -46,45 +46,45 @@ resource "aws_ecs_task_definition" "Account_API" {
         }
       }
       secrets = [
-         {
-          name          = "DATABASE_URL"
-          valueFrom     = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
         },
         {
-          name          = "FIREBASE_PROJECT_ID"
-          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:PROJECT_ID::"
+          name      = "FIREBASE_PROJECT_ID"
+          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:PROJECT_ID::"
         },
         {
-          name          = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
-        },
-         {
-          name          = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
+          name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
+          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
         },
         {
-          name          = "FIREBASE_CREDENTIALS"
-          valueFrom     = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
-        },
-         {
-          name          = "API_KEY"
-          valueFrom     = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_KEY::"
+          name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
+          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
         },
         {
-          name          = "API_SECRET"
-          valueFrom     = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_SECRET::"
-        },
-         {
-          name          = "DATABASE_ENDPOINT"
-          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
+          name      = "FIREBASE_CREDENTIALS"
+          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
         },
         {
-          name          = "DATABASE_USERNAME"
-          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
+          name      = "API_KEY"
+          valueFrom = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_KEY::"
         },
         {
-          name          = "DATABASE_PASSWORD"
-          valueFrom     = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
+          name      = "API_SECRET"
+          valueFrom = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_SECRET::"
+        },
+        {
+          name      = "DATABASE_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
+        },
+        {
+          name      = "DATABASE_USERNAME"
+          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
+        },
+        {
+          name      = "DATABASE_PASSWORD"
+          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
         }
       ]
       environment = [
@@ -138,16 +138,16 @@ resource "aws_security_group" "Account-API-SG" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = 8080
-    to_port         = 8080
-    protocol        = "tcp"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

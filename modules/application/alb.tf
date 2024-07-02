@@ -120,7 +120,7 @@ resource "aws_alb" "look-card" {
 
   access_logs {
     bucket  = var.alb_logging_bucket
-    enabled = true                                                                                                                              
+    enabled = true
   }
 }
 
@@ -157,7 +157,7 @@ resource "aws_security_group" "api_alb_sg" {
 # **********************************
 
 # resource "aws_lb_target_group" "lookcard_tg" {
-  
+
 #   name        = "Authentication"
 #   port        = 80
 #   protocol    = "HTTP"

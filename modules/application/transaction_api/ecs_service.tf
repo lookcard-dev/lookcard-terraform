@@ -24,7 +24,7 @@ resource "aws_ecs_service" "transaction" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] 
+    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups = [aws_security_group.transactionApi.id]
   }
 
@@ -35,7 +35,7 @@ resource "aws_ecs_service" "transaction" {
   }
 
   service_registries {
-    registry_arn   = aws_service_discovery_service.evvo_transaction_service.arn
+    registry_arn = aws_service_discovery_service.evvo_transaction_service.arn
   }
 }
 
@@ -49,9 +49,9 @@ resource "aws_lb_target_group" "transaction_api_target_group" {
   vpc_id      = var.network.vpc
   target_type = "ip"
 
-    lifecycle {
-        create_before_destroy = true
-    }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_listener_rule" "transaction_api_listener_rule" {
@@ -70,6 +70,6 @@ resource "aws_lb_listener_rule" "transaction_api_listener_rule" {
 
   priority = 7
   tags = {
-    Name        = "transaction-api-listener-rule"
+    Name = "transaction-api-listener-rule"
   }
 }

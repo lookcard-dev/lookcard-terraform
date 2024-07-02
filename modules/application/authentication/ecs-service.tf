@@ -27,8 +27,6 @@ resource "aws_iam_role_policy_attachment" "ecs_role" {
 }
 
 
-
-
 resource "aws_lb_listener_rule" "Authentication_listener_rule" {
   depends_on   = [var.vpc_id]
   listener_arn = var.aws_lb_listener_arn
@@ -37,7 +35,7 @@ resource "aws_lb_listener_rule" "Authentication_listener_rule" {
     target_group_arn = aws_lb_target_group.authentication_tgp.arn
   }
   tags = {
-    Name        = "Authentication-rule"
+    Name = "Authentication-rule"
   }
   condition {
     path_pattern {
@@ -46,7 +44,6 @@ resource "aws_lb_listener_rule" "Authentication_listener_rule" {
   }
 }
 
-/////////////////////////////////////////////////////////////////
 
 locals {
   secrets = [
@@ -56,7 +53,7 @@ locals {
 
 data "aws_secretsmanager_secret" "secrets" {
   for_each = toset(local.secrets)
-  name = each.value
+  name     = each.value
 }
 
 resource "aws_iam_policy" "secrets_manager_read_policy" {
@@ -77,6 +74,11 @@ resource "aws_iam_policy" "secrets_manager_read_policy" {
   })
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 66a548f9636b752f58525e544fce92a43aa17ae0
 resource "aws_iam_policy_attachment" "secrets_manager_read_attachment" {
   name       = "SecretsManagerReadOnlyAttachment"
   roles      = [aws_iam_role.ecs_task_role.name]
@@ -136,8 +138,8 @@ resource "aws_ecs_service" "Authentication" {
   desired_count   = 1
   cluster         = var.cluster
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]] # Replace with your subnet IDs
-    security_groups = [aws_security_group.Authentication.id]                                                   # Replace with your security group ID
+    subnets         = var.network.private_subnet
+    security_groups = [aws_security_group.Authentication.id]                                                        # Replace with your security group ID
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.authentication_tgp.arn

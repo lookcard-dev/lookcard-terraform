@@ -58,7 +58,7 @@ resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy"
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-            "${data.aws_secretsmanager_secret.trongrid_secret.arn}"
+          "${data.aws_secretsmanager_secret.trongrid_secret.arn}"
         ]
       }
     ]
@@ -66,7 +66,7 @@ resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy"
 }
 
 resource "aws_iam_role_policy_attachment" "Transaction_Listener_secrets_manager_read_attachment" {
-  role      = aws_iam_role.Transaction_Listener_Task_Execution_Role.name
+  role       = aws_iam_role.Transaction_Listener_Task_Execution_Role.name
   policy_arn = aws_iam_policy.Transaction_Listener_env_secrets_manager_read_policy.arn
 }
 
@@ -100,7 +100,7 @@ resource "aws_iam_policy" "Transaction_Listener_ddb_policy" {
           "dynamodb:*"
         ],
         "Resource" : [
-            var.dynamodb_crypto_transaction_listener_arn
+          var.dynamodb_crypto_transaction_listener_arn
         ]
         # "Resource" : [
         #     "arn:aws:dynamodb:ap-southeast-1:576293270682:table/Crypto-Transaction-Listener-Block-Record"
@@ -118,11 +118,11 @@ resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
-        Action    = [
+        Effect = "Allow"
+        Action = [
           "sqs:SendMessage"
         ]
-        Resource  = var.aggregator_tron_sqs_arn
+        Resource = var.aggregator_tron_sqs_arn
         # Resource  = "arn:aws:sqs:ap-southeast-1:576293270682:Aggregator_Tron.fifo"
       },
     ]
@@ -130,13 +130,13 @@ resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "Transaction_Listener_ddb_attachment" {
-  role      = aws_iam_role.Transaction_Listener_Task_Role.name
+  role       = aws_iam_role.Transaction_Listener_Task_Role.name
   policy_arn = aws_iam_policy.Transaction_Listener_ddb_policy.arn
 }
 
 
 resource "aws_iam_role_policy_attachment" "Transaction_Listener_sqs_attachment" {
-  role      = aws_iam_role.Transaction_Listener_Task_Role.name
+  role       = aws_iam_role.Transaction_Listener_Task_Role.name
   policy_arn = aws_iam_policy.Transaction_Listener_sqs_send_message_policy.arn
 }
 

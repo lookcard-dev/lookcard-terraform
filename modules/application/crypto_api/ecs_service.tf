@@ -54,7 +54,7 @@ resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "CryptoAPI_secrets_manager_read_attachment" {
-  role      = aws_iam_role.crypto_api_task_execution_role.name
+  role       = aws_iam_role.crypto_api_task_execution_role.name
   policy_arn = aws_iam_policy.crypto_api_env_secrets_manager_read_policy.arn
 }
 
@@ -149,7 +149,7 @@ resource "aws_ecs_service" "crypto_api" {
   }
 
   service_registries {
-    registry_arn   = aws_service_discovery_service.crypto_service.arn
+    registry_arn = aws_service_discovery_service.crypto_service.arn
   }
 }
 
@@ -180,13 +180,13 @@ resource "aws_lb_listener_rule" "crypto_api_listener_signer_rule" {
 
   condition {
     path_pattern {
-      values = ["/signer","/signers", "/signer/*"]
+      values = ["/signer", "/signers", "/signer/*"]
     }
   }
 
   priority = 10
   tags = {
-    Name        = "crypto-api-signer-listener-rule"
+    Name = "crypto-api-signer-listener-rule"
   }
 }
 
@@ -206,7 +206,7 @@ resource "aws_lb_listener_rule" "crypto_api_listener_blockchain_rule" {
 
   priority = 101
   tags = {
-    Name        = "crypto-api-blockchain-listener-rule"
+    Name = "crypto-api-blockchain-listener-rule"
   }
 }
 
@@ -226,7 +226,7 @@ resource "aws_lb_listener_rule" "crypto_api_listener_hdwallet_rule" {
 
   priority = 100
   tags = {
-    Name        = "crypto-api-hdwallet-listener-rule"
+    Name = "crypto-api-hdwallet-listener-rule"
   }
 }
 

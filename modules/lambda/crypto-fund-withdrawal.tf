@@ -48,8 +48,8 @@ resource "aws_iam_policy" "Lambda_Crypto_Fund_Withdrawal_secrets_manager_read_po
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt",
-                "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
+          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt",
+          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
         ]
       }
     ]
@@ -68,7 +68,7 @@ resource "aws_iam_policy" "Lambda_Crypto_Fund_Withdrawal_sqs_send_message_policy
           "sqs:SendMessage"
         ],
         "Resource" : [
-                "arn:aws:sqs:ap-southeast-1:975050173595:Crypto_Fund_Withdrawal.fifo"
+          "arn:aws:sqs:ap-southeast-1:975050173595:Crypto_Fund_Withdrawal.fifo"
         ]
       }
     ]
@@ -108,19 +108,19 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
   package_type  = "Image"
   image_uri     = data.aws_ecr_image.crypto_fund_withdrawal.image_uri
   timeout       = 900
-  memory_size   = 512 
+  memory_size   = 512
 
   environment {
     variables = {
-        "CRYPTO_API_PROTOCOL" = "http"
-        "CRYPTO_API_HOST" = "crypto.lookcard.local"
-        "CRYPTO_API_PORT" = 8080
-        "ACCOUNT_API_PROTOCOL" = "http"
-        "ACCOUNT_API_HOST" = "account.lookcard.local"
-        "ACCOUNT_API_PORT" = 8080
-        "ELLIPTIC_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
-        "SYSTEM_CRYPTO_WALLET_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt"
-        "SQS_NOTIFICATION_QUEUE_URL" = aws_sqs_queue.Lookcard_Notification_Queue.url
+      "CRYPTO_API_PROTOCOL"             = "http"
+      "CRYPTO_API_HOST"                 = "crypto.lookcard.local"
+      "CRYPTO_API_PORT"                 = 8080
+      "ACCOUNT_API_PROTOCOL"            = "http"
+      "ACCOUNT_API_HOST"                = "account.lookcard.local"
+      "ACCOUNT_API_PORT"                = 8080
+      "ELLIPTIC_SECRET_ARN"             = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
+      "SYSTEM_CRYPTO_WALLET_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt"
+      "SQS_NOTIFICATION_QUEUE_URL"      = aws_sqs_queue.Lookcard_Notification_Queue.url
     }
   }
 

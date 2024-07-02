@@ -21,9 +21,9 @@ resource "aws_ecs_service" "blockchain" {
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
-    
+
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups  = [aws_security_group.blockchain.id]
     assign_public_ip = false
   }
@@ -62,7 +62,7 @@ resource "aws_lb_listener_rule" "blockchain_listener_rule" {
   }
   priority = 3
   tags = {
-    Name        = "Blockchain_listener_rule"
+    Name = "Blockchain_listener_rule"
     # Add more tags as needed
   }
 }
@@ -75,17 +75,17 @@ resource "aws_security_group" "blockchain" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 3000
-    to_port         = 3000
-    protocol        = "tcp"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

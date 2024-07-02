@@ -83,20 +83,19 @@ module "application" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  sqs_withdrawal                 = module.lambda.withdrawal_sqs
-  lookcard_notification_sqs_url  = module.lambda.lookcard_notification_sqs_url
-  crypto_fund_withdrawal_sqs_url = module.lambda.crypto_fund_withdrawal_sqs_url
-  # env                = var.env
-  push_message_invoke            = module.lambda.push_message_web_invoke
-  push_message_web_function      = module.lambda.push_message_web_function
-  web_socket_function            = module.lambda.web_socket_function
-  web_socket_invoke              = module.lambda.web_socket_invoke
-  web_socket_disconnect_invoke   = module.lambda.web_socket_disconnect_invoke
-  web_socket_disconnect_function = module.lambda.web_socket_disconnect_function
-  aggregator_tron_sqs_url        = module.lambda.aggregator_tron_sqs_url
-  trongrid_secret_arn            = module.secret-manager.trongrid_secret_arn
+  sqs_withdrawal                           = module.lambda.withdrawal_sqs
+  lookcard_notification_sqs_url            = module.lambda.lookcard_notification_sqs_url
+  crypto_fund_withdrawal_sqs_url           = module.lambda.crypto_fund_withdrawal_sqs_url
+  push_message_invoke                      = module.lambda.push_message_web_invoke
+  push_message_web_function                = module.lambda.push_message_web_function
+  web_socket_function                      = module.lambda.web_socket_function
+  web_socket_invoke                        = module.lambda.web_socket_invoke
+  web_socket_disconnect_invoke             = module.lambda.web_socket_disconnect_invoke
+  web_socket_disconnect_function           = module.lambda.web_socket_disconnect_function
+  aggregator_tron_sqs_url                  = module.lambda.aggregator_tron_sqs_url
+  trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
-  aggregator_tron_sqs_arn = module.lambda.aggregator_tron_sqs_arn
+  aggregator_tron_sqs_arn                  = module.lambda.aggregator_tron_sqs_arn
 }
 
 module "ssl-cert" {

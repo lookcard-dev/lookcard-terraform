@@ -64,7 +64,7 @@ resource "aws_lb_listener_rule" "utility_listener_rule" {
 
   priority = 9
   tags = {
-    Name        = "Utility-listener-rule"
+    Name = "Utility-listener-rule"
   }
 }
 
@@ -76,9 +76,9 @@ resource "aws_security_group" "Utility" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -86,9 +86,9 @@ resource "aws_security_group" "Utility" {
 
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
