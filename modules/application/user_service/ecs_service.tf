@@ -79,8 +79,7 @@ resource "aws_security_group" "Users" {
     to_port         = 8000
     protocol        = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id]
-  }
+}
 
 
   ingress {
@@ -88,10 +87,7 @@ resource "aws_security_group" "Users" {
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id]
-  }
-
-
+}
 
   egress {
     from_port   = 0

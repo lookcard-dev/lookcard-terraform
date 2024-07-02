@@ -77,54 +77,6 @@ resource "aws_iam_policy" "secrets_manager_read_policy" {
   })
 }
 
-# resource "aws_iam_policy" "secrets_manager_read_policy" {
-#   name        = "SecretsManagerReadOnlyPolicy"
-#   description = "Allows read-only access to Secrets Manager"
-#   policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "secretsmanager:GetSecretValue",
-#           "secretsmanager:DescribeSecret"
-#         ],
-#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:env-XDmFug"
-#       },
-#       {
-#         "Sid" : "Statement1",
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "secretsmanager:GetSecretValue",
-#           "secretsmanager:DescribeSecret"
-#         ],
-#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:token-pvSXEu"
-#       },
-#       {
-#         "Sid" : "Statement2",
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "secretsmanager:GetSecretValue",
-#           "secretsmanager:DescribeSecret"
-#         ],
-#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
-#       },
-#       {
-#         "Sid" : "Statement3",
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "secretsmanager:GetSecretValue",
-#           "secretsmanager:DescribeSecret"
-#         ],
-#         "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:aml_env-vKOhgi"
-#       }
-#     ]
-#   })
-# }
-
-
-
-
 resource "aws_iam_policy_attachment" "secrets_manager_read_attachment" {
   name       = "SecretsManagerReadOnlyAttachment"
   roles      = [aws_iam_role.ecs_task_role.name]

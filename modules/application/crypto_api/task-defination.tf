@@ -15,8 +15,6 @@ resource "aws_security_group" "crypto-api-sg" {
     to_port         = 8080
     protocol        = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # cidr_blocks = [var.sg_alb_id]
-    # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id, aws_security_group.Transaction-Listener-SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Crypto_Fund_Withdrawal_SG.id]
   }
 
   ingress {
@@ -24,7 +22,6 @@ resource "aws_security_group" "crypto-api-sg" {
     to_port         = 80
     protocol        = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id, aws_security_group.Lambda_Aggregator_Tron_SG.id, aws_security_group.Transaction-Listener-SG.id, aws_security_group.Account-API-SG.id, aws_security_group.Crypto_Fund_Withdrawal_SG.id]
   }
 
   egress {

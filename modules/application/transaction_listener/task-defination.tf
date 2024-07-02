@@ -10,8 +10,6 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-#   task_role_arn            = var.task_role
-#   execution_role_arn       = var.task_execution_role
   task_role_arn            = aws_iam_role.Transaction_Listener_Task_Role.arn
   execution_role_arn       = aws_iam_role.Transaction_Listener_Task_Execution_Role.arn
   runtime_platform {
@@ -62,7 +60,6 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
           name  = "DYNAMODB_BLOCK_RECORD_TABLE_NAME"
           value = "Crypto-Transaction-Listener-Block-Record" // confirm
         },
-        # todo value var.aggregator_tron_sqs_url
         {
           name  = "INCOMING_TRANSACTION_QUEUE_URL"
           value = var.aggregator_tron_sqs_url
@@ -73,7 +70,6 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
         {
           name          = "TRONGRID_API_KEY"
           valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
-        #   valueFrom     = "${data.aws_secretsmanager_secret.TRONGRID_secret.arn}:API_KEY::"
         }
       ]
       portMappings = [
