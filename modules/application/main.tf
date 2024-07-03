@@ -21,11 +21,9 @@ module "authentication" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  secret_manager = var.secret_manager
   sqs_withdrawal       = var.sqs_withdrawal
   iam_role             = aws_iam_role.lookcard_ecs_task_role.arn
-  env_secrets_arn      = var.env_secrets_arn
-  db_secret_secret_arn = var.db_secret_secret_arn
-  token_secrets_arn    = var.token_secrets_arn
 }
 
 module "crypto_api" {
@@ -37,9 +35,7 @@ module "crypto_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  crypto_api_secret_arn         = var.crypto_api_secret_arn
-  firebase_secret_arn           = var.firebase_secret_arn
-  db_secret_secret_arn          = var.db_secret_secret_arn
+  secret_manager = var.secret_manager
   crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
   lookcardlocal_namespace_id    = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
@@ -58,9 +54,7 @@ module "transaction_api" {
   sg_alb_id                  = aws_security_group.api_alb_sg.id
   cluster                    = aws_ecs_cluster.look_card.arn
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_secrets_arn            = var.env_secrets_arn
-  db_secret_secret_arn       = var.db_secret_secret_arn
-  token_secrets_arn          = var.token_secrets_arn
+  secret_manager             = var.secret_manager
 }
 
 
@@ -73,10 +67,10 @@ module "transaction_listener" {
   }
   vpc_id                                   = var.network.vpc
   cluster                                  = aws_ecs_cluster.look_card.arn
-  trongrid_secret_arn                      = var.trongrid_secret_arn
   aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
+  secret_manager             = var.secret_manager
 }
 
 module "account_api" {
@@ -93,10 +87,7 @@ module "account_api" {
   crypto_fund_withdrawal_sqs_url = var.crypto_fund_withdrawal_sqs_url
   lookcardlocal_namespace_id     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                        = aws_ecs_cluster.look_card.arn
-  crypto_api_secret_arn          = var.crypto_api_secret_arn
-  firebase_secret_arn            = var.firebase_secret_arn
-  elliptic_secret_arn            = var.elliptic_secret_arn
-  db_secret_secret_arn           = var.db_secret_secret_arn
+  secret_manager                 = var.secret_manager
 }
 
 
@@ -110,10 +101,8 @@ module "card" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  secret_manager                 = var.secret_manager
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_secrets_arn            = var.env_secrets_arn
-  db_secret_secret_arn       = var.db_secret_secret_arn
-  token_secrets_arn          = var.token_secrets_arn
 }
 
 module "blockchain" {
@@ -121,15 +110,13 @@ module "blockchain" {
   iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
+  secret_manager   = var.secret_manager
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_secrets_arn            = var.env_secrets_arn
-  db_secret_secret_arn       = var.db_secret_secret_arn
-  token_secrets_arn          = var.token_secrets_arn
 }
 
 module "utility" {
@@ -143,9 +130,7 @@ module "utility" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_secrets_arn            = var.env_secrets_arn
-  db_secret_secret_arn       = var.db_secret_secret_arn
-  token_secrets_arn          = var.token_secrets_arn
+  secret_manager   = var.secret_manager
 }
 
 
@@ -159,9 +144,7 @@ module "notification" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  env_secrets_arn      = var.env_secrets_arn
-  db_secret_secret_arn = var.db_secret_secret_arn
-  token_secrets_arn    = var.token_secrets_arn
+  secret_manager   = var.secret_manager
 }
 
 module "user" {
@@ -175,9 +158,7 @@ module "user" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_secrets_arn            = var.env_secrets_arn
-  db_secret_secret_arn       = var.db_secret_secret_arn
-  token_secrets_arn          = var.token_secrets_arn
+  secret_manager   = var.secret_manager
 }
 
 
@@ -191,7 +172,5 @@ module "reporting" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  env_secrets_arn      = var.env_secrets_arn
-  db_secret_secret_arn = var.db_secret_secret_arn
-  token_secrets_arn    = var.token_secrets_arn
+  secret_manager   = var.secret_manager
 }

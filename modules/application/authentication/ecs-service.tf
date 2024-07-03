@@ -1,31 +1,3 @@
-resource "aws_iam_role" "ecs_task_role" {
-  name = "ecstaskrole"
-
-  assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sts:AssumeRole"
-        ],
-        "Principal" : {
-          "Service" : "ecs-tasks.amazonaws.com"
-        }
-      }
-    ]
-  })
-
-  tags = {
-    # Add tags if needed
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_role" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
 
 resource "aws_lb_listener_rule" "Authentication_listener_rule" {
   depends_on   = [var.vpc_id]
@@ -44,72 +16,6 @@ resource "aws_lb_listener_rule" "Authentication_listener_rule" {
   }
 }
 
-
-locals {
-  secrets = [
-    "ENV", "TOKEN", "DATABASE", "AML_ENV"
-  ]
-}
-
-data "aws_secretsmanager_secret" "secrets" {
-  for_each = toset(local.secrets)
-  name     = each.value
-}
-
-resource "aws_iam_policy" "secrets_manager_read_policy" {
-  name        = "SecretsManagerReadOnlyPolicy"
-  description = "Allows read-only access to Secrets Manager"
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      for key, secret in data.aws_secretsmanager_secret.secrets : {
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : secret.arn
-      }
-    ]
-  })
-}
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 66a548f9636b752f58525e544fce92a43aa17ae0
-resource "aws_iam_policy_attachment" "secrets_manager_read_attachment" {
-  name       = "SecretsManagerReadOnlyAttachment"
-  roles      = [aws_iam_role.ecs_task_role.name]
-  policy_arn = aws_iam_policy.secrets_manager_read_policy.arn
-}
-
-resource "aws_iam_policy" "Withdrawal_SQS_policy" {
-  name        = "SQS_Access_Withdrawal"
-  description = "Allows read-only access to Secrets Manager"
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sqs:SendMessage"
-        ],
-        "Resource" : "${var.sqs_withdrawal}"
-      }
-    ]
-  })
-}
-resource "aws_iam_policy_attachment" "Withdrawal__SQS_attachment" {
-  name       = "SQSSendmessageAttachmentwithdrawal"
-  roles      = [aws_iam_role.ecs_task_role.name]
-  policy_arn = aws_iam_policy.Withdrawal_SQS_policy.arn
-}
-///////////////////////////////////////////////////////////////////
-
-
-# *********************
 resource "aws_lb_target_group" "authentication_tgp" {
   depends_on  = [var.network]
   name        = "Authentication"
@@ -130,7 +36,6 @@ resource "aws_lb_target_group" "authentication_tgp" {
   }
 }
 
-# *********************
 resource "aws_ecs_service" "Authentication" {
   name            = "Authentication"
   task_definition = aws_ecs_task_definition.Authentication.arn

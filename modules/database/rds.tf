@@ -38,30 +38,30 @@ resource "aws_db_subnet_group" "lookcard_rds_subnet" {
 #   storage_encrypted       = true
 # }
 
-resource "aws_rds_cluster" "lookcard" {
-  cluster_identifier     = "lookcard-testing-db"
-  engine                 = "aurora-postgresql"
-  engine_mode            = "provisioned"
-  database_name          = "lookcardtest"
-  master_username        = "lookcard"
-  master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-  db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
-  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
-  storage_encrypted      = true
-  skip_final_snapshot    = true
-  deletion_protection    = false
-  serverlessv2_scaling_configuration {
-    max_capacity = 5.0
-    min_capacity = 0.5
-  }
-}
+# resource "aws_rds_cluster" "lookcard" {
+#   cluster_identifier     = "lookcard-testing-db"
+#   engine                 = "aurora-postgresql"
+#   engine_mode            = "provisioned"
+#   database_name          = "lookcardtest"
+#   master_username        = "lookcard"
+#   master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+#   db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
+#   vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+#   storage_encrypted      = true
+#   skip_final_snapshot    = true
+#   deletion_protection    = false
+#   serverlessv2_scaling_configuration {
+#     max_capacity = 5.0
+#     min_capacity = 0.5
+#   }
+# }
 
-resource "aws_rds_cluster_instance" "lookcard-serverless-instance" {
-  cluster_identifier = aws_rds_cluster.lookcard.id
-  instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.lookcard.engine
-  engine_version     = aws_rds_cluster.lookcard.engine_version
-}
+# resource "aws_rds_cluster_instance" "lookcard-serverless-instance" {
+#   cluster_identifier = aws_rds_cluster.lookcard.id
+#   instance_class     = "db.serverless"
+#   engine             = aws_rds_cluster.lookcard.engine
+#   engine_version     = aws_rds_cluster.lookcard.engine_version
+# }
 
 # Define the second RDS standard cluster
 resource "aws_rds_cluster" "lookcard_2" {
@@ -89,26 +89,26 @@ resource "aws_rds_cluster_instance" "lookcard_2_instance" {
   monitoring_role_arn          = aws_iam_role.rds_monitoring_role.arn
 }
 
-# Define the RDS Proxy for the serverless cluster
-resource "aws_db_proxy" "lookcard_rds_proxy" {
-  name                   = "lookcard-rds-proxy"
-  engine_family          = "POSTGRESQL"
-  role_arn               = aws_iam_role.rds_proxy_role.arn
-  vpc_subnet_ids         = var.network.private_subnet
-  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
-  auth {
-    auth_scheme = "SECRETS"
-    secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
-  }
-  require_tls = true
-}
+# # Define the RDS Proxy for the serverless cluster
+# resource "aws_db_proxy" "lookcard_rds_proxy" {
+#   name                   = "lookcard-rds-proxy"
+#   engine_family          = "POSTGRESQL"
+#   role_arn               = aws_iam_role.rds_proxy_role.arn
+#   vpc_subnet_ids         = var.network.private_subnet
+#   vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+#   auth {
+#     auth_scheme = "SECRETS"
+#     secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
+#   }
+#   require_tls = true
+# }
 
-# Associate the RDS Serverless Cluster with the RDS Proxy
-resource "aws_db_proxy_target" "lookcard_proxy_target" {
-  db_proxy_name         = aws_db_proxy.lookcard_rds_proxy.name
-  target_group_name     = "default"
-  db_cluster_identifier = aws_rds_cluster.lookcard.id
-}
+# # Associate the RDS Serverless Cluster with the RDS Proxy
+# resource "aws_db_proxy_target" "lookcard_proxy_target" {
+#   db_proxy_name         = aws_db_proxy.lookcard_rds_proxy.name
+#   target_group_name     = "default"
+#   db_cluster_identifier = aws_rds_cluster.lookcard.id
+# }
 
 # Define the RDS Proxy for the standard cluster
 resource "aws_db_proxy" "lookcard_rds_proxy_2" {

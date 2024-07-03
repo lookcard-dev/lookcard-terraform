@@ -10,15 +10,9 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-<<<<<<< HEAD
   task_role_arn            = aws_iam_role.Transaction_Listener_Task_Role.arn
   execution_role_arn       = aws_iam_role.Transaction_Listener_Task_Execution_Role.arn
-=======
-  #   task_role_arn            = var.task_role
-  #   execution_role_arn       = var.task_execution_role
-  task_role_arn      = aws_iam_role.Transaction_Listener_Task_Role.arn
-  execution_role_arn = aws_iam_role.Transaction_Listener_Task_Execution_Role.arn
->>>>>>> 66a548f9636b752f58525e544fce92a43aa17ae0
+
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -75,14 +69,9 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
       ]
       secrets = [
         {
-<<<<<<< HEAD
           name          = "TRONGRID_API_KEY"
-          valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
-=======
-          name      = "TRONGRID_API_KEY"
-          valueFrom = "${var.trongrid_secret_arn}:API_KEY::"
-          #   valueFrom     = "${data.aws_secretsmanager_secret.TRONGRID_secret.arn}:API_KEY::"
->>>>>>> 66a548f9636b752f58525e544fce92a43aa17ae0
+          valueFrom     = "todo.trongrid_secret_arn"
+        #   valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
         }
       ]
       portMappings = [

@@ -2,19 +2,6 @@ data "aws_ecr_image" "latest" {
   repository_name = "account-api"
   most_recent     = true
 }
-data "aws_secretsmanager_secret" "crypto_api_env_secret" {
-  name = "CRYPTO_API_ENV"
-}
-data "aws_secretsmanager_secret" "firebase_secret" {
-  name = "FIREBASE"
-}
-data "aws_secretsmanager_secret" "elliptic_secret" {
-  name = "ELLIPTIC"
-}
-data "aws_secretsmanager_secret" "database_secret" {
-  name = "DATABASE"
-}
-
 
 resource "aws_ecs_task_definition" "Account_API" {
   family                   = "Account-API"
@@ -45,48 +32,7 @@ resource "aws_ecs_task_definition" "Account_API" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = [
-        {
-          name      = "DATABASE_URL"
-          valueFrom = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
-        },
-        {
-          name      = "FIREBASE_PROJECT_ID"
-          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:PROJECT_ID::"
-        },
-        {
-          name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
-        },
-        {
-          name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
-        },
-        {
-          name      = "FIREBASE_CREDENTIALS"
-          valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
-        },
-        {
-          name      = "API_KEY"
-          valueFrom = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_KEY::"
-        },
-        {
-          name      = "API_SECRET"
-          valueFrom = "${data.aws_secretsmanager_secret.elliptic_secret.arn}:API_SECRET::"
-        },
-        {
-          name      = "DATABASE_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
-        },
-        {
-          name      = "DATABASE_USERNAME"
-          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
-        },
-        {
-          name      = "DATABASE_PASSWORD"
-          valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
-        }
-      ]
+      secrets = local.ecs_task_secret_vars
       environment = [
         {
           name  = "CRYPTO_API_URL"
@@ -127,38 +73,6 @@ resource "aws_ecs_task_definition" "Account_API" {
 
 resource "aws_cloudwatch_log_group" "Account_API" {
   name = "/ecs/Account-API"
-
 }
 
 
-resource "aws_security_group" "Account-API-SG" {
-  depends_on  = [var.vpc_id]
-  name        = "Account-API-Service-Security-Group"
-  description = "Security group for Account API services"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "Account-API-Security-Group"
-  }
-}

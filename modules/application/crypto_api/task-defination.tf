@@ -3,75 +3,6 @@ data "aws_ecr_image" "latest" {
   most_recent     = true
 }
 
-
-resource "aws_security_group" "crypto-api-sg" {
-  depends_on  = [var.network]
-  name        = "crypto-api-service-security-group"
-  description = "Security group for Crypto API services"
-  vpc_id      = var.network.vpc
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "crypto-api-security-group"
-  }
-}
-
-data "aws_secretsmanager_secret" "crypto_api_env_secret" {
-  name = "CRYPTO_API_ENV"
-}
-data "aws_secretsmanager_secret" "database_secret" {
-  name = "DATABASE"
-}
-data "aws_secretsmanager_secret" "firebase_secret" {
-  name = "FIREBASE"
-}
-
-locals {
-  secret_vars = [
-    {
-      name      = "DATABASE_URL"
-      valueFrom = "${data.aws_secretsmanager_secret.crypto_api_env_secret.arn}:DATABASE_URL::"
-    },
-    {
-      name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${data.aws_secretsmanager_secret.firebase_secret.arn}:CREDENTIALS::"
-    },
-    {
-      name      = "DATABASE_ENDPOINT"
-      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:host::"
-    },
-    {
-      name      = "DATABASE_USERNAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:username::"
-    },
-    {
-      name      = "DATABASE_PASSWORD"
-      valueFrom = "${data.aws_secretsmanager_secret.database_secret.arn}:password::"
-    }
-  ]
-}
-
-
 resource "aws_ecs_task_definition" "crypto-api" {
   family                   = "crypto-api"
   network_mode             = "awsvpc"
@@ -101,7 +32,7 @@ resource "aws_ecs_task_definition" "crypto-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = local.secret_vars
+      secrets = local.ecs_task_secret_vars
       environment = [
         {
           name  = "AWS_REGION"

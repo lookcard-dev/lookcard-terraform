@@ -14,20 +14,20 @@ provider "aws" {
 
 module "secret-manager" {
   source                           = "./modules/secret-manager"
-  env_secrets                      = var.env_secrets
-  notification_env_secrets         = var.notification_env_secrets
-  tron_secrets                     = var.tron_secrets
-  coinranking_secrets              = var.coinranking_secrets
-  crypto_api_worker_wallet_secrets = var.crypto_api_worker_wallet_secrets
-  elliptic_secrets                 = var.elliptic_secrets
-  reap_secrets                     = var.reap_secrets
-  did_processor_lambda_secrets     = var.did_processor_lambda_secrets
-  token_secrets                    = var.token_secrets
-  aml_env_secrets                  = var.aml_env_secrets
-  aggregator_env_secrets           = var.aggregator_env_secrets
-  db_secrets                       = var.db_secrets
-  firebase_secrets                 = var.firebase_secrets
-  crypto_api_env_secrets           = var.crypto_api_env_secrets
+  # env_secrets                      = var.env_secrets
+  # notification_env_secrets         = var.notification_env_secrets
+  # tron_secrets                     = var.tron_secrets
+  # coinranking_secrets              = var.coinranking_secrets
+  # crypto_api_worker_wallet_secrets = var.crypto_api_worker_wallet_secrets
+  # elliptic_secrets                 = var.elliptic_secrets
+  # reap_secrets                     = var.reap_secrets
+  # did_processor_lambda_secrets     = var.did_processor_lambda_secrets
+  # token_secrets                    = var.token_secrets
+  # aml_env_secrets                  = var.aml_env_secrets
+  # aggregator_env_secrets           = var.aggregator_env_secrets
+  # db_secrets                       = var.db_secrets
+  # firebase_secrets                 = var.firebase_secrets
+  # crypto_api_env_secrets           = var.crypto_api_env_secrets
 }
 
 module "S3" {
@@ -70,14 +70,15 @@ module "application" {
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
-  # authentication_tgp_arn = module.application.authentication.authentication_tgp_arn
   secret_arns           = var.secret_arns
-  crypto_api_secret_arn = module.secret-manager.crypto_api_secret_arn
-  firebase_secret_arn   = module.secret-manager.firebase_secret_arn
-  elliptic_secret_arn   = module.secret-manager.elliptic_secret_arn
-  db_secret_secret_arn  = module.secret-manager.db_secret_secret_arn
-  env_secrets_arn       = module.secret-manager.env_secrets_arn
-  token_secrets_arn     = module.secret-manager.token_secrets_arn
+  # authentication_tgp_arn = module.application.authentication.authentication_tgp_arn
+  # crypto_api_secret_arn = module.secret-manager.crypto_api_secret_arn
+  # firebase_secret_arn   = module.secret-manager.firebase_secret_arn
+  # elliptic_secret_arn   = module.secret-manager.elliptic_secret_arn
+  # db_secret_secret_arn  = module.secret-manager.db_secret_secret_arn
+  # env_secrets_arn       = module.secret-manager.env_secrets_arn
+  # token_secrets_arn     = module.secret-manager.token_secrets_arn
+  # trongrid_secret_arn   = module.secret-manager.trongrid_secret_arn
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids
@@ -93,9 +94,9 @@ module "application" {
   web_socket_disconnect_invoke             = module.lambda.web_socket_disconnect_invoke
   web_socket_disconnect_function           = module.lambda.web_socket_disconnect_function
   aggregator_tron_sqs_url                  = module.lambda.aggregator_tron_sqs_url
-  trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   aggregator_tron_sqs_arn                  = module.lambda.aggregator_tron_sqs_arn
+  secret_manager                           = module.secret-manager
 }
 
 module "ssl-cert" {

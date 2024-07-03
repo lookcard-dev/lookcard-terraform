@@ -26,53 +26,45 @@ resource "aws_iam_role_policy_attachment" "lookcard_ecs_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+locals {
+  secrets = [
+    {
+      sid   = "EnvSecret"
+      arn   = var.secret_manager.env_secret_arn
+    },
+    {
+      sid   = "TokenSecret"
+      arn   = var.secret_manager.token_secret_arn
+    },
+    {
+      sid   = "DatabaseSecret"
+      arn   = var.secret_manager.database_secret_arn
+    },
+    {
+      sid   = "AmlEnvSecret"
+      arn   = var.secret_manager.aml_env_secret_arn
+    }
+  ]
+}
+
 resource "aws_iam_policy" "lookcard_secrets_manager_read_policy" {
   name        = "lookcard-SecretsManagerReadOnlyPolicy"
   description = "Allows read-only access to Secrets Manager"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      {
+      for secret in local.secrets : {
+        "Sid"    : secret.sid,
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:env-XDmFug"
-      },
-      {
-        "Sid" : "Statement1",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:token-pvSXEu"
-      },
-      {
-        "Sid" : "Statement2",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:db/secret-zkQPXo"
-      },
-      {
-        "Sid" : "Statement3",
-        "Effect" : "Allow",
-        "Action" : [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:576293270682:secret:aml_env-vKOhgi"
+        "Resource" : secret.arn
       }
     ]
   })
 }
-
-
-
 
 resource "aws_iam_policy_attachment" "lookcard_secrets_manager_read_attachment" {
   name       = "lookcard_SecretsManagerReadOnlyAttachment"
