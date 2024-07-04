@@ -19,7 +19,6 @@ resource "aws_ecs_task_definition" "Blockchain" {
   volume {
     name = "data"
   }
-
   container_definitions = jsonencode([
     {
       name  = "Blockchain"
@@ -51,7 +50,6 @@ resource "aws_ecs_task_definition" "Blockchain" {
           sourceVolume  = "data",
           containerPath = "/usr/src/data",
         },
-
       ]
     }
   ])

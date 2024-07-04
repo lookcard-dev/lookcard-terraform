@@ -1,10 +1,6 @@
 variable "iam_role" {}
-
-
 variable "lookcardlocal_namespace_id" {}
-
 variable "cluster" {}
-
 variable "network" {
   type = object({
     vpc            = string
@@ -12,10 +8,8 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-
 variable "default_listener" {}
 variable "secret_manager" {}
-
 locals {
   ecs_task_secret_vars = [
     {
