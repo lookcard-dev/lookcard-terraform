@@ -77,7 +77,7 @@ module "account_api" {
   source           = "./account_api"
   default_listener = aws_lb_listener.look-card.arn
   vpc_id           = var.network.vpc
-  secret_arns      = var.secret_arns
+  # secret_arns      = var.secret_arns
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet

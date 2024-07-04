@@ -25,10 +25,7 @@ variable "lambda_code" {
   })
 }
 
-variable "secret_arn_list" {
-
-}
-
+variable "secret_manager" {}
 
 data "aws_iam_policy_document" "lambda_sts_policy" {
   statement {

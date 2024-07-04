@@ -1,11 +1,5 @@
-output "secret_arns" {
-  value       = toset([for s in aws_secretsmanager_secret.lookcard_secrets : s.arn])
-  description = "The ARNs of the secrets managed by AWS Secrets Manager"
-}
-
-
 output "lookcard_db_secret" {
-  value = aws_secretsmanager_secret.lookcard_secrets["look-card_db_master_password"].id
+  value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].id
 }
 
 output "crypto_api_secret_arn" {
@@ -35,10 +29,6 @@ output "token_secret_arn" {
 output "aml_env_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["AML_ENV"].arn
 }
-
-# output "token_secrets_arn" {
-#   value = aws_secretsmanager_secret_version.token_secret_value.arn
-# }
 
 output "trongrid_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["TRONGRID"].arn

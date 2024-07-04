@@ -154,22 +154,6 @@ resource "aws_security_group" "api_alb_sg" {
     Name = "look-card-ALB-SG"
   }
 }
-# **********************************
-
-# resource "aws_lb_target_group" "lookcard_tg" {
-
-#   name        = "Authentication"
-#   port        = 80
-#   protocol    = "HTTP"
-#   target_type = "ip"
-#   vpc_id      = var.network.vpc
-
-#   lifecycle {
-#       create_before_destroy = true
-#   }
-
-# }
-
 
 resource "aws_lb_listener" "look-card" {
   load_balancer_arn = aws_alb.look-card.arn

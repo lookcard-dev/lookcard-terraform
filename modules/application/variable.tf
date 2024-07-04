@@ -56,16 +56,8 @@ variable "sqs_withdrawal" {}
 
 variable "lookcard_notification_sqs_url" {}
 variable "crypto_fund_withdrawal_sqs_url" {}
-variable "secret_arns" {}
-# variable "crypto_api_secret_arn" {}
+# variable "secret_arns" {}
 
-# variable "firebase_secret_arn" {}
-# variable "elliptic_secret_arn" {}
-# variable "db_secret_secret_arn" {}
-# variable "env_secrets_arn" {}
-# variable "token_secrets_arn" {}
-
-# variable "authentication_tgp_arn" {}
 variable "push_message_invoke" {}
 variable "push_message_web_function" {}
 variable "web_socket_invoke" {}

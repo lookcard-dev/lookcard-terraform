@@ -14,20 +14,6 @@ provider "aws" {
 
 module "secret-manager" {
   source                           = "./modules/secret-manager"
-  # env_secrets                      = var.env_secrets
-  # notification_env_secrets         = var.notification_env_secrets
-  # tron_secrets                     = var.tron_secrets
-  # coinranking_secrets              = var.coinranking_secrets
-  # crypto_api_worker_wallet_secrets = var.crypto_api_worker_wallet_secrets
-  # elliptic_secrets                 = var.elliptic_secrets
-  # reap_secrets                     = var.reap_secrets
-  # did_processor_lambda_secrets     = var.did_processor_lambda_secrets
-  # token_secrets                    = var.token_secrets
-  # aml_env_secrets                  = var.aml_env_secrets
-  # aggregator_env_secrets           = var.aggregator_env_secrets
-  # db_secrets                       = var.db_secrets
-  # firebase_secrets                 = var.firebase_secrets
-  # crypto_api_env_secrets           = var.crypto_api_env_secrets
 }
 
 module "S3" {
@@ -49,8 +35,7 @@ module "rds" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   lookcard_db_secret    = module.secret-manager.lookcard_db_secret
-  lookcard_rds_password = var.lookcard_rds_password
-
+  lookcard_rds_password =  module.secret-manager.lookcard_db_secret
 }
 
 module "VPC" {
@@ -70,15 +55,7 @@ module "application" {
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
-  secret_arns           = var.secret_arns
-  # authentication_tgp_arn = module.application.authentication.authentication_tgp_arn
-  # crypto_api_secret_arn = module.secret-manager.crypto_api_secret_arn
-  # firebase_secret_arn   = module.secret-manager.firebase_secret_arn
-  # elliptic_secret_arn   = module.secret-manager.elliptic_secret_arn
-  # db_secret_secret_arn  = module.secret-manager.db_secret_secret_arn
-  # env_secrets_arn       = module.secret-manager.env_secrets_arn
-  # token_secrets_arn     = module.secret-manager.token_secrets_arn
-  # trongrid_secret_arn   = module.secret-manager.trongrid_secret_arn
+  # secret_arns           = var.secret_arns
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids
@@ -140,7 +117,6 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  secret_arn_list    = module.secret-manager.secret_arns
+  secret_manager               = module.secret-manager
   dynamodb_table_arn = module.rds.dynamodb_table_arn
-  # web_scoket_iam = 
 }

@@ -14,10 +14,10 @@ variable "network" {
   })
 }
 
-variable "secret_arns" {
-  description = "List of ARN for Secrets Manager"
-  type        = list(string)
-}
+# variable "secret_arns" {
+#   description = "List of ARN for Secrets Manager"
+#   type        = list(string)
+# }
 
 locals {
     ecs_task_secret_vars = [

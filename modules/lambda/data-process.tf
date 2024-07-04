@@ -60,7 +60,7 @@ resource "aws_iam_policy" "data_process_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : var.secret_arn_list
+        "Resource" : [var.secret_manager.crypto_api_secret_arn, var.secret_manager.firebase_secret_arn, var.secret_manager.database_secret_arn, var.secret_manager.elliptic_secret_arn ]
       }
     ]
   })
