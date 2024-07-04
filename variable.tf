@@ -19,6 +19,13 @@ variable "aws_provider" {
   })
 }
 
+variable "image_tag" {
+  type = object({
+    notification = string
+  })
+}
+
+
 variable "lambda_code" {
   type = object({
     websocket_connect_s3key    = string
@@ -63,7 +70,7 @@ variable "sns_subscriptions_email" {
 variable "env" {
   default = "testing"
 }
- 
+
 variable "lookcard_rds_password" {}
 
 

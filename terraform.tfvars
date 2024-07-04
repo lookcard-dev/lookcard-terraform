@@ -36,6 +36,11 @@ network = {
   isolated_subnet_cidr_list = ["10.0.30.0/23", "10.0.32.0/23", "10.0.34.0/23"]
 }
 
+image_tag = {
+  notification = "270624091940"
+}
+
+
 
 ecs_cluster_config = {
   enable = false

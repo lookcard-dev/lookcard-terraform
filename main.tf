@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 module "secret-manager" {
-  source                           = "./modules/secret-manager"
+  source = "./modules/secret-manager"
 }
 
 module "S3" {
@@ -35,7 +35,7 @@ module "rds" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   lookcard_db_secret    = module.secret-manager.lookcard_db_secret
-  lookcard_rds_password =  module.secret-manager.lookcard_db_secret
+  lookcard_rds_password = module.secret-manager.lookcard_db_secret
 }
 
 module "VPC" {
@@ -55,12 +55,13 @@ module "application" {
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
-  # secret_arns           = var.secret_arns
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
+  image_tag = var.image_tag
+
   sqs_withdrawal                           = module.lambda.withdrawal_sqs
   lookcard_notification_sqs_url            = module.lambda.lookcard_notification_sqs_url
   crypto_fund_withdrawal_sqs_url           = module.lambda.crypto_fund_withdrawal_sqs_url
@@ -117,6 +118,6 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  secret_manager               = module.secret-manager
+  secret_manager     = module.secret-manager
   dynamodb_table_arn = module.rds.dynamodb_table_arn
 }

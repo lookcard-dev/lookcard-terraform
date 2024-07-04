@@ -22,8 +22,8 @@ module "authentication" {
     public_subnet  = var.network.public_subnet
   }
   secret_manager = var.secret_manager
-  sqs_withdrawal       = var.sqs_withdrawal
-  iam_role             = aws_iam_role.lookcard_ecs_task_role.arn
+  sqs_withdrawal = var.sqs_withdrawal
+  iam_role       = aws_iam_role.lookcard_ecs_task_role.arn
 }
 
 module "crypto_api" {
@@ -35,7 +35,7 @@ module "crypto_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager = var.secret_manager
+  secret_manager                = var.secret_manager
   crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
   lookcardlocal_namespace_id    = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
@@ -70,7 +70,7 @@ module "transaction_listener" {
   aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
-  secret_manager             = var.secret_manager
+  secret_manager                           = var.secret_manager
 }
 
 module "account_api" {
@@ -101,7 +101,7 @@ module "card" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager                 = var.secret_manager
+  secret_manager             = var.secret_manager
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }
 
@@ -130,7 +130,7 @@ module "utility" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  secret_manager   = var.secret_manager
+  secret_manager             = var.secret_manager
 }
 
 
@@ -139,12 +139,16 @@ module "notification" {
   iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
+  image = {
+    url = aws_ecr_repository.look-card["notification-api"].repository_url
+    tag = var.image_tag.notification
+  }
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager   = var.secret_manager
+  secret_manager = var.secret_manager
 }
 
 module "user" {
@@ -158,7 +162,7 @@ module "user" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  secret_manager   = var.secret_manager
+  secret_manager             = var.secret_manager
 }
 
 
@@ -172,5 +176,5 @@ module "reporting" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager   = var.secret_manager
+  secret_manager = var.secret_manager
 }

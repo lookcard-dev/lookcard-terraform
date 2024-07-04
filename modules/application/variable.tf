@@ -1,6 +1,3 @@
-
-
-# variable "network" {}
 variable "network" {
   description = "Network configuration"
   type = object({
@@ -9,9 +6,7 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-# variable "cluster" {}
 variable "alb_logging_bucket" {}
-# variable "env" {}
 
 variable "domain" {}
 data "aws_route53_zone" "hosted_zone_id" {
@@ -32,7 +27,6 @@ variable "ecs_cluster_config" {
   })
 }
 
-
 variable "ecr_names" {
   description = "Map of ECR names"
   type        = map(string)
@@ -52,11 +46,16 @@ variable "ecr_names" {
   }
 }
 
+variable "image_tag" {
+  type = object({
+    notification = string
+  })
+}
+
 variable "sqs_withdrawal" {}
 
 variable "lookcard_notification_sqs_url" {}
 variable "crypto_fund_withdrawal_sqs_url" {}
-# variable "secret_arns" {}
 
 variable "push_message_invoke" {}
 variable "push_message_web_function" {}
@@ -65,7 +64,7 @@ variable "web_socket_function" {}
 variable "web_socket_disconnect_invoke" {}
 variable "web_socket_disconnect_function" {}
 variable "aggregator_tron_sqs_url" {}
-# variable "trongrid_secret_arn" {}
+
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "aggregator_tron_sqs_arn" {}
 variable "secret_manager" {}
