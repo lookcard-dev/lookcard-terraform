@@ -16,7 +16,7 @@ resource "aws_service_discovery_service" "evvo_blockchain_service" {
 }
 
 resource "aws_ecs_service" "blockchain" {
-  name            = "Blockchain"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Blockchain.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -30,7 +30,7 @@ resource "aws_ecs_service" "blockchain" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.blockchain_target_group.arn
-    container_name   = "Blockchain"
+    container_name   = local.application.name
     container_port   = "3000"
   }
 
@@ -57,10 +57,10 @@ resource "aws_lb_listener_rule" "blockchain_listener_rule" {
   }
   condition {
     path_pattern {
-      values = ["/v2/api/blc-s1umi0pnk/*"] # Wildcard path condition to match all requests
+      values = local.load_balancer.api_path # Wildcard path condition to match all requests
     }
   }
-  priority = 3
+  priority = local.load_balancer.priority
   tags = {
     Name = "Blockchain_listener_rule"
     # Add more tags as needed

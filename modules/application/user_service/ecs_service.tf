@@ -16,7 +16,7 @@ resource "aws_service_discovery_service" "evvo_user_service" {
 }
 
 resource "aws_ecs_service" "users" {
-  name            = "Users"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Users.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -29,8 +29,8 @@ resource "aws_ecs_service" "users" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.users_target_group.arn
-    container_name   = "Users"
-    container_port   = 8000
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 
   service_registries {
@@ -57,11 +57,11 @@ resource "aws_lb_listener_rule" "users_listener_rule" {
 
   condition {
     path_pattern {
-      values = ["/v2/api/us-f8zjng13d/*"]
+      values = local.load_balancer.api_path
     }
   }
 
-  priority = 8
+  priority = local.load_balancer.priority
   tags = {
     Name = "Users-listener-rule"
   }

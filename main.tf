@@ -61,7 +61,6 @@ module "application" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   image_tag = var.image_tag
-
   sqs_withdrawal                           = module.lambda.withdrawal_sqs
   lookcard_notification_sqs_url            = module.lambda.lookcard_notification_sqs_url
   crypto_fund_withdrawal_sqs_url           = module.lambda.crypto_fund_withdrawal_sqs_url
@@ -74,6 +73,7 @@ module "application" {
   aggregator_tron_sqs_url                  = module.lambda.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   aggregator_tron_sqs_arn                  = module.lambda.aggregator_tron_sqs_arn
+  trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   secret_manager                           = module.secret-manager
 }
 

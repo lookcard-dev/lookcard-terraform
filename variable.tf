@@ -22,6 +22,16 @@ variable "aws_provider" {
 variable "image_tag" {
   type = object({
     notification = string
+    account_api  = string
+    authentication_api = string
+    blockchain_api = string
+    card_api = string
+    crypto_api = string
+    reporting_api = string
+    transaction_listener = string
+    transaction_api = string
+    users_api = string
+    utility_api = string
   })
 }
 

@@ -16,7 +16,7 @@ resource "aws_service_discovery_service" "account_service" {
 }
 
 resource "aws_ecs_service" "Account_API" {
-  name            = "Account-API"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Account_API.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -29,8 +29,8 @@ resource "aws_ecs_service" "Account_API" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.Account_API_target_group.arn
-    container_name   = "Account-API"
-    container_port   = 8080
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 
   service_registries {
@@ -39,11 +39,11 @@ resource "aws_ecs_service" "Account_API" {
 }
 
 resource "aws_lb_target_group" "Account_API_target_group" {
-  name        = "Account-API"
+  name        = local.application.name
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = var.network.vpc
   target_type = "ip"
+  vpc_id      = var.network.vpc
 
   health_check {
     interval            = 30
@@ -65,12 +65,12 @@ resource "aws_lb_listener_rule" "Account_API_listener_rule" {
 
   condition {
     path_pattern {
-      values = ["/accounts", "/account", "/account/*"]
+      values = local.load_balancer.api_path
     }
   }
 
   priority = 150
   tags = {
-    Name = "Account-API-rule"
+    Name = "${local.application.name}-rule"
   }
 }

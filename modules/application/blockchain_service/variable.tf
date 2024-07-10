@@ -12,7 +12,24 @@ variable "network" {
 variable "default_listener" {}
 variable "secret_manager" {}
 
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 locals {
+  application = {
+        name      = "Blockchain"
+        port      = 3000
+        image     = var.image.url
+        image_tag = var.image.tag
+    }
+    load_balancer = {
+        api_path = ["/v2/api/blc-s1umi0pnk/*"]
+        priority = 3
+    }
   ecs_task_secret_vars = [
     {
       name  = "AWS_REGION"

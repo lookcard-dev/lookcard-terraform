@@ -1,11 +1,5 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "users-api"
-  most_recent     = true
-
-}
-
 resource "aws_ecs_task_definition" "Users" {
-  family                   = "Users"
+  family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -23,13 +17,13 @@ resource "aws_ecs_task_definition" "Users" {
 
   container_definitions = jsonencode([
     {
-      name  = "Users"
-      image = data.aws_ecr_image.latest.image_uri
+      name  = local.application.name
+      image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/Users"
+          "awslogs-group"         = "/ecs/${local.application.name}"
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -38,8 +32,8 @@ resource "aws_ecs_task_definition" "Users" {
       portMappings = [
         {
           name          = "look-card-users-8000-tcp",
-          containerPort = 8000,
-          hostPort      = 8000,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },
@@ -57,6 +51,5 @@ resource "aws_ecs_task_definition" "Users" {
 }
 
 resource "aws_cloudwatch_log_group" "Users" {
-  name = "/ecs/Users"
-
+  name = "/ecs/${local.application.name}"
 }

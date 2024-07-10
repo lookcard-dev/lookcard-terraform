@@ -5,16 +5,14 @@ data "aws_ecr_image" "latest" {
 }
 
 resource "aws_ecs_task_definition" "Transaction" {
-  family                   = "Transaction"
+  family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
   memory                   = "4096"
   task_role_arn            = var.iam_role
   execution_role_arn       = var.iam_role
-  #   task_role_arn            = aws_iam_role.lookcard_ecs_task_role.arn
-  #   execution_role_arn       = aws_iam_role.lookcard_ecs_task_role.arn
-  runtime_platform {
+   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }

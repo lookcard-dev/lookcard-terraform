@@ -7,18 +7,18 @@ resource "aws_lb_listener_rule" "Authentication_listener_rule" {
     target_group_arn = aws_lb_target_group.authentication_tgp.arn
   }
   tags = {
-    Name = "Authentication-rule"
+    Name = "${local.application.name}-rule"
   }
   condition {
     path_pattern {
-      values = ["/v2/api/auth-zqg2muwph/*"]
+      values = local.load_balancer.api_path
     }
   }
 }
 
 resource "aws_lb_target_group" "authentication_tgp" {
   depends_on  = [var.network]
-  name        = "Authentication"
+  name        = local.application.name
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
@@ -37,7 +37,7 @@ resource "aws_lb_target_group" "authentication_tgp" {
 }
 
 resource "aws_ecs_service" "Authentication" {
-  name            = "Authentication"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Authentication.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -48,8 +48,8 @@ resource "aws_ecs_service" "Authentication" {
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.authentication_tgp.arn
-    container_name   = "Authentication"
-    container_port   = "8000"
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 }
 

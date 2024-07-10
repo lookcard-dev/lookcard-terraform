@@ -14,7 +14,24 @@ variable "sg_alb_id" {}
 variable "sqs_withdrawal" {}
 variable "secret_manager" {}
 
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 locals {
+    application = {
+    name      = "Authentication"
+    port      = 8000
+    image     = var.image.url
+    image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/v2/api/auth-zqg2muwph/*"]
+    priority = 4
+  }
   iam_secrets = [
     {
       arn   = var.secret_manager.env_secret_arn

@@ -21,6 +21,10 @@ module "authentication" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  image = {
+    url = aws_ecr_repository.look-card["authentication-api"].repository_url
+    tag = var.image_tag.authentication_api
+  }
   secret_manager = var.secret_manager
   sqs_withdrawal = var.sqs_withdrawal
   iam_role       = aws_iam_role.lookcard_ecs_task_role.arn
@@ -35,6 +39,10 @@ module "crypto_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+    image = {
+    url = aws_ecr_repository.look-card["crypto-api"].repository_url
+    tag = var.image_tag.crypto_api
+  }
   secret_manager                = var.secret_manager
   crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
@@ -48,6 +56,10 @@ module "transaction_api" {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["transaction-api"].repository_url
+    tag = var.image_tag.transaction_api
   }
   vpc_id                     = var.network.vpc
   iam_role                   = aws_iam_role.lookcard_ecs_task_role.arn
@@ -65,19 +77,27 @@ module "transaction_listener" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  image = {
+    url = aws_ecr_repository.look-card["transaction-listener"].repository_url
+    tag = var.image_tag.transaction_listener
+  }
   vpc_id                                   = var.network.vpc
   cluster                                  = aws_ecs_cluster.look_card.arn
   aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
   secret_manager                           = var.secret_manager
+  trongrid_secret_arn                      = var.trongrid_secret_arn
 }
 
 module "account_api" {
   source           = "./account_api"
   default_listener = aws_lb_listener.look-card.arn
   vpc_id           = var.network.vpc
-  # secret_arns      = var.secret_arns
+    image = {
+    url = aws_ecr_repository.look-card["account-api"].repository_url
+    tag = var.image_tag.account_api
+  }
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -101,6 +121,10 @@ module "card" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  image = {
+    url = aws_ecr_repository.look-card["card-api"].repository_url
+    tag = var.image_tag.card_api
+  }
   secret_manager             = var.secret_manager
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }
@@ -111,6 +135,10 @@ module "blockchain" {
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
   secret_manager   = var.secret_manager
+  image = {
+    url = aws_ecr_repository.look-card["blockchain-api"].repository_url
+    tag = var.image_tag.blockchain_api
+  }
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -128,6 +156,10 @@ module "utility" {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["utility-api"].repository_url
+    tag = var.image_tag.utility_api
   }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager             = var.secret_manager
@@ -161,6 +193,10 @@ module "user" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  image = {
+    url = aws_ecr_repository.look-card["users-api"].repository_url
+    tag = var.image_tag.users_api
+  }
   lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager             = var.secret_manager
 }
@@ -175,6 +211,10 @@ module "reporting" {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["reporting-api"].repository_url
+    tag = var.image_tag.reporting_api
   }
   secret_manager = var.secret_manager
 }

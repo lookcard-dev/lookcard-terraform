@@ -14,7 +14,24 @@ variable "network" {
 variable "lookcardlocal_namespace_id" {}
 variable "cluster" {}
 variable "secret_manager" {}
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 locals {
+  application = {
+    name      = "Card"
+    port      = 8000
+    image     = var.image.url
+    image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/v2/api/card-ywso44nnn/*"]
+    priority = 5
+  }
   ecs_task_secret_vars = [
     {
       name  = "AWS_REGION"

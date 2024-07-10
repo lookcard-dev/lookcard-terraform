@@ -69,7 +69,8 @@ resource "aws_rds_cluster" "lookcard_2" {
   database_name          = "lookcardstandard"
   engine                 = "aurora-postgresql"
   master_username        = "lookcard"
-  master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+#   master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
+  master_password        = "dsauuuFDSADK"
   db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
   vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
   skip_final_snapshot    = true

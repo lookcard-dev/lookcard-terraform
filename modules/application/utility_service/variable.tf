@@ -10,7 +10,24 @@ variable "network" {
 }
 variable "default_listener" {}
 variable "secret_manager" {}
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
 locals {
+  application = {
+    name      = "Utility"
+    port      = 8000
+    image     = var.image.url
+    image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/v2/api/uti-lel6n01qq/*"]
+    priority = 9
+  }
+
   ecs_task_secret_vars = [
     {
       name  = "AWS_REGION"

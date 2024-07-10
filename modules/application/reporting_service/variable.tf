@@ -11,7 +11,22 @@ variable "network" {
 }
 variable "cluster" {}
 variable "secret_manager" {}
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
 locals {
+  application = {
+    name      = "Reporting"
+    port      = 8000
+    image     = var.image.url
+    image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/v2/api/report-zjx14peaj/*"]
+  }
   ecs_task_secret_vars = [
     {
       name  = "AWS_REGION"

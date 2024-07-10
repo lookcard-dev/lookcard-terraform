@@ -1,3 +1,10 @@
+resource "aws_lb_target_group" "reporting_target_group" {
+  name        = local.application.name
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.network.vpc
+  target_type = "ip"
+}
 
 resource "aws_lb_listener_rule" "reporting_listener_rule" {
   listener_arn = var.default_listener
@@ -9,27 +16,18 @@ resource "aws_lb_listener_rule" "reporting_listener_rule" {
 
   condition {
     path_pattern {
-      values = ["/v2/api/report-zjx14peaj/*"] # Wildcard path to match all requests to the reporting service
+      values = local.load_balancer.api_path # Wildcard path to match all requests to the reporting service
     }
   }
 
   priority = 6
   tags = {
-    Name        = "Reporting-listener-rule"
-    Environment = "UAT"
+    Name        = "${local.application.name}-listener-rule"
   }
 }
 
-resource "aws_lb_target_group" "reporting_target_group" {
-  name        = "Reporting"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = var.network.vpc
-  target_type = "ip"
-}
-
 resource "aws_ecs_service" "reporting" {
-  name            = "Reporting"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Reporting.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -42,8 +40,8 @@ resource "aws_ecs_service" "reporting" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.reporting_target_group.arn
-    container_name   = "Reporting"
-    container_port   = 8000
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 }
 

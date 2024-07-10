@@ -43,12 +43,24 @@ variable "ecr_names" {
     "aml-tron"           = "aml-tron"
     "crypto-api"         = "crypto-api"
     "hello-world"        = "hello-world"
+    "account-api"        = "account-api"
+    "transaction-listener" = "transaction-listener"
   }
 }
 
 variable "image_tag" {
   type = object({
     notification = string
+    account_api  = string
+    authentication_api = string
+    blockchain_api = string
+    card_api = string
+    crypto_api = string
+    reporting_api = string
+    transaction_api = string
+    transaction_listener = string
+    users_api = string
+    utility_api = string
   })
 }
 
@@ -68,3 +80,4 @@ variable "aggregator_tron_sqs_url" {}
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "aggregator_tron_sqs_arn" {}
 variable "secret_manager" {}
+variable "trongrid_secret_arn" {}

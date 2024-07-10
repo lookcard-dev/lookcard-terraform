@@ -15,8 +15,23 @@ variable "network" {
 
 variable "default_listener" {}
 variable "secret_manager" {}
-
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
 locals {
+  application = {
+    name      = "Users"
+    port      = 8000
+    image     = var.image.url
+    image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/v2/api/us-f8zjng13d/*"]
+    priority = 8
+  }
   ecs_task_secret_vars = [
     {
       name  = "AWS_REGION"

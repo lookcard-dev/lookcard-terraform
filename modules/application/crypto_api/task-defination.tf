@@ -1,10 +1,10 @@
 data "aws_ecr_image" "latest" {
-  repository_name = "crypto-api"
+  repository_name = local.application.name
   most_recent     = true
 }
 
 resource "aws_ecs_task_definition" "crypto-api" {
-  family                   = "crypto-api"
+  family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -21,13 +21,13 @@ resource "aws_ecs_task_definition" "crypto-api" {
 
   container_definitions = jsonencode([
     {
-      name  = "crypto-api"
-      image = data.aws_ecr_image.latest.image_uri
+      name  = local.application.name
+      image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-api",
+          "awslogs-group"         = "/ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -54,8 +54,8 @@ resource "aws_ecs_task_definition" "crypto-api" {
       portMappings = [
         {
           name          = "look-card-crypto-api-8080-tcp",
-          containerPort = 8080,
-          hostPort      = 8080,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },
@@ -71,5 +71,5 @@ resource "aws_ecs_task_definition" "crypto-api" {
   ])
 }
 resource "aws_cloudwatch_log_group" "crypto_api" {
-  name = "/ecs/crypto-api"
+  name = "/ecs/${local.application.name}"
 }

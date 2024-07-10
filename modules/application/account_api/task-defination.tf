@@ -4,7 +4,7 @@ data "aws_ecr_image" "latest" {
 }
 
 resource "aws_ecs_task_definition" "Account_API" {
-  family                   = "Account-API"
+  family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -21,13 +21,14 @@ resource "aws_ecs_task_definition" "Account_API" {
 
   container_definitions = jsonencode([
     {
-      name  = "Account-API"
-      image = data.aws_ecr_image.latest.image_uri
+      name  = local.application.name
+    #   image = data.aws_ecr_image.latest.image_uri
+      image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/Account-API",
+          "awslogs-group"         = "/ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -54,8 +55,8 @@ resource "aws_ecs_task_definition" "Account_API" {
       portMappings = [
         {
           name          = "look-card-account-api-8080-tcp",
-          containerPort = 8080,
-          hostPort      = 8080,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },
@@ -72,7 +73,7 @@ resource "aws_ecs_task_definition" "Account_API" {
 }
 
 resource "aws_cloudwatch_log_group" "Account_API" {
-  name = "/ecs/Account-API"
+  name = "/ecs/${local.application.name}"
 }
 
 

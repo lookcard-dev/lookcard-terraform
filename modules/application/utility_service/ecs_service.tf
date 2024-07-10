@@ -16,7 +16,7 @@ resource "aws_service_discovery_service" "evvo_utility_service" {
 }
 
 resource "aws_ecs_service" "utility" {
-  name            = "Utility"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Utility.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -29,8 +29,8 @@ resource "aws_ecs_service" "utility" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.utility_target_group.arn
-    container_name   = "Utility"
-    container_port   = 8000
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 
   service_registries {
@@ -58,13 +58,13 @@ resource "aws_lb_listener_rule" "utility_listener_rule" {
 
   condition {
     path_pattern {
-      values = ["/v2/api/uti-lel6n01qq/*"]
+      values = local.load_balancer.api_path
     }
   }
 
-  priority = 9
+  priority = local.load_balancer.priority
   tags = {
-    Name = "Utility-listener-rule"
+    Name = "${local.application.name}-listener-rule"
   }
 }
 

@@ -17,7 +17,7 @@ resource "aws_service_discovery_service" "evvo_transaction_service" {
 
 
 resource "aws_ecs_service" "transaction" {
-  name            = "Transaction"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Transaction.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -30,8 +30,8 @@ resource "aws_ecs_service" "transaction" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.transaction_api_target_group.arn
-    container_name   = "Transaction"
-    container_port   = 3000
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 
   service_registries {
@@ -64,11 +64,11 @@ resource "aws_lb_listener_rule" "transaction_api_listener_rule" {
 
   condition {
     path_pattern {
-      values = ["/v2/api/tran-m13unmbb2/*"]
+      values = local.load_balancer.api_path
     }
   }
 
-  priority = 7
+  priority = local.load_balancer.priority
   tags = {
     Name = "transaction-api-listener-rule"
   }

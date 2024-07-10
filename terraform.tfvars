@@ -38,6 +38,16 @@ network = {
 
 image_tag = {
   notification = "270624091940"
+  account_api  = "3e562ad4908097ce61b405c7af24a5e2dc4db2c5"
+  authentication_api = "280624104055"
+  blockchain_api = "270624085142"
+  card_api = "240624053550" 
+  crypto_api = "1216333e5dd6413037f18a0e5cd9c3503210e278"
+  reporting_api = "140624084613"
+  transaction_listener = "d002c4cfb71742c7a47679cef93637f1470f8baf"
+  transaction_api  = "140624091341"
+  users_api = "140624095823"
+  utility_api = "270624092203"
 }
 
 

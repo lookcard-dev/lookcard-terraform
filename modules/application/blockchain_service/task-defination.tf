@@ -5,7 +5,7 @@ data "aws_ecr_image" "latest" {
 }
 
 resource "aws_ecs_task_definition" "Blockchain" {
-  family                   = "Blockchain"
+  family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -21,14 +21,14 @@ resource "aws_ecs_task_definition" "Blockchain" {
   }
   container_definitions = jsonencode([
     {
-      name  = "Blockchain"
-      image = data.aws_ecr_image.latest.image_uri
+      name  = local.application.name
+      image = "${local.application.image}:${local.application.image_tag}"
 
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/Blockchain",
+          "awslogs-group"         = "/ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -56,5 +56,5 @@ resource "aws_ecs_task_definition" "Blockchain" {
 }
 
 resource "aws_cloudwatch_log_group" "blockchain" {
-  name = "/ecs/Blockchain"
+  name = "/ecs/${local.application.name}"
 }

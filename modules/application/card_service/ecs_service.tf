@@ -17,7 +17,7 @@ resource "aws_service_discovery_service" "evvo_card_service" {
 }
 
 resource "aws_ecs_service" "Card" {
-  name            = "Card"
+  name            = local.application.name
   task_definition = aws_ecs_task_definition.Card.arn
   launch_type     = "FARGATE"
   desired_count   = 1
@@ -30,8 +30,8 @@ resource "aws_ecs_service" "Card" {
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.Card_target_group.arn
-    container_name   = "Card"
-    container_port   = "8000"
+    container_name   = local.application.name
+    container_port   = local.application.port
   }
 
   service_registries {
@@ -57,10 +57,10 @@ resource "aws_lb_listener_rule" "Card_listener_rule" {
   }
   condition {
     path_pattern {
-      values = ["/v2/api/card-ywso44nnn/*"] # Wildcard path condition to match all requests
+      values = local.load_balancer.api_path # Wildcard path condition to match all requests
     }
   }
-  priority = 5
+  priority = local.load_balancer.priority
   tags = {
     Name = "Card_listener_rule"
     # Add more tags as needed
