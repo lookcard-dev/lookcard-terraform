@@ -1,8 +1,7 @@
 
 variable "secret_manager" {}
 
-variable "lambda_code_s3_bucket" {}
-variable "lambda_code_data_process_s3key" {}
+variable "lambda_code" {}
 
 data "aws_iam_policy_document" "lambda_sts_policy" {
   statement {

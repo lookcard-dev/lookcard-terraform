@@ -21,8 +21,8 @@ module "crypto-fundwithdrawal" {
 module "data-process" {
   source              = "./data-process"
   secret_manager               = var.secret_manager
-  lambda_code_s3_bucket = var.lambda_code_s3_bucket
-  lambda_code_data_process_s3key = var.lambda_code_data_process_s3key
+  lambda_code                  = var.lambda_code
+#   lambda_code_data_process_s3key = var.lambda_code_data_process_s3key
 }
 
 
