@@ -27,7 +27,6 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
       "COINRANKING_SECRET_ARN"          = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:COINRANKING-5Js8eX"
       "ELLIPTIC_SECRET_ARN"             = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
       "SYSTEM_CRYPTO_WALLET_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt"
-    #   "SQS_NOTIFICATION_QUEUE_URL"      = aws_sqs_queue.Lookcard_Notification_Queues.url
       "SQS_NOTIFICATION_QUEUE_URL"      = var.sqs.lookcard_notification_queue_url
     }
   }
@@ -40,7 +39,6 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
 
 resource "aws_lambda_event_source_mapping" "aggregator_tron_queue_event" {
   depends_on       = [aws_lambda_function.aggregator_tron_functions]
-#   event_source_arn = aws_sqs_queue.Aggregator_Tron_Queue.arn
   event_source_arn = var.sqs.aggregator_tron_arn
   function_name    = aws_lambda_function.aggregator_tron_functions.function_name
   batch_size       = 10 # Change as per your requirements

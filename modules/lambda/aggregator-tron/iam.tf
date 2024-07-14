@@ -51,7 +51,6 @@ resource "aws_iam_policy" "lambda_aggregator_tron_sqs_send_message_policys" {
         ],
         "Resource" : [
             "${var.sqs.lookcard_notification_queue_arn}"
-        #   "arn:aws:sqs:ap-southeast-1:975050173595:Lookcard_Notification.fifo"
         ]
       }
     ]

@@ -51,7 +51,6 @@ resource "aws_iam_policy" "Lambda_Crypto_Fund_Withdrawal_sqs_send_message_policy
         ],
         "Resource" : [
             "${var.sqs.crypto_fund_withdrawal_queue_arn}"
-        #   "arn:aws:sqs:ap-southeast-1:975050173595:Crypto_Fund_Withdrawal.fifo"
         ]
       }
     ]

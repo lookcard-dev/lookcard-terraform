@@ -34,7 +34,6 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
 
 resource "aws_lambda_event_source_mapping" "crypto_fund_withdrawal_queue_event" {
   depends_on                 = [aws_lambda_function.crypto_fund_withdrawal_function]
-#   event_source_arn           = aws_sqs_queue.Crypto_Fund_Withdrawal_Queue.arn
   event_source_arn           = var.sqs.crypto_fund_withdrawal_queue_arn
   function_name              = aws_lambda_function.crypto_fund_withdrawal_function.function_name
   batch_size                 = 10 # Change as per your requirements

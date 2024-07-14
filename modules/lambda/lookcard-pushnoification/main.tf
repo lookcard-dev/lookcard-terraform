@@ -1,5 +1,4 @@
 resource "aws_lambda_function" "push_notification_function" {
-#   depends_on    = [data.archive_file.lambda]
   function_name = "Push_Notification"
   role          = aws_iam_role.push_notification_role.arn
   handler       = "index.handler"

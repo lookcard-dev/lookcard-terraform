@@ -15,7 +15,6 @@ resource "aws_lambda_function" "eliptic" {
 
 resource "aws_lambda_event_source_mapping" "eliptic" {
   depends_on       = [aws_lambda_function.eliptic]
-#   event_source_arn = aws_sqs_queue.Eliptic.arn
   event_source_arn = var.sqs.eliptic_arn
   function_name    = aws_lambda_function.eliptic.arn
   batch_size       = 10 # Change as per your requirements

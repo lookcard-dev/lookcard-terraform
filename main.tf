@@ -57,9 +57,9 @@ module "application" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  image_tag = var.image_tag
-  sqs       = module.sqs
-  lambda                                     = module.lambda
+  image_tag                                = var.image_tag
+  sqs                                      = module.sqs
+  lambda                                   = module.lambda
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   secret_manager                           = module.secret-manager
@@ -88,7 +88,7 @@ module "sns_topic" {
 }
 
 module "sqs" {
-  source                  = "./modules/sqs"
+  source = "./modules/sqs"
 }
 
 module "lambda" {
@@ -110,10 +110,10 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  lambda_code_s3_bucket        = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+  lambda_code_s3_bucket          = "${var.s3_bucket.aml_code}-${var.general_config.env}"
   lambda_code_data_process_s3key = var.lambda_code.data_process_s3key
   sqs                            = module.sqs
-  secret_manager               = module.secret-manager
-  dynamodb_table_arn           = module.rds.dynamodb_table_arn
+  secret_manager                 = module.secret-manager
+  dynamodb_table_arn             = module.rds.dynamodb_table_arn
 }
 
