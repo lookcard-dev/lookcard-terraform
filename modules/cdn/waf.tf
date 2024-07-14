@@ -1,7 +1,7 @@
 
 
 resource "aws_wafv2_web_acl" "cdn_waf" {
-  name  = "CDN_Waf_Rule"
+  name  = "cdn_waf_rule"
   scope = "CLOUDFRONT"
   default_action {
     allow {

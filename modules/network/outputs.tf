@@ -1,14 +1,14 @@
 # # Output for Public Subnet IDs
 
 output "vpc" {
-  value = aws_vpc.look-card.id
+  value = aws_vpc.vpc.id
 }
 
 output "public_subnet_ids" {
-  value = aws_subnet.look-card-public-subnet[*].id
+  value = aws_subnet.public-subnet[*].id
 }
 output "private_subnet_ids" {
-  value = aws_subnet.look-card-private-subnet[*].id
+  value = aws_subnet.private-subnet[*].id
 }
 
 # output "Database_Sub_ids" {

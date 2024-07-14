@@ -2,27 +2,6 @@
 variable "secret_names" {
   type = list(string)
   default = [
-    "firebase", //過!
-    "tron", //過!
-    "reap", //過!
-    "wallet", // 棄用!
-    "elliptic", //過!
-    "blockchain", // 棄用!
-    "sumsub", //過!
-    "twilio",//過!
-    "sendgrid",//過!
-    "crypto-api-worker-wallet",// 改名叫SYSTEM_CRYPTO_WALLET
-    "env",//      //過!
-    "token",//      // TOKEN
-    "db/secret",
-    "aml_env",//evvo
-    "crypto-api-env",//
-    "notification-env",//
-    "coinranking",
-    "aggregator-env",//
-    "did-processor/lambda",//
-    "look-card_db_master_password",//
-
 //* 以下是新secret manager */
     //one2cloud
     "REAP",
@@ -35,6 +14,7 @@ variable "secret_names" {
     "TWILIO",
     "SENDGRID",
     "COINRANKING",
+    "TELEGRAM",
     // evvo lab 
     "ENV",
     "TOKEN", //
@@ -44,6 +24,6 @@ variable "secret_names" {
     "NOTIFICATION_ENV",
     "AGGREGATOR_ENV",
     "DID_PROCESSOR_LAMBDA",
-    "DB_MASTER_PASSWORD"
+    "DB_MASTER_PASSWORD",
   ]
 }

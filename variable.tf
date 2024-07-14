@@ -81,7 +81,6 @@ variable "env" {
   default = "testing"
 }
 
-variable "lookcard_rds_password" {}
 
 
 

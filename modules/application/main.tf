@@ -1,14 +1,14 @@
-module "hello-world" {
-  source = "./helloworld"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  ecs_cluster_id      = aws_ecs_cluster.look_card.id
-  private_subnet_list = var.network.private_subnet
-  alb_arn             = aws_alb.look-card.arn
-}
+# module "hello-world" {
+#   source = "./helloworld"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   ecs_cluster_id      = aws_ecs_cluster.look_card.id
+#   private_subnet_list = var.network.private_subnet
+#   alb_arn             = aws_alb.look-card.arn
+# }
 
 module "authentication" {
   source              = "./authentication"
@@ -26,8 +26,8 @@ module "authentication" {
     tag = var.image_tag.authentication_api
   }
   secret_manager = var.secret_manager
-  sqs_withdrawal = var.sqs_withdrawal
   iam_role       = aws_iam_role.lookcard_ecs_task_role.arn
+  sqs            = var.sqs
 }
 
 module "crypto_api" {
@@ -83,11 +83,12 @@ module "transaction_listener" {
   }
   vpc_id                                   = var.network.vpc
   cluster                                  = aws_ecs_cluster.look_card.arn
-  aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
+  # aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
-  aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
+  # aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
   secret_manager                           = var.secret_manager
   trongrid_secret_arn                      = var.trongrid_secret_arn
+  sqs                                      = var.sqs
 }
 
 module "account_api" {
@@ -103,11 +104,10 @@ module "account_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcard_notification_sqs_url  = var.lookcard_notification_sqs_url
-  crypto_fund_withdrawal_sqs_url = var.crypto_fund_withdrawal_sqs_url
   lookcardlocal_namespace_id     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                        = aws_ecs_cluster.look_card.arn
   secret_manager                 = var.secret_manager
+  sqs                            = var.sqs
 }
 
 

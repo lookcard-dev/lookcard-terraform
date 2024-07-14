@@ -1,9 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "transaction-api"
-  most_recent     = true
-
-}
-
 resource "aws_ecs_task_definition" "Transaction" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -28,13 +22,13 @@ resource "aws_ecs_task_definition" "Transaction" {
 
   container_definitions = jsonencode([
     {
-      name  = "Transaction"
-      image = data.aws_ecr_image.latest.image_uri
+      name  = local.application.name
+      image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/Transaction",
+          "awslogs-group"         = "/ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -43,8 +37,8 @@ resource "aws_ecs_task_definition" "Transaction" {
       portMappings = [
         {
           name          = "look-card-transaction-3000-tcp",
-          containerPort = 3000,
-          hostPort      = 3000,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },
@@ -72,37 +66,4 @@ resource "aws_ecs_task_definition" "Transaction" {
 resource "aws_cloudwatch_log_group" "Transaction" {
   name = "/ecs/Transaction"
 
-}
-
-
-resource "aws_security_group" "transactionApi" {
-  #   depends_on  = [var.vpc_id]
-  name        = "lookcard-transaction-service-security-grp"
-  description = "Security group for ECS services"
-  vpc_id      = var.network.vpc
-
-  ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "lookcard-transaction-security-group"
-  }
 }

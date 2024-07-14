@@ -1,37 +1,3 @@
-resource "aws_lambda_function" "eliptic" {
-  function_name = "elliptic"
-  role          = aws_iam_role.eliptic_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs20.x"
-  s3_bucket     = var.lambda_code.s3_bucket
-  s3_key        = var.lambda_code.elliptic_s3key
-  timeout       = 300
-
-  vpc_config {
-    subnet_ids         = var.network.private_subnet
-    security_group_ids = [aws_security_group.eliptic_sg.id]
-  }
-}
-
-
-resource "aws_security_group" "eliptic_sg" {
-  name        = "eliptic-sg"
-  description = "Security group for eliptic lambda"
-  vpc_id      = var.network.vpc
-
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "Eliptic-sg"
-  }
-}
-
 resource "aws_iam_role" "eliptic_role" {
   name               = "eliptic_role"
   assume_role_policy = data.aws_iam_policy_document.lambda_sts_policy.json
@@ -78,7 +44,6 @@ resource "aws_iam_policy_attachment" "eliptic_secrets_manager_read_attachment" {
   policy_arn = aws_iam_policy.eliptic_secrets_manager_read_policy.arn
 }
 
-
 resource "aws_iam_policy" "eliptic_SQS_policy" {
   name        = "SQS_Access_Eliptic"
   description = "Allows read-only access to Secrets Manager"
@@ -106,5 +71,3 @@ resource "aws_iam_policy_attachment" "eliptic_SQS_attachment" {
   roles      = [aws_iam_role.eliptic_role.name]
   policy_arn = aws_iam_policy.eliptic_SQS_policy.arn
 }
-
-

@@ -1,25 +1,25 @@
-resource "aws_vpc" "look-card" {
+resource "aws_vpc" "vpc" {
   cidr_block                       = var.network.vpc_cidr
   enable_dns_hostnames             = "true"
   enable_dns_support               = "true"
   assign_generated_ipv6_cidr_block = "true"
   tags = {
-    Name = "look-card-vpc"
+    Name = "vpc"
   }
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.look-card.id
+  vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "Internet-Gateway-Public"
+    Name = "internet-gateway-public"
   }
 
 }
 
 
 resource "aws_security_group" "nat_sg" {
-  name_prefix = "nat-sg-"
-  vpc_id      = aws_vpc.look-card.id
+  name_prefix = "nat-sg"
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 80
@@ -51,7 +51,7 @@ resource "aws_security_group" "nat_sg" {
 resource "aws_instance" "nat" {
   ami                    = data.aws_ami.nat_ami.id
   instance_type          = "t3.small"
-  subnet_id              = aws_subnet.look-card-public-subnet[2].id
+  subnet_id              = aws_subnet.public-subnet[2].id
   vpc_security_group_ids = [aws_security_group.nat_sg.id] # 使用安全组的ID
   source_dest_check      = false
   tags = {

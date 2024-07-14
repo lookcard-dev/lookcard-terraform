@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "lookcard-terraform-backend-testing"
+    bucket         = "lookcard-terraform-backend-development"
     key            = "state/terraform.tfstate"
     region         = "ap-southeast-1"
     encrypt        = true
@@ -34,8 +34,7 @@ module "rds" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  lookcard_db_secret    = module.secret-manager.lookcard_db_secret
-  lookcard_rds_password = module.secret-manager.lookcard_db_secret
+  lookcard_rds_password = module.secret-manager.rds_password_secret
 }
 
 module "VPC" {
@@ -45,8 +44,6 @@ module "VPC" {
     replica_number  = 1
     gateway_enabled = true
   }
-  # iam_role_arn                = module.IAM_Role.vpc_log
-  # log_bucket                  = module.S3.vpc_bucket_arn
 }
 
 module "application" {
@@ -61,18 +58,9 @@ module "application" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   image_tag = var.image_tag
-  sqs_withdrawal                           = module.lambda.withdrawal_sqs
-  lookcard_notification_sqs_url            = module.lambda.lookcard_notification_sqs_url
-  crypto_fund_withdrawal_sqs_url           = module.lambda.crypto_fund_withdrawal_sqs_url
-  push_message_invoke                      = module.lambda.push_message_web_invoke
-  push_message_web_function                = module.lambda.push_message_web_function
-  web_socket_function                      = module.lambda.web_socket_function
-  web_socket_invoke                        = module.lambda.web_socket_invoke
-  web_socket_disconnect_invoke             = module.lambda.web_socket_disconnect_invoke
-  web_socket_disconnect_function           = module.lambda.web_socket_disconnect_function
-  aggregator_tron_sqs_url                  = module.lambda.aggregator_tron_sqs_url
+  sqs       = module.sqs
+  lambda                                     = module.lambda
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
-  aggregator_tron_sqs_arn                  = module.lambda.aggregator_tron_sqs_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   secret_manager                           = module.secret-manager
 }
@@ -99,6 +87,10 @@ module "sns_topic" {
   sns_subscriptions_email = var.sns_subscriptions_email
 }
 
+module "sqs" {
+  source                  = "./modules/sqs"
+}
+
 module "lambda" {
   source            = "./modules/lambda"
   ddb_websocket_arn = module.rds.ddb_websocket.arn
@@ -118,6 +110,10 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  secret_manager     = module.secret-manager
-  dynamodb_table_arn = module.rds.dynamodb_table_arn
+  lambda_code_s3_bucket        = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+  lambda_code_data_process_s3key = var.lambda_code.data_process_s3key
+  sqs                            = module.sqs
+  secret_manager               = module.secret-manager
+  dynamodb_table_arn           = module.rds.dynamodb_table_arn
 }
+

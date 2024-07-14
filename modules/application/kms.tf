@@ -21,7 +21,7 @@ resource "aws_kms_key_policy" "wallet_encryption_policy" {
         "Sid" : "Enable IAM User Permissions",
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "arn:aws:iam::576293270682:root"
+          "AWS" : "arn:aws:iam::227720554629:root"
         },
         "Action" : "kms:*",
         "Resource" : "*"
@@ -67,7 +67,7 @@ resource "aws_kms_key_policy" "crypto_api_encryption_policy" {
         "Sid" : "Enable IAM User Permissions",
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "arn:aws:iam::576293270682:root"
+          "AWS" : "arn:aws:iam::227720554629:root"
         },
         "Action" : "kms:*",
         "Resource" : "*"
@@ -139,7 +139,7 @@ resource "aws_kms_key_policy" "crypto_api_generator_policy" {
         "Sid" : "Enable IAM User Permissions",
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "arn:aws:iam::576293270682:root"
+          "AWS" : "arn:aws:iam::227720554629:root"
         },
         "Action" : "kms:*",
         "Resource" : "*"

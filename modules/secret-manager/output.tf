@@ -1,4 +1,4 @@
-output "lookcard_db_secret" {
+output "rds_password_secret" {
   value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].id
 }
 
@@ -32,4 +32,7 @@ output "aml_env_secret_arn" {
 
 output "trongrid_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["TRONGRID"].arn
+}
+output "telegram_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["TELEGRAM"].arn
 }

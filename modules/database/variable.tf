@@ -3,7 +3,7 @@
 # variable "Database-Sub-3" {}
 
 # variable "rds_security_group-1" {}
-variable "lookcard_db_secret" {}
+# variable "lookcard_db_secret" {}
 
 variable "network" {
   type = object({

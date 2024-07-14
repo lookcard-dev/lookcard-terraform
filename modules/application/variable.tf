@@ -64,20 +64,21 @@ variable "image_tag" {
   })
 }
 
-variable "sqs_withdrawal" {}
+# variable "lookcard_websocket_arn" {}
+# variable "lookcard_notification_sqs_url" {}
 
-variable "lookcard_notification_sqs_url" {}
-variable "crypto_fund_withdrawal_sqs_url" {}
 
-variable "push_message_invoke" {}
-variable "push_message_web_function" {}
-variable "web_socket_invoke" {}
-variable "web_socket_function" {}
-variable "web_socket_disconnect_invoke" {}
-variable "web_socket_disconnect_function" {}
-variable "aggregator_tron_sqs_url" {}
+# variable "push_message_invoke" {}
+# variable "push_message_web_function" {}
+# variable "web_socket_invoke" {}
+# variable "web_socket_function" {}
+# variable "web_socket_disconnect_invoke" {}
+# variable "web_socket_disconnect_function" {}
+# variable "aggregator_tron_sqs_url" {}
 
 variable "dynamodb_crypto_transaction_listener_arn" {}
-variable "aggregator_tron_sqs_arn" {}
+# variable "aggregator_tron_sqs_arn" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
+variable "sqs" {}
+variable "lambda" {}

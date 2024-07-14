@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "Account_API" {
       environment = [
         {
           name  = "CRYPTO_API_URL"
-          value = "https://api.test.lookcard.io"
+          value = "https://api.develop.not-lookcard.com"
         },
         {
           name  = "DATABASE_NAME"
@@ -45,11 +45,11 @@ resource "aws_ecs_task_definition" "Account_API" {
         },
         {
           name  = "SQS_NOTIFICATION_QUEUE_URL"
-          value = var.lookcard_notification_sqs_url
+          value = var.sqs.lookcard_notification_queue_url
         },
         {
           name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
-          value = var.crypto_fund_withdrawal_sqs_url
+          value = var.sqs.crypto_fund_withdrawal_queue_url
         }
       ]
       portMappings = [
