@@ -22,7 +22,6 @@ module "data-process" {
   source              = "./data-process"
   secret_manager               = var.secret_manager
   lambda_code                  = var.lambda_code
-#   lambda_code_data_process_s3key = var.lambda_code_data_process_s3key
 }
 
 
