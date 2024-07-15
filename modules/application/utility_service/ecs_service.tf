@@ -1,5 +1,5 @@
 resource "aws_service_discovery_service" "evvo_utility_service" {
-  name = "_utility"
+  name = "_utility.api"
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace_id

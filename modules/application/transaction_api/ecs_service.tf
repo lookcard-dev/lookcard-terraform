@@ -1,5 +1,5 @@
 resource "aws_service_discovery_service" "evvo_transaction_service" {
-  name = "_transaction"
+  name = "_transaction.api"
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace_id

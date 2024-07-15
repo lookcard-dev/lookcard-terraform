@@ -28,6 +28,7 @@ module "authentication" {
   secret_manager = var.secret_manager
   iam_role       = aws_iam_role.lookcard_ecs_task_role.arn
   sqs            = var.sqs
+  cluster_name   = aws_ecs_cluster.look_card.name
 }
 
 module "crypto_api" {

@@ -64,3 +64,4 @@ locals {
     }
   ]
 }
+variable "cluster_name" {}

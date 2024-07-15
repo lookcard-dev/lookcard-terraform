@@ -1,5 +1,5 @@
 resource "aws_service_discovery_service" "evvo_blockchain_service" {
-  name = "_blockchain"
+  name = "_blockchain.api"
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace_id
