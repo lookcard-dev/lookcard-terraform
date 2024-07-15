@@ -1,8 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "account-api"
-  most_recent     = true
-}
-
 resource "aws_ecs_task_definition" "Account_API" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -22,7 +17,6 @@ resource "aws_ecs_task_definition" "Account_API" {
   container_definitions = jsonencode([
     {
       name  = local.application.name
-    #   image = data.aws_ecr_image.latest.image_uri
       image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",

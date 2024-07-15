@@ -19,3 +19,4 @@ variable "network" {
   })
 }
 
+variable "secret_manager" {}

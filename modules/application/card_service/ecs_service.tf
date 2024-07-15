@@ -22,7 +22,6 @@ resource "aws_ecs_service" "Card" {
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
-
   network_configuration {
     subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
     security_groups  = [aws_security_group.Card.id]

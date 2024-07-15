@@ -67,7 +67,6 @@ resource "aws_ecs_service" "Authentication" {
 #     scale_out_cooldown = 60
 #     scale_in_cooldown  = 180
 #   }
-
 # }
 
 # # Define autoscaling target
@@ -77,7 +76,4 @@ resource "aws_ecs_service" "Authentication" {
 #   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.Authentication.name}"
 #   scalable_dimension = "ecs:service:DesiredCount"
 #   service_namespace  = "ecs"
-
 # }
-
-#

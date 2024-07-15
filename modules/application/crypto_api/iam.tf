@@ -62,9 +62,7 @@ resource "aws_iam_role" "crypto_api_task_role" {
     ]
   })
 
-  tags = {
-
-  }
+  tags = {}
 }
 
 resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {

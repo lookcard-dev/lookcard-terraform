@@ -13,17 +13,7 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
   memory_size   = 512
 
   environment {
-    variables = {
-      "CRYPTO_API_PROTOCOL"             = "http"
-      "CRYPTO_API_HOST"                 = "crypto.api.lookcard.local"
-      "CRYPTO_API_PORT"                 = 8080
-      "ACCOUNT_API_PROTOCOL"            = "http"
-      "ACCOUNT_API_HOST"                = "account.api.lookcard.local"
-      "ACCOUNT_API_PORT"                = 8080
-      "ELLIPTIC_SECRET_ARN"             = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
-      "SYSTEM_CRYPTO_WALLET_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt"
-      "SQS_NOTIFICATION_QUEUE_URL"      = var.sqs.lookcard_notification_queue_url
-    }
+    variables = local.lambda_env_vars
   }
 
   vpc_config {

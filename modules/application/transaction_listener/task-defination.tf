@@ -1,9 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "transaction-listener"
-  most_recent     = true
-}
-
-
 resource "aws_ecs_task_definition" "Transaction-Listener-1" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -51,7 +45,7 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
         },
         {
           name  = "CRYPTO_API_HOST"
-          value = "crypto.lookcard.local"
+          value = "crypto.api.lookcard.local"
         },
         {
           name  = "CRYPTO_API_PORT"
@@ -70,7 +64,6 @@ resource "aws_ecs_task_definition" "Transaction-Listener-1" {
       secrets = [
         {
           name          = "TRONGRID_API_KEY"
-        #   valueFrom     = var.trongrid_secret_arn
           valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
         }
       ]

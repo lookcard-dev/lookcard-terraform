@@ -37,8 +37,8 @@ resource "aws_ecs_task_definition" "Blockchain" {
       portMappings = [
         {
           name          = "look-card-blockchain-3000-tcp",
-          containerPort = 3000,
-          hostPort      = 3000,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },

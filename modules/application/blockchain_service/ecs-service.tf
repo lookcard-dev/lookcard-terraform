@@ -31,7 +31,7 @@ resource "aws_ecs_service" "blockchain" {
   load_balancer {
     target_group_arn = aws_lb_target_group.blockchain_target_group.arn
     container_name   = local.application.name
-    container_port   = "3000"
+    container_port   = local.application.port
   }
 
   service_registries {

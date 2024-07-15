@@ -36,3 +36,17 @@ output "trongrid_secret_arn" {
 output "telegram_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["TELEGRAM"].arn
 }
+
+output "system_crypto_wallet_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["SYSTEM_CRYPTO_WALLET"].arn
+}
+
+output "coinranking_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["COINRANKING"].arn
+}
+
+
+
+output "notification_env_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["NOTIFICATION_ENV"].arn
+}

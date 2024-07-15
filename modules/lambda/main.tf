@@ -6,6 +6,7 @@ module "aggregator-tron" {
     public_subnet  = var.network.public_subnet
   }
   sqs              = var.sqs
+  secret_manager   = var.secret_manager
 }
 
 module "crypto-fundwithdrawal" {
@@ -16,6 +17,7 @@ module "crypto-fundwithdrawal" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  secret_manager   = var.secret_manager
 }
 
 module "data-process" {
@@ -45,11 +47,13 @@ module "lookcard-notification" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  secret_manager   = var.secret_manager
 }
 
 module "lookcard-websocket" {
   source              = "./lookcard-websocket"
   sqs                 = var.sqs
+  secret_manager      = var.secret_manager
 }
 
 module "lookcard-pushnoification" {
@@ -59,6 +63,7 @@ module "lookcard-pushnoification" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  secret_manager   = var.secret_manager
 }
 
 module "websocket-connect" {

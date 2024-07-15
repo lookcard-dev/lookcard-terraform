@@ -13,22 +13,7 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
   memory_size   = 512
 
   environment {
-    variables = {
-      "CRYPTO_API_PROTOCOL"             = "http"
-      "CRYPTO_API_HOST"                 = "crypto.api.lookcard.local"
-      "CRYPTO_API_PORT"                 = 8080
-      "USER_API_PROTOCOL"               = "http"
-      "USER_API_HOST"                   = "user.api.lookcard.local"
-      "USER_API_PORT"                   = 8000
-      "ACCOUNT_API_PROTOCOL"            = "http"
-      "ACCOUNT_API_HOST"                = "account.api.lookcard.local"
-      "ACCOUNT_API_PORT"                = 8080
-      "SECRET_MANAGER_NAME"             = "Aggregator-env"
-      "COINRANKING_SECRET_ARN"          = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:COINRANKING-5Js8eX"
-      "ELLIPTIC_SECRET_ARN"             = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
-      "SYSTEM_CRYPTO_WALLET_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt"
-      "SQS_NOTIFICATION_QUEUE_URL"      = var.sqs.lookcard_notification_queue_url
-    }
+    variables = local.lambda_env_vars
   }
 
   vpc_config {

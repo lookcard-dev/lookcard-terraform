@@ -28,7 +28,7 @@ resource "aws_iam_policy" "websocket_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:227720554629:secret:AML_ENV-LNj88N"
+        "Resource" : "${var.secret_manager.aml_env_secret_arn}"
       }
     ]
   })

@@ -13,11 +13,7 @@ resource "aws_lambda_function" "lookcard_notification_function" {
   memory_size   = 512
 
   environment {
-    variables = {
-      "FROM_EMAIL"     = "no-reply@lookcard.io"
-      "APP_NAME"       = "LOOKCARD"
-      "AWS_SECRET_ARN" = "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
-    }
+    variables = local.lambda_env_vars    
   }
 
   vpc_config {

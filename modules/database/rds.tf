@@ -15,7 +15,6 @@ resource "aws_rds_cluster" "lookcard_develop" {
   database_name          = "develop"
   master_username        = "develop"
   master_password        = var.lookcard_rds_password
-#   master_password        = "dsu^DJF^dmn13"
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   storage_encrypted      = true

@@ -44,7 +44,6 @@ resource "aws_ecs_task_definition" "Notification" {
           sourceVolume  = "data",
           containerPath = "/usr/src/data",
         },
-
       ]
     }
   ])

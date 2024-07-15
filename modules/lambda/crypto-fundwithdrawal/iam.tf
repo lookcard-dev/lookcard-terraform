@@ -30,8 +30,8 @@ resource "aws_iam_policy" "Lambda_Crypto_Fund_Withdrawal_secrets_manager_read_po
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:SYSTEM_CRYPTO_WALLET-biOCGt",
-          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:ELLIPTIC-5fL1JA"
+            "${var.secret_manager.system_crypto_wallet_secret_arn}",
+            "${var.secret_manager.elliptic_secret_arn}"
         ]
       }
     ]

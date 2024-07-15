@@ -1,8 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = local.application.name
-  most_recent     = true
-}
-
 resource "aws_ecs_task_definition" "crypto-api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -51,6 +46,7 @@ resource "aws_ecs_task_definition" "crypto-api" {
           value = var.crypto_api_generator_kms_arn
         },
       ]
+
       portMappings = [
         {
           name          = "look-card-crypto-api-8080-tcp",

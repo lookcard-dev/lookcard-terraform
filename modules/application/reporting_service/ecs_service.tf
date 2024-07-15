@@ -20,9 +20,9 @@ resource "aws_lb_listener_rule" "reporting_listener_rule" {
     }
   }
 
-  priority = 6
+  priority = local.load_balancer.priority
   tags = {
-    Name        = "${local.application.name}-listener-rule"
+    Name          = "${local.application.name}-listener-rule"
   }
 }
 

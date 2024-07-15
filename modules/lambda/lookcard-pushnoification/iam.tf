@@ -27,7 +27,7 @@ resource "aws_iam_policy" "push_notification_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:aml_env-6xOQxJ"
+        "Resource" : "${var.secret_manager.aml_env_secret_arn}"
       }
     ]
   })

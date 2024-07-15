@@ -29,7 +29,7 @@ resource "aws_iam_policy" "lookcard_notification_secrets_manager_read_policy" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          "arn:aws:secretsmanager:ap-southeast-1:975050173595:secret:notification-env-MwyOMr"
+            "${var.secret_manager.notification_env_secret_arn}"
         ]
       }
     ]
