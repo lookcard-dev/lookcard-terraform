@@ -1,9 +1,8 @@
-
 resource "aws_service_discovery_service" "evvo_card_service" {
-  name = "_card.api"
+  name = "card"
 
   dns_config {
-    namespace_id = var.lookcardlocal_namespace_id
+    namespace_id = var.api_lookcardlocal_namespace
 
     dns_records {
       ttl  = 10

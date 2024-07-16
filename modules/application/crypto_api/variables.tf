@@ -1,4 +1,4 @@
-variable "lookcardlocal_namespace_id" {}
+variable "api_lookcardlocal_namespace" {}
 variable "network" {
   type = object({
     vpc            = string

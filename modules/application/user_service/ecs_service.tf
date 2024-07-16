@@ -1,8 +1,8 @@
 resource "aws_service_discovery_service" "evvo_user_service" {
-  name = "_user.api"
+  name = "user"
 
   dns_config {
-    namespace_id = var.lookcardlocal_namespace_id
+    namespace_id = var.api_lookcardlocal_namespace
 
     dns_records {
       ttl  = 10

@@ -15,6 +15,7 @@ variable "secret_names" {
     "SENDGRID",
     "COINRANKING",
     "TELEGRAM",
+    "SENTRY",
     // evvo lab 
     "ENV",
     "TOKEN", //

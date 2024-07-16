@@ -47,7 +47,7 @@ module "crypto_api" {
   secret_manager                = var.secret_manager
   crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
-  lookcardlocal_namespace_id    = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace    = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
 }
 
 module "transaction_api" {
@@ -66,7 +66,7 @@ module "transaction_api" {
   iam_role                   = aws_iam_role.lookcard_ecs_task_role.arn
   sg_alb_id                  = aws_security_group.api_alb_sg.id
   cluster                    = aws_ecs_cluster.look_card.arn
-  lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   secret_manager             = var.secret_manager
 }
 
@@ -105,7 +105,7 @@ module "account_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace_id     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   cluster                        = aws_ecs_cluster.look_card.arn
   secret_manager                 = var.secret_manager
   sqs                            = var.sqs
@@ -127,7 +127,7 @@ module "card" {
     tag = var.image_tag.card_api
   }
   secret_manager             = var.secret_manager
-  lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
 }
 
 module "blockchain" {
@@ -145,7 +145,7 @@ module "blockchain" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
 }
 
 module "utility" {
@@ -162,7 +162,7 @@ module "utility" {
     url = aws_ecr_repository.look-card["utility-api"].repository_url
     tag = var.image_tag.utility_api
   }
-  lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   secret_manager             = var.secret_manager
 }
 
@@ -198,7 +198,7 @@ module "user" {
     url = aws_ecr_repository.look-card["users-api"].repository_url
     tag = var.image_tag.users_api
   }
-  lookcardlocal_namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   secret_manager             = var.secret_manager
 }
 
