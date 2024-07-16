@@ -55,8 +55,8 @@ resource "aws_ecs_service" "Authentication" {
 
 # Define autoscaling target
 resource "aws_appautoscaling_target" "Authentication" {
-  max_capacity       = 30 # Adjust this value as needed
-  min_capacity       = 6
+  max_capacity       = 1 # Adjust this value as needed
+  min_capacity       = 1
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.Authentication.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
