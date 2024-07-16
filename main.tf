@@ -117,3 +117,13 @@ module "lambda" {
   dynamodb_table_arn             = module.rds.dynamodb_table_arn
 }
 
+module "elasticache" {
+  source = "./modules/elasticache"
+  # aws_provider          = { region = "ap-southeast-1" }
+  network = {
+    vpc             = module.VPC.vpc
+    private_subnet  = module.VPC.private_subnet_ids
+    public_subnet   = module.VPC.public_subnet_ids
+    database_subnet = module.VPC.database_subnet_ids
+  }
+}

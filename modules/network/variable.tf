@@ -1,12 +1,27 @@
 data "aws_availability_zones" "available" {}
 
+# data "aws_ami" "nat_ami" {
+#   most_recent = true
+#   owners      = ["137112412989"]
+
+#   filter {
+#     name   = "name"
+#     values = ["amzn-ami-vpc-nat-2018.03.0.20220705.1-x86_64-ebs"]
+#   }
+
+#   filter {
+#     name   = "architecture"
+#     values = ["x86_64"]
+#   }
+# }
+
 data "aws_ami" "nat_ami" {
   most_recent = true
   owners      = ["137112412989"]
 
   filter {
     name   = "name"
-    values = ["amzn-ami-vpc-nat-2018.03.0.20220705.1-x86_64-ebs"]
+    values = ["amzn-ami-vpc-nat-2018.03.0.20220907.3-x86_64-ebs"]
   }
 
   filter {
@@ -14,6 +29,7 @@ data "aws_ami" "nat_ami" {
     values = ["x86_64"]
   }
 }
+
 
 variable "network" {
   type = object({
