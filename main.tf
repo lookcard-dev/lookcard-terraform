@@ -127,3 +127,14 @@ module "elasticache" {
     database_subnet = module.VPC.database_subnet_ids
   }
 }
+
+module "vpc-endpoint" {
+  source = "./modules/vpc-endpoint"
+  # aws_provider          = { region = "ap-southeast-1" }
+  network = {
+    vpc             = module.VPC.vpc
+    private_subnet  = module.VPC.private_subnet_ids
+    public_subnet   = module.VPC.public_subnet_ids
+  }
+  rt_private_id     = module.VPC.rt_private_id[0]
+}

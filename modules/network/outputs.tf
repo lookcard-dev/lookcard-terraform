@@ -16,6 +16,10 @@ output "database_subnet_ids" {
   value = aws_subnet.database-subnet[*].id
 }
 
+output "rt_private_id" {
+  value = aws_route_table.private-route-table[*].id
+}
+
 # output "Database_Sub_ids" {
 #   value = aws_subnet.look-card-Database-Sub[*].id
 
