@@ -9,33 +9,33 @@ resource "aws_db_subnet_group" "rds_subnet" {
 }
 // rds cluster
 
-# resource "aws_rds_cluster" "lookcard_develop" {
-#   cluster_identifier     = "lookcard-develop-db"
-#   engine                 = "aurora-postgresql"
-#   engine_mode            = "provisioned"
-#   database_name          = "develop"
-#   master_username        = "develop"
-#   # master_password        = var.lookcard_rds_password
-#   master_password        = "hdjs3GDT4FFs1998GdFzz"
-#   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
-#   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
-#   storage_encrypted      = true
-#   skip_final_snapshot    = true
-#   deletion_protection    = false
-#   serverlessv2_scaling_configuration {
-#     max_capacity = 5.0
-#     min_capacity = 0.5 
-#   }
-# }
+resource "aws_rds_cluster" "lookcard_develop" {
+  cluster_identifier     = "lookcard-develop-db"
+  engine                 = "aurora-postgresql"
+  engine_mode            = "provisioned"
+  database_name          = "develop"
+  master_username        = "develop"
+  # master_password        = var.lookcard_rds_password
+  master_password        = "hdjs3GDT4FFs1998GdFzz"
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  storage_encrypted      = true
+  skip_final_snapshot    = true
+  deletion_protection    = false
+  serverlessv2_scaling_configuration {
+    max_capacity = 5.0
+    min_capacity = 0.5 
+  }
+}
 
 # Define the write instance
-# resource "aws_rds_cluster_instance" "write_instance" {
-#   cluster_identifier = aws_rds_cluster.lookcard_develop.id
-#   instance_class     = "db.serverless"
-#   engine             = aws_rds_cluster.lookcard_develop.engine
-#   engine_version     = aws_rds_cluster.lookcard_develop.engine_version
-#   publicly_accessible = false
-# }
+resource "aws_rds_cluster_instance" "write_instance" {
+  cluster_identifier = aws_rds_cluster.lookcard_develop.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.lookcard_develop.engine
+  engine_version     = aws_rds_cluster.lookcard_develop.engine_version
+  publicly_accessible = false
+}
 
 // rds read_instance
 # Define the read instance
