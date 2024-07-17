@@ -70,10 +70,10 @@ ecs_task_secret_vars = [
         name      = "DATABASE_PASSWORD"
         valueFrom = "${var.secret_manager.database_secret_arn}:password::"
     },
-        {
-        name      = "SENTRY_DSN"
-        valueFrom = "${var.secret_manager.sentry_secret_arn}:ACCOUNT_API_DSN::"
-    },
+    #     {
+    #     name      = "SENTRY_DSN"
+    #     valueFrom = "${var.secret_manager.sentry_secret_arn}:ACCOUNT_API_DSN::"
+    # },
     ]
   iam_secrets = [
         var.secret_manager.crypto_api_secret_arn,
