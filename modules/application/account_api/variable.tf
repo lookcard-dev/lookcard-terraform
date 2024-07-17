@@ -75,23 +75,12 @@ ecs_task_secret_vars = [
         valueFrom = "${var.secret_manager.sentry_secret_arn}:ACCOUNT_API_DSN::"
     },
     ]
-iam_secrets = [
-    {
-        sid   = "CryptoApiSecret"
-        arn   = var.secret_manager.crypto_api_secret_arn
-    },
-    {
-        sid   = "FirebaseSecret"
-        arn   = var.secret_manager.firebase_secret_arn
-    },
-    {
-        sid   = "DatabaseSecret"
-        arn   = var.secret_manager.database_secret_arn
-    },
-    {
-        sid   = "EllipticSecret"
-        arn   = var.secret_manager.elliptic_secret_arn
-    }
+  iam_secrets = [
+        var.secret_manager.crypto_api_secret_arn,
+        var.secret_manager.firebase_secret_arn,
+        var.secret_manager.database_secret_arn,
+        var.secret_manager.sentry_secret_arn,
+        var.secret_manager.elliptic_secret_arn
   ]
 }
 

@@ -22,14 +22,14 @@ resource "aws_iam_policy" "Account_API_env_secrets_manager_read_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      for secret in local.iam_secrets : {
-        "Sid"    : secret.sid,
+      {
+        "Sid"    : "secretSid",
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : secret.arn
+        "Resource" : local.iam_secrets
       }
     ]
   })

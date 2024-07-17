@@ -38,6 +38,10 @@ resource "aws_ecs_task_definition" "Account_API" {
           value = "main"
         },
         {
+          name  = "DATABASE_SCHEMA"
+          value = "account"
+        },
+        {
           name  = "SQS_NOTIFICATION_QUEUE_URL"
           value = var.sqs.lookcard_notification_queue_url
         },
