@@ -44,7 +44,12 @@ resource "aws_ecs_task_definition" "Account_API" {
         {
           name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
           value = var.sqs.crypto_fund_withdrawal_queue_url
+        },
+        {
+          name  = "DATABASE_ARGS"
+          value = "sslmode=require"
         }
+
       ]
       portMappings = [
         {

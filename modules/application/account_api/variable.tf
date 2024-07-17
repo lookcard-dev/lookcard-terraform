@@ -69,7 +69,7 @@ ecs_task_secret_vars = [
     {
         name      = "DATABASE_PASSWORD"
         valueFrom = "${var.secret_manager.database_secret_arn}:password::"
-    }
+    },
     ]
 iam_secrets = [
     {
