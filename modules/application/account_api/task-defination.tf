@@ -48,6 +48,10 @@ resource "aws_ecs_task_definition" "Account_API" {
         {
           name  = "DATABASE_ARGS"
           value = "sslmode=require"
+        },
+        {
+          name  = "AWS_XRAY_DAEMON_ENDPOINT"
+          value = "xray.daemon.lookcard.local:2337"
         }
 
       ]
