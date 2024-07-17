@@ -31,36 +31,39 @@ variable "ecr_names" {
   description = "Map of ECR names"
   type        = map(string)
   default = {
-    "authentication-api" = "authentication-api"
-    "blockchain-api"     = "blockchain-api"
-    "card-api"           = "card-api"
-    "notification-api"   = "notification-api"
-    "reporting-api"      = "reporting-api"
-    "transaction-api"    = "transaction-api"
-    "utility-api"        = "utility-api"
-    "users-api"          = "users-api"
-    "admin-panel-api"    = "admin-panel-api"
-    "aml-tron"           = "aml-tron"
-    "crypto-api"         = "crypto-api"
-    "hello-world"        = "hello-world"
-    "account-api"        = "account-api"
+    "authentication-api"   = "authentication-api"
+    "blockchain-api"       = "blockchain-api"
+    "card-api"             = "card-api"
+    "notification-api"     = "notification-api"
+    "reporting-api"        = "reporting-api"
+    "transaction-api"      = "transaction-api"
+    "utility-api"          = "utility-api"
+    "users-api"            = "users-api"
+    "admin-panel-api"      = "admin-panel-api"
+    "aml-tron"             = "aml-tron"
+    "crypto-api"           = "crypto-api"
+    "hello-world"          = "hello-world"
+    "account-api"          = "account-api"
     "transaction-listener" = "transaction-listener"
+    "profile-api"          = "profile-api"
+    "config-api"           = "config-api"
+    "data-api"             = "data-api"
   }
 }
 
 variable "image_tag" {
   type = object({
-    notification = string
-    account_api  = string
-    authentication_api = string
-    blockchain_api = string
-    card_api = string
-    crypto_api = string
-    reporting_api = string
-    transaction_api = string
+    notification         = string
+    account_api          = string
+    authentication_api   = string
+    blockchain_api       = string
+    card_api             = string
+    crypto_api           = string
+    reporting_api        = string
+    transaction_api      = string
     transaction_listener = string
-    users_api = string
-    utility_api = string
+    users_api            = string
+    utility_api          = string
   })
 }
 

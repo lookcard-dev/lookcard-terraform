@@ -32,7 +32,7 @@ module "authentication" {
 }
 
 module "crypto_api" {
-  source           = "./crypto_api"
+  source           = "./crypto-api"
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
   network = {
