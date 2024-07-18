@@ -33,6 +33,7 @@ variable "image_tag" {
     users_api            = string
     utility_api          = string
     profile_api          = string
+    config_api          = string
   })
 }
 

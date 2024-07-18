@@ -1,11 +1,11 @@
-resource "aws_ecs_task_definition" "crypto-api" {
+resource "aws_ecs_task_definition" "config-api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.crypto_api_task_role.arn
-  execution_role_arn       = aws_iam_role.crypto_api_task_execution_role.arn
+  task_role_arn            = aws_iam_role.config_api_task_role.arn
+  execution_role_arn       = aws_iam_role.config_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -27,29 +27,27 @@ resource "aws_ecs_task_definition" "crypto-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = local.ecs_task_secret_vars
+      # secrets = local.ecs_task_secret_vars
       environment = [
         {
           name  = "AWS_REGION"
           value = "ap-southeast-1"
         },
         {
-          name  = "DATABASE_NAME"
-          value = "main"
-        },
-        {
-          name  = "KMS_GENERATOR_KEY_ID"
-          value = var.crypto_api_encryption_kms_arn
-        },
-        {
-          name  = "KMS_ENCRYPTION_KEY_ID_ALPHA"
-          value = var.crypto_api_generator_kms_arn
-        },
+          name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
+          value = var.dynamodb_config_api_config_data_name
+        },{
+          name  = "CORS_ORIGINS"
+          value = "https://${var.lookcard_api_domain}"
+        },{
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+          value = aws_cloudwatch_log_group.config_api.name
+        }
       ]
 
       portMappings = [
         {
-          name          = "look-card-crypto-api-8080-tcp",
+          name          = "look-card-config-api-8080-tcp",
           containerPort = local.application.port,
           hostPort      = local.application.port,
           protocol      = "tcp",
@@ -66,6 +64,6 @@ resource "aws_ecs_task_definition" "crypto-api" {
     }
   ])
 }
-resource "aws_cloudwatch_log_group" "crypto_api" {
+resource "aws_cloudwatch_log_group" "config_api" {
   name = "/ecs/${local.application.name}"
 }
