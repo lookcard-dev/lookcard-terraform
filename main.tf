@@ -17,14 +17,15 @@ module "secret-manager" {
 }
 
 module "S3" {
-  source             = "./modules/s3"
-  environment        = var.general_config.env
-  ekyc_data          = var.s3_bucket.ekyc_data
-  alb_log            = var.s3_bucket.alb_log
-  cloudfront_log     = var.s3_bucket.cloudfront_log
-  vpc_flow_log       = var.s3_bucket.vpc_flow_log
-  aml_code           = var.s3_bucket.aml_code
-  front_end_endpoint = var.s3_bucket.front_end_endpoint
+  source                  = "./modules/s3"
+  environment             = var.general_config.env
+  ekyc_data               = var.s3_bucket.ekyc_data
+  alb_log                 = var.s3_bucket.alb_log
+  cloudfront_log          = var.s3_bucket.cloudfront_log
+  vpc_flow_log            = var.s3_bucket.vpc_flow_log
+  aml_code                = var.s3_bucket.aml_code
+  front_end_endpoint      = var.s3_bucket.front_end_endpoint
+  cloudwatch_syn_canaries = var.s3_bucket.cloudwatch_syn_canaries
 }
 
 module "rds" {
@@ -140,4 +141,9 @@ module "vpc-endpoint" {
     public_subnet  = module.VPC.public_subnet_ids
   }
   rt_private_id = module.VPC.rt_private_id[0]
+}
+
+module "xray" {
+  source    = "./modules/xray"
+  s3_bucket = module.S3.cloudwatch_syn_canaries
 }

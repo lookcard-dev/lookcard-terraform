@@ -1,7 +1,7 @@
 resource "aws_security_group" "config-api-sg" {
   depends_on  = [var.network]
   name        = "config-api-service-security-group"
-  description = "Security group for Crypto API services"
+  description = "Security group for Config API services"
   vpc_id      = var.network.vpc
 
   ingress {
