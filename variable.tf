@@ -32,6 +32,7 @@ variable "image_tag" {
     transaction_api      = string
     users_api            = string
     utility_api          = string
+    profile_api          = string
   })
 }
 

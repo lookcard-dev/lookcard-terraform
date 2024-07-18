@@ -1,3 +1,4 @@
+variable "lookcardlocal_namespace" {}
 variable "api_lookcardlocal_namespace" {}
 variable "network" {
   type = object({
@@ -9,7 +10,6 @@ variable "network" {
 
 variable "default_listener" {}
 variable "cluster" {}
-
 variable "crypto_api_encryption_kms_arn" {}
 variable "crypto_api_generator_kms_arn" {}
 variable "secret_manager" {}
@@ -23,18 +23,14 @@ variable "image" {
 
 locals {
   application = {
-    name      = "crypto-api"
+    name      = "profile-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
   }  
   load_balancer = {
-    signer_api_path = ["/signer", "/signers", "/signer/*"]
-    blockchain_api_path = ["/blockchain", "/blockchain/*", "/blockchains"]
-    hdwallet_path = ["/hd-wallet"]
-    signer_priority = 10
-    blockchain_priority = 101
-    hdwallet_priority = 100
+    profile_api_path = ["/profiles","/profiles/*"]
+    profile_priority = 201
   }
   ecs_task_secret_vars = [
     {

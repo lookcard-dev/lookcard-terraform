@@ -219,3 +219,20 @@ module "reporting" {
   }
   secret_manager = var.secret_manager
 }
+
+module "profile_api" {
+  source           = "./profile-api"
+  default_listener = aws_lb_listener.look-card.arn
+  cluster          = aws_ecs_cluster.look_card.arn
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["profile-api"].repository_url
+    tag = var.image_tag.profile_api
+  }
+  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
+  # secret_manager = var.secret_manager
+}

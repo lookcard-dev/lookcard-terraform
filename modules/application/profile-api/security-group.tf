@@ -1,7 +1,7 @@
-resource "aws_security_group" "crypto-api-sg" {
+resource "aws_security_group" "profile-api-sg" {
   depends_on  = [var.network]
-  name        = "crypto-api-service-security-group"
-  description = "Security group for Crypto API services"
+  name        = "profile-api-service-security-group"
+  description = "Security group for Profile API services"
   vpc_id      = var.network.vpc
 
   ingress {
@@ -26,6 +26,6 @@ resource "aws_security_group" "crypto-api-sg" {
   }
 
   tags = {
-    Name = "crypto-api-security-group"
+    Name = "profile-api-security-group"
   }
 }
