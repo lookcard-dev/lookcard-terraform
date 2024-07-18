@@ -8,10 +8,11 @@ variable "network" {
 }
 
 variable "default_listener" {}
+variable "dynamodb_config_api_config_data_name" {}
+variable "dynamodb_config_api_config_data_arn" {}
+variable "lookcard_api_domain" {}
 variable "cluster" {}
-variable "crypto_api_encryption_kms_arn" {}
-variable "crypto_api_generator_kms_arn" {}
-variable "secret_manager" {}
+# variable "secret_manager" {}
 
 variable "image" {
   type = object({
@@ -22,47 +23,47 @@ variable "image" {
 
 locals {
   application = {
-    name      = "profile-api"
+    name      = "config-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
-  }  
-  load_balancer = {
-    profile_api_path = ["/profiles","/profiles/*"]
-    profile_priority = 201
   }
-  ecs_task_secret_vars = [
-    {
-      name      = "DATABASE_URL"
-      valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
-    },
-    {
-      name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
-    },
-    {
-      name      = "DATABASE_ENDPOINT"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
-    },
-    {
-      name      = "DATABASE_USERNAME"
-      valueFrom = "${var.secret_manager.database_secret_arn}:username::"
-    },
-    {
-      name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.secret_manager.database_secret_arn}:password::"
-    }
-  ]
-  iam_secrets = [
-    {
-      arn   = var.secret_manager.crypto_api_secret_arn
-    },
-    {
-      arn   = var.secret_manager.firebase_secret_arn
-    },
-    {
-      arn   = var.secret_manager.database_secret_arn
-    }
-  ]
+  load_balancer = {
+    config_api_path = ["/configs", "/configs/*"]
+    config_priority = 301
+  }
+  # ecs_task_secret_vars = [
+  #   {
+  #     name      = "DATABASE_URL"
+  #     valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
+  #   },
+  #   {
+  #     name      = "FIREBASE_CREDENTIALS"
+  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
+  #   },
+  #   {
+  #     name      = "DATABASE_ENDPOINT"
+  #     valueFrom = "${var.secret_manager.database_secret_arn}:host::"
+  #   },
+  #   {
+  #     name      = "DATABASE_USERNAME"
+  #     valueFrom = "${var.secret_manager.database_secret_arn}:username::"
+  #   },
+  #   {
+  #     name      = "DATABASE_PASSWORD"
+  #     valueFrom = "${var.secret_manager.database_secret_arn}:password::"
+  #   }
+  # ]
+  # iam_secrets = [
+  #   {
+  #     arn = var.secret_manager.crypto_api_secret_arn
+  #   },
+  #   {
+  #     arn = var.secret_manager.firebase_secret_arn
+  #   },
+  #   {
+  #     arn = var.secret_manager.database_secret_arn
+  #   }
+  # ]
 }
 

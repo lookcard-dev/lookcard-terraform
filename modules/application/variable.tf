@@ -65,6 +65,7 @@ variable "image_tag" {
     users_api            = string
     utility_api          = string
     profile_api          = string
+    config_api          = string
   })
 }
 
@@ -74,3 +75,6 @@ variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
 variable "sqs" {}
 variable "lambda" {}
+variable "dynamodb_config_api_config_data_name" {}
+variable "dynamodb_config_api_config_data_arn" {}
+variable "lookcard_api_domain" {}

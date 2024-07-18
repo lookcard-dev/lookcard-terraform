@@ -26,6 +26,6 @@ resource "aws_security_group" "config-api-sg" {
   }
 
   tags = {
-    Name = "crypto-api-security-group"
+    Name = "config-api-security-group"
   }
 }

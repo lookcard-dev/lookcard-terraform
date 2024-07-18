@@ -1,6 +1,18 @@
-resource "aws_service_discovery_private_dns_namespace" "api_lookcardlocal_namespace" {
-  name = "api.lookcard.local"
-  vpc  = var.network.vpc
+resource "aws_service_discovery_service" "config_api_service" {
+  name = "config"
+
+  dns_config {
+    namespace_id = var.api_lookcardlocal_namespace
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+  }
+
+  health_check_custom_config {
+    failure_threshold = 1
+  }
 }
 
 resource "aws_ecs_service" "config_api" {
@@ -12,21 +24,21 @@ resource "aws_ecs_service" "config_api" {
 
   network_configuration {
     subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
-    security_groups = [aws_security_group.profile-api-sg.id]
+    security_groups = [aws_security_group.config-api-sg.id]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.profile_api_target_group.arn
+    target_group_arn = aws_lb_target_group.config_api_target_group.arn
     container_name   = local.application.name
     container_port   = local.application.port
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.profile_service.arn
+    registry_arn = aws_service_discovery_service.config_api_service.arn
   }
 }
 
-resource "aws_lb_target_group" "profile_api_target_group" {
+resource "aws_lb_target_group" "config_api_target_group" {
   name        = local.application.name
   port        = 80
   protocol    = "HTTP"
@@ -43,65 +55,65 @@ resource "aws_lb_target_group" "profile_api_target_group" {
 }
 
 
-resource "aws_lb_listener_rule" "profile_api_listener_signer_rule" {
+resource "aws_lb_listener_rule" "config_api_rule" {
   listener_arn = var.default_listener
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.profile_api_target_group.arn
+    target_group_arn = aws_lb_target_group.config_api_target_group.arn
   }
 
   condition {
     path_pattern {
-      values = local.load_balancer.signer_api_path
+      values = local.load_balancer.config_api_path
     }
   }
 
-  priority = local.load_balancer.signer_priority
+  priority = local.load_balancer.config_priority
   tags = {
-    Name = "profile-api-signer-listener-rule"
+    Name = "config-api-rule"
   }
 }
 
-resource "aws_lb_listener_rule" "crypto_api_listener_blockchain_rule" {
-  listener_arn = var.default_listener
+# resource "aws_lb_listener_rule" "crypto_api_listener_blockchain_rule" {
+#   listener_arn = var.default_listener
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
-  }
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
+#   }
 
-  condition {
-    path_pattern {
-      values = local.load_balancer.blockchain_api_path
-    }
-  }
+#   condition {
+#     path_pattern {
+#       values = local.load_balancer.blockchain_api_path
+#     }
+#   }
 
-  priority = local.load_balancer.blockchain_priority
-  tags = {
-    Name = "crypto-api-blockchain-listener-rule"
-  }
-}
+#   priority = local.load_balancer.blockchain_priority
+#   tags = {
+#     Name = "config-api-rule"
+#   }
+# }
 
-resource "aws_lb_listener_rule" "crypto_api_listener_hdwallet_rule" {
-  listener_arn = var.default_listener
+# resource "aws_lb_listener_rule" "crypto_api_listener_hdwallet_rule" {
+#   listener_arn = var.default_listener
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
-  }
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
+#   }
 
-  condition {
-    path_pattern {
-      values = ["/hd-wallet"]
-    }
-  }
+#   condition {
+#     path_pattern {
+#       values = ["/hd-wallet"]
+#     }
+#   }
 
-  priority = local.load_balancer.hdwallet_priority
-  tags = {
-    Name = "crypto-api-hdwallet-listener-rule"
-  }
-}
+#   priority = local.load_balancer.hdwallet_priority
+#   tags = {
+#     Name = "crypto-api-hdwallet-listener-rule"
+#   }
+# }
 
 
 
