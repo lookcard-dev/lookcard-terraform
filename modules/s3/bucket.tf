@@ -22,3 +22,6 @@ resource "aws_s3_bucket" "front_end_endpoint" {
   bucket = var.front_end_endpoint
 }
 
+resource "aws_s3_bucket" "cloudwatch_syn_canaries" {
+  bucket = var.cloudwatch_syn_canaries
+}

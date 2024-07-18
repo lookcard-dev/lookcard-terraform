@@ -1,4 +1,3 @@
-variable "lookcardlocal_namespace" {}
 variable "api_lookcardlocal_namespace" {}
 variable "network" {
   type = object({

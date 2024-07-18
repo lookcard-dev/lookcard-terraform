@@ -65,6 +65,7 @@ variable "s3_bucket" {
     vpc_flow_log       = string
     aml_code           = string
     front_end_endpoint = string
+    cloudwatch_syn_canaries = string
   })
 }
 

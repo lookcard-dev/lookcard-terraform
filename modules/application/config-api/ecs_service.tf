@@ -1,23 +1,11 @@
-resource "aws_service_discovery_service" "profile_service" {
-  name = "profile"
-
-  dns_config {
-    namespace_id = var.lookcardlocal_namespace
-
-    dns_records {
-      ttl  = 10
-      type = "A"
-    }
-  }
-
-  health_check_custom_config {
-    failure_threshold = 1
-  }
+resource "aws_service_discovery_private_dns_namespace" "api_lookcardlocal_namespace" {
+  name = "api.lookcard.local"
+  vpc  = var.network.vpc
 }
 
-resource "aws_ecs_service" "profile_api" {
+resource "aws_ecs_service" "config_api" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.profile-api.arn
+  task_definition = aws_ecs_task_definition.config-api.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
