@@ -25,6 +25,8 @@ resource "aws_synthetics_canary" "canary" {
     active_tracing     = false
   }
 
+
+
   tags = {
     Name = "canary"
   }
