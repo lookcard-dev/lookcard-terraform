@@ -71,7 +71,15 @@ resource "aws_iam_role_policy" "cw_canary_policy" {
             "cloudwatch:namespace": "CloudWatchSynthetics"
           }
         }
-      }
+      },
+      {
+            "Sid": "XRayPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "xray:PutTraceSegments"
+            ],
+            "Resource": "*"
+        }
     ]
   })
 }
