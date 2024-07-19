@@ -67,6 +67,7 @@ module "application" {
   dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
   lookcard_api_domain                      = module.application.lookcard_api_domain
+  dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
 }
 
 module "ssl-cert" {

@@ -28,7 +28,21 @@ resource "aws_iam_policy" "ecs_xray_policy" {
           "xray:PutTelemetryRecords",
           "servicediscovery:RegisterInstance",
           "servicediscovery:DeregisterInstance",
-          "servicediscovery:DiscoverInstances"
+          "servicediscovery:DiscoverInstances",
+          "ec2:DescribeNetworkInterfaces",
+          "ecs:ListTasks",
+          "ecs:DescribeTasks",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "ec2:DescribeInstances"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "kms:Decrypt",
+          "kms:GenerateDataKey"
         ],
         "Resource": "*"
       }

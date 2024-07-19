@@ -27,26 +27,8 @@ resource "aws_ecs_task_definition" "profile-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      # secrets = local.ecs_task_secret_vars
-      # environment = [
-      #   {
-      #     name  = "AWS_REGION"
-      #     value = "ap-southeast-1"
-      #   },
-      #   {
-      #     name  = "DATABASE_NAME"
-      #     value = "main"
-      #   },
-      #   {
-      #     name  = "KMS_GENERATOR_KEY_ID"
-      #     value = var.crypto_api_encryption_kms_arn
-      #   },
-      #   {
-      #     name  = "KMS_ENCRYPTION_KEY_ID_ALPHA"
-      #     value = var.crypto_api_generator_kms_arn
-      #   },
-      # ]
-
+      secrets = local.ecs_task_secret_vars
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "profile-api-8080-tcp",

@@ -12,7 +12,7 @@ variable "dynamodb_config_api_config_data_name" {}
 variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}
 variable "cluster" {}
-# variable "secret_manager" {}
+variable "secret_manager" {}
 
 variable "image" {
   type = object({
@@ -32,38 +32,35 @@ locals {
     config_api_path = ["/configs", "/configs/*"]
     config_priority = 301
   }
-  # ecs_task_secret_vars = [
-  #   {
-  #     name      = "DATABASE_URL"
-  #     valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
-  #   },
-  #   {
-  #     name      = "FIREBASE_CREDENTIALS"
-  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
-  #   },
-  #   {
-  #     name      = "DATABASE_ENDPOINT"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:host::"
-  #   },
-  #   {
-  #     name      = "DATABASE_USERNAME"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:username::"
-  #   },
-  #   {
-  #     name      = "DATABASE_PASSWORD"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:password::"
-  #   }
-  # ]
-  # iam_secrets = [
-  #   {
-  #     arn = var.secret_manager.crypto_api_secret_arn
-  #   },
-  #   {
-  #     arn = var.secret_manager.firebase_secret_arn
-  #   },
-  #   {
-  #     arn = var.secret_manager.database_secret_arn
-  #   }
-  # ]
+  ecs_task_secret_vars = [
+    {
+      name      = "SENTRY_DSN"
+      valueFrom = "${var.secret_manager.sentry_secret_arn}:CONFIG_API_DSN::"
+    }
+  ]
+  ecs_task_env_vars = [
+    {
+      name  = "AWS_REGION"
+      value = "ap-southeast-1"
+    },
+    {
+      name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
+      value = var.dynamodb_config_api_config_data_name
+      }, {
+      name  = "CORS_ORIGINS"
+      value = "https://${var.lookcard_api_domain}"
+      }, {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.config_api.name
+    },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = "DEVELOP"
+    }
+  ]
 }
 

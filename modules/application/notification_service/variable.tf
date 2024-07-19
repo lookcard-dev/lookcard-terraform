@@ -32,7 +32,7 @@ locals {
     priority = 4
   }
 
-  ecs_task_secret_vars = [
+  ecs_task_env_vars = [
     {
       name  = "AWS_REGION"
       value = "ap-southeast-1"
@@ -48,6 +48,10 @@ locals {
     {
       name  = "AWS_TOKEN_SECRET_ARN"
       value = var.secret_manager.token_secret_arn
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = "DEVELOP"
     }
   ]
 }

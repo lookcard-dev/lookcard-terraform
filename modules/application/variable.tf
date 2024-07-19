@@ -72,6 +72,7 @@ variable "image_tag" {
 
 
 variable "dynamodb_crypto_transaction_listener_arn" {}
+variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
 variable "sqs" {}
