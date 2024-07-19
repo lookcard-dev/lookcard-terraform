@@ -16,8 +16,8 @@ resource "aws_iam_role" "cw_canary_role" {
 }
 
 resource "aws_iam_role_policy" "cw_canary_policy" {
-  name   = "cw_canary_policy"
-  role   = aws_iam_role.cw_canary_role.id
+  name = "cw_canary_policy"
+  role = aws_iam_role.cw_canary_role.id
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -56,30 +56,26 @@ resource "aws_iam_role_policy" "cw_canary_policy" {
         Effect = "Allow",
         Action = [
           "s3:ListAllMyBuckets",
-          "xray:PutTraceSegments"
+          "xray:PutTraceSegments",
+          "xray:PutTelemetryRecords",
+          "xray:GetSamplingRules",
+          "xray:GetSamplingTargets",
+          "xray:GetSamplingStatisticSummaries"
         ],
         Resource = [
           "*"
         ]
       },
       {
-        Effect = "Allow",
-        Action = "cloudwatch:PutMetricData",
+        Effect   = "Allow",
+        Action   = "cloudwatch:PutMetricData",
         Resource = "*",
         Condition = {
-          "StringEquals": {
-            "cloudwatch:namespace": "CloudWatchSynthetics"
+          "StringEquals" : {
+            "cloudwatch:namespace" : "CloudWatchSynthetics"
           }
         }
-      },
-      {
-            "Sid": "XRayPermissions",
-            "Effect": "Allow",
-            "Action": [
-                "xray:PutTraceSegments"
-            ],
-            "Resource": "*"
-        }
+      }
     ]
   })
 }
