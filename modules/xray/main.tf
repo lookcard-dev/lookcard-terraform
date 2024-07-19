@@ -17,9 +17,8 @@ resource "aws_synthetics_canary" "canary" {
   failure_retention_period = 31
 
   schedule {
-    expression = "rate(1 minutes)"
+    expression = "rate(1 minute)"
   }
-
   run_config {
     timeout_in_seconds = 15
     active_tracing     = true
@@ -28,5 +27,4 @@ resource "aws_synthetics_canary" "canary" {
     Name = "canary"
   }
   depends_on = [aws_iam_role_policy.cw_canary_policy]
-
 }
