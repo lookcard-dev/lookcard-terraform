@@ -93,6 +93,37 @@ resource "aws_iam_role_policy_attachment" "ConfigAPI_dynamodb_attachment" {
   role       = aws_iam_role.config_api_task_execution_role.name
   policy_arn = aws_iam_policy.config_api_dynamodb_read_write_policy.arn
 }
+resource "aws_iam_policy" "config_api_logging_policy" {
+  name        = "ConfigAPILoggingPolicy"
+  description = "Allows logging stream"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+        ],
+        "Resource" : aws_cloudwatch_log_group.config_api.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ConfigAPI_logging_attachment" {
+  role       = aws_iam_role.config_api_task_execution_role.name
+  policy_arn = aws_iam_policy.config_api_logging_policy.arn
+}
+resource "aws_iam_role_policy_attachment" "ConfigAPI_logging_task_attachment" {
+  role       = aws_iam_role.config_api_task_role.name
+  policy_arn = aws_iam_policy.config_api_logging_policy.arn
+}
+
+
 
 
 # resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
