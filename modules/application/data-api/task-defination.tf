@@ -1,11 +1,11 @@
-resource "aws_ecs_task_definition" "Account_API" {
+resource "aws_ecs_task_definition" "data-api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.Account_API_Task_Role.arn
-  execution_role_arn       = aws_iam_role.Account_API_Task_Execution_Role.arn
+  task_role_arn            = aws_iam_role.data_api_task_role.arn
+  execution_role_arn       = aws_iam_role.data_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -27,32 +27,20 @@ resource "aws_ecs_task_definition" "Account_API" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = local.ecs_task_secret_vars
+      # secrets = local.ecs_task_secret_vars
       environment = [
         {
-          name  = "CRYPTO_API_URL"
-          value = "https://api.develop.not-lookcard.com"
+          name  = "KMS_GENERATOR_KEY_ID"
+          value = var.kms_generator_key_id_arn
         },
         {
-          name  = "DATABASE_NAME"
-          value = "main"
+          name = "KMS_ENCRYPTION_KEY_ID_ALPHA"
+          value = var.kms_encryption_key_id_alpha_arn
         },
         {
-          name  = "DATABASE_SCHEMA"
-          value = "account"
-        },
-        {
-          name  = "SQS_NOTIFICATION_QUEUE_URL"
-          value = var.sqs.lookcard_notification_queue_url
-        },
-        {
-          name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
-          value = var.sqs.crypto_fund_withdrawal_queue_url
-        },
-        {
-          name  = "DATABASE_ARGS"
-          value = "sslmode=require"
-        },
+          name = "AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE"
+          value = 1
+        }
         # {
         #   name  = "AWS_XRAY_DAEMON_ENDPOINT"
         #   value = "xray.daemon.lookcard.local:2337"
@@ -61,7 +49,7 @@ resource "aws_ecs_task_definition" "Account_API" {
       ]
       portMappings = [
         {
-          name          = "look-card-account-api-8080-tcp",
+          name          = "look-card-data-api-8080-tcp",
           containerPort = local.application.port,
           hostPort      = local.application.port,
           protocol      = "tcp",
@@ -79,7 +67,7 @@ resource "aws_ecs_task_definition" "Account_API" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Account_API" {
+resource "aws_cloudwatch_log_group" "data_api" {
   name = "/ecs/${local.application.name}"
 }
 

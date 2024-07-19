@@ -1,8 +1,8 @@
 resource "aws_security_group" "Account-API-SG" {
-  depends_on  = [var.vpc_id]
-  name        = "Account-API-Service-Security-Group"
-  description = "Security group for Account API services"
-  vpc_id      = var.vpc_id
+  depends_on  = [var.network]
+  name        = "data-api-service-security-group"
+  description = "Security group for Data API services"
+  vpc_id      = var.network.vpc
 
   ingress {
     from_port   = 8080
@@ -26,6 +26,6 @@ resource "aws_security_group" "Account-API-SG" {
   }
 
   tags = {
-    Name = "Account-API-Security-Group"
+    Name = "data-api-security-group"
   }
 }

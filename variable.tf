@@ -33,7 +33,8 @@ variable "image_tag" {
     users_api            = string
     utility_api          = string
     profile_api          = string
-    config_api          = string
+    config_api           = string
+    data_api             = string
   })
 }
 
@@ -60,12 +61,12 @@ variable "network" {
 }
 variable "s3_bucket" {
   type = object({
-    ekyc_data          = string
-    alb_log            = string
-    cloudfront_log     = string
-    vpc_flow_log       = string
-    aml_code           = string
-    front_end_endpoint = string
+    ekyc_data               = string
+    alb_log                 = string
+    cloudfront_log          = string
+    vpc_flow_log            = string
+    aml_code                = string
+    front_end_endpoint      = string
     cloudwatch_syn_canaries = string
   })
 }

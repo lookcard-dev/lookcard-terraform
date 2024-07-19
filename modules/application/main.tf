@@ -252,16 +252,34 @@ module "config_api" {
   api_lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
-  lookcard_api_domain                      = var.lookcard_api_domain
+  lookcard_api_domain                  = var.lookcard_api_domain
 }
 
-module "xray_daemon" {
-  source           = "./xray-daemon"
+module "data_api" {
+  source           = "./data-api"
+  default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  image = {
+    url = aws_ecr_repository.look-card["data-api"].repository_url
+    tag = var.image_tag.data_api
+  }
+  api_lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
+  kms_encryption_key_id_alpha_arn = aws_kms_key.data_encryption_key_alpha.arn
+  kms_generator_key_id_arn        = aws_kms_key.data_generator_key.arn
+}
+
+module "xray_daemon" {
+  source  = "./xray-daemon"
+  cluster = aws_ecs_cluster.look_card.arn
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }

@@ -66,6 +66,7 @@ variable "image_tag" {
     utility_api          = string
     profile_api          = string
     config_api          = string
+    data_api          = string
   })
 }
 
