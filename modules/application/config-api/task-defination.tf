@@ -27,24 +27,8 @@ resource "aws_ecs_task_definition" "config-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      # secrets = local.ecs_task_secret_vars
-      environment = [
-        {
-          name  = "AWS_REGION"
-          value = "ap-southeast-1"
-        },
-        {
-          name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
-          value = var.dynamodb_config_api_config_data_name
-        },{
-          name  = "CORS_ORIGINS"
-          value = "https://${var.lookcard_api_domain}"
-        },{
-          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-          value = aws_cloudwatch_log_group.config_api.name
-        }
-      ]
-
+      secrets = local.ecs_task_secret_vars
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "look-card-config-api-8080-tcp",

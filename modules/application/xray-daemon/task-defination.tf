@@ -14,7 +14,8 @@ resource "aws_ecs_task_definition" "xray_daemon" {
       essential = true
       portMappings = [
         {
-          containerPort = 2000
+          containerPort = 2337
+          hostPort      = 2337
           protocol      = "udp"
         }
       ]
@@ -22,8 +23,8 @@ resource "aws_ecs_task_definition" "xray_daemon" {
         logDriver = "awslogs"
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/XRayDaemon"
-          "awslogs-region"        = "ap-southeast-1"
+          "awslogs-group"         = "/ecs/XRayDaemon",
+          "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs"
         }
       }

@@ -234,7 +234,8 @@ module "profile_api" {
     tag = var.image_tag.profile_api
   }
   api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-  # secret_manager = var.secret_manager
+  dynamodb_profile_data_table_name     = var.dynamodb_profile_data_table_name
+  secret_manager = var.secret_manager
 }
 module "config_api" {
   source           = "./config-api"
@@ -252,7 +253,8 @@ module "config_api" {
   api_lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
-  lookcard_api_domain                      = var.lookcard_api_domain
+  lookcard_api_domain                  = var.lookcard_api_domain
+  secret_manager                       = var.secret_manager
 }
 
 module "xray_daemon" {

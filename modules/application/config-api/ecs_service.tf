@@ -75,45 +75,6 @@ resource "aws_lb_listener_rule" "config_api_rule" {
   }
 }
 
-# resource "aws_lb_listener_rule" "crypto_api_listener_blockchain_rule" {
-#   listener_arn = var.default_listener
-
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
-#   }
-
-#   condition {
-#     path_pattern {
-#       values = local.load_balancer.blockchain_api_path
-#     }
-#   }
-
-#   priority = local.load_balancer.blockchain_priority
-#   tags = {
-#     Name = "config-api-rule"
-#   }
-# }
-
-# resource "aws_lb_listener_rule" "crypto_api_listener_hdwallet_rule" {
-#   listener_arn = var.default_listener
-
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.crypto_api_target_group.arn
-#   }
-
-#   condition {
-#     path_pattern {
-#       values = ["/hd-wallet"]
-#     }
-#   }
-
-#   priority = local.load_balancer.hdwallet_priority
-#   tags = {
-#     Name = "crypto-api-hdwallet-listener-rule"
-#   }
-# }
 
 
 
