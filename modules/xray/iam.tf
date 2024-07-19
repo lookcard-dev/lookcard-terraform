@@ -79,3 +79,6 @@ resource "aws_iam_role_policy" "cw_canary_policy" {
     ]
   })
 }
+
+
+

@@ -254,3 +254,14 @@ module "config_api" {
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
   lookcard_api_domain                      = var.lookcard_api_domain
 }
+
+module "xray_daemon" {
+  source           = "./xray-daemon"
+  cluster          = aws_ecs_cluster.look_card.arn
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+}
