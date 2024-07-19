@@ -1,5 +1,6 @@
 variable "api_lookcardlocal_namespace" {}
 variable "dynamodb_profile_data_table_name" {}
+variable "secret_manager" {}
 variable "network" {
   type = object({
     vpc            = string
@@ -11,7 +12,6 @@ variable "network" {
 variable "default_listener" {}
 variable "cluster" {}
 
-variable "secret_manager" {}
 
 variable "image" {
   type = object({

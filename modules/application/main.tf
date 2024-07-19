@@ -233,9 +233,9 @@ module "profile_api" {
     url = aws_ecr_repository.look-card["profile-api"].repository_url
     tag = var.image_tag.profile_api
   }
-  api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-  dynamodb_profile_data_table_name     = var.dynamodb_profile_data_table_name
-  secret_manager = var.secret_manager
+  api_lookcardlocal_namespace      = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
+  dynamodb_profile_data_table_name = var.dynamodb_profile_data_table_name
+  secret_manager                   = var.secret_manager
 }
 module "config_api" {
   source           = "./config-api"
