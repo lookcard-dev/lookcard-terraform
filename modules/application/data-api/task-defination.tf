@@ -30,11 +30,11 @@ resource "aws_ecs_task_definition" "data-api" {
       # secrets = local.ecs_task_secret_vars
       environment = [
         {
-          name  = "KMS_GENERATOR_KEY_ID"
+          name  = "AWS_KMS_GENERATOR_KEY_ID"
           value = var.kms_generator_key_id_arn
         },
         {
-          name = "KMS_ENCRYPTION_KEY_ID_ALPHA"
+          name = "AWS_KMS_ENCRYPTION_KEY_ID_ALPHA"
           value = var.kms_encryption_key_id_alpha_arn
         }
         # {
