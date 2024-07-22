@@ -22,28 +22,28 @@ resource "aws_iam_role_policy_attachment" "Profile_API_ECSTaskExecutionRolePolic
 }
 
 
-# resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
-#   name        = "CryptoAPISecretsReadOnlyPolicy"
-#   description = "Allows read-only access to Secret - CryptoAPI-env"
-#   policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       for secret in local.iam_secrets : {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "secretsmanager:GetSecretValue",
-#           "secretsmanager:DescribeSecret"
-#         ],
-#         "Resource" : secret.arn
-#       }
-#     ]
-#   })
-# }
+resource "aws_iam_policy" "profile_api_env_secrets_manager_read_policy" {
+  name        = "ProfileAPISecretsReadOnlyPolicy"
+  description = "Allows read-only access to Secret - ProfileAPI-env"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
 
-# resource "aws_iam_role_policy_attachment" "CryptoAPI_secrets_manager_read_attachment" {
-#   role       = aws_iam_role.crypto_api_task_execution_role.name
-#   policy_arn = aws_iam_policy.crypto_api_env_secrets_manager_read_policy.arn
-# }
+resource "aws_iam_role_policy_attachment" "ProfileAPI_secrets_manager_read_attachment" {
+  role       = aws_iam_role.profile_api_task_execution_role.name
+  policy_arn = aws_iam_policy.profile_api_env_secrets_manager_read_policy.arn
+}
 
 resource "aws_iam_role" "profile_api_task_role" {
   name = "profile-api-task-role"

@@ -2,6 +2,10 @@ output "rds_password_secret" {
   value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].id
 }
 
+output "rds_password_arn_secret" {
+  value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].arn
+}
+
 output "crypto_api_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["CRYPTO_API_ENV"].arn
 }

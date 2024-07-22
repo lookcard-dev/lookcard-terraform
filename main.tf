@@ -35,7 +35,8 @@ module "rds" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  lookcard_rds_password = module.secret-manager.rds_password_secret
+  lookcard_rds_password   = module.secret-manager.rds_password_secret
+  rds_password_arn_secret = module.secret-manager.rds_password_arn_secret
 }
 
 module "VPC" {

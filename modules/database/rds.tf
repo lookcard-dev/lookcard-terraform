@@ -16,7 +16,6 @@ resource "aws_rds_cluster" "lookcard_develop" {
   database_name          = "develop"
   master_username        = "develop"
   master_password        = var.lookcard_rds_password
-  # master_password        = "hdjs3GDT4FFs1998GdFzz"
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   storage_encrypted      = true
@@ -51,34 +50,34 @@ resource "aws_rds_cluster_instance" "write_instance" {
 
 
 # Define the RDS Proxy for the standard cluster
-# resource "aws_db_proxy" "rds_proxy" {
-#   name                   = "rds-proxy"
-#   engine_family          = "POSTGRESQL"
-#   role_arn               = aws_iam_role.rds_proxy_role.arn
-#   vpc_subnet_ids         = var.network.private_subnet
-#   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
-#   auth {
-#     auth_scheme = "SECRETS"
-#     secret_arn  = var.lookcard_rds_password
-#   }
-#   require_tls = true
-# }
+resource "aws_db_proxy" "rds_proxy" {
+  name                   = "rds-proxy"
+  engine_family          = "POSTGRESQL"
+  role_arn               = aws_iam_role.rds_proxy_role.arn
+  vpc_subnet_ids         = var.network.private_subnet
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  auth {
+    auth_scheme = "SECRETS"
+    secret_arn  = var.rds_password_arn_secret
+  }
+  require_tls = true
+}
 
-# # Associate the RDS Standard Cluster with the RDS Proxy
-# resource "aws_db_proxy_target" "proxy_target" {
-#   db_proxy_name         = aws_db_proxy.rds_proxy.name
-#   target_group_name     = "default"
-#   db_cluster_identifier = aws_rds_cluster.lookcard_develop.id
-# }
+# Associate the RDS Standard Cluster with the RDS Proxy
+resource "aws_db_proxy_target" "proxy_target" {
+  db_proxy_name         = aws_db_proxy.rds_proxy.name
+  target_group_name     = "default"
+  db_cluster_identifier = aws_rds_cluster.lookcard_develop.id
+}
 
-# # Define an additional RDS Proxy endpoint
-# resource "aws_db_proxy_endpoint" "rds_proxy_read_endpoint" {
-#   db_proxy_name          = aws_db_proxy.rds_proxy.name
-#   vpc_subnet_ids         = var.network.private_subnet
-#   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
-#   target_role            = "READ_ONLY"
-#   db_proxy_endpoint_name = "rds-proxy-read-endpoint"
-# }
+# Define an additional RDS Proxy endpoint
+resource "aws_db_proxy_endpoint" "rds_proxy_read_endpoint" {
+  db_proxy_name          = aws_db_proxy.rds_proxy.name
+  vpc_subnet_ids         = var.network.private_subnet
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  target_role            = "READ_ONLY"
+  db_proxy_endpoint_name = "rds-proxy-read-endpoint"
+}
 
 # IAM role for RDS Proxy
 resource "aws_iam_role" "rds_proxy_role" {
@@ -93,6 +92,36 @@ resource "aws_iam_role" "rds_proxy_role" {
         Principal = {
           Service = "rds.amazonaws.com"
         }
+      }
+    ]
+  })
+}
+
+
+# Add the Secrets Manager policy for the RDS Proxy role
+resource "aws_iam_role_policy" "rds_proxy_secrets_policy" {
+  name   = "lookcard-rds-proxy-secrets-policy"
+  role   = aws_iam_role.rds_proxy_role.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid: "VisualEditor0",
+        Effect: "Allow",
+        Action: [
+          "secretsmanager:GetRandomPassword",
+          "secretsmanager:CreateSecret",
+          "secretsmanager:ListSecrets"
+        ],
+        Resource: "*"
+      },
+      {
+        Sid: "VisualEditor1",
+        Effect: "Allow",
+        Action: "secretsmanager:*",
+        Resource: [
+          "*"  # Replace with your actual secret ARN
+        ]
       }
     ]
   })

@@ -28,3 +28,4 @@ output "dynamodb_table_arn" {
 
 
 variable "lookcard_rds_password" {}
+variable "rds_password_arn_secret" {}
