@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "data-api" {
           value = var.kms_generator_key_id_arn
         },
         {
-          name = "AWS_KMS_ENCRYPTION_KEY_ID_ALPHA"
+          name  = "AWS_KMS_ENCRYPTION_KEY_ID_ALPHA"
           value = var.kms_encryption_key_id_alpha_arn
         }
         # {
