@@ -36,11 +36,11 @@ resource "aws_ecs_task_definition" "data-api" {
         {
           name = "KMS_ENCRYPTION_KEY_ID_ALPHA"
           value = var.kms_encryption_key_id_alpha_arn
-        },
-        {
-          name = "AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE"
-          value = 1
         }
+        # {
+        #   name = "AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE"
+        #   value = 1
+        # }
         # {
         #   name  = "AWS_XRAY_DAEMON_ENDPOINT"
         #   value = "xray.daemon.lookcard.local:2337"

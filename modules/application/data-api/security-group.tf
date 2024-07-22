@@ -1,4 +1,4 @@
-resource "aws_security_group" "Account-API-SG" {
+resource "aws_security_group" "data-api-sg" {
   depends_on  = [var.network]
   name        = "data-api-service-security-group"
   description = "Security group for Data API services"
