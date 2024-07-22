@@ -126,3 +126,28 @@ resource "aws_iam_role_policy_attachment" "ConfigAPI_logging_task_full_attachmen
   role       = aws_iam_role.config_api_task_role.name
   policy_arn = aws_iam_policy.config_api_logging_full_policy.arn
 }
+
+resource "aws_iam_policy" "secrets_manager_policy" {
+  name        = "SecretsManagerPolicy"
+  description = "Policy to allow access to specific secrets in Secrets Manager"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        "Resource": [
+          "*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ConfigAPI_secrets_manager_attachment" {
+  role       = aws_iam_role.config_api_task_execution_role.name
+  policy_arn = aws_iam_policy.secrets_manager_policy.arn
+}
