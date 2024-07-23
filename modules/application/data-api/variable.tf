@@ -1,8 +1,8 @@
 variable "default_listener" {}
 variable "api_lookcardlocal_namespace" {}
 variable "cluster" {}
-variable "kms_encryption_key_id_alpha_arn" {}
-variable "kms_generator_key_id_arn" {}
+# variable "kms_encryption_key_id_alpha_arn" {}
+# variable "kms_generator_key_id_arn" {}
 variable "env_tag" {}
 variable "secret_manager" {}
 variable "s3_data_bucket_name" {}
