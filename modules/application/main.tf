@@ -48,6 +48,7 @@ module "crypto_api" {
   crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
   api_lookcardlocal_namespace   = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
+  kms                           = var.kms
 }
 
 module "transaction_api" {

@@ -9,7 +9,7 @@ variable "network" {
 
 variable "default_listener" {}
 variable "cluster" {}
-
+variable "kms" {}
 variable "crypto_api_encryption_kms_arn" {}
 variable "crypto_api_generator_kms_arn" {}
 variable "secret_manager" {}

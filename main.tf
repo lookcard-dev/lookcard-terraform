@@ -153,8 +153,8 @@ module "vpc-endpoint" {
   rt_private_id = module.VPC.rt_private_id[0]
 }
 
-module "xray" {
-  source    = "./modules/xray"
+module "syn_canaries" {
+  source    = "./modules/syn_canaries"
   s3_bucket = module.S3.cloudwatch_syn_canaries
 }
 

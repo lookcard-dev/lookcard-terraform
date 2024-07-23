@@ -39,11 +39,11 @@ resource "aws_ecs_task_definition" "crypto-api" {
         },
         {
           name  = "KMS_GENERATOR_KEY_ID"
-          value = var.crypto_api_encryption_kms_arn
+          value = var.kms.kms_data_generator_key_id
         },
         {
           name  = "KMS_ENCRYPTION_KEY_ID_ALPHA"
-          value = var.crypto_api_generator_kms_arn
+          value = var.kms.kms_data_encryption_key_id_alpha
         },
       ]
 
