@@ -5,17 +5,19 @@ provider "aws" {
 # Define the DB subnet group
 resource "aws_db_subnet_group" "rds_subnet" {
   name       = "lookcard_rds_subnet"
-  subnet_ids = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+  # subnet_ids = var.network.private_subnet[*]
+  subnet_ids = var.network.database_subnet[*]
 }
-// rds cluster
 
+// rds cluster
 resource "aws_rds_cluster" "lookcard_develop" {
   cluster_identifier     = "lookcard-develop-db"
   engine                 = "aurora-postgresql"
   engine_mode            = "provisioned"
   database_name          = "develop"
   master_username        = "develop"
-  master_password        = var.lookcard_rds_password
+  # master_password        = "${var.secret_manager.database_secret_arn}:password::"
+  master_password        = "hdjs3GDT4FFs1998GdFzz"
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   storage_encrypted      = true
@@ -23,11 +25,11 @@ resource "aws_rds_cluster" "lookcard_develop" {
   deletion_protection    = false
   serverlessv2_scaling_configuration {
     max_capacity = 5.0
-    min_capacity = 0.5 
+    min_capacity = 0.5
   }
 }
 
-# Define the write instance
+# # # Define the write instance
 resource "aws_rds_cluster_instance" "write_instance" {
   cluster_identifier = aws_rds_cluster.lookcard_develop.id
   instance_class     = "db.serverless"
@@ -36,6 +38,7 @@ resource "aws_rds_cluster_instance" "write_instance" {
   publicly_accessible = false
 }
 
+//////////////////////////////////////////////////////////////////////////////////
 // rds read_instance
 # Define the read instance
 
@@ -46,6 +49,7 @@ resource "aws_rds_cluster_instance" "write_instance" {
 #   engine_version     = aws_rds_cluster.lookcard_develop.engine_version
 #   publicly_accessible = false
 # }
+//////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -58,7 +62,7 @@ resource "aws_db_proxy" "rds_proxy" {
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   auth {
     auth_scheme = "SECRETS"
-    secret_arn  = var.rds_password_arn_secret
+    secret_arn  = var.secret_manager.database_secret_arn
   }
   require_tls = true
 }
@@ -73,7 +77,7 @@ resource "aws_db_proxy_target" "proxy_target" {
 # Define an additional RDS Proxy endpoint
 resource "aws_db_proxy_endpoint" "rds_proxy_read_endpoint" {
   db_proxy_name          = aws_db_proxy.rds_proxy.name
-  vpc_subnet_ids         = var.network.private_subnet
+  vpc_subnet_ids         = var.network.database_subnet
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   target_role            = "READ_ONLY"
   db_proxy_endpoint_name = "rds-proxy-read-endpoint"

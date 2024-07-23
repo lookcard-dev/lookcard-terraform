@@ -3,6 +3,7 @@ variable "network" {
     vpc            = string
     private_subnet = list(string)
     public_subnet  = list(string)
+    database_subnet = list(string)
   })
 }
 
@@ -27,5 +28,23 @@ output "dynamodb_table_arn" {
 }
 
 
-variable "lookcard_rds_password" {}
-variable "rds_password_arn_secret" {}
+# variable "lookcard_rds_password" {}
+variable "secret_manager" {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

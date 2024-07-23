@@ -31,12 +31,15 @@ module "S3" {
 module "rds" {
   source = "./modules/database"
   network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
+    vpc             = module.VPC.vpc
+    private_subnet  = module.VPC.private_subnet_ids
+    public_subnet   = module.VPC.public_subnet_ids
+    database_subnet = module.VPC.database_subnet_ids
   }
-  lookcard_rds_password   = module.secret-manager.rds_password_secret
-  rds_password_arn_secret = module.secret-manager.rds_password_arn_secret
+  # lookcard_rds_password = module.secret-manager.rds_password_secret
+  # rds_password_arn_secret = module.secret-manager.rds_password_arn_secret
+  # database_secret_arn = module.secret-manager.database_secret_arn
+  secret_manager      = module.secret-manager
 }
 
 module "VPC" {

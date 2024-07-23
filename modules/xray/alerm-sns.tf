@@ -4,7 +4,7 @@ resource "aws_cloudwatch_metric_alarm" "canary_failure_alarm" {
   evaluation_periods  = 1
   metric_name         = "SuccessPercent"
   namespace           = "CloudWatchSynthetics"
-  period              = 10  # 修改为10秒
+  period              = 10  
   statistic           = "Average"
   threshold           = 100  # SuccessPercent < 100
 
