@@ -9,7 +9,6 @@ resource "aws_security_group" "Authentication" {
     from_port = 8000
     to_port   = 8000
     protocol  = "tcp"
-    # security_groups = [aws_security_group.ALB_SG.id]
     security_groups = [var.sg_alb_id]
   }
 

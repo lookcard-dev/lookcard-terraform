@@ -24,3 +24,11 @@ output "acm_app" {
 #   value = aws_route53_zone.production_admin_panel.zone_id
 
 # }
+
+output "cert_api_arn" {
+  value = aws_acm_certificate.api.arn
+}
+
+output "domain_api_name" {
+  value = aws_acm_certificate.api.domain_name
+}

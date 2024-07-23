@@ -57,7 +57,6 @@ resource "aws_ecs_task_definition" "Account_API" {
           name  = "AWS_XRAY_DAEMON_ENDPOINT"
           value = "xray.daemon.lookcard.local:2337"
         }
-
       ]
       portMappings = [
         {

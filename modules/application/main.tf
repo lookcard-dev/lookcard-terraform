@@ -273,6 +273,7 @@ module "data_api" {
   api_lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   kms_encryption_key_id_alpha_arn = aws_kms_key.data_encryption_key_alpha.arn
   kms_generator_key_id_arn        = aws_kms_key.data_generator_key.arn
+  env_tag                         = var.env_tag
 }
 
 module "xray_daemon" {

@@ -39,7 +39,7 @@ module "rds" {
   # lookcard_rds_password = module.secret-manager.rds_password_secret
   # rds_password_arn_secret = module.secret-manager.rds_password_arn_secret
   # database_secret_arn = module.secret-manager.database_secret_arn
-  secret_manager      = module.secret-manager
+  secret_manager = module.secret-manager
 }
 
 module "VPC" {
@@ -72,6 +72,8 @@ module "application" {
   dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
   lookcard_api_domain                      = module.application.lookcard_api_domain
   dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
+  env_tag                                  = var.env_tag
+  acm                                      = module.ssl-cert
 }
 
 module "ssl-cert" {
@@ -139,7 +141,6 @@ module "elasticache" {
 
 module "vpc-endpoint" {
   source = "./modules/vpc-endpoint"
-  # aws_provider          = { region = "ap-southeast-1" }
   network = {
     vpc            = module.VPC.vpc
     private_subnet = module.VPC.private_subnet_ids

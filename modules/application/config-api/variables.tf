@@ -6,14 +6,13 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-
 variable "default_listener" {}
 variable "dynamodb_config_api_config_data_name" {}
 variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}
 variable "cluster" {}
 variable "secret_manager" {}
-
+variable "env_tag" {}
 variable "image" {
   type = object({
     url = string
@@ -59,7 +58,7 @@ locals {
     },
     {
       name  = "RUNTIME_ENVIRONMENT"
-      value = "DEVELOP"
+      value = var.env_tag
     }
   ]
 }

@@ -21,6 +21,9 @@ output "elliptic_secret_arn" {
 output "database_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["DATABASE"].arn
 }
+output "database_secret_id" {
+  value = aws_secretsmanager_secret.lookcard_secrets["DATABASE"].id
+}
 
 output "env_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["ENV"].arn

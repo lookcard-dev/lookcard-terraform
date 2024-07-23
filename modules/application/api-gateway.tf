@@ -56,8 +56,8 @@ resource "aws_api_gateway_rest_api" "lookcard_api" {
 
 # Create a Custom Domain
 resource "aws_api_gateway_domain_name" "lookcard_domain" {
-  domain_name              = "api.develop.not-lookcard.com"
-  regional_certificate_arn = "arn:aws:acm:ap-southeast-1:227720554629:certificate/2130f4e3-54ac-48bb-a574-40a834e691ad" # Ensure this certificate is in the same region as your API Gateway
+  domain_name              = var.acm.domain_api_name
+  regional_certificate_arn = var.acm.cert_api_arn # Ensure this certificate is in the same region as your API Gateway
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -126,21 +126,21 @@ resource "aws_api_gateway_deployment" "lookcard_deployment" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
 }
 
-resource "aws_api_gateway_base_path_mapping" "lookcard_mapping" {
+resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
   domain_name = aws_api_gateway_domain_name.lookcard_domain.domain_name
   api_id      = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name  = "DEVELOP"
+  stage_name  = var.env_tag
 }
 
 # API Gateway Stage with CloudWatch Logs
-resource "aws_api_gateway_stage" "testing_stage" {
+resource "aws_api_gateway_stage" "stage" {
   deployment_id = aws_api_gateway_deployment.lookcard_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name    = "DEVELOP"
+  stage_name    = var.env_tag
   variables = {
-    "env" = "DEVELOP"
+    "env" = var.env_tag
   }
-  xray_tracing_enabled = true # 启用 X-Ray 跟踪
+  xray_tracing_enabled = true 
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw_logs.arn

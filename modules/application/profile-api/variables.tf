@@ -1,6 +1,7 @@
 variable "api_lookcardlocal_namespace" {}
 variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
+variable "env_tag" {}
 variable "network" {
   type = object({
     vpc            = string
@@ -42,7 +43,7 @@ locals {
     },
     {
       name  = "RUNTIME_ENVIRONMENT"
-      value = "DEVELOP"
+      value = var.env_tag
     }
   ]
   ecs_task_secret_vars = [

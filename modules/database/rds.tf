@@ -5,7 +5,6 @@ provider "aws" {
 # Define the DB subnet group
 resource "aws_db_subnet_group" "rds_subnet" {
   name       = "lookcard_rds_subnet"
-  # subnet_ids = var.network.private_subnet[*]
   subnet_ids = var.network.database_subnet[*]
 }
 
@@ -16,8 +15,7 @@ resource "aws_rds_cluster" "lookcard_develop" {
   engine_mode            = "provisioned"
   database_name          = "develop"
   master_username        = "develop"
-  # master_password        = "${var.secret_manager.database_secret_arn}:password::"
-  master_password        = "hdjs3GDT4FFs1998GdFzz"
+  master_password        = local.password
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   storage_encrypted      = true
@@ -38,10 +36,8 @@ resource "aws_rds_cluster_instance" "write_instance" {
   publicly_accessible = false
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 // rds read_instance
 # Define the read instance
-
 # resource "aws_rds_cluster_instance" "read_instance" {
 #   cluster_identifier = aws_rds_cluster.lookcard_develop.id
 #   instance_class     = "db.serverless"
@@ -50,8 +46,6 @@ resource "aws_rds_cluster_instance" "write_instance" {
 #   publicly_accessible = false
 # }
 //////////////////////////////////////////////////////////////////////////////////
-
-
 
 # Define the RDS Proxy for the standard cluster
 resource "aws_db_proxy" "rds_proxy" {

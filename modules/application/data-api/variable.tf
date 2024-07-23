@@ -3,7 +3,7 @@ variable "api_lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "kms_encryption_key_id_alpha_arn" {}
 variable "kms_generator_key_id_arn" {}
-
+variable "env_tag" {}
 variable "network" {
   type = object({
     vpc            = string
@@ -31,58 +31,51 @@ locals {
     data_priority = 401
   }
 }
-  # ecs_task_secret_vars = [
-  #   {
-  #     name      = "DATABASE_URL"
-  #     valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
-  #   },
-  #   {
-  #     name      = "FIREBASE_PROJECT_ID"
-  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:PROJECT_ID::"
-  #   },
-  #   {
-  #     name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
-  #   },
-  #   {
-  #     name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
-  #   },
-  #   {
-  #     name      = "FIREBASE_CREDENTIALS"
-  #     valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
-  #   },
-  #   {
-  #     name      = "API_KEY"
-  #     valueFrom = "${var.secret_manager.elliptic_secret_arn}:API_KEY::"
-  #   },
-  #   {
-  #     name      = "API_SECRET"
-  #     valueFrom = "${var.secret_manager.elliptic_secret_arn}:API_SECRET::"
-  #   },
-  #   {
-  #     name      = "DATABASE_ENDPOINT"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:host::"
-  #   },
-  #   {
-  #     name      = "DATABASE_USERNAME"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:username::"
-  #   },
-  #   {
-  #     name      = "DATABASE_PASSWORD"
-  #     valueFrom = "${var.secret_manager.database_secret_arn}:password::"
-  #   },
-  #   #     {
-  #   #     name      = "SENTRY_DSN"
-  #   #     valueFrom = "${var.secret_manager.sentry_secret_arn}:ACCOUNT_API_DSN::"
-  #   # },
-  # ]
-#   iam_secrets = [
-#     var.secret_manager.crypto_api_secret_arn,
-#     var.secret_manager.firebase_secret_arn,
-#     var.secret_manager.database_secret_arn,
-#     var.secret_manager.sentry_secret_arn,
-#     var.secret_manager.elliptic_secret_arn
-#   ]
-# }
-
+# ecs_task_secret_vars = [
+#   {
+#     name      = "SENTRY_DSN"
+#     valueFrom = "${var.secret_manager.sentry_secret_arn}:DATA_API_DSN::"
+#   },
+# ]
+# ecs_task_env_vars = [
+#   {
+#     name  = "AWS_KMS_GENERATOR_KEY_ID"
+#     value = var.kms_generator_key_id_arn
+#   },
+#   {
+#     name  = "AWS_KMS_ENCRYPTION_KEY_ID_ALPHA"
+#     value = var.kms_encryption_key_id_alpha_arn
+#   },
+#   {
+#     name  = "AWS_KMS_ENCRYPTION_KEY_ID_BETA"
+#     value = var.kms_encryption_key_id_beta_arn
+#   },
+#   {
+#     name  = "AWS_KMS_ENCRYPTION_KEY_ID_CHARLIE"
+#     value = var.kms_encryption_key_id_charlie_arn
+#   },
+#   {
+#     name  = "AWS_KMS_ENCRYPTION_KEY_ID_DELTA"
+#     value = var.kms_encryption_key_id_delta_arn
+#   },
+#   {
+#     name  = "AWS_KMS_ENCRYPTION_KEY_ID_ECO"
+#     value = var.kms_encryption_key_id_eco_arn
+#   },
+#   {
+#     name  = "AWS_S3_DATA_BUCKET_NAME"
+#     value = var.s3_data_bucket_name
+#   },
+#   {
+#     name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
+#     value = var.dyanmodb_data_tb_name
+#   },
+#   {
+#     name  = "AWS_XRAY_DAEMON_ENDPOINT"
+#     value = "xray.daemon.lookcard.local:2337"
+#   },
+#   {
+#     name  = "RUNTIME_ENVIRONMENT"
+#     value = var.env_tag
+#   }
+# ]

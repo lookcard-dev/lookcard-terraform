@@ -1,9 +1,5 @@
 variable "cluster" {}
 variable "lookcardlocal_namespace" {}
-
-
-
-
 variable "network" {
   type = object({
     vpc            = string

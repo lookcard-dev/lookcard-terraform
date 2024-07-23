@@ -1,5 +1,5 @@
 variable "iam_role" {}
-
+variable "env_tag" {}
 variable "cluster" {}
 
 variable "network" {
@@ -51,7 +51,7 @@ locals {
     },
     {
       name  = "RUNTIME_ENVIRONMENT"
-      value = "DEVELOP"
+      value = var.env_tag
     }
   ]
 }

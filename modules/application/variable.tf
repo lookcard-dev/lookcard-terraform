@@ -7,7 +7,7 @@ variable "network" {
   })
 }
 variable "alb_logging_bucket" {}
-
+data "aws_caller_identity" "current" {}
 variable "domain" {}
 data "aws_route53_zone" "hosted_zone_id" {
   name = var.domain
@@ -80,3 +80,5 @@ variable "lambda" {}
 variable "dynamodb_config_api_config_data_name" {}
 variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}
+variable "env_tag" {}
+variable "acm" {}
