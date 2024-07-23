@@ -20,13 +20,9 @@ resource "aws_ecs_service" "xray_daemon" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets         = var.network.private_subnet
     security_groups = [aws_security_group.xray_daemon_sg.id]
   }
-
-#   service_registries {
-#     registry_arn = aws_service_discovery_service.xray_daemon.arn
-#   }
     service_registries {
     registry_arn   = aws_service_discovery_service.xray_daemon_service.arn
   }

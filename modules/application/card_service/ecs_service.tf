@@ -22,7 +22,7 @@ resource "aws_ecs_service" "Card" {
   desired_count   = 1
   cluster         = var.cluster
   network_configuration {
-    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets          = var.network.private_subnet
     security_groups  = [aws_security_group.Card.id]
     assign_public_ip = false
   }

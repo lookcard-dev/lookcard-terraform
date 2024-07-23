@@ -24,7 +24,7 @@ resource "aws_ecs_service" "transaction" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets         = var.network.private_subnet
     security_groups = [aws_security_group.transactionApi.id]
   }
 
