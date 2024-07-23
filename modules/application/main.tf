@@ -181,7 +181,8 @@ module "notification" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager = var.secret_manager
+  secret_manager   = var.secret_manager
+  env_tag          = var.env_tag
 }
 
 module "user" {
@@ -236,6 +237,7 @@ module "profile_api" {
   api_lookcardlocal_namespace      = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   dynamodb_profile_data_table_name = var.dynamodb_profile_data_table_name
   secret_manager                   = var.secret_manager
+  env_tag                          = var.env_tag
 }
 module "config_api" {
   source           = "./config-api"
@@ -255,6 +257,7 @@ module "config_api" {
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
   lookcard_api_domain                  = var.lookcard_api_domain
   secret_manager                       = var.secret_manager
+  env_tag                              = var.env_tag
 }
 
 module "data_api" {
