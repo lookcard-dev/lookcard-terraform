@@ -29,3 +29,7 @@ output "cloudwatch_syn_canaries" {
   value = aws_s3_bucket.cloudwatch_syn_canaries.bucket
 
 }
+output "accountid_data" {
+  value = aws_s3_bucket.accountid_data.bucket
+
+}

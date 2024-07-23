@@ -26,6 +26,7 @@ module "S3" {
   aml_code                = var.s3_bucket.aml_code
   front_end_endpoint      = var.s3_bucket.front_end_endpoint
   cloudwatch_syn_canaries = var.s3_bucket.cloudwatch_syn_canaries
+  accountid_data          = var.s3_bucket.accountid_data
 }
 
 module "rds" {
@@ -74,6 +75,9 @@ module "application" {
   dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
   env_tag                                  = var.env_tag
   acm                                      = module.ssl-cert
+  kms                                      = module.kms
+  s3_data_bucket_name                      = module.S3.accountid_data
+  dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
 }
 
 module "ssl-cert" {
@@ -152,4 +156,9 @@ module "vpc-endpoint" {
 module "xray" {
   source    = "./modules/xray"
   s3_bucket = module.S3.cloudwatch_syn_canaries
+}
+
+module "kms" {
+  source = "./modules/kms"
+
 }

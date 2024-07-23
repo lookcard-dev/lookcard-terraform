@@ -70,7 +70,6 @@ module "transaction_api" {
   secret_manager              = var.secret_manager
 }
 
-
 module "transaction_listener" {
   source = "./transaction_listener"
   network = {
@@ -84,9 +83,7 @@ module "transaction_listener" {
   }
   vpc_id  = var.network.vpc
   cluster = aws_ecs_cluster.look_card.arn
-  # aggregator_tron_sqs_url                  = var.aggregator_tron_sqs_url
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
-  # aggregator_tron_sqs_arn                  = var.aggregator_tron_sqs_arn
   secret_manager      = var.secret_manager
   trongrid_secret_arn = var.trongrid_secret_arn
   sqs                 = var.sqs
@@ -110,7 +107,6 @@ module "account_api" {
   secret_manager              = var.secret_manager
   sqs                         = var.sqs
 }
-
 
 module "card" {
   source           = "./card_service"
@@ -166,7 +162,6 @@ module "utility" {
   secret_manager              = var.secret_manager
 }
 
-
 module "notification" {
   source           = "./notification_service"
   iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
@@ -202,7 +197,6 @@ module "user" {
   api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   secret_manager              = var.secret_manager
 }
-
 
 module "reporting" {
   source           = "./reporting_service"
@@ -277,6 +271,10 @@ module "data_api" {
   kms_encryption_key_id_alpha_arn = aws_kms_key.data_encryption_key_alpha.arn
   kms_generator_key_id_arn        = aws_kms_key.data_generator_key.arn
   env_tag                         = var.env_tag
+  secret_manager                  = var.secret_manager
+  kms                             = var.kms
+  s3_data_bucket_name             = var.s3_data_bucket_name
+  dynamodb_data_tb_name           = var.dynamodb_data_tb_name
 }
 
 module "xray_daemon" {

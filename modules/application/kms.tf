@@ -58,7 +58,6 @@ resource "aws_kms_key" "crypto_api_encryption" {
 
 resource "aws_kms_key_policy" "crypto_api_encryption_policy" {
   key_id = aws_kms_key.crypto_api_encryption.id
-
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Id" : "crypto-api-encryption-key",
@@ -255,9 +254,6 @@ resource "aws_kms_alias" "data_generator_key_alias" {
   name          = "alias/data-generator-key"
   target_key_id = aws_kms_key.data_generator_key.id
 }
-
-
-
 
 resource "aws_kms_key" "data_encryption_key_alpha" {
   description              = "KMS key for data api and account api encryption"

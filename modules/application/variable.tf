@@ -82,3 +82,6 @@ variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}
 variable "env_tag" {}
 variable "acm" {}
+variable "kms" {}
+variable "s3_data_bucket_name" {}
+variable "dynamodb_data_tb_name" {}

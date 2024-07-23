@@ -27,8 +27,8 @@ resource "aws_ecs_task_definition" "data-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      # secrets = local.ecs_task_secret_vars
-      # environment = local.ecs_task_env_vars
+      secrets = local.ecs_task_secret_vars
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "look-card-data-api-8080-tcp",

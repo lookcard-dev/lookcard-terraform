@@ -187,8 +187,6 @@ resource "aws_lambda_permission" "apigateway_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }
-
-
 resource "aws_apigatewayv2_integration" "connect_integration" {
   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
   integration_type          = "AWS_PROXY"
@@ -222,8 +220,6 @@ resource "aws_apigatewayv2_integration" "disconnect_integration" {
   integration_uri           = "${var.lambda.websocket_disconnect_arn}"
   passthrough_behavior      = "WHEN_NO_MATCH"
 }
-
-
 resource "aws_apigatewayv2_route" "disconnect_route" {
   route_key = "$disconnect"
   api_id    = aws_apigatewayv2_api.Push_message_Web.id
