@@ -52,7 +52,6 @@ resource "aws_lb_target_group" "crypto_api_target_group" {
   }
 }
 
-
 resource "aws_lb_listener_rule" "crypto_api_listener_signer_rule" {
   listener_arn = var.default_listener
 
@@ -112,7 +111,3 @@ resource "aws_lb_listener_rule" "crypto_api_listener_hdwallet_rule" {
     Name = "crypto-api-hdwallet-listener-rule"
   }
 }
-
-
-
-
