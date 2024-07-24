@@ -78,6 +78,6 @@ resource "aws_cloudwatch_log_group" "crypto_api" {
   name = "lookcard/api/${local.application.name}"
 }
 resource "aws_cloudwatch_log_stream" "crypto_api" {
-  name           = "crypto-api-log-stream"
+  name           = "${local.application.name}-log-stream"
   log_group_name = aws_cloudwatch_log_group.crypto_api.name
 }
