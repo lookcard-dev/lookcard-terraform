@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "crypto-api" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${local.application.name}",
+          "awslogs-group"         = "lookcard/api/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -67,5 +67,9 @@ resource "aws_ecs_task_definition" "crypto-api" {
   ])
 }
 resource "aws_cloudwatch_log_group" "crypto_api" {
-  name = "/ecs/${local.application.name}"
+  name = "lookcard/api/${local.application.name}"
+}
+resource "aws_cloudwatch_log_stream" "crypto_api" {
+  name = "crypto-api-log-stream"
+  log_group_name = aws_cloudwatch_log_group.crypto_api.name
 }
