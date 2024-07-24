@@ -1,26 +1,27 @@
 {
   "aws_provider": {
-    "region": "ap-southeast-1", 
-    "account_id": "" // aws account id
+    "region": "ap-southeast-1",
+    "account_id": ""
   },
   "general_config": {
     "env": "",
-    "domain": "" // all env domain
+    "domain": ""
   },
   "dns_config": {
     "hostname": "app",
     "api_hostname": "api",
     "admin_hostname": "admin"
   },
-  "s3_bucket": {  // all s3 need add env_tag before name 
-    "ekyc_data": "ekyc", 
+  "s3_bucket": {
+    "ekyc_data": "ekyc",
     "alb_log": "alb-logging",
     "cloudfront_log": "cloudfront-logging",
     "vpc_flow_log": "vpc-flowlog-lookcard",
     "aml_code": "lambda-aml-code",
     "front_end_endpoint": "",
     "cloudwatch_syn_canaries": "cloudwatch-syn-canaries-results",
-    "accountid_data": "-data"  // add account id before '-data'  
+    "accountid_data": "-data" 
+  
   },
   "lambda_code": {
     "websocket_connect_s3key": "AM_Websocket_connection.zip",
@@ -48,13 +49,13 @@
       "10.0.37.0/24",
       "10.0.38.0/24"
     ],
-    "isolated_subnet_cidr_list": [
+    "isolated_subnet_cidr_list": [ 
       "10.0.30.0/23",
       "10.0.32.0/23",
       "10.0.34.0/23"
     ]
   },
-  "image_tag": { // first of all need add ecr image first. 
+  "image_tag": {
     "notification": "",
     "account_api": "",
     "authentication_api": "",
