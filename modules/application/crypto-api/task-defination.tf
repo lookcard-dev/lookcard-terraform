@@ -54,7 +54,6 @@ resource "aws_ecs_task_definition" "crypto-api" {
           value = aws_cloudwatch_log_stream.crypto_api.name
         },
       ]
-
       portMappings = [
         {
           name          = "look-card-crypto-api-8080-tcp",
