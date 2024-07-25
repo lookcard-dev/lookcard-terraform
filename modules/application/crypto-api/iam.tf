@@ -77,10 +77,7 @@ resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
           "kms:Decrypt",
           "kms:GenerateDataKey"
         ],
-        "Resource" : [
-          var.crypto_api_encryption_kms_arn,
-          var.crypto_api_generator_kms_arn
-        ]
+        "Resource" : ["*"]
       }
     ]
   })

@@ -156,5 +156,4 @@ module "syn_canaries" {
 
 module "kms" {
   source = "./modules/kms"
-
 }

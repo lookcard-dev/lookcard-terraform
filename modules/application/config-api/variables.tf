@@ -9,7 +9,7 @@ variable "network" {
 variable "default_listener" {}
 variable "dynamodb_config_api_config_data_name" {}
 variable "dynamodb_config_api_config_data_arn" {}
-variable "lookcard_api_domain" {}
+variable "acm" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "env_tag" {}
@@ -47,7 +47,7 @@ locals {
       value = var.dynamodb_config_api_config_data_name
       }, {
       name  = "CORS_ORIGINS"
-      value = "https://${var.lookcard_api_domain}"
+      value = "https://${var.acm.domain_api_name}"
       }, {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
       value = aws_cloudwatch_log_group.config_api.name

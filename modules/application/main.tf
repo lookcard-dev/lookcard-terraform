@@ -45,8 +45,8 @@ module "crypto_api" {
     tag = var.image_tag.crypto_api
   }
   secret_manager                = var.secret_manager
-  crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
-  crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
+  # crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
+  # crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
   api_lookcardlocal_namespace   = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   kms                           = var.kms
 }
@@ -107,6 +107,7 @@ module "account_api" {
   cluster                     = aws_ecs_cluster.look_card.arn
   secret_manager              = var.secret_manager
   sqs                         = var.sqs
+  acm                         = var.acm
 }
 
 module "card" {
@@ -250,7 +251,7 @@ module "config_api" {
   api_lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
   dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
-  lookcard_api_domain                  = var.lookcard_api_domain
+  acm                                  = var.acm
   secret_manager                       = var.secret_manager
   env_tag                              = var.env_tag
 }
