@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "config-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = local.ecs_task_secret_vars
+      secrets     = local.ecs_task_secret_vars
       environment = local.ecs_task_env_vars
       portMappings = [
         {
@@ -52,6 +52,6 @@ resource "aws_cloudwatch_log_group" "config_api" {
   name = "/ecs/${local.application.name}"
 }
 resource "aws_cloudwatch_log_stream" "config_api" {
-  name = "config-api-log-stream"
+  name           = "config-api-log-stream"
   log_group_name = aws_cloudwatch_log_group.config_api.name
 }

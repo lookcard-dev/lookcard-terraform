@@ -82,14 +82,20 @@ resource "aws_instance" "nat" {
   depends_on = [aws_security_group.nat_sg]
 }
 
-
 resource "aws_eip" "nat_eip" {
-  count  = var.network_config.gateway_enabled ? var.network_config.replica_number : 0
-  domain = "vpc"
+  count      = var.env_tag == "Production" ? 1 : var.network_config.replica_number
+    domain = "vpc"
   tags = {
     Name = "NAT-EIP-${count.index}"
   }
 }
+# resource "aws_eip" "nat_eip" {
+#   count  = var.network_config.gateway_enabled ? var.network_config.replica_number : 0
+#   domain = "vpc"
+#   tags = {
+#     Name = "NAT-EIP-${count.index}"
+#   }
+# }
 resource "aws_eip_association" "nat_eip_assoc" {
   instance_id   = aws_instance.nat.id
   allocation_id = aws_eip.nat_eip[0].id

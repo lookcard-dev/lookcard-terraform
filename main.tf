@@ -47,6 +47,7 @@ module "VPC" {
     replica_number  = 1
     gateway_enabled = true
   }
+  env_tag = var.env_tag
 }
 
 module "application" {

@@ -82,9 +82,7 @@ variable "sns_subscriptions_email" {
   type = list(string)
 }
 
-variable "env_tag" {
-  default = "Develop"
-}
+variable "env_tag" {}
 
 
 

@@ -1,5 +1,4 @@
 data "aws_availability_zones" "available" {}
-
 data "aws_ami" "nat_ami" {
   most_recent = true
   owners      = ["137112412989"]
@@ -31,6 +30,7 @@ variable "network_config" {
     gateway_enabled = bool
   })
 }
+variable "env_tag" {}
 # variable "igw_name" {}
 
 # variable "security_group_name" {}
