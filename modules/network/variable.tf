@@ -30,7 +30,6 @@ variable "network_config" {
     gateway_enabled = bool
   })
 }
-variable "env_tag" {}
 # variable "igw_name" {}
 
 # variable "security_group_name" {}
