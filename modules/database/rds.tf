@@ -2,6 +2,7 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
+
 # Define the DB subnet group
 resource "aws_db_subnet_group" "rds_subnet" {
   name       = "lookcard_rds_subnet"
@@ -9,12 +10,12 @@ resource "aws_db_subnet_group" "rds_subnet" {
 }
 
 // rds cluster
-resource "aws_rds_cluster" "lookcard_develop" {
-  cluster_identifier     = "lookcard-develop-db"
+resource "aws_rds_cluster" "lookcard" {
+  cluster_identifier     = "lookcard-${var.general_config.env}-db"
   engine                 = "aurora-postgresql"
   engine_mode            = "provisioned"
-  database_name          = "develop"
-  master_username        = "develop"
+  database_name          = var.general_config.env
+  master_username        = var.general_config.env
   master_password        = local.password
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
@@ -29,10 +30,10 @@ resource "aws_rds_cluster" "lookcard_develop" {
 
 # # # Define the write instance
 resource "aws_rds_cluster_instance" "write_instance" {
-  cluster_identifier = aws_rds_cluster.lookcard_develop.id
+  cluster_identifier = aws_rds_cluster.lookcard.id
   instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.lookcard_develop.engine
-  engine_version     = aws_rds_cluster.lookcard_develop.engine_version
+  engine             = aws_rds_cluster.lookcard.engine
+  engine_version     = aws_rds_cluster.lookcard.engine_version
   publicly_accessible = false
 }
 
@@ -52,7 +53,7 @@ resource "aws_db_proxy" "rds_proxy" {
   name                   = "rds-proxy"
   engine_family          = "POSTGRESQL"
   role_arn               = aws_iam_role.rds_proxy_role.arn
-  vpc_subnet_ids         = var.network.private_subnet
+  vpc_subnet_ids         = var.network.database_subnet
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   auth {
     auth_scheme = "SECRETS"
@@ -65,7 +66,7 @@ resource "aws_db_proxy" "rds_proxy" {
 resource "aws_db_proxy_target" "proxy_target" {
   db_proxy_name         = aws_db_proxy.rds_proxy.name
   target_group_name     = "default"
-  db_cluster_identifier = aws_rds_cluster.lookcard_develop.id
+  db_cluster_identifier = aws_rds_cluster.lookcard.id
 }
 
 # Define an additional RDS Proxy endpoint

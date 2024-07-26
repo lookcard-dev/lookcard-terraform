@@ -54,6 +54,7 @@ module "lookcard-websocket" {
   source              = "./lookcard-websocket"
   sqs                 = var.sqs
   secret_manager      = var.secret_manager
+  general_config      = var.general_config
 }
 
 module "lookcard-pushnoification" {
@@ -64,6 +65,7 @@ module "lookcard-pushnoification" {
     public_subnet  = var.network.public_subnet
   }
   secret_manager   = var.secret_manager
+  general_config   = var.general_config
 }
 
 module "websocket-connect" {

@@ -30,3 +30,4 @@ output "dynamodb_table_arn" {
 }
 
 variable "secret_manager" {}
+variable "general_config" {}

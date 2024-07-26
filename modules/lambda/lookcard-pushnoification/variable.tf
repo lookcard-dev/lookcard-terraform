@@ -20,3 +20,4 @@ variable "network" {
 }
 
 variable "secret_manager" {}
+variable "general_config" {}

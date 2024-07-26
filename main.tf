@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "lookcard-terraform-backend-development"
+    bucket         = "lookcard-terraform-backend-testing"
     key            = "state/terraform.tfstate"
     region         = "ap-southeast-1"
     encrypt        = true
@@ -38,6 +38,7 @@ module "rds" {
     database_subnet = module.VPC.database_subnet_ids
   }
   secret_manager = module.secret-manager
+  general_config = var.general_config
 }
 
 module "VPC" {
@@ -127,6 +128,7 @@ module "lambda" {
   sqs                            = module.sqs
   secret_manager                 = module.secret-manager
   dynamodb_table_arn             = module.rds.dynamodb_table_arn
+  general_config                 = var.general_config
 }
 
 module "elasticache" {
@@ -149,10 +151,10 @@ module "vpc-endpoint" {
   rt_private_id = module.VPC.rt_private_id[0]
 }
 
-module "syn_canaries" {
-  source    = "./modules/syn_canaries"
-  s3_bucket = module.S3.cloudwatch_syn_canaries
-}
+# module "syn_canaries" {
+#   source    = "./modules/syn_canaries"
+#   s3_bucket = module.S3.cloudwatch_syn_canaries
+# }
 
 module "kms" {
   source = "./modules/kms"
