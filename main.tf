@@ -127,6 +127,7 @@ module "lambda" {
   sqs                            = module.sqs
   secret_manager                 = module.secret-manager
   dynamodb_table_arn             = module.rds.dynamodb_table_arn
+  general_config                 = var.general_config
 }
 
 module "elasticache" {

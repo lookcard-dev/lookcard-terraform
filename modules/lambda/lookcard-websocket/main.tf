@@ -5,7 +5,7 @@ resource "aws_lambda_function" "websocket" {
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   architectures = ["x86_64"]
-  s3_bucket     = "develop-lambda-aml-code-develop"
+  s3_bucket     = "${var.general_config.env}-lambda-aml-code-${var.general_config.env}"
   s3_key        = "lookcard-websocket.zip"
   timeout       = 300
 }
