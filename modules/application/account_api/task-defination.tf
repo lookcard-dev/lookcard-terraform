@@ -28,36 +28,7 @@ resource "aws_ecs_task_definition" "Account_API" {
         }
       }
       secrets = local.ecs_task_secret_vars
-      environment = [
-        {
-          name  = "CRYPTO_API_URL"
-          value = "https://api.develop.not-lookcard.com"
-        },
-        {
-          name  = "DATABASE_NAME"
-          value = "main"
-        },
-        {
-          name  = "DATABASE_SCHEMA"
-          value = "account"
-        },
-        {
-          name  = "SQS_NOTIFICATION_QUEUE_URL"
-          value = var.sqs.lookcard_notification_queue_url
-        },
-        {
-          name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
-          value = var.sqs.crypto_fund_withdrawal_queue_url
-        },
-        {
-          name  = "DATABASE_ARGS"
-          value = "sslmode=require"
-        },
-        {
-          name  = "AWS_XRAY_DAEMON_ENDPOINT"
-          value = "xray.daemon.lookcard.local:2337"
-        }
-      ]
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "look-card-account-api-8080-tcp",

@@ -28,7 +28,7 @@ resource "aws_security_group" "nat_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-    ingress {
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -70,6 +70,7 @@ resource "aws_security_group" "nat_sg" {
 
 # 创建 NAT 实例
 resource "aws_instance" "nat" {
+  count                  = var.network_config.gateway_enabled ? 0 : var.network_config.replica_number
   ami                    = data.aws_ami.nat_ami.id
   instance_type          = "t3.small"
   subnet_id              = aws_subnet.public-subnet[2].id
@@ -78,31 +79,28 @@ resource "aws_instance" "nat" {
   tags = {
     Name = "NAT Instance"
   }
-
   depends_on = [aws_security_group.nat_sg]
 }
 
-
 resource "aws_eip" "nat_eip" {
-  count  = var.network_config.gateway_enabled ? var.network_config.replica_number : 0
+  count = var.network_config.gateway_enabled ? 1 : var.network_config.replica_number
   domain = "vpc"
   tags = {
     Name = "NAT-EIP-${count.index}"
   }
 }
+
 resource "aws_eip_association" "nat_eip_assoc" {
-  instance_id   = aws_instance.nat.id
-  allocation_id = aws_eip.nat_eip[0].id
+  count         = var.network_config.gateway_enabled ? 0 : var.network_config.replica_number
+  instance_id   = element(aws_instance.nat.*.id, count.index)
+  allocation_id = element(aws_eip.nat_eip.*.id, count.index)
 
   depends_on = [aws_instance.nat]
 }
 
-
-# resource "aws_nat_gateway" "nat-gateway" {
-#   count         = var.network_config.gateway_enabled ? var.network_config.replica_number : 0
-#   allocation_id = aws_eip.nat-ip[count.index].id
-#   subnet_id     = aws_subnet.look-card-public-subnet[count.index].id
-#   tags = {
-#     Name = "NAT-Gateway-${count.index}"
-#   }
-# }
+resource "aws_nat_gateway" "nat_gw" {
+  count       = var.network_config.gateway_enabled ? 1 : 0
+  allocation_id = element(aws_eip.nat_eip.*.id, 0)
+  subnet_id   = element(aws_subnet.public-subnet.*.id, 0)
+  depends_on = [aws_eip.nat_eip]
+}

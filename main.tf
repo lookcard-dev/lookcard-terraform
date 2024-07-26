@@ -45,7 +45,7 @@ module "VPC" {
   network = var.network
   network_config = {
     replica_number  = 1
-    gateway_enabled = true
+    gateway_enabled = false
   }
 }
 
@@ -156,5 +156,4 @@ module "syn_canaries" {
 
 module "kms" {
   source = "./modules/kms"
-
 }
