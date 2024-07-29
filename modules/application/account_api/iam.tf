@@ -29,7 +29,7 @@ resource "aws_iam_policy" "Account_API_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : local.iam_secrets
+        "Resource" : "*"
       }
     ]
   })
