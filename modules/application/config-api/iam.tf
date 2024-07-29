@@ -140,7 +140,7 @@ resource "aws_iam_policy" "secrets_manager_policy" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource": [
-          "arn:aws:secretsmanager:ap-southeast-1:227720554629:secret:SENTRY-zkOfV9"
+          "*"
         ]
       }
     ]
