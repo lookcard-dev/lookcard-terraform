@@ -2,134 +2,80 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-# Store the password in AWS Secrets Manager
-resource "aws_secretsmanager_secret" "lookcard_db_secret" {
-  name = "lookcard_db_master_password"
-}
-
-resource "aws_secretsmanager_secret_version" "lookcard_db_secret_version" {
-  secret_id     = aws_secretsmanager_secret.lookcard_db_secret.id
-  secret_string = var.lookcard_rds_password
-}
 
 # Define the DB subnet group
-resource "aws_db_subnet_group" "lookcard_rds_subnet" {
+resource "aws_db_subnet_group" "rds_subnet" {
   name       = "lookcard_rds_subnet"
-  subnet_ids = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+  subnet_ids = var.network.database_subnet[*]
 }
 
-# Define the RDS Aurora Serverless V2 cluster
-# resource "aws_rds_cluster" "lookcard" {
-#   cluster_identifier      = "lookcard-testing-db"
-#   database_name           = "lookcardtest"
-#   engine                  = "aurora-postgresql"
-#   engine_mode             = "provisioned"
-#   serverlessv2_scaling_configuration {
-#     min_capacity           = 2
-#     max_capacity           = 8
-#   }
-#   master_username         = "lookcard"
-# #   master_password         = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-#   master_password         = "dsauuuFDSADK"
-#   db_subnet_group_name    = aws_db_subnet_group.lookcard_rds_subnet.name
-#   vpc_security_group_ids  = [aws_security_group.lookcard_db_rds_sg.id]
-#   skip_final_snapshot     = true
-#   deletion_protection     = false
-#   storage_encrypted       = true
-# }
-
-# resource "aws_rds_cluster" "lookcard" {
-#   cluster_identifier     = "lookcard-testing-db"
-#   engine                 = "aurora-postgresql"
-#   engine_mode            = "provisioned"
-#   database_name          = "lookcardtest"
-#   master_username        = "lookcard"
-#   master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-#   db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
-#   vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
-#   storage_encrypted      = true
-#   skip_final_snapshot    = true
-#   deletion_protection    = false
-#   serverlessv2_scaling_configuration {
-#     max_capacity = 5.0
-#     min_capacity = 0.5
-#   }
-# }
-
-# resource "aws_rds_cluster_instance" "lookcard-serverless-instance" {
-#   cluster_identifier = aws_rds_cluster.lookcard.id
-#   instance_class     = "db.serverless"
-#   engine             = aws_rds_cluster.lookcard.engine
-#   engine_version     = aws_rds_cluster.lookcard.engine_version
-# }
-
-# Define the second RDS standard cluster
-resource "aws_rds_cluster" "lookcard_2" {
-  cluster_identifier     = "lookcard-standard-db"
-  database_name          = "lookcardstandard"
+// rds cluster
+resource "aws_rds_cluster" "lookcard" {
+  cluster_identifier     = "lookcard-${var.general_config.env}-db"
   engine                 = "aurora-postgresql"
-  master_username        = "lookcard"
-#   master_password        = aws_secretsmanager_secret_version.lookcard_db_secret_version.secret_string
-  master_password        = "dsauuuFDSADK"
-  db_subnet_group_name   = aws_db_subnet_group.lookcard_rds_subnet.name
-  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+  engine_mode            = "provisioned"
+  database_name          = var.general_config.env
+  master_username        = var.general_config.env
+  master_password        = local.password
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  storage_encrypted      = true
   skip_final_snapshot    = true
   deletion_protection    = false
-  storage_encrypted      = true
+  serverlessv2_scaling_configuration {
+    max_capacity = 5.0
+    min_capacity = 0.5
+  }
 }
 
-# Define the instance for the standard RDS cluster
-resource "aws_rds_cluster_instance" "lookcard_2_instance" {
-  cluster_identifier           = aws_rds_cluster.lookcard_2.id
-  instance_class               = "db.t3.medium"
-  engine                       = "aurora-postgresql"
-  db_subnet_group_name         = aws_db_subnet_group.lookcard_rds_subnet.name
-  publicly_accessible          = false
-  performance_insights_enabled = true
-  monitoring_interval          = 60
-  monitoring_role_arn          = aws_iam_role.rds_monitoring_role.arn
+# # # Define the write instance
+resource "aws_rds_cluster_instance" "write_instance" {
+  cluster_identifier = aws_rds_cluster.lookcard.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.lookcard.engine
+  engine_version     = aws_rds_cluster.lookcard.engine_version
+  publicly_accessible = false
 }
 
-# # Define the RDS Proxy for the serverless cluster
-# resource "aws_db_proxy" "lookcard_rds_proxy" {
-#   name                   = "lookcard-rds-proxy"
-#   engine_family          = "POSTGRESQL"
-#   role_arn               = aws_iam_role.rds_proxy_role.arn
-#   vpc_subnet_ids         = var.network.private_subnet
-#   vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
-#   auth {
-#     auth_scheme = "SECRETS"
-#     secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
-#   }
-#   require_tls = true
+// rds read_instance
+# Define the read instance
+# resource "aws_rds_cluster_instance" "read_instance" {
+#   cluster_identifier = aws_rds_cluster.lookcard_develop.id
+#   instance_class     = "db.serverless"
+#   engine             = aws_rds_cluster.lookcard_develop.engine
+#   engine_version     = aws_rds_cluster.lookcard_develop.engine_version
+#   publicly_accessible = false
 # }
-
-# # Associate the RDS Serverless Cluster with the RDS Proxy
-# resource "aws_db_proxy_target" "lookcard_proxy_target" {
-#   db_proxy_name         = aws_db_proxy.lookcard_rds_proxy.name
-#   target_group_name     = "default"
-#   db_cluster_identifier = aws_rds_cluster.lookcard.id
-# }
+//////////////////////////////////////////////////////////////////////////////////
 
 # Define the RDS Proxy for the standard cluster
-resource "aws_db_proxy" "lookcard_rds_proxy_2" {
-  name                   = "lookcard-rds-proxy-2"
+resource "aws_db_proxy" "rds_proxy" {
+  name                   = "rds-proxy"
   engine_family          = "POSTGRESQL"
   role_arn               = aws_iam_role.rds_proxy_role.arn
-  vpc_subnet_ids         = var.network.private_subnet
-  vpc_security_group_ids = [aws_security_group.lookcard_db_rds_sg.id]
+  vpc_subnet_ids         = var.network.database_subnet
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
   auth {
     auth_scheme = "SECRETS"
-    secret_arn  = aws_secretsmanager_secret.lookcard_db_secret.arn
+    secret_arn  = var.secret_manager.database_secret_arn
   }
   require_tls = true
 }
 
 # Associate the RDS Standard Cluster with the RDS Proxy
-resource "aws_db_proxy_target" "lookcard_proxy_target_2" {
-  db_proxy_name         = aws_db_proxy.lookcard_rds_proxy_2.name
+resource "aws_db_proxy_target" "proxy_target" {
+  db_proxy_name         = aws_db_proxy.rds_proxy.name
   target_group_name     = "default"
-  db_cluster_identifier = aws_rds_cluster.lookcard_2.id
+  db_cluster_identifier = aws_rds_cluster.lookcard.id
+}
+
+# Define an additional RDS Proxy endpoint
+resource "aws_db_proxy_endpoint" "rds_proxy_read_endpoint" {
+  db_proxy_name          = aws_db_proxy.rds_proxy.name
+  vpc_subnet_ids         = var.network.database_subnet
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  target_role            = "READ_ONLY"
+  db_proxy_endpoint_name = "rds-proxy-read-endpoint"
 }
 
 # IAM role for RDS Proxy
@@ -150,14 +96,44 @@ resource "aws_iam_role" "rds_proxy_role" {
   })
 }
 
+
+# Add the Secrets Manager policy for the RDS Proxy role
+resource "aws_iam_role_policy" "rds_proxy_secrets_policy" {
+  name   = "lookcard-rds-proxy-secrets-policy"
+  role   = aws_iam_role.rds_proxy_role.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid: "VisualEditor0",
+        Effect: "Allow",
+        Action: [
+          "secretsmanager:GetRandomPassword",
+          "secretsmanager:CreateSecret",
+          "secretsmanager:ListSecrets"
+        ],
+        Resource: "*"
+      },
+      {
+        Sid: "VisualEditor1",
+        Effect: "Allow",
+        Action: "secretsmanager:*",
+        Resource: [
+          "*"  # Replace with your actual secret ARN
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "rds_proxy_role_policy" {
   role       = aws_iam_role.rds_proxy_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
 
 # Define the security group
-resource "aws_security_group" "lookcard_db_rds_sg" {
-  name        = "Database-Security-Group"
+resource "aws_security_group" "db_rds_sg" {
+  name        = "database-security-group"
   description = "Security group for RDS services"
   vpc_id      = var.network.vpc
 
@@ -182,7 +158,7 @@ resource "aws_security_group" "lookcard_db_rds_sg" {
 
 # IAM role and policy attachment for monitoring
 resource "aws_iam_role" "rds_monitoring_role" {
-  name = "lookcard-rds-monitoring-role"
+  name = "rds-monitoring-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",

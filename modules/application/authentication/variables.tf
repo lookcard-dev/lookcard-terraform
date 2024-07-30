@@ -11,9 +11,8 @@ variable "network" {
 variable "iam_role" {}
 variable "cluster" {}
 variable "sg_alb_id" {}
-variable "sqs_withdrawal" {}
 variable "secret_manager" {}
-
+variable "sqs" {}
 variable "image" {
   type = object({
     url = string
@@ -65,3 +64,4 @@ locals {
     }
   ]
 }
+variable "cluster_name" {}

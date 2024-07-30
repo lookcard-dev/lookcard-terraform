@@ -1,7 +1,5 @@
 variable "iam_role" {}
-
 variable "default_listener" {}
-
 variable "network" {
   type = object({
     vpc            = string
@@ -9,9 +7,7 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-
-
-variable "lookcardlocal_namespace_id" {}
+variable "api_lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "image" {
@@ -20,7 +16,6 @@ variable "image" {
     tag = string
   })
 }
-
 locals {
   application = {
     name      = "Card"

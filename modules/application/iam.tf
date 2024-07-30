@@ -83,7 +83,7 @@ resource "aws_iam_policy" "lookcard_withdrawal_sqs_policy" {
         "Action" : [
           "sqs:SendMessage"
         ],
-        "Resource" : "${var.sqs_withdrawal}"
+        "Resource" : "*"
       }
     ]
   })

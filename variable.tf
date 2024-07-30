@@ -21,17 +21,20 @@ variable "aws_provider" {
 
 variable "image_tag" {
   type = object({
-    notification = string
-    account_api  = string
-    authentication_api = string
-    blockchain_api = string
-    card_api = string
-    crypto_api = string
-    reporting_api = string
+    notification         = string
+    account_api          = string
+    authentication_api   = string
+    blockchain_api       = string
+    card_api             = string
+    crypto_api           = string
+    reporting_api        = string
     transaction_listener = string
-    transaction_api = string
-    users_api = string
-    utility_api = string
+    transaction_api      = string
+    users_api            = string
+    utility_api          = string
+    profile_api          = string
+    config_api           = string
+    data_api             = string
   })
 }
 
@@ -58,12 +61,14 @@ variable "network" {
 }
 variable "s3_bucket" {
   type = object({
-    ekyc_data          = string
-    alb_log            = string
-    cloudfront_log     = string
-    vpc_flow_log       = string
-    aml_code           = string
-    front_end_endpoint = string
+    ekyc_data               = string
+    alb_log                 = string
+    cloudfront_log          = string
+    vpc_flow_log            = string
+    aml_code                = string
+    front_end_endpoint      = string
+    cloudwatch_syn_canaries = string
+    accountid_data         = string
   })
 }
 
@@ -77,11 +82,8 @@ variable "sns_subscriptions_email" {
   type = list(string)
 }
 
-variable "env" {
-  default = "testing"
-}
+variable "env_tag" {}
 
-variable "lookcard_rds_password" {}
 
 
 

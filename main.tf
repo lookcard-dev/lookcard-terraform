@@ -17,25 +17,28 @@ module "secret-manager" {
 }
 
 module "S3" {
-  source             = "./modules/s3"
-  environment        = var.general_config.env
-  ekyc_data          = var.s3_bucket.ekyc_data
-  alb_log            = var.s3_bucket.alb_log
-  cloudfront_log     = var.s3_bucket.cloudfront_log
-  vpc_flow_log       = var.s3_bucket.vpc_flow_log
-  aml_code           = var.s3_bucket.aml_code
-  front_end_endpoint = var.s3_bucket.front_end_endpoint
+  source                  = "./modules/s3"
+  environment             = var.general_config.env
+  ekyc_data               = var.s3_bucket.ekyc_data
+  alb_log                 = var.s3_bucket.alb_log
+  cloudfront_log          = var.s3_bucket.cloudfront_log
+  vpc_flow_log            = var.s3_bucket.vpc_flow_log
+  aml_code                = var.s3_bucket.aml_code
+  front_end_endpoint      = var.s3_bucket.front_end_endpoint
+  cloudwatch_syn_canaries = var.s3_bucket.cloudwatch_syn_canaries
+  accountid_data          = var.s3_bucket.accountid_data
 }
 
 module "rds" {
   source = "./modules/database"
   network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
+    vpc             = module.VPC.vpc
+    private_subnet  = module.VPC.private_subnet_ids
+    public_subnet   = module.VPC.public_subnet_ids
+    database_subnet = module.VPC.database_subnet_ids
   }
-  lookcard_db_secret    = module.secret-manager.lookcard_db_secret
-  lookcard_rds_password = module.secret-manager.lookcard_db_secret
+  secret_manager = module.secret-manager
+  general_config = var.general_config
 }
 
 module "VPC" {
@@ -43,10 +46,8 @@ module "VPC" {
   network = var.network
   network_config = {
     replica_number  = 1
-    gateway_enabled = true
+    gateway_enabled = false
   }
-  # iam_role_arn                = module.IAM_Role.vpc_log
-  # log_bucket                  = module.S3.vpc_bucket_arn
 }
 
 module "application" {
@@ -60,21 +61,21 @@ module "application" {
     private_subnet = module.VPC.private_subnet_ids
     public_subnet  = module.VPC.public_subnet_ids
   }
-  image_tag = var.image_tag
-  sqs_withdrawal                           = module.lambda.withdrawal_sqs
-  lookcard_notification_sqs_url            = module.lambda.lookcard_notification_sqs_url
-  crypto_fund_withdrawal_sqs_url           = module.lambda.crypto_fund_withdrawal_sqs_url
-  push_message_invoke                      = module.lambda.push_message_web_invoke
-  push_message_web_function                = module.lambda.push_message_web_function
-  web_socket_function                      = module.lambda.web_socket_function
-  web_socket_invoke                        = module.lambda.web_socket_invoke
-  web_socket_disconnect_invoke             = module.lambda.web_socket_disconnect_invoke
-  web_socket_disconnect_function           = module.lambda.web_socket_disconnect_function
-  aggregator_tron_sqs_url                  = module.lambda.aggregator_tron_sqs_url
+  image_tag                                = var.image_tag
+  sqs                                      = module.sqs
+  lambda                                   = module.lambda
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
-  aggregator_tron_sqs_arn                  = module.lambda.aggregator_tron_sqs_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   secret_manager                           = module.secret-manager
+  dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
+  dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
+  lookcard_api_domain                      = module.application.lookcard_api_domain
+  dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
+  env_tag                                  = var.env_tag
+  acm                                      = module.ssl-cert
+  kms                                      = module.kms
+  s3_data_bucket_name                      = module.S3.accountid_data
+  dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
 }
 
 module "ssl-cert" {
@@ -99,6 +100,10 @@ module "sns_topic" {
   sns_subscriptions_email = var.sns_subscriptions_email
 }
 
+module "sqs" {
+  source = "./modules/sqs"
+}
+
 module "lambda" {
   source            = "./modules/lambda"
   ddb_websocket_arn = module.rds.ddb_websocket.arn
@@ -118,6 +123,39 @@ module "lambda" {
     push_notification_s3key    = var.lambda_code.push_notification_s3key
     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
   }
-  secret_manager     = module.secret-manager
-  dynamodb_table_arn = module.rds.dynamodb_table_arn
+  lambda_code_s3_bucket          = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+  lambda_code_data_process_s3key = var.lambda_code.data_process_s3key
+  sqs                            = module.sqs
+  secret_manager                 = module.secret-manager
+  dynamodb_table_arn             = module.rds.dynamodb_table_arn
+  general_config                 = var.general_config
+}
+
+module "elasticache" {
+  source = "./modules/elasticache"
+  network = {
+    vpc             = module.VPC.vpc
+    private_subnet  = module.VPC.private_subnet_ids
+    public_subnet   = module.VPC.public_subnet_ids
+    database_subnet = module.VPC.database_subnet_ids
+  }
+}
+
+module "vpc-endpoint" {
+  source = "./modules/vpc-endpoint"
+  network = {
+    vpc            = module.VPC.vpc
+    private_subnet = module.VPC.private_subnet_ids
+    public_subnet  = module.VPC.public_subnet_ids
+  }
+  rt_private_id = module.VPC.rt_private_id[0]
+}
+
+module "syn_canaries" {
+  source    = "./modules/syn_canaries"
+  s3_bucket = module.S3.cloudwatch_syn_canaries
+}
+
+module "kms" {
+  source = "./modules/kms"
 }

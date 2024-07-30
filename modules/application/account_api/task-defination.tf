@@ -1,8 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "account-api"
-  most_recent     = true
-}
-
 resource "aws_ecs_task_definition" "Account_API" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -22,7 +17,6 @@ resource "aws_ecs_task_definition" "Account_API" {
   container_definitions = jsonencode([
     {
       name  = local.application.name
-    #   image = data.aws_ecr_image.latest.image_uri
       image = "${local.application.image}:${local.application.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
@@ -34,24 +28,7 @@ resource "aws_ecs_task_definition" "Account_API" {
         }
       }
       secrets = local.ecs_task_secret_vars
-      environment = [
-        {
-          name  = "CRYPTO_API_URL"
-          value = "https://api.test.lookcard.io"
-        },
-        {
-          name  = "DATABASE_NAME"
-          value = "main"
-        },
-        {
-          name  = "SQS_NOTIFICATION_QUEUE_URL"
-          value = var.lookcard_notification_sqs_url
-        },
-        {
-          name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
-          value = var.crypto_fund_withdrawal_sqs_url
-        }
-      ]
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "look-card-account-api-8080-tcp",

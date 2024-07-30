@@ -22,14 +22,14 @@ resource "aws_iam_policy" "Account_API_env_secrets_manager_read_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      for secret in local.iam_secrets : {
-        "Sid"    : secret.sid,
+      {
+        "Sid"    : "secretSid",
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : secret.arn
+        "Resource" : "*"
       }
     ]
   })
@@ -75,8 +75,8 @@ resource "aws_iam_policy" "Account_API_SQS_SendMessage" {
           "sqs:SendMessage"
         ],
         "Resource" : [
-          "arn:aws:sqs:ap-southeast-1:576293270682:Lookcard_Notification.fifo",
-          "arn:aws:sqs:ap-southeast-1:576293270682:Crypto_Fund_Withdrawal.fifo"
+          "${var.sqs.lookcard_notification_queue_arn}",
+          "${var.sqs.crypto_fund_withdrawal_queue_arn}"
         ]
       }
     ]

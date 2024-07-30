@@ -1,5 +1,9 @@
-output "lookcard_db_secret" {
+output "rds_password_secret" {
   value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].id
+}
+
+output "rds_password_arn_secret" {
+  value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].arn
 }
 
 output "crypto_api_secret_arn" {
@@ -17,6 +21,9 @@ output "elliptic_secret_arn" {
 output "database_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["DATABASE"].arn
 }
+output "database_secret_id" {
+  value = aws_secretsmanager_secret.lookcard_secrets["DATABASE"].id
+}
 
 output "env_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["ENV"].arn
@@ -32,4 +39,23 @@ output "aml_env_secret_arn" {
 
 output "trongrid_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["TRONGRID"].arn
+}
+output "telegram_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["TELEGRAM"].arn
+}
+
+output "system_crypto_wallet_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["SYSTEM_CRYPTO_WALLET"].arn
+}
+
+output "coinranking_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["COINRANKING"].arn
+}
+
+output "notification_env_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["NOTIFICATION_ENV"].arn
+}
+
+output "sentry_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["SENTRY"].arn
 }

@@ -1,9 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "blockchain-api"
-
-  most_recent = true
-}
-
 resource "aws_ecs_task_definition" "Blockchain" {
   family                   = local.application.name
   network_mode             = "awsvpc"
@@ -37,8 +31,8 @@ resource "aws_ecs_task_definition" "Blockchain" {
       portMappings = [
         {
           name          = "look-card-blockchain-3000-tcp",
-          containerPort = 3000,
-          hostPort      = 3000,
+          containerPort = local.application.port,
+          hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },

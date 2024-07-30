@@ -20,9 +20,9 @@ resource "aws_lb_listener_rule" "reporting_listener_rule" {
     }
   }
 
-  priority = 6
+  priority = local.load_balancer.priority
   tags = {
-    Name        = "${local.application.name}-listener-rule"
+    Name          = "${local.application.name}-listener-rule"
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_ecs_service" "reporting" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets         = var.network.private_subnet
     security_groups = [aws_security_group.Reporting.id]
   }
 

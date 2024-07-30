@@ -1,8 +1,8 @@
 resource "aws_service_discovery_service" "evvo_blockchain_service" {
-  name = "_blockchain"
+  name = "blockchain"
 
   dns_config {
-    namespace_id = var.lookcardlocal_namespace_id
+    namespace_id = var.api_lookcardlocal_namespace
 
     dns_records {
       ttl  = 10
@@ -23,7 +23,7 @@ resource "aws_ecs_service" "blockchain" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets          = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets          = var.network.private_subnet
     security_groups  = [aws_security_group.blockchain.id]
     assign_public_ip = false
   }
@@ -31,7 +31,7 @@ resource "aws_ecs_service" "blockchain" {
   load_balancer {
     target_group_arn = aws_lb_target_group.blockchain_target_group.arn
     container_name   = local.application.name
-    container_port   = "3000"
+    container_port   = local.application.port
   }
 
   service_registries {

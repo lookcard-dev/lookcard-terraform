@@ -1,8 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "authentication-api"
-  most_recent     = true
-}
-
 resource "aws_ecs_task_definition" "Authentication" {
   family                   = local.application.name
   network_mode             = "awsvpc"

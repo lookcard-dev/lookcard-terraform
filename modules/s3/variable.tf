@@ -8,3 +8,25 @@ variable "cloudfront_log" {}
 variable "vpc_flow_log" {}
 variable "aml_code" {}
 variable "front_end_endpoint" {}
+variable "cloudwatch_syn_canaries" {}
+variable "accountid_data" {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

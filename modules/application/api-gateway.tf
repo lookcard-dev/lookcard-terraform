@@ -19,7 +19,6 @@ resource "aws_iam_role" "api_gateway_cloudwatch_role" {
 resource "aws_iam_role_policy" "api_gateway_cloudwatch_policy" {
   name = "APIGatewayCloudWatchLogsPolicy"
   role = aws_iam_role.api_gateway_cloudwatch_role.id
-
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -57,8 +56,8 @@ resource "aws_api_gateway_rest_api" "lookcard_api" {
 
 # Create a Custom Domain
 resource "aws_api_gateway_domain_name" "lookcard_domain" {
-  domain_name              = "api.test.lookcard.io"
-  regional_certificate_arn = "arn:aws:acm:ap-southeast-1:576293270682:certificate/a7e0e210-7f3b-4549-a91e-8f750bea51fd" # Ensure this certificate is in the same region as your API Gateway
+  domain_name              = var.acm.domain_api_name
+  regional_certificate_arn = var.acm.cert_api_arn # Ensure this certificate is in the same region as your API Gateway
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -127,21 +126,21 @@ resource "aws_api_gateway_deployment" "lookcard_deployment" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
 }
 
-resource "aws_api_gateway_base_path_mapping" "lookcard_mapping" {
+resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
   domain_name = aws_api_gateway_domain_name.lookcard_domain.domain_name
   api_id      = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name  = "TESTING"
+  stage_name  = var.env_tag
 }
 
 # API Gateway Stage with CloudWatch Logs
-resource "aws_api_gateway_stage" "testing_stage" {
+resource "aws_api_gateway_stage" "stage" {
   deployment_id = aws_api_gateway_deployment.lookcard_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name    = "TESTING"
+  stage_name    = var.env_tag
   variables = {
-    "env" = "TESTING"
+    "env" = var.env_tag
   }
-  xray_tracing_enabled = true # 启用 X-Ray 跟踪
+  xray_tracing_enabled = true 
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw_logs.arn
@@ -171,7 +170,7 @@ resource "aws_apigatewayv2_integration" "push_message_integration" {
   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
   integration_type          = "AWS_PROXY"
   content_handling_strategy = "CONVERT_TO_TEXT"
-  integration_uri           = var.push_message_invoke
+  integration_uri           = "${var.lambda.lookcard_websocket_arn}"
   integration_method        = "POST"
 }
 
@@ -184,12 +183,10 @@ resource "aws_apigatewayv2_route" "push_message_route" {
 resource "aws_lambda_permission" "apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = "Push_Message_web"
+  function_name = "${var.lambda.lookcard_websocket_name}"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }
-
-
 resource "aws_apigatewayv2_integration" "connect_integration" {
   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
   integration_type          = "AWS_PROXY"
@@ -197,7 +194,7 @@ resource "aws_apigatewayv2_integration" "connect_integration" {
   description               = "Connection"
   connection_type           = "INTERNET"
   integration_method        = "POST"
-  integration_uri           = var.web_socket_invoke
+  integration_uri           = "${var.lambda.websocket_connect_arn}"
 }
 
 resource "aws_apigatewayv2_route" "connect" {
@@ -209,7 +206,7 @@ resource "aws_apigatewayv2_route" "connect" {
 resource "aws_lambda_permission" "web_socket_apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = var.web_socket_function
+  function_name = "${var.lambda.websocket_connect_name}"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }
@@ -220,11 +217,9 @@ resource "aws_apigatewayv2_integration" "disconnect_integration" {
   connection_type           = "INTERNET"
   content_handling_strategy = "CONVERT_TO_TEXT"
   integration_method        = "POST"
-  integration_uri           = var.web_socket_disconnect_invoke
+  integration_uri           = "${var.lambda.websocket_disconnect_arn}"
   passthrough_behavior      = "WHEN_NO_MATCH"
 }
-
-
 resource "aws_apigatewayv2_route" "disconnect_route" {
   route_key = "$disconnect"
   api_id    = aws_apigatewayv2_api.Push_message_Web.id
@@ -234,7 +229,7 @@ resource "aws_apigatewayv2_route" "disconnect_route" {
 resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = var.web_socket_disconnect_function
+  function_name = "${var.lambda.websocket_disconnect_name}"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }

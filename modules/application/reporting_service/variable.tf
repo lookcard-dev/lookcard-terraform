@@ -26,6 +26,7 @@ locals {
   }
   load_balancer = {
     api_path = ["/v2/api/report-zjx14peaj/*"]
+    priority = 6
   }
   ecs_task_secret_vars = [
     {

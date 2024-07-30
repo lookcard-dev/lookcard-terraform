@@ -78,9 +78,6 @@ resource "aws_iam_policy" "Transaction_Listener_ddb_policy" {
         "Resource" : [
           var.dynamodb_crypto_transaction_listener_arn
         ]
-        # "Resource" : [
-        #     "arn:aws:dynamodb:ap-southeast-1:576293270682:table/Crypto-Transaction-Listener-Block-Record"
-        # ]
       }
     ]
   })
@@ -98,7 +95,8 @@ resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
         Action = [
           "sqs:SendMessage"
         ]
-        Resource = var.aggregator_tron_sqs_arn
+        Resource = "*"
+        Resource = var.sqs.aggregator_tron_arn
         # Resource  = "arn:aws:sqs:ap-southeast-1:576293270682:Aggregator_Tron.fifo"
       },
     ]

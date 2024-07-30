@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "Notification" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      environment = local.ecs_task_secret_vars
+      environment = local.ecs_task_env_vars
       portMappings = [
         {
           name          = "look-card-notification-tcp",
@@ -44,7 +44,6 @@ resource "aws_ecs_task_definition" "Notification" {
           sourceVolume  = "data",
           containerPath = "/usr/src/data",
         },
-
       ]
     }
   ])

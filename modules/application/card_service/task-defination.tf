@@ -1,9 +1,3 @@
-data "aws_ecr_image" "latest" {
-  repository_name = "card-api"
-
-  most_recent = true
-}
-
 resource "aws_ecs_task_definition" "Card" {
   family                   = local.application.name
   network_mode             = "awsvpc"

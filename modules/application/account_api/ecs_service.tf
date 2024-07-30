@@ -2,7 +2,7 @@ resource "aws_service_discovery_service" "account_service" {
   name = "account"
 
   dns_config {
-    namespace_id = var.lookcardlocal_namespace_id
+    namespace_id = var.api_lookcardlocal_namespace
 
     dns_records {
       ttl  = 10
@@ -23,7 +23,7 @@ resource "aws_ecs_service" "Account_API" {
   cluster         = var.cluster
 
   network_configuration {
-    subnets         = [var.network.private_subnet[0], var.network.private_subnet[1], var.network.private_subnet[2]]
+    subnets         = var.network.private_subnet
     security_groups = [aws_security_group.Account-API-SG.id]
   }
 
