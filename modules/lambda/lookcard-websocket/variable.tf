@@ -21,3 +21,29 @@ data "archive_file" "lambda" {
 variable "sqs" {}
 variable "secret_manager" {}
 variable "general_config" {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

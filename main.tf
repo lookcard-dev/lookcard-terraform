@@ -159,3 +159,7 @@ module "syn_canaries" {
 module "kms" {
   source = "./modules/kms"
 }
+
+module "step-function" {
+  source = "./modules/step-function"
+}
