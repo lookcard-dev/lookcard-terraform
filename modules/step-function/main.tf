@@ -1,11 +1,3 @@
-# # Step Function
-# data "template_file" "step_function_definition" {
-#   template = file("${path.module}/opt/step_function_definition.json.tpl")
-#   vars = {
-#     lambda_arn = aws_lambda_function.stepfunction_testing_candel.arn
-#   }
-# }
-
 # Step Function
 locals {
   step_function_definition = templatefile("${path.module}/opt/step_function_definition.json.tpl", {
