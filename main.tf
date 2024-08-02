@@ -151,10 +151,10 @@ module "vpc-endpoint" {
   rt_private_id = module.VPC.rt_private_id[0]
 }
 
-module "syn_canaries" {
-  source    = "./modules/syn_canaries"
-  s3_bucket = module.S3.cloudwatch_syn_canaries
-}
+# module "syn_canaries" {
+#   source    = "./modules/syn_canaries"
+#   s3_bucket = module.S3.cloudwatch_syn_canaries
+# }
 
 module "kms" {
   source = "./modules/kms"
