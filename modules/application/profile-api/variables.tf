@@ -1,4 +1,4 @@
-# variable "api_lookcardlocal_namespace" {}
+
 variable "lookcardlocal_namespace" {}
 variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}

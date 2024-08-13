@@ -13,7 +13,6 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
-# variable "api_lookcardlocal_namespace" {}
 variable "secret_manager" {}
 variable "image" {
   type = object({

@@ -1,6 +1,5 @@
 variable "default_listener" {}
 variable "lookcardlocal_namespace" {}
-# variable "api_lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "env_tag" {}
 variable "secret_manager" {}

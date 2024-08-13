@@ -8,7 +8,6 @@ variable "network" {
   })
 }
 variable "lookcardlocal_namespace" {}
-# variable "api_lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "image" {

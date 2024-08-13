@@ -1,6 +1,5 @@
 variable "default_listener" {}
 variable "vpc_id" {}
-# variable "api_lookcardlocal_namespace" {}
 variable "lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "secret_manager" {}
