@@ -1,8 +1,8 @@
-resource "aws_service_discovery_service" "evvo_transaction_service" {
-  name = "transaction"
+resource "aws_service_discovery_service" "transaction_api_service" {
+  name = "transaction.api"
 
   dns_config {
-    namespace_id = var.api_lookcardlocal_namespace
+    namespace_id = var.lookcardlocal_namespace
 
     dns_records {
       ttl  = 10
@@ -14,7 +14,6 @@ resource "aws_service_discovery_service" "evvo_transaction_service" {
     failure_threshold = 1
   }
 }
-
 
 resource "aws_ecs_service" "transaction" {
   name            = local.application.name
@@ -35,7 +34,7 @@ resource "aws_ecs_service" "transaction" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.evvo_transaction_service.arn
+    registry_arn = aws_service_discovery_service.transaction_api_service.arn
   }
 }
 
