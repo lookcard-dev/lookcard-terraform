@@ -1,8 +1,23 @@
-resource "aws_service_discovery_service" "crypto_service" {
-  name = "crypto"
+# resource "aws_service_discovery_service" "crypto_service" {
+#   name = "crypto"
+
+#   dns_config {
+#     namespace_id = var.api_lookcardlocal_namespace
+#     dns_records {
+#       ttl  = 10
+#       type = "A"
+#     }
+#   }
+#   health_check_custom_config {
+#     failure_threshold = 1
+#   }
+# }
+
+resource "aws_service_discovery_service" "crypto_api_service" {
+  name = "crypto.api"
 
   dns_config {
-    namespace_id = var.api_lookcardlocal_namespace
+    namespace_id = var.lookcardlocal_namespace
     dns_records {
       ttl  = 10
       type = "A"
@@ -32,7 +47,7 @@ resource "aws_ecs_service" "crypto_api" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.crypto_service.arn
+    registry_arn = aws_service_discovery_service.crypto_api_service.arn
   }
 }
 

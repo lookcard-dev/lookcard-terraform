@@ -1,7 +1,7 @@
 variable "iam_role" {}
 
-
-variable "api_lookcardlocal_namespace" {}
+variable "lookcardlocal_namespace" {}
+# variable "api_lookcardlocal_namespace" {}
 
 variable "cluster" {}
 
