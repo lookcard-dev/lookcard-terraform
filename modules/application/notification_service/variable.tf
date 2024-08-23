@@ -52,6 +52,10 @@ locals {
     {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.env_tag
-    }
+    },
+    {
+      name  = "SENDGRID_API_KEY"
+      value = "${sendgrid_secret}::API_KEY"
+    },
   ]
 }
