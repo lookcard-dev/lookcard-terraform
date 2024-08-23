@@ -35,6 +35,7 @@ variable "image_tag" {
     profile_api          = string
     config_api           = string
     data_api             = string
+    notification_v2      = string
   })
 }
 
@@ -68,7 +69,7 @@ variable "s3_bucket" {
     aml_code                = string
     front_end_endpoint      = string
     cloudwatch_syn_canaries = string
-    accountid_data         = string
+    accountid_data          = string
   })
 }
 
