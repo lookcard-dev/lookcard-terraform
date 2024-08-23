@@ -2,6 +2,9 @@ output "rds_password_secret" {
   value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].id
 }
 
+output "sendgrid_secret" {
+  value = aws_secretsmanager_secret.lookcard_secrets["SENDGRID"].arn
+}
 output "rds_password_arn_secret" {
   value = aws_secretsmanager_secret.lookcard_secrets["DB_MASTER_PASSWORD"].arn
 }

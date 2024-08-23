@@ -52,6 +52,18 @@ locals {
     {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.env_tag
-    }
+    },
+    {
+      name  = "SENDGRID_API_KEY"
+      value = "${sendgrid_secret}::SENDGRID_API_KEY"
+    },
+    {
+      name  = "SENDGRID_FROM_EMAIL"
+      value = "${sendgrid_secret}::SENDGRID_FROM_EMAIL"
+    },
+    {
+      name  = "SENDGRID_APP_NAME"
+      value = "${sendgrid_secret}::SENDGRID_APP_NAME"
+    },
   ]
 }
