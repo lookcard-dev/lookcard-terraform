@@ -1,5 +1,5 @@
 variable "default_listener" {}
-variable "api_lookcardlocal_namespace" {}
+variable "lookcardlocal_namespace" {}
 variable "cluster" {}
 
 variable "env_tag" {}

@@ -1,8 +1,8 @@
-resource "aws_service_discovery_service" "evvo_blockchain_service" {
-  name = "blockchain"
+resource "aws_service_discovery_service" "blockchain_api_service" {
+  name = "blockchain.api"
 
   dns_config {
-    namespace_id = var.api_lookcardlocal_namespace
+    namespace_id = var.lookcardlocal_namespace
 
     dns_records {
       ttl  = 10
@@ -35,7 +35,7 @@ resource "aws_ecs_service" "blockchain" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.evvo_blockchain_service.arn
+    registry_arn = aws_service_discovery_service.blockchain_api_service.arn
   }
 }
 

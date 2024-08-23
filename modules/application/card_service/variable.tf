@@ -7,7 +7,7 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-variable "api_lookcardlocal_namespace" {}
+variable "lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "image" {

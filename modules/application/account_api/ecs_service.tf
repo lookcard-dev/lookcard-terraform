@@ -1,15 +1,12 @@
-resource "aws_service_discovery_service" "account_service" {
-  name = "account"
-
+resource "aws_service_discovery_service" "account_api_service" {
+  name = "account.api"
   dns_config {
-    namespace_id = var.api_lookcardlocal_namespace
-
+    namespace_id = var.lookcardlocal_namespace
     dns_records {
       ttl  = 10
       type = "A"
     }
   }
-
   health_check_custom_config {
     failure_threshold = 1
   }
@@ -34,7 +31,7 @@ resource "aws_ecs_service" "Account_API" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.account_service.arn
+    registry_arn = aws_service_discovery_service.account_api_service.arn
   }
 }
 

@@ -1,8 +1,8 @@
 resource "aws_service_discovery_service" "config_api_service" {
-  name = "config"
+  name = "config.api"
 
   dns_config {
-    namespace_id = var.api_lookcardlocal_namespace
+    namespace_id = var.lookcardlocal_namespace
 
     dns_records {
       ttl  = 10
