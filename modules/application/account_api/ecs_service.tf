@@ -3,7 +3,7 @@ resource "aws_service_discovery_service" "account_api_service" {
   dns_config {
     namespace_id = var.lookcardlocal_namespace
     dns_records {
-      ttl  = 10
+      ttl  = 10    
       type = "A"
     }
   }
