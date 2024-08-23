@@ -29,20 +29,24 @@ resource "aws_iam_role_policy_attachment" "lookcard_ecs_role" {
 locals {
   secrets = [
     {
-      sid   = "EnvSecret"
-      arn   = var.secret_manager.env_secret_arn
+      sid = "EnvSecret"
+      arn = var.secret_manager.env_secret_arn
     },
     {
-      sid   = "TokenSecret"
-      arn   = var.secret_manager.token_secret_arn
+      sid = "TokenSecret"
+      arn = var.secret_manager.token_secret_arn
     },
     {
-      sid   = "DatabaseSecret"
-      arn   = var.secret_manager.database_secret_arn
+      sid = "DatabaseSecret"
+      arn = var.secret_manager.database_secret_arn
     },
     {
-      sid   = "AmlEnvSecret"
-      arn   = var.secret_manager.aml_env_secret_arn
+      sid = "AmlEnvSecret"
+      arn = var.secret_manager.aml_env_secret_arn
+    },
+    {
+      sid = "SendGridSecret"
+      arn = var.secret_manager.sendgrid_secret
     }
   ]
 }
@@ -54,7 +58,7 @@ resource "aws_iam_policy" "lookcard_secrets_manager_read_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       for secret in local.secrets : {
-        "Sid"    : secret.sid,
+        "Sid" : secret.sid,
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
