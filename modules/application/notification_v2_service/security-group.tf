@@ -5,8 +5,8 @@ resource "aws_security_group" "Notification_v2" {
   vpc_id      = var.network.vpc
 
   ingress {
-    from_port   = 3001
-    to_port     = 3001
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # security_groups = [aws_security_group.ALB_SG.id]

@@ -23,7 +23,7 @@ variable "image" {
 locals {
   application = {
     name      = "Notification-v2"
-    port      = 3001
+    port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
   }
