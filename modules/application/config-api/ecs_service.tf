@@ -1,10 +1,10 @@
-resource "aws_service_discovery_service" "config_api_service" {
-  name = "config.api"
+# resource "aws_service_discovery_service" "config_api_service" {
+#   name = "config.api"
 
-  dns_config {
-    namespace_id = var.lookcardlocal_namespace
-  }
-}
+#   dns_config {
+#     namespace_id = var.lookcardlocal_namespace
+#   }
+# }
 resource "aws_service_discovery_service" "config_api_service" {
   name = "config.api"
   dns_config {

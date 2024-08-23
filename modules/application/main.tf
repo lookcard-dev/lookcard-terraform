@@ -48,11 +48,7 @@ module "crypto_api" {
   # crypto_api_encryption_kms_arn = aws_kms_key.crypto_api_encryption.arn
   # crypto_api_generator_kms_arn  = aws_kms_key.crypto_api_generator.arn
   # api_lookcardlocal_namespace   = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   kms                           = var.kms
 }
 
@@ -109,12 +105,7 @@ module "account_api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  # api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   cluster                     = aws_ecs_cluster.look_card.arn
   secret_manager              = var.secret_manager
   sqs                         = var.sqs
@@ -139,11 +130,7 @@ module "card" {
   }
   secret_manager              = var.secret_manager
   # api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
 }
 
 module "blockchain" {
@@ -161,13 +148,7 @@ module "blockchain" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  # api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-
->>>>>>> base
 }
 
 module "utility" {
@@ -185,11 +166,7 @@ module "utility" {
     tag = var.image_tag.utility_api
   }
   # api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   secret_manager              = var.secret_manager
 }
 
@@ -226,11 +203,7 @@ module "user" {
     tag = var.image_tag.users_api
   }
   # api_lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   secret_manager              = var.secret_manager
 }
 
@@ -265,11 +238,7 @@ module "profile_api" {
     tag = var.image_tag.profile_api
   }
   # api_lookcardlocal_namespace      = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   dynamodb_profile_data_table_name = var.dynamodb_profile_data_table_name
   secret_manager                   = var.secret_manager
   env_tag                          = var.env_tag
@@ -288,11 +257,7 @@ module "config_api" {
     tag = var.image_tag.config_api
   }
   # api_lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
   acm                                  = var.acm
@@ -314,11 +279,7 @@ module "data_api" {
     tag = var.image_tag.data_api
   }
   # api_lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.api_lookcardlocal_namespace.id
-<<<<<<< HEAD
   lookcardlocal_namespace     = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-=======
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
->>>>>>> base
   env_tag                         = var.env_tag
   secret_manager                  = var.secret_manager
   kms                             = var.kms

@@ -1,9 +1,7 @@
 resource "aws_service_discovery_service" "blockchain_api_service" {
   name = "blockchain.api"
-
   dns_config {
     namespace_id = var.lookcardlocal_namespace
-
     dns_records {
       ttl  = 10
       type = "A"
@@ -34,11 +32,7 @@ resource "aws_ecs_service" "blockchain" {
   }
 
   service_registries {
-<<<<<<< HEAD
-    registry_arn = aws_service_discovery_service.blockchain_service.arn
-=======
     registry_arn = aws_service_discovery_service.blockchain_api_service.arn
->>>>>>> base
   }
 }
 

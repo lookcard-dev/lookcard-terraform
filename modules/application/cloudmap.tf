@@ -1,9 +1,6 @@
 resource "aws_service_discovery_private_dns_namespace" "lookcardlocal_namespace" {
   name = "lookcard.local"
   vpc  = var.network.vpc
-<<<<<<< HEAD
-}
-=======
 }
 
 # resource "aws_service_discovery_private_dns_namespace" "api_lookcardlocal_namespace" {
@@ -24,4 +21,3 @@ resource "aws_service_discovery_private_dns_namespace" "lookcardlocal_namespace"
 #     failure_threshold = 1
 #   }
 # }
->>>>>>> base
