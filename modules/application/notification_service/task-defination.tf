@@ -28,6 +28,7 @@ resource "aws_ecs_task_definition" "Notification" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
+      secrets     = local.ecs_task_secret_vars
       environment = local.ecs_task_env_vars
       portMappings = [
         {
