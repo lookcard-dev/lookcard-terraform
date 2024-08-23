@@ -1,11 +1,12 @@
 variable "default_listener" {}
 variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
+variable "api_alb_sg_id" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "sqs" {}
 variable "acm" {}
-
+variable "lambda" {}
 variable "network" {
   type = object({
     vpc            = string

@@ -110,6 +110,8 @@ module "account_api" {
   secret_manager              = var.secret_manager
   sqs                         = var.sqs
   acm                         = var.acm
+  lambda                      = var.lambda
+  api_alb_sg_id               = aws_security_group.api_alb_sg.id
 }
 
 module "card" {

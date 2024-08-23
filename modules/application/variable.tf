@@ -9,6 +9,7 @@ variable "network" {
 variable "alb_logging_bucket" {}
 data "aws_caller_identity" "current" {}
 variable "domain" {}
+
 data "aws_route53_zone" "hosted_zone_id" {
   name = var.domain
 }

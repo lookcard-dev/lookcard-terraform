@@ -8,7 +8,7 @@ resource "aws_security_group" "Account-API-SG" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.lambda.lambda_aggregator_tron_sg_id, var.api_alb_sg_id, var.lambda.crypto_fund_withdrawal_sg_id]
   }
 
   ingress {
