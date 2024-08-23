@@ -51,15 +51,15 @@ locals {
       value = "ap-southeast-1"
     },
     {
-      name  = "AWS_SECRET_ARN"
+      name  = "SECRETS_MANAGER_ENV_ARN"
       value = var.secret_manager.env_secret_arn
     },
     {
-      name  = "AWS_DB_SECRET_ARN"
+      name  = "SECRETS_MANAGER_DB_ARN"
       value = var.secret_manager.database_secret_arn
     },
     {
-      name  = "AWS_TOKEN_SECRET_ARN"
+      name  = "SECRETS_MANAGER_TOKEN_ARN"
       value = var.secret_manager.token_secret_arn
     }
   ]
