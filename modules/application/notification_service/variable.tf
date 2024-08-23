@@ -55,7 +55,7 @@ locals {
     },
     {
       name  = "SENDGRID_API_KEY"
-      value = "${sendgrid_secret}::API_KEY"
+      value = "${var.secret_manager.sendgrid_secret}::API_KEY"
     },
   ]
 }
