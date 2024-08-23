@@ -31,7 +31,12 @@ locals {
     api_path = ["/v2/api/notify-eh1gwoj67/*"]
     priority = 4
   }
-
+  ecs_task_secret_vars = [
+    {
+      name      = "SENDGRID_API_KEY"
+      valueFrom = "${var.secret_manager.sendgrid_secret}"
+    }
+  ]
   ecs_task_env_vars = [
     {
       name  = "AWS_REGION"
