@@ -48,6 +48,7 @@ variable "ecr_names" {
     "profile-api"          = "profile-api"
     "config-api"           = "config-api"
     "data-api"             = "data-api"
+    "notification-api"     = "notification-api"
   }
 }
 
@@ -65,8 +66,8 @@ variable "image_tag" {
     users_api            = string
     utility_api          = string
     profile_api          = string
-    config_api          = string
-    data_api          = string
+    config_api           = string
+    data_api             = string
   })
 }
 
