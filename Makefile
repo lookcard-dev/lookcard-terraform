@@ -24,4 +24,4 @@ terraform-apply-dev: download-config-file
 terraform-apply-prod: download-config-file
 	@echo "Applying production environment..."
 	@terraform init -reconfigure
-	@terraform apply -var-file="terraform.tfvars.prod.json" 
+	@terraform apply -var-file="terraform.tfvars.prod.json"
