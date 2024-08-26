@@ -19,7 +19,7 @@ resource "aws_ecs_service" "Notification_v2" {
 
 resource "aws_lb_target_group" "Notification_v2_target_group" {
   name        = local.application.name
-  port        = local.application.port
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.network.vpc
