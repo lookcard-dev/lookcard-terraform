@@ -8,10 +8,12 @@ variable "network" {
 }
 variable "alb_logging_bucket" {}
 data "aws_caller_identity" "current" {}
+
 variable "domain" {}
 data "aws_route53_zone" "hosted_zone_id" {
   name = var.domain
 }
+
 
 variable "dns_config" {
   type = object({
@@ -52,27 +54,7 @@ variable "ecr_names" {
   }
 }
 
-variable "image_tag" {
-  type = object({
-    notification         = string
-    account_api          = string
-    authentication_api   = string
-    blockchain_api       = string
-    card_api             = string
-    crypto_api           = string
-    reporting_api        = string
-    transaction_api      = string
-    transaction_listener = string
-    users_api            = string
-    utility_api          = string
-    profile_api          = string
-    config_api           = string
-    data_api             = string
-    notification_v2      = string
-  })
-}
-
-
+variable "image_tag" {}
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}

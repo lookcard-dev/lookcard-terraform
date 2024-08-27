@@ -20,6 +20,9 @@ terraform-apply-dev: download-config-file
 	@echo "Applying development environment..."
 	@terraform init -reconfigure
 	@terraform apply -var-file="terraform.tfvars.dev.json" 
+	@if [ $$? -eq 0 ]; then \
+		aws s3 cp ./terraform.tfvars.dev.json s3://$(BUCKET_NAME)/terraform.tfvars.dev.json; \
+	fi
 
 terraform-apply-prod: download-config-file
 	@echo "Applying production environment..."
