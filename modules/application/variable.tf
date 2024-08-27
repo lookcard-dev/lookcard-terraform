@@ -41,6 +41,7 @@ variable "ecr_names" {
     "transaction-api"      = "transaction-api"
     "utility-api"          = "utility-api"
     "users-api"            = "users-api"
+    "user-api"             = "user-api"
     "admin-panel-api"      = "admin-panel-api"
     "aml-tron"             = "aml-tron"
     "crypto-api"           = "crypto-api"
