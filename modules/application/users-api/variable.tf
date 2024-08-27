@@ -33,23 +33,23 @@ locals {
     },
     {
       name      = "DATABASE_NAME"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
     },
     {
       name      = "DATABASE_READ_HOST"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${var.secret_manager.database_secret_arn}:username::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.secret_manager.database_secret_arn}:password::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.sentry_secret_arn}:CONFIG_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:CONFIG_API_DSN::"
     }
   ]
   ecs_task_env_vars = [
@@ -71,7 +71,7 @@ locals {
     },
   ]
   iam_secrets = [
-    var.secret_manager.database_secret_arn,
-    var.secret_manager.sentry_secret_arn,
+    var.secret_manager.secret_arns["DATABASE"],
+    var.secret_manager.secret_arns["SENTRY"],
   ]
 }

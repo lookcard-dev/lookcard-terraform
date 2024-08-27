@@ -42,35 +42,29 @@ locals {
     },
     {
       name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
     },
     {
       name      = "DATABASE_ENDPOINT"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${var.secret_manager.database_secret_arn}:username::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.secret_manager.database_secret_arn}:password::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.sentry_secret_arn}:CRYPTO_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:CRYPTO_API_DSN::"
     },
   ]
   iam_secrets = [
-    {
-      arn = var.secret_manager.crypto_api_secret_arn
-    },
-    {
-      arn = var.secret_manager.firebase_secret_arn
-    },
-    {
-      arn = var.secret_manager.database_secret_arn
-    }
+     var.secret_manager.secret_arns["CRYPTO_API_ENV"],
+     var.secret_manager.secret_arns["FIREBASE"],
+     var.secret_manager.secret_arns["DATABASE"]
   ]
 }
 

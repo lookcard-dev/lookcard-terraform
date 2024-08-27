@@ -70,7 +70,7 @@ output "secret_arns" {
 }
 
 # loop ids
-output "secret_arns" {
+output "secret_ids" {
   value       = { for s in aws_secretsmanager_secret.lookcard_secrets : s.name => s.id }
   description = "The ARNs of the secrets managed by AWS Secrets Manager"
 }

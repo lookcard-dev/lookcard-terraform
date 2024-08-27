@@ -32,18 +32,10 @@ locals {
     priority = 4
   }
   iam_secrets = [
-    {
-      arn   = var.secret_manager.env_secret_arn
-    },
-    {
-      arn   = var.secret_manager.token_secret_arn
-    },
-    {
-      arn   = var.secret_manager.database_secret_arn
-    },
-    {
-      arn   = var.secret_manager.aml_env_secret_arn
-    }
+    var.secret_manager.secret_arns["ENV"],
+    var.secret_manager.secret_arns["TOKEN"],
+    var.secret_manager.secret_arns["DATABASE"],
+    var.secret_manager.secret_arns["AML_ENV"]
   ]
   ecs_task_secret_vars = [
     {
@@ -52,15 +44,15 @@ locals {
     },
     {
       name  = "SECRETS_MANAGER_ENV_ARN"
-      value = var.secret_manager.env_secret_arn
+      value = var.secret_manager.secret_arns["ENV"]
     },
     {
       name  = "SECRETS_MANAGER_DB_ARN"
-      value = var.secret_manager.database_secret_arn
+      value = var.secret_manager.secret_arns["DATABASE"]
     },
     {
       name  = "SECRETS_MANAGER_TOKEN_ARN"
-      value = var.secret_manager.token_secret_arn
+      value = var.secret_manager.secret_arns["TOKEN"]
     }
   ]
 }

@@ -50,7 +50,7 @@ locals {
   ecs_task_secret_vars = [
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.sentry_secret_arn}:PROFILE_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:PROFILE_API_DSN::"
     }
   ]
 }

@@ -34,48 +34,47 @@ locals {
   ecs_task_secret_vars = [
     {
       name      = "DATABASE_URL"
-      valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
-      # valueFrom = "${var.secret_manager.secret_arns["CRYPTO_API_ENV"]}:DATABASE_URL::"
+      valueFrom = "${var.secret_manager.secret_arns["CRYPTO_API_ENV"]}:DATABASE_URL::"
     },
     {
       name      = "FIREBASE_PROJECT_ID"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:PROJECT_ID::"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:PROJECT_ID::"
     },
     {
       name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:SERVICE_ACCOUNT_PRIVATE_KEY::"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_PRIVATE_KEY::"
     },
     {
       name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
     },
     {
       name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${var.secret_manager.firebase_secret_arn}:CREDENTIALS::"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
     },
     {
       name      = "API_KEY"
-      valueFrom = "${var.secret_manager.elliptic_secret_arn}:API_KEY::"
+      valueFrom = "${var.secret_manager.secret_arns["ELLIPTIC"]}:API_KEY::"
     },
     {
       name      = "API_SECRET"
-      valueFrom = "${var.secret_manager.elliptic_secret_arn}:API_SECRET::"
+      valueFrom = "${var.secret_manager.secret_arns["ELLIPTIC"]}:API_SECRET::"
     },
     {
       name      = "DATABASE_ENDPOINT"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${var.secret_manager.database_secret_arn}:username::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.secret_manager.database_secret_arn}:password::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.sentry_secret_arn}:ACCOUNT_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:ACCOUNT_API_DSN::"
     }
   ]
   ecs_task_env_vars = [
@@ -110,11 +109,11 @@ locals {
     }
   ]
   iam_secrets = [
-    var.secret_manager.crypto_api_secret_arn,
-    var.secret_manager.firebase_secret_arn,
-    var.secret_manager.database_secret_arn,
-    var.secret_manager.sentry_secret_arn,
-    var.secret_manager.elliptic_secret_arn
+    var.secret_manager.secret_arns["CRYPTO_API_ENV"],
+    var.secret_manager.secret_arns["FIREBASE"],
+    var.secret_manager.secret_arns["DATABASE"],
+    var.secret_manager.secret_arns["SENTRY"],
+    var.secret_manager.secret_arns["ELLIPTIC"]
   ]
 }
 
