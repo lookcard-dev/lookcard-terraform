@@ -38,15 +38,15 @@ locals {
     },
     {
       name  = "AWS_SECRET_ARN"
-      value = var.secret_manager.env_secret_arn
+      value = var.secret_manager.secret_arns["ENV"]
     },
     {
       name  = "AWS_DB_SECRET_ARN"
-      value = var.secret_manager.database_secret_arn
+      value = var.secret_manager.secret_arns["DATABASE"]
     },
     {
       name  = "AWS_TOKEN_SECRET_ARN"
-      value = var.secret_manager.token_secret_arn
+      value = var.secret_manager.secret_arns["TOKEN"]
     }
   ]
 }

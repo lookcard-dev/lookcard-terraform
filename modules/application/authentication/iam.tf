@@ -32,13 +32,13 @@ resource "aws_iam_policy" "secrets_manager_read_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      for secret in local.iam_secrets : {
+      {
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : secret.arn
+        "Resource" : local.iam_secrets
       }
     ]
   })
