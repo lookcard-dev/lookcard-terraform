@@ -35,6 +35,7 @@ locals {
     {
       name      = "DATABASE_URL"
       valueFrom = "${var.secret_manager.crypto_api_secret_arn}:DATABASE_URL::"
+      # valueFrom = "${var.secret_manager.secret_arns["CRYPTO_API_ENV"]}:DATABASE_URL::"
     },
     {
       name      = "FIREBASE_PROJECT_ID"
