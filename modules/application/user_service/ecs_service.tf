@@ -1,7 +1,7 @@
 
 
 resource "aws_service_discovery_service" "user_api_service" {
-  name = "user.api"
+  name = "_user.api"
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace
