@@ -34,7 +34,7 @@ locals {
   ecs_task_secret_vars = [
     {
       name      = "SENDGRID_API_KEY"
-      valueFrom = "${var.secret_manager.secret_arns["SENDGRID"]}"
+      valueFrom = "${var.secret_manager.secret_arns["SENDGRID"]}:SENDGRID_API_KEY::"
     }
   ]
   ecs_task_env_vars = [
