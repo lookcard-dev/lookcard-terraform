@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "Account_API" {
+resource "aws_ecs_task_definition" "account_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -48,8 +48,7 @@ resource "aws_ecs_task_definition" "Account_API" {
     }
   ])
 }
-
-resource "aws_cloudwatch_log_group" "Account_API" {
+resource "aws_cloudwatch_log_group" "account_api" {
   name = "/ecs/${local.application.name}"
 }
 

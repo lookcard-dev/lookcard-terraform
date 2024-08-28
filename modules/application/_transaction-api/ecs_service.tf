@@ -19,7 +19,7 @@ resource "aws_service_discovery_service" "transaction_api_service" {
 
 resource "aws_ecs_service" "transaction" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.Transaction.arn
+  task_definition = aws_ecs_task_definition.transaction.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster

@@ -1,4 +1,4 @@
-resource "aws_security_group" "Notification" {
+resource "aws_security_group" "notification" {
   depends_on  = [var.network]
   name        = "Notification-Service-Security-Group"
   description = "Security group for ECS services"

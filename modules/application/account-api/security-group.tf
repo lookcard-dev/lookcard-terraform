@@ -1,4 +1,4 @@
-resource "aws_security_group" "Account-API-SG" {
+resource "aws_security_group" "account_api_sg" {
   depends_on  = [var.vpc_id]
   name        = "Account-API-Service-Security-Group"
   description = "Security group for Account API services"

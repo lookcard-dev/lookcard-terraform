@@ -1,4 +1,9 @@
-resource "aws_security_group" "Utility" {
+moved {
+  from = aws_security_group.Utility
+  to   = aws_security_group.utility
+}
+
+resource "aws_security_group" "utility" {
   depends_on  = [var.network]
   name        = "Utility-Service-Security-Group"
   description = "Security group for ECS services"

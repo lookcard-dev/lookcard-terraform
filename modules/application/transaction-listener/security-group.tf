@@ -1,4 +1,5 @@
-resource "aws_security_group" "Transaction-Listener-SG" {
+
+resource "aws_security_group" "transaction_listener_sg" {
   depends_on  = [var.vpc_id]
   name        = "Transaction-Listener-Service-Security-Group"
   description = "Security group for Transaction Listener services"
