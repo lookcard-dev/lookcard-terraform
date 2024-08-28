@@ -64,6 +64,25 @@ resource "aws_iam_role" "profile_api_task_role" {
   tags = {}
 }
 
+resource "aws_iam_policy" "dynamodb_access_policy" {
+  name = "DynamoDBQueryAccessPolicy"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "dynamodb:Query",
+        "Resource": "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "DynamoDBQueryPolicyAttachment" {
+  role       = aws_iam_role.profile_api_task_role.name
+  policy_arn = aws_iam_policy.dynamodb_access_policy.arn
+}
+
 # resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
 #   name        = "CryptoAPI_KMS_GenerateDataKey_policy"
 #   description = "Allows read-only access to Secret - CryptoAPI-env"

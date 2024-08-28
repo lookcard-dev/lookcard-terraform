@@ -18,13 +18,10 @@ resource "aws_ecs_service" "user_api_ecs_service" {
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
-
   network_configuration {
     subnets         = var.network.private_subnet
     security_groups = [aws_security_group.user_api_security_group.id]
   }
-
-
   service_registries {
     registry_arn = aws_service_discovery_service.user_api_service.arn
   }
