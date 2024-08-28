@@ -56,12 +56,12 @@ module "account-api" {
   sqs                     = var.sqs
   acm                     = var.acm
 }
-module "users-api" {
-  source           = "./users-api"
+module "user-api" {
+  source           = "./user-api"
   vpc_id           = var.network.vpc
   image = {
-    url = aws_ecr_repository.look-card["users-api"].repository_url
-    tag = var.image_tag.account_api
+    url = aws_ecr_repository.look-card["user-api"].repository_url
+    tag = var.image_tag.user_api
   }
   network = {
     vpc            = var.network.vpc
@@ -110,6 +110,7 @@ module "profile-api" {
   secret_manager                   = var.secret_manager
   env_tag                          = var.env_tag
 }
+
 module "config-api" {
   source           = "./config-api"
   default_listener = aws_lb_listener.look-card.arn

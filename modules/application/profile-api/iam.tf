@@ -71,7 +71,11 @@ resource "aws_iam_policy" "dynamodb_access_policy" {
     "Statement": [
       {
         "Effect": "Allow",
-        "Action": "dynamodb:Query",
+        "Action":[ 
+          "dynamodb:Query",
+          "dynamodb:PutItem"
+        ],
+        
         "Resource": "*"
       }
     ]
