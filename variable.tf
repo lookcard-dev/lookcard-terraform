@@ -31,6 +31,7 @@ variable "image_tag" {
     transaction_listener = string
     transaction_api      = string
     users_api            = string
+    user_api             = string
     utility_api          = string
     profile_api          = string
     config_api           = string
