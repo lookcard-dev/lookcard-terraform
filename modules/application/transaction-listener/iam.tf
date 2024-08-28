@@ -1,4 +1,4 @@
-resource "aws_iam_role" "Transaction_Listener_Task_Execution_Role" {
+resource "aws_iam_role" "transaction_listener_task_exec_role" {
   name = "Transaction-Listener-Task-Execution-Role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -16,12 +16,12 @@ resource "aws_iam_role" "Transaction_Listener_Task_Execution_Role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "Transaction_Listener_ECSTaskExecutionRolePolicy_attachment" {
-  role       = aws_iam_role.Transaction_Listener_Task_Execution_Role.name
+resource "aws_iam_role_policy_attachment" "transaction_listener_ecstaskexecrolepolicy_attachment" {
+  role       = aws_iam_role.transaction_listener_task_exec_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy" {
+resource "aws_iam_policy" "transaction_listener_env_secrets_manager_read_policy" {
   name        = "TransactionListenerSecretsReadOnlyPolicy"
   description = "Allows read-only access to Secret - TRON"
   policy = jsonencode({
@@ -41,12 +41,12 @@ resource "aws_iam_policy" "Transaction_Listener_env_secrets_manager_read_policy"
   })
 }
 
-resource "aws_iam_role_policy_attachment" "Transaction_Listener_secrets_manager_read_attachment" {
-  role       = aws_iam_role.Transaction_Listener_Task_Execution_Role.name
-  policy_arn = aws_iam_policy.Transaction_Listener_env_secrets_manager_read_policy.arn
+resource "aws_iam_role_policy_attachment" "transaction_listener_secrets_manager_read_attachment" {
+  role       = aws_iam_role.transaction_listener_task_exec_role.name
+  policy_arn = aws_iam_policy.transaction_listener_env_secrets_manager_read_policy.arn
 }
 
-resource "aws_iam_role" "Transaction_Listener_Task_Role" {
+resource "aws_iam_role" "transaction_listener_task_role" {
   name = "Transaction-Listener-Task-Role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -64,7 +64,7 @@ resource "aws_iam_role" "Transaction_Listener_Task_Role" {
   })
 }
 
-resource "aws_iam_policy" "Transaction_Listener_ddb_policy" {
+resource "aws_iam_policy" "transaction_listener_ddb_policy" {
   name        = "Transaction-Listener-ReadWriteDDB"
   description = "Allows read-only access to Secret - TRONGRID"
   policy = jsonencode({
@@ -83,7 +83,7 @@ resource "aws_iam_policy" "Transaction_Listener_ddb_policy" {
   })
 }
 
-resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
+resource "aws_iam_policy" "transaction_listener_sqs_send_message_policy" {
   name        = "SQSSendMessagePolicy"
   description = "Allows sending messages to a specific SQS queue"
 
@@ -97,19 +97,17 @@ resource "aws_iam_policy" "Transaction_Listener_sqs_send_message_policy" {
         ]
         Resource = "*"
         Resource = var.sqs.aggregator_tron_arn
-        # Resource  = "arn:aws:sqs:ap-southeast-1:576293270682:Aggregator_Tron.fifo"
       },
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "Transaction_Listener_ddb_attachment" {
-  role       = aws_iam_role.Transaction_Listener_Task_Role.name
-  policy_arn = aws_iam_policy.Transaction_Listener_ddb_policy.arn
+resource "aws_iam_role_policy_attachment" "transaction_listener_ddb_attachment" {
+  role       = aws_iam_role.transaction_listener_task_role.name
+  policy_arn = aws_iam_policy.transaction_listener_ddb_policy.arn
 }
 
-
-resource "aws_iam_role_policy_attachment" "Transaction_Listener_sqs_attachment" {
-  role       = aws_iam_role.Transaction_Listener_Task_Role.name
-  policy_arn = aws_iam_policy.Transaction_Listener_sqs_send_message_policy.arn
+resource "aws_iam_role_policy_attachment" "transaction_listener_sqs_attachment" {
+  role       = aws_iam_role.transaction_listener_task_role.name
+  policy_arn = aws_iam_policy.transaction_listener_sqs_send_message_policy.arn
 }

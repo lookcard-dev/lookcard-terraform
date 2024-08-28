@@ -18,14 +18,14 @@ resource "aws_service_discovery_service" "utility_api_service" {
 
 resource "aws_ecs_service" "utility" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.Utility.arn
+  task_definition = aws_ecs_task_definition.utility.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.Utility.id]
+    security_groups = [aws_security_group.utility.id]
   }
 
   load_balancer {

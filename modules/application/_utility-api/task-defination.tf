@@ -1,4 +1,9 @@
-resource "aws_ecs_task_definition" "Utility" {
+moved {
+  from = aws_ecs_task_definition.Utility
+  to   = aws_ecs_task_definition.utility
+}
+
+resource "aws_ecs_task_definition" "utility" {
   family                   = "Utility"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -49,7 +54,11 @@ resource "aws_ecs_task_definition" "Utility" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Utility" {
+moved {
+  from = aws_cloudwatch_log_group.Utility
+  to   = aws_cloudwatch_log_group.utility
+}
+resource "aws_cloudwatch_log_group" "utility" {
   name = "/ecs/${local.application.name}"
 
 }

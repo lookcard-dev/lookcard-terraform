@@ -1,4 +1,5 @@
-resource "aws_ecs_task_definition" "Notification" {
+
+resource "aws_ecs_task_definition" "notification" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -50,6 +51,6 @@ resource "aws_ecs_task_definition" "Notification" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Notification" {
+resource "aws_cloudwatch_log_group" "notification" {
   name = "/ecs/${local.application.name}"
 }

@@ -1,5 +1,4 @@
-
-resource "aws_lb_listener_rule" "Authentication_listener_rule" {
+resource "aws_lb_listener_rule" "authentication_listener_rule" {
   depends_on   = [var.vpc_id]
   listener_arn = var.aws_lb_listener_arn
   action {
@@ -36,15 +35,16 @@ resource "aws_lb_target_group" "authentication_tgp" {
   }
 }
 
-resource "aws_ecs_service" "Authentication" {
+
+resource "aws_ecs_service" "authentication" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.Authentication.arn
+  task_definition = aws_ecs_task_definition.authentication.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.Authentication.id]                                                        # Replace with your security group ID
+    security_groups = [aws_security_group.authentication.id]
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.authentication_tgp.arn
@@ -53,11 +53,16 @@ resource "aws_ecs_service" "Authentication" {
   }
 }
 
+
+moved {
+  from = aws_appautoscaling_target.Authentication
+  to   = aws_appautoscaling_target.authentication
+}
 # Define autoscaling target
-resource "aws_appautoscaling_target" "Authentication" {
+resource "aws_appautoscaling_target" "authentication" {
   max_capacity       = 1 # Adjust this value as needed
   min_capacity       = 1
-  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.Authentication.name}"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.authentication.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
@@ -65,9 +70,9 @@ resource "aws_appautoscaling_target" "Authentication" {
 resource "aws_appautoscaling_policy" "authentication" {
   name               = "Authentication"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.Authentication.resource_id
-  scalable_dimension = aws_appautoscaling_target.Authentication.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.Authentication.service_namespace
+  resource_id        = aws_appautoscaling_target.authentication.resource_id
+  scalable_dimension = aws_appautoscaling_target.authentication.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.authentication.service_namespace
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
