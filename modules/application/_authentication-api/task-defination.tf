@@ -51,11 +51,6 @@ resource "aws_ecs_task_definition" "authentication" {
   ])
 }
 
-moved {
-  from = aws_cloudwatch_log_group.Card
-  to   = aws_cloudwatch_log_group.authentication
-}
-
 resource "aws_cloudwatch_log_group" "authentication" {
   name = "/ecs/${local.application.name}"
 }

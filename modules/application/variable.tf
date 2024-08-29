@@ -1,9 +1,10 @@
 variable "network" {
   description = "Network configuration"
   type = object({
-    vpc            = string
-    private_subnet = list(string)
-    public_subnet  = list(string)
+    vpc                     = string
+    private_subnet          = list(string)
+    public_subnet           = list(string)
+    public_subnet_cidr_list = list(string)
   })
 }
 variable "alb_logging_bucket" {}

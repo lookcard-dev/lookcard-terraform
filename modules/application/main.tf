@@ -13,7 +13,7 @@ module "crypto-api" {
     url = aws_ecr_repository.look-card["crypto-api"].repository_url
     tag = var.image_tag.crypto_api
   }
-  secret_manager = var.secret_manager
+  secret_manager          = var.secret_manager
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   kms                     = var.kms
 }
@@ -57,8 +57,8 @@ module "account-api" {
   acm                     = var.acm
 }
 module "user-api" {
-  source           = "./user-api"
-  vpc_id           = var.network.vpc
+  source = "./user-api"
+  vpc_id = var.network.vpc
   image = {
     url = aws_ecr_repository.look-card["user-api"].repository_url
     tag = var.image_tag.user_api
@@ -173,9 +173,10 @@ module "authentication" {
   cluster             = aws_ecs_cluster.look_card.arn
   sg_alb_id           = aws_security_group.api_alb_sg.id
   network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
+    vpc                     = var.network.vpc
+    private_subnet          = var.network.private_subnet
+    public_subnet           = var.network.public_subnet
+    public_subnet_cidr_list = var.network.public_subnet_cidr_list
   }
   image = {
     url = aws_ecr_repository.look-card["authentication-api"].repository_url
