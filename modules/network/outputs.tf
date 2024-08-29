@@ -20,6 +20,10 @@ output "rt_private_id" {
   value = aws_route_table.private-route-table[*].id
 }
 
+output "public_subnet_cidr_lists" {
+  value = aws_subnet.public-subnet[*].cidr_block
+}
+
 # output "Database_Sub_ids" {
 #   value = aws_subnet.look-card-Database-Sub[*].id
 

@@ -6,6 +6,7 @@ variable "network" {
     vpc            = string
     private_subnet = list(string)
     public_subnet  = list(string)
+    public_subnet_cidr_list   = list(string)
   })
 }
 variable "iam_role" {}

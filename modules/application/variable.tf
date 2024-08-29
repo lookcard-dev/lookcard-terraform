@@ -1,9 +1,10 @@
 variable "network" {
   description = "Network configuration"
   type = object({
-    vpc            = string
-    private_subnet = list(string)
-    public_subnet  = list(string)
+    vpc                     = string
+    private_subnet          = list(string)
+    public_subnet           = list(string)
+    public_subnet_cidr_list = list(string)
   })
 }
 variable "alb_logging_bucket" {}
@@ -33,25 +34,26 @@ variable "ecr_names" {
   description = "Map of ECR names"
   type        = map(string)
   default = {
-    "authentication-api"   = "authentication-api"
-    "blockchain-api"       = "blockchain-api"
-    "card-api"             = "card-api"
-    "notification-api"     = "notification-api"
-    "reporting-api"        = "reporting-api"
-    "transaction-api"      = "transaction-api"
-    "utility-api"          = "utility-api"
-    "users-api"            = "users-api"
-    "user-api"             = "user-api"
-    "admin-panel-api"      = "admin-panel-api"
-    "aml-tron"             = "aml-tron"
-    "crypto-api"           = "crypto-api"
-    "hello-world"          = "hello-world"
-    "account-api"          = "account-api"
-    "transaction-listener" = "transaction-listener"
-    "profile-api"          = "profile-api"
-    "config-api"           = "config-api"
-    "data-api"             = "data-api"
-    "notification-v2-api"  = "notification-v2-api"
+    "authentication-api"    = "authentication-api"
+    "blockchain-api"        = "blockchain-api"
+    "card-api"              = "card-api"
+    "notification-api"      = "notification-api"
+    "reporting-api"         = "reporting-api"
+    "transaction-api"       = "transaction-api"
+    "utility-api"           = "utility-api"
+    "users-api"             = "users-api"
+    "user-api"              = "user-api"
+    "admin-panel-api"       = "admin-panel-api"
+    "aml-tron"              = "aml-tron"
+    "crypto-api"            = "crypto-api"
+    "hello-world"           = "hello-world"
+    "account-api"           = "account-api"
+    "transaction-listener"  = "transaction-listener"
+    "profile-api"           = "profile-api"
+    "config-api"            = "config-api"
+    "data-api"              = "data-api"
+    "notification-v2-api"   = "notification-v2-api"
+    "authentication-v2-api" = "authentication-v2-api"
   }
 }
 

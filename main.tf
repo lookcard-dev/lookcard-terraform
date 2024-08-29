@@ -56,9 +56,10 @@ module "application" {
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
   network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
+    vpc                     = module.VPC.vpc
+    private_subnet          = module.VPC.private_subnet_ids
+    public_subnet           = module.VPC.public_subnet_ids
+    public_subnet_cidr_list = module.VPC.public_subnet_cidr_lists
   }
   image_tag                                = var.image_tag
   sqs                                      = module.sqs
