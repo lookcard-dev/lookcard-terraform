@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "Card" {
+resource "aws_ecs_task_definition" "card_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -18,7 +18,6 @@ resource "aws_ecs_task_definition" "Card" {
     {
       name  = local.application.name
       image = "${local.application.image}:${local.application.image_tag}"
-
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -51,6 +50,6 @@ resource "aws_ecs_task_definition" "Card" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Card" {
+resource "aws_cloudwatch_log_group" "card_api" {
   name = "/ecs/${local.application.name}"
 }

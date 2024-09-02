@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "Reporting" {
+resource "aws_ecs_task_definition" "reporting_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "Reporting" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Reporting" {
+resource "aws_cloudwatch_log_group" "reporting" {
   name = "/ecs/${local.application.name}"
 }
 

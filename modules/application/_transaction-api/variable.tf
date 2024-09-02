@@ -22,7 +22,7 @@ variable "image" {
 }
 locals {
   application = {
-    name      = "Transaction"
+    name      = "_transaction-api"
     port      = 3000
     image     = var.image.url
     image_tag = var.image.tag

@@ -1,4 +1,4 @@
-# ********************  v2  ***********************
+# # ********************  v2  ***********************
 
 module "crypto-api" {
   source           = "./crypto-api"
@@ -164,7 +164,7 @@ module "xray-daemon" {
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }
 
-# ********************  v1  ***********************
+# # ********************  v1  ***********************
 
 module "authentication" {
   source              = "./_authentication-api"
