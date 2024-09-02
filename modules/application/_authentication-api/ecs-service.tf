@@ -68,7 +68,7 @@ resource "aws_appautoscaling_target" "authentication" {
 }
 
 resource "aws_appautoscaling_policy" "authentication" {
-  name               = "Authentication"
+  name               = "authentication"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.authentication.resource_id
   scalable_dimension = aws_appautoscaling_target.authentication.scalable_dimension

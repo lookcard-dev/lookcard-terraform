@@ -23,7 +23,7 @@ variable "image" {
 
 locals {
   application = {
-    name      = "Account-API"
+    name      = "account-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag

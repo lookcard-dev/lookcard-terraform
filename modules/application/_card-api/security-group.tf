@@ -1,4 +1,4 @@
-resource "aws_security_group" "Card" {
+resource "aws_security_group" "card_api" {
   depends_on  = [var.network]
   name        = "Card-Service-Security-Group"
   description = "Security group for ECS services"

@@ -21,7 +21,7 @@ variable "image" {
 }
 locals {
   application = {
-    name      = "Transaction-Listener-1"
+    name      = "transaction-listener-1"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag

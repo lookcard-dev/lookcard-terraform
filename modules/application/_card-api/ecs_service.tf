@@ -3,7 +3,6 @@ resource "aws_service_discovery_service" "card_api_service" {
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace
-
     dns_records {
       ttl  = 10
       type = "A"
@@ -15,19 +14,19 @@ resource "aws_service_discovery_service" "card_api_service" {
   }
 }
 
-resource "aws_ecs_service" "Card" {
+resource "aws_ecs_service" "card_api" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.Card.arn
+  task_definition = aws_ecs_task_definition.card_api.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
   network_configuration {
     subnets          = var.network.private_subnet
-    security_groups  = [aws_security_group.Card.id]
+    security_groups  = [aws_security_group.card_api.id]
     assign_public_ip = false
   }
   load_balancer {
-    target_group_arn = aws_lb_target_group.Card_target_group.arn
+    target_group_arn = aws_lb_target_group.card_api_target_group.arn
     container_name   = local.application.name
     container_port   = local.application.port
   }
@@ -37,7 +36,7 @@ resource "aws_ecs_service" "Card" {
   }
 }
 
-resource "aws_lb_target_group" "Card_target_group" {
+resource "aws_lb_target_group" "card_api_target_group" {
   name        = "card"
   port        = 80
   protocol    = "HTTP"
@@ -46,12 +45,12 @@ resource "aws_lb_target_group" "Card_target_group" {
 }
 
 
-resource "aws_lb_listener_rule" "Card_listener_rule" {
+resource "aws_lb_listener_rule" "card_api_listener_rule" {
   listener_arn = var.default_listener
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.Card_target_group.arn
+    target_group_arn = aws_lb_target_group.card_api_target_group.arn
   }
   condition {
     path_pattern {
@@ -60,7 +59,7 @@ resource "aws_lb_listener_rule" "Card_listener_rule" {
   }
   priority = local.load_balancer.priority
   tags = {
-    Name = "Card_listener_rule"
+    Name = "Card_api_listener_rule"
     # Add more tags as needed
   }
 }

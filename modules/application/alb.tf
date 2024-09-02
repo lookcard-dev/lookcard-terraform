@@ -162,7 +162,7 @@ resource "aws_lb_listener" "look-card" {
   default_action {
     type             = "forward"
     target_group_arn = module.authentication.authentication_tgp_arn
-    # target_group_arn = aws_lb_target_group.lookcard_tgdsadsadsadsadsadsa.arn
+    # target_group_arn = aws_lb_target_group.authentication_tgp111.arn
   }
   # depends_on        = [var.ssl]
   # port            = 443
@@ -175,4 +175,29 @@ resource "aws_lb_listener" "look-card" {
 # resource "aws_wafv2_web_acl_association" "alb_web_acl_association" {
 #   resource_arn = aws_alb.look-card.arn
 #   web_acl_arn  = var.alb_waf
+# }
+
+
+
+
+
+//////////////////////////////////////////////////////////
+# resource "aws_lb_target_group" "authentication_tgp111" {
+#   depends_on  = [var.network]
+#   name        = "testingcandel"
+#   port        = 80
+#   protocol    = "HTTP"
+#   target_type = "ip"
+#   vpc_id      = var.network.vpc
+
+#   health_check {
+#     enabled             = true
+#     path                = "/"
+#     protocol            = "HTTP"
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 5
+#     interval            = 30
+#     matcher             = "200"
+#   }
 # }
