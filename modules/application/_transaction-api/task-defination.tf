@@ -64,6 +64,6 @@ resource "aws_ecs_task_definition" "transaction" {
 }
 
 resource "aws_cloudwatch_log_group" "transaction" {
-  name = "/ecs/Transaction"
+  name = "/ecs/${local.application.name}"
 
 }

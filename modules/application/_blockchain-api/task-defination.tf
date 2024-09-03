@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "Blockchain" {
+resource "aws_ecs_task_definition" "blockchain" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]

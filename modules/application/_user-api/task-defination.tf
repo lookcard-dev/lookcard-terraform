@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "Users" {
+resource "aws_ecs_task_definition" "user_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -50,6 +50,6 @@ resource "aws_ecs_task_definition" "Users" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "Users" {
+resource "aws_cloudwatch_log_group" "user_api" {
   name = "/ecs/${local.application.name}"
 }

@@ -25,23 +25,23 @@ resource "aws_ecs_cluster" "aml_tron" {
 
 resource "aws_ecs_cluster_capacity_providers" "look_card" {
   cluster_name       = aws_ecs_cluster.look_card.name
-  capacity_providers = ["FARGATE"]
+  capacity_providers = ["FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
-    capacity_provider = "FARGATE"
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 
 resource "aws_ecs_cluster_capacity_providers" "admin_panel" {
 
   cluster_name       = aws_ecs_cluster.admin_panel.name
-  capacity_providers = ["FARGATE"]
+  capacity_providers = ["FARGATE_SPOT"]
 
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
-    capacity_provider = "FARGATE"
+    capacity_provider = "FARGATE_SPOT"
 
   }
 }
@@ -49,11 +49,11 @@ resource "aws_ecs_cluster_capacity_providers" "admin_panel" {
 resource "aws_ecs_cluster_capacity_providers" "aml_tron" {
 
   cluster_name       = aws_ecs_cluster.aml_tron.name
-  capacity_providers = ["FARGATE"]
+  capacity_providers = ["FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
-    capacity_provider = "FARGATE"
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 

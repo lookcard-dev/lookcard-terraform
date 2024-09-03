@@ -1,4 +1,4 @@
-resource "aws_security_group" "Users" {
+resource "aws_security_group" "user_api" {
   depends_on  = [var.network]
   name        = "Users-Service-Security-Group"
   description = "Security group for ECS services"

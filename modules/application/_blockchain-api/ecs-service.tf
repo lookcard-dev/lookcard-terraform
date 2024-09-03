@@ -17,23 +17,20 @@ resource "aws_service_discovery_service" "blockchain_api_service" {
 
 resource "aws_ecs_service" "blockchain" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.Blockchain.arn
+  task_definition = aws_ecs_task_definition.blockchain.arn
   launch_type     = "FARGATE"
   desired_count   = 1
   cluster         = var.cluster
-
   network_configuration {
     subnets          = var.network.private_subnet
     security_groups  = [aws_security_group.blockchain.id]
     assign_public_ip = false
   }
-
   load_balancer {
     target_group_arn = aws_lb_target_group.blockchain_target_group.arn
     container_name   = local.application.name
     container_port   = local.application.port
   }
-
   service_registries {
     registry_arn = aws_service_discovery_service.blockchain_api_service.arn
   }
