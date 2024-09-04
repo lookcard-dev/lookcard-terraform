@@ -17,7 +17,11 @@ resource "aws_service_discovery_service" "card_api_service" {
 resource "aws_ecs_service" "card_api" {
   name            = local.application.name
   task_definition = aws_ecs_task_definition.card_api.arn
-  launch_type     = "FARGATE"
+  # launch_type     = "FARGATE"
+    capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight = 1
+  }
   desired_count   = 1
   cluster         = var.cluster
   network_configuration {

@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "card_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
   task_role_arn            = var.iam_role
