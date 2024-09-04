@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "account_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
   task_role_arn            = aws_iam_role.Account_API_Task_Role.arn

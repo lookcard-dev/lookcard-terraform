@@ -22,16 +22,20 @@ resource "aws_lb_listener_rule" "reporting_api_listener_rule" {
 
   priority = local.load_balancer.priority
   tags = {
-    Name          = "${local.application.name}-listener-rule"
+    Name = "${local.application.name}-listener-rule"
   }
 }
 
 resource "aws_ecs_service" "reporting_api" {
   name            = local.application.name
   task_definition = aws_ecs_task_definition.reporting_api.arn
-  launch_type     = "FARGATE"
-  desired_count   = 1
-  cluster         = var.cluster
+  # launch_type     = "FARGATE"
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
+  }
+  desired_count = 1
+  cluster       = var.cluster
 
   network_configuration {
     subnets         = var.network.private_subnet

@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "transaction" {
   family                   = local.application.name
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  # requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
   memory                   = "4096"
   task_role_arn            = var.iam_role
@@ -64,6 +64,6 @@ resource "aws_ecs_task_definition" "transaction" {
 }
 
 resource "aws_cloudwatch_log_group" "transaction" {
-  name = "/ecs/Transaction"
+  name = "/ecs/${local.application.name}"
 
 }

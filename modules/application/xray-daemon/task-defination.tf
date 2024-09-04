@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "xray_daemon" {
   family                   = "XRayDaemon"
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  # requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.xray_ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.xray_ecs_task_execution_role.arn
   cpu                      = "256"

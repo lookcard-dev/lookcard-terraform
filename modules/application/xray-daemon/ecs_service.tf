@@ -17,7 +17,11 @@ resource "aws_ecs_service" "xray_daemon" {
   cluster         = var.cluster
   task_definition = aws_ecs_task_definition.xray_daemon.arn
   desired_count   = 1
-  launch_type     = "FARGATE"
+  # launch_type     = "FARGATE"
+    capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
+  }
 
   network_configuration {
     subnets         = var.network.private_subnet
