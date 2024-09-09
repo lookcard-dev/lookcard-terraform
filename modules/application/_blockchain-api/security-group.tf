@@ -8,7 +8,8 @@ resource "aws_security_group" "blockchain" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id, ]
   }
 
 

@@ -8,14 +8,16 @@ resource "aws_security_group" "transactionApi" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id, var.account_api_sg_id]
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id, var.account_api_sg_id]
   }
 
   egress {

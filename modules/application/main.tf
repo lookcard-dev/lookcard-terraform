@@ -52,6 +52,8 @@ module "account-api" {
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                 = aws_ecs_cluster.look_card.arn
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  lambda                  = var.lambda
   secret_manager          = var.secret_manager
   sqs                     = var.sqs
   acm                     = var.acm
@@ -71,6 +73,7 @@ module "user-api" {
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                 = aws_ecs_cluster.look_card.arn
   secret_manager          = var.secret_manager
+
 }
 
 module "notification-api" {
@@ -206,6 +209,7 @@ module "_transaction-api" {
   cluster                 = aws_ecs_cluster.look_card.arn
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager          = var.secret_manager
+  account_api_sg_id       = module.account-api.account_api_sg_id
 }
 
 module "_user-api" {
@@ -224,6 +228,9 @@ module "_user-api" {
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  lambda                  = var.lambda
+  account_api_sg_id       = module.account-api.account_api_sg_id
 }
 
 module "_reporting-api" {
@@ -241,6 +248,7 @@ module "_reporting-api" {
     tag = var.image_tag.reporting_api
   }
   secret_manager = var.secret_manager
+  sg_alb_id      = aws_security_group.api_alb_sg.id
 }
 
 module "_card-api" {
@@ -267,6 +275,7 @@ module "_blockchain-api" {
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
   secret_manager   = var.secret_manager
+  sg_alb_id        = aws_security_group.api_alb_sg.id
   image = {
     url = aws_ecr_repository.look-card["blockchain-api"].repository_url
     tag = var.image_tag.blockchain_api
@@ -303,6 +312,7 @@ module "_notification-api" {
   iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
   default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.look_card.arn
+  sg_alb_id        = aws_security_group.api_alb_sg.id
   image = {
     url = aws_ecr_repository.look-card["notification-api"].repository_url
     tag = var.image_tag.notification

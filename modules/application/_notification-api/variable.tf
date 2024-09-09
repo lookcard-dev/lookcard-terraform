@@ -1,7 +1,7 @@
 variable "iam_role" {}
 variable "env_tag" {}
 variable "cluster" {}
-
+variable "sg_alb_id" {}
 variable "network" {
   type = object({
     vpc            = string

@@ -8,15 +8,15 @@ resource "aws_security_group" "reporting" {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id]
   }
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id]
   }
   egress {
     from_port   = 0
