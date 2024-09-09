@@ -11,6 +11,9 @@ variable "default_listener" {}
 variable "iam_role" {}
 variable "cluster" {}
 variable "sg_alb_id" {}
+
+variable "account_api_sg_id" {}
+
 variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
 variable "secret_manager" {}

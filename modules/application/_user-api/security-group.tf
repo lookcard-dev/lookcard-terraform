@@ -8,7 +8,8 @@ resource "aws_security_group" "user_api" {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id, var.lambda.lambda_aggregator_tron_sg_id, var.lambda.crypto_fund_withdrawal_sg_id]
 }
 
 
@@ -16,7 +17,8 @@ resource "aws_security_group" "user_api" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id, var.lambda.lambda_aggregator_tron_sg_id, var.lambda.crypto_fund_withdrawal_sg_id]
 }
 
   egress {

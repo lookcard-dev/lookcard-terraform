@@ -1,5 +1,5 @@
 variable "iam_role" {}
-
+variable "sg_alb_id" {}
 variable "default_listener" {}
 
 variable "network" {

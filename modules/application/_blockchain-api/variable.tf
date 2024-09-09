@@ -1,6 +1,7 @@
 variable "iam_role" {}
 variable "lookcardlocal_namespace" {}
 variable "cluster" {}
+variable "sg_alb_id" {}
 variable "network" {
   type = object({
     vpc            = string
