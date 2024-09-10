@@ -1,5 +1,10 @@
 
 variable "lookcardlocal_namespace" {}
+variable "transaction_listener_sg_id" {}
+
+variable "sg_alb_id" {}
+variable "account_api_sg_id" {}
+variable "lambda" {}
 variable "network" {
   type = object({
     vpc            = string

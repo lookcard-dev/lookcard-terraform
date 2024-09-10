@@ -1,6 +1,7 @@
 variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
 variable "cluster" {}
+variable "sg_alb_id" {}
 variable "secret_manager" {}
 
 variable "network" {

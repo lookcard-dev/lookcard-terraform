@@ -1,5 +1,7 @@
 variable "iam_role" {}
 variable "lookcardlocal_namespace" {}
+variable "sg_alb_id" {}
+variable "account_api_sg_id" {}
 variable "cluster" {}
 variable "network" {
   type = object({

@@ -10,7 +10,8 @@ resource "aws_security_group" "user_api_security_grp" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      # cidr_blocks = ["0.0.0.0/0"]
+      security_groups = [var.sg_alb_id]
     }
   }
 

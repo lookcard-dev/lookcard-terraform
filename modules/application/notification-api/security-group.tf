@@ -9,16 +9,16 @@ resource "aws_security_group" "notification_v2" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id]
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.ALB_SG.id]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.sg_alb_id]
   }
 
   egress {

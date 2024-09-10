@@ -1,7 +1,7 @@
 variable "default_listener" {}
 variable "lookcardlocal_namespace" {}
 variable "cluster" {}
-
+variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
 variable "s3_data_bucket_name" {}
