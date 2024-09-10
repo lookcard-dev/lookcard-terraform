@@ -13,9 +13,13 @@ module "crypto-api" {
     url = aws_ecr_repository.look-card["crypto-api"].repository_url
     tag = var.image_tag.crypto_api
   }
-  secret_manager          = var.secret_manager
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  kms                     = var.kms
+  secret_manager             = var.secret_manager
+  lookcardlocal_namespace    = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  kms                        = var.kms
+  account_api_sg_id          = module.account-api.account_api_sg_id
+  sg_alb_id                  = aws_security_group.api_alb_sg.id
+  lambda                     = var.lambda
+  transaction_listener_sg_id = module.transaction-listener.transaction_listener_sg_id
 }
 
 module "transaction-listener" {
@@ -73,7 +77,7 @@ module "user-api" {
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                 = aws_ecs_cluster.look_card.arn
   secret_manager          = var.secret_manager
-
+  sg_alb_id               = aws_security_group.api_alb_sg.id
 }
 
 module "notification-api" {
@@ -92,6 +96,7 @@ module "notification-api" {
   }
   secret_manager = var.secret_manager
   env_tag        = var.env_tag
+  sg_alb_id      = aws_security_group.api_alb_sg.id
 }
 
 
@@ -112,6 +117,7 @@ module "profile-api" {
   dynamodb_profile_data_table_name = var.dynamodb_profile_data_table_name
   secret_manager                   = var.secret_manager
   env_tag                          = var.env_tag
+  sg_alb_id                        = aws_security_group.api_alb_sg.id
 }
 
 module "config-api" {
@@ -133,6 +139,7 @@ module "config-api" {
   acm                                  = var.acm
   secret_manager                       = var.secret_manager
   env_tag                              = var.env_tag
+  sg_alb_id                            = aws_security_group.api_alb_sg.id
 }
 
 module "data-api" {
@@ -154,6 +161,7 @@ module "data-api" {
   kms                     = var.kms
   s3_data_bucket_name     = var.s3_data_bucket_name
   dynamodb_data_tb_name   = var.dynamodb_data_tb_name
+  sg_alb_id               = aws_security_group.api_alb_sg.id
 }
 
 module "xray-daemon" {
@@ -305,6 +313,8 @@ module "_utility-api" {
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  account_api_sg_id       = module.account-api.account_api_sg_id
 }
 
 module "_notification-api" {
