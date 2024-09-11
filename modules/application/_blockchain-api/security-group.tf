@@ -12,7 +12,6 @@ resource "aws_security_group" "blockchain" {
     security_groups = [var.sg_alb_id]
   }
 
-
   ingress {
     from_port   = 80
     to_port     = 80
