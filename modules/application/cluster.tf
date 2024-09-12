@@ -1,6 +1,14 @@
 
-resource "aws_ecs_cluster" "look_card" {
-  name = "look_card"
+resource "aws_ecs_cluster" "application" {
+  name = "application"
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
+  }
+}
+
+resource "aws_ecs_cluster" "listener" {
+  name = "listener"
   setting {
     name  = "containerInsights"
     value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
@@ -8,7 +16,7 @@ resource "aws_ecs_cluster" "look_card" {
 }
 
 resource "aws_ecs_cluster" "admin_panel" {
-  name = "admin_panel"
+  name = "admin-panel"
   setting {
     name  = "containerInsights"
     value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
@@ -23,9 +31,35 @@ resource "aws_ecs_cluster" "aml_tron" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "look_card" {
-  cluster_name       = aws_ecs_cluster.look_card.name
+resource "aws_ecs_capacity_provider" "ec2_arm64_on_demand" {
+  name = "EC2_ARM64_ON_DEMAND"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn = module.transaction-listener.transaction_listener_arm64_asg_arn
+  }
+}
+
+resource "aws_ecs_capacity_provider" "ec2_amd64_on_demand" {
+  name = "EC2_AMD64_ON_DEMAND"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn = module.transaction-listener.transaction_listener_amd64_asg_arn
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "application" {
+  cluster_name       = aws_ecs_cluster.application.name
   capacity_providers = ["FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "listener" {
+  cluster_name       = aws_ecs_cluster.listener.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.ec2_amd64_on_demand.name, aws_ecs_capacity_provider.ec2_arm64_on_demand.name ]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100

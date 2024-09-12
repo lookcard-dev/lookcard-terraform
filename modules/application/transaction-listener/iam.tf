@@ -111,3 +111,58 @@ resource "aws_iam_role_policy_attachment" "transaction_listener_sqs_attachment" 
   role       = aws_iam_role.transaction_listener_task_role.name
   policy_arn = aws_iam_policy.transaction_listener_sqs_send_message_policy.arn
 }
+
+resource "aws_iam_role" "ecs_instance_role" {
+  name = "ecs-instance-role"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "sts:AssumeRole"
+        ],
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com",
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ecs_instance_role_cloudwatch_policy" {
+  name        = "ecs-instance-role-cloudwatch-policy"
+  description = "allow create, put and describe cloudwatch log"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ],
+        "Resource" : [
+          "arn:aws:logs:*:*:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecsInstanceRole-AmazonEC2ContainerServiceforEC2Role-attachment" {
+  role       = aws_iam_role.ecs_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
+resource "aws_iam_role_policy_attachment" "ecsInstanceRole-cloudwatch-policy-attachment" {
+  role       = aws_iam_role.ecs_instance_role.name
+  policy_arn = aws_iam_policy.ecs_instance_role_cloudwatch_policy.arn
+}
+
+resource "aws_iam_instance_profile" "ecs-instance-profile" {
+  name = "ecs-instance-profile"
+  role = aws_iam_role.ecs_instance_role.name
+}
