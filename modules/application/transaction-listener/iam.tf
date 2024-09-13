@@ -34,7 +34,8 @@ resource "aws_iam_policy" "transaction_listener_env_secrets_manager_read_policy"
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          "${var.secret_manager.trongrid_secret_arn}"
+          "${var.secret_manager.trongrid_secret_arn}",
+          "${var.database_secret_arn}"
         ]
       }
     ]
