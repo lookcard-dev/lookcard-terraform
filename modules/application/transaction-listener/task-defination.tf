@@ -137,7 +137,6 @@ resource "aws_ecs_task_definition" "transaction_listener" {
         },
       ]
       readonlyRootFilesystem : true
-      command : ["node", "listener/tron.js"]
     }
   ])
 }
