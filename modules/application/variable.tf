@@ -54,6 +54,7 @@ variable "ecr_names" {
     "data-api"              = "data-api"
     "notification-v2-api"   = "notification-v2-api"
     "authentication-v2-api" = "authentication-v2-api"
+    "crypto-listener"       = "crypto-listener"
   }
 }
 
@@ -62,6 +63,7 @@ variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
+variable "database_secret_arn" {}
 variable "sqs" {}
 variable "lambda" {}
 variable "dynamodb_config_api_config_data_name" {}
@@ -72,3 +74,5 @@ variable "acm" {}
 variable "kms" {}
 variable "s3_data_bucket_name" {}
 variable "dynamodb_data_tb_name" {}
+variable "rds_aurora_postgresql_writer_endpoint" {}
+variable "rds_aurora_postgresql_reader_endpoint" {}

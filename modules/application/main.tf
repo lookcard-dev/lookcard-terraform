@@ -30,7 +30,7 @@ module "transaction-listener" {
     public_subnet  = var.network.public_subnet
   }
   image = {
-    url = aws_ecr_repository.look-card["transaction-listener"].repository_url
+    url = aws_ecr_repository.look-card["crypto-listener"].repository_url
     tag = var.image_tag.transaction_listener
   }
   vpc_id                                   = var.network.vpc
@@ -38,9 +38,13 @@ module "transaction-listener" {
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   secret_manager                           = var.secret_manager
   trongrid_secret_arn                      = var.trongrid_secret_arn
+  database_secret_arn                      = var.database_secret_arn
   sqs                                      = var.sqs
   capacity_provider_ec2_arm64_on_demand    = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
   capacity_provider_ec2_amd64_on_demand    = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
+  rds_aurora_postgresql_writer_endpoint    = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint    = var.rds_aurora_postgresql_reader_endpoint
+  env_tag                                  = var.env_tag
 }
 
 module "account-api" {

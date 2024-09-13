@@ -66,6 +66,7 @@ module "application" {
   lambda                                   = module.lambda
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
+  database_secret_arn                      = module.secret-manager.database_secret_arn
   secret_manager                           = module.secret-manager
   dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
@@ -76,6 +77,8 @@ module "application" {
   kms                                      = module.kms
   s3_data_bucket_name                      = module.S3.accountid_data
   dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
+  rds_aurora_postgresql_writer_endpoint    = module.rds.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint    = module.rds.rds_aurora_postgresql_reader_endpoint
 }
 
 module "ssl-cert" {

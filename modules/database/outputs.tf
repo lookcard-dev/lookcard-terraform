@@ -24,3 +24,11 @@ output "dynamodb_profile_data_table_name" {
 output "dynamodb_data_api_data_table_name" {
   value = aws_dynamodb_table.data_api_data.name
 }
+
+output "rds_aurora_postgresql_writer_endpoint" {
+  value = aws_rds_cluster.lookcard_develop.endpoint
+}
+
+output "rds_aurora_postgresql_reader_endpoint" {
+  value = aws_rds_cluster.lookcard_develop.reader_endpoint
+}

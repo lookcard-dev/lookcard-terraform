@@ -13,6 +13,7 @@ variable "cluster" {}
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
+variable "database_secret_arn" {}
 variable "image" {
   type = object({
     url = string
@@ -21,7 +22,7 @@ variable "image" {
 }
 locals {
   application = {
-    name      = "transaction-listener-1"
+    name      = "tron-nile-trongrid"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
@@ -30,3 +31,6 @@ locals {
 variable "sqs" {}
 variable "capacity_provider_ec2_arm64_on_demand" {}
 variable "capacity_provider_ec2_amd64_on_demand" {}
+variable "rds_aurora_postgresql_writer_endpoint" {}
+variable "rds_aurora_postgresql_reader_endpoint" {}
+variable "env_tag" {}

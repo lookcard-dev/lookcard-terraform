@@ -1,12 +1,11 @@
-
 resource "aws_ecs_task_definition" "transaction_listener" {
-  family                   = local.application.name
-  network_mode             = "awsvpc"
+  family       = local.application.name
+  network_mode = "awsvpc"
   # requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
-  task_role_arn            = aws_iam_role.transaction_listener_task_role.arn
-  execution_role_arn       = aws_iam_role.transaction_listener_task_exec_role.arn
+  cpu                = "256"
+  memory             = "512"
+  task_role_arn      = aws_iam_role.transaction_listener_task_role.arn
+  execution_role_arn = aws_iam_role.transaction_listener_task_exec_role.arn
 
   runtime_platform {
     cpu_architecture        = "X86_64"
@@ -28,44 +27,104 @@ resource "aws_ecs_task_definition" "transaction_listener" {
         }
       }
       environment = [
+        # {
+        #   name  = "NODE_ID"
+        #   value = "tron-nile-alpha" // confirm
+        # },
+        # {
+        #   name  = "NODE_ECO"
+        #   value = "TRON" // confirm
+        # },
+        # {
+        #   name  = "NODE_BLOCKCHAIN_ID"
+        #   value = "tron-nile" // confirm
+        # },
+        # {
+        #   name  = "CRYPTO_API_PROTOCOL"
+        #   value = "http"
+        # },
+        # {
+        #   name  = "CRYPTO_API_HOST"
+        #   value = "crypto.api.lookcard.local"
+        # },
+        # {
+        #   name  = "CRYPTO_API_PORT"
+        #   value = "8080"
+        # },
+        # {
+        #   name  = "DYNAMODB_BLOCK_RECORD_TABLE_NAME"
+        #   value = "Crypto_Transaction_Listener-Block_Record" // confirm
+        # },
+        # {
+        #   name  = "INCOMING_TRANSACTION_QUEUE_URL"
+        #   value = var.sqs.aggregator_tron_url
+        # },
+        # New listener env var
+        {
+          name  = "RUNTIME_ENVIRONMENT"
+          value = var.env_tag
+        },
+        {
+          name  = "AWS_XRAY_DAEMON_ENDPOINT"
+          value = "xray.daemon.lookcard.local:2337"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+          value = "/lookcard/crypto-listener/tron/nile/trongrid"
+        },
+        {
+          name  = "DATABASE_HOST"
+          value = var.rds_aurora_postgresql_writer_endpoint
+        },
+        {
+          name  = "DATABASE_READ_HOST"
+          value = var.rds_aurora_postgresql_reader_endpoint
+        },
+        {
+          name  = "DATABASE_PORT"
+          value = "5432"
+        },
+        {
+          name  = "DATABASE_SCHEMA"
+          value = "crypto_listener"
+        },
+        {
+          name  = "DATABASE_USE_SSL"
+          value = "true"
+        },
         {
           name  = "NODE_ID"
-          value = "tron-nile-alpha" // confirm
+          value = "tron-nile-trongrid"
         },
         {
           name  = "NODE_ECO"
-          value = "TRON" // confirm
+          value = "TRON"
         },
         {
           name  = "NODE_BLOCKCHAIN_ID"
-          value = "tron-nile" // confirm
-        },
-        {
-          name  = "CRYPTO_API_PROTOCOL"
-          value = "http"
-        },
-        {
-          name  = "CRYPTO_API_HOST"
-          value = "crypto.api.lookcard.local"
-        },
-        {
-          name  = "CRYPTO_API_PORT"
-          value = "8080"
-        },
-        {
-          name  = "DYNAMODB_BLOCK_RECORD_TABLE_NAME"
-          value = "Crypto_Transaction_Listener-Block_Record" // confirm
-        },
-        {
-          name  = "INCOMING_TRANSACTION_QUEUE_URL"
-          value = var.sqs.aggregator_tron_url
+          value = "tron-nile"
         }
-
       ]
       secrets = [
         {
-          name          = "TRONGRID_API_KEY"
-          valueFrom     = "${var.trongrid_secret_arn}:API_KEY::"
+          name      = "DATABASE_NAME"
+          valueFrom = "${var.database_secret_arn}:dbname::"
+        },
+        {
+          name      = "DATABASE_USERNAME"
+          valueFrom = "${var.database_secret_arn}:develop::"
+        },
+        {
+          name      = "DATABASE_PASSWORD"
+          valueFrom = "${var.database_secret_arn}:password::"
+        },
+        {
+          name      = "TRONGRID_API_KEY"
+          valueFrom = "${var.trongrid_secret_arn}:API_KEY::"
+        },
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${var.trongrid_secret_arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
         }
       ]
       portMappings = [
@@ -85,4 +144,8 @@ resource "aws_ecs_task_definition" "transaction_listener" {
 
 resource "aws_cloudwatch_log_group" "transaction_listener" {
   name = "/ecs/${local.application.name}"
+}
+
+resource "aws_cloudwatch_log_group" "crypto_listener_application_log" {
+  name = "/lookcard/crypto-listener/tron/nile/trongrid"
 }
