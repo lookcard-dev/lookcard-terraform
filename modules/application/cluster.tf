@@ -15,8 +15,8 @@ resource "aws_ecs_cluster" "listener" {
   }
 }
 
-resource "aws_ecs_cluster" "admin_panel" {
-  name = "admin-panel"
+resource "aws_ecs_cluster" "admin" {
+  name = "admin"
   setting {
     name  = "containerInsights"
     value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
@@ -49,7 +49,7 @@ resource "aws_ecs_capacity_provider" "ec2_amd64_on_demand" {
 
 resource "aws_ecs_cluster_capacity_providers" "application" {
   cluster_name       = aws_ecs_cluster.application.name
-  capacity_providers = ["FARGATE_SPOT"]
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
@@ -59,7 +59,7 @@ resource "aws_ecs_cluster_capacity_providers" "application" {
 
 resource "aws_ecs_cluster_capacity_providers" "listener" {
   cluster_name       = aws_ecs_cluster.listener.name
-  capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.ec2_amd64_on_demand.name, aws_ecs_capacity_provider.ec2_arm64_on_demand.name ]
+  capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.ec2_amd64_on_demand.name, aws_ecs_capacity_provider.ec2_arm64_on_demand.name]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
@@ -67,16 +67,15 @@ resource "aws_ecs_cluster_capacity_providers" "listener" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "admin_panel" {
+resource "aws_ecs_cluster_capacity_providers" "admin" {
 
-  cluster_name       = aws_ecs_cluster.admin_panel.name
-  capacity_providers = ["FARGATE_SPOT"]
+  cluster_name       = aws_ecs_cluster.admin.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
 
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
     capacity_provider = "FARGATE_SPOT"
-
   }
 }
 
@@ -96,8 +95,8 @@ resource "aws_cloudwatch_log_group" "look_card_logs" {
   retention_in_days = 30
 }
 
-resource "aws_cloudwatch_log_group" "admin_panel_logs" {
-  name              = "/ecs/admin_panel"
+resource "aws_cloudwatch_log_group" "admin_logs" {
+  name              = "/ecs/admin"
   retention_in_days = 30
 }
 
