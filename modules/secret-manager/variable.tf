@@ -2,7 +2,7 @@
 variable "secret_names" {
   type = list(string)
   default = [
-//* 以下是新secret manager */
+    //* 以下是新secret manager */
     //one2cloud
     "REAP",
     "TRONGRID",
@@ -19,6 +19,8 @@ variable "secret_names" {
     "QUICKNODE",
     "ANKR",
     "GET_BLOCK",
+    "DRPC",
+    "INFURA",
     // evvo lab 
     "ENV",
     "TOKEN", //
