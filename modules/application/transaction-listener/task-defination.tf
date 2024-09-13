@@ -112,7 +112,7 @@ resource "aws_ecs_task_definition" "transaction_listener" {
         },
         {
           name      = "DATABASE_USERNAME"
-          valueFrom = "${var.database_secret_arn}:develop::"
+          valueFrom = "${var.database_secret_arn}:username::"
         },
         {
           name      = "DATABASE_PASSWORD"
