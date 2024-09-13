@@ -3,7 +3,7 @@ resource "aws_ecs_service" "transaction_listener" {
   task_definition = aws_ecs_task_definition.transaction_listener.arn
   # launch_type     = "FARGATE"
   capacity_provider_strategy {
-    capacity_provider = "FARGATE_SPOT"
+    capacity_provider = var.capacity_provider_ec2_amd64_on_demand
     weight            = 1
   }
   desired_count = 1

@@ -16,6 +16,9 @@ variable "secret_names" {
     "COINRANKING",
     "TELEGRAM",
     "SENTRY",
+    "QUICKNODE",
+    "ANKR",
+    "GET_BLOCK",
     // evvo lab 
     "ENV",
     "TOKEN", //
@@ -25,6 +28,6 @@ variable "secret_names" {
     "NOTIFICATION_ENV",
     "AGGREGATOR_ENV",
     "DID_PROCESSOR_LAMBDA",
-    "DB_MASTER_PASSWORD",
+    "DB_MASTER_PASSWORD"
   ]
 }

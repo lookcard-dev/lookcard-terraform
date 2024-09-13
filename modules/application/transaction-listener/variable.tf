@@ -28,3 +28,5 @@ locals {
   }
 }
 variable "sqs" {}
+variable "capacity_provider_ec2_arm64_on_demand" {}
+variable "capacity_provider_ec2_amd64_on_demand" {}
