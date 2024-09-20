@@ -162,3 +162,12 @@ module "syn_canaries" {
 module "kms" {
   source = "./modules/kms"
 }
+
+module "bastion" {
+  source = "./modules/bastion"
+  network = {
+    vpc            = module.VPC.vpc
+    private_subnet = module.VPC.private_subnet_ids
+    public_subnet  = module.VPC.public_subnet_ids
+  }
+}
