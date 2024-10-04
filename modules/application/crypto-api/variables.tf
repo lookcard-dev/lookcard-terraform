@@ -17,6 +17,8 @@ variable "default_listener" {}
 variable "cluster" {}
 variable "kms" {}
 variable "secret_manager" {}
+# variable "kms_data_encryption_key_alpha_arn" {}
+# variable "kms_data_generator_key_arn" {}
 
 variable "image" {
   type = object({
