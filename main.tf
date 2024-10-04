@@ -67,6 +67,7 @@ module "application" {
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   database_secret_arn                      = module.secret-manager.database_secret_arn
+  get_block_secret_arn                     = module.secret-manager.get_block_secret_arn
   secret_manager                           = module.secret-manager
   dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
