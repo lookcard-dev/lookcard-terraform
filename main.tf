@@ -80,6 +80,8 @@ module "application" {
   dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
   rds_aurora_postgresql_writer_endpoint    = module.rds.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint    = module.rds.rds_aurora_postgresql_reader_endpoint
+  # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
+  # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
 }
 
 module "ssl-cert" {

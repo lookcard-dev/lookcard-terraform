@@ -2,6 +2,10 @@ output "kms_data_generator_key_id" {
   value = aws_kms_key.data_generator_key.id
 }
 
+# output "kms_data_encryption_key_alpha_arn" {
+#   value = module.data_encryption_key.kms_data_encryption_key_id_alpha.arn
+# }
+
 output "kms_data_encryption_key_id_alpha" {
   value = module.data_encryption_key.kms_data_encryption_key_id_alpha
 }

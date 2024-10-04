@@ -39,11 +39,11 @@ resource "aws_ecs_task_definition" "crypto-api" {
         },
         {
           name  = "KMS_GENERATOR_KEY_ID"
-          value = var.kms.kms_data_generator_key_id
+          value = "arn:aws:kms:ap-southeast-1:227720554629:key/ce295816-2522-43cf-a880-4b8410c86fc2" // var.kms_data_generator_key_arn
         },
         {
           name  = "KMS_ENCRYPTION_KEY_ID_ALPHA"
-          value = var.kms.kms_data_encryption_key_id_alpha
+          value = "arn:aws:kms:ap-southeast-1:227720554629:key/bd7162eb-db84-4a47-a87b-99e34c96d84e" //var.kms_data_encryption_key_alpha_arn
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"

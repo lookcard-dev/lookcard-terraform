@@ -20,6 +20,8 @@ module "crypto-api" {
   sg_alb_id                  = aws_security_group.api_alb_sg.id
   lambda                     = var.lambda
   transaction_listener_sg_id = module.transaction-listener.transaction_listener_sg_id
+  # kms_data_generator_key_arn        = var.kms_data_generator_key_arn
+  # kms_data_encryption_key_alpha_arn = var.kms_data_encryption_key_alpha_arn
 }
 
 module "transaction-listener" {
