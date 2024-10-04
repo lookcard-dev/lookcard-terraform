@@ -45,6 +45,13 @@ resource "aws_ecs_task_definition" "user_api_task_definition" {
           containerPath = "/usr/src/data",
         },
       ]
+      healthCheck = {
+        command     = ["CMD-SHELL", "curl -f http://localhost/healthcheckz || exit 1"]
+        interval    = 30   # seconds between health checks
+        timeout     = 5    # health check timeout in seconds
+        retries     = 3    # number of retries before marking container unhealthy
+        startPeriod = 60   # time to wait before performing first health check
+      }
     }
   ])
 }
