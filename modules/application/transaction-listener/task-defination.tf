@@ -103,6 +103,14 @@ resource "aws_ecs_task_definition" "transaction_listener" {
         {
           name  = "NODE_BLOCKCHAIN_ID"
           value = "tron-nile"
+        },
+        {
+          name  = "AWS_REGION"
+          value = "ap-southeast-1"
+        },
+        {
+          name  = "INCOMING_TRANSACTION_QUEUE_URL"
+          value = var.sqs.aggregator_tron_url
         }
       ]
       secrets = [
@@ -221,6 +229,14 @@ resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
         {
           name  = "NODE_BLOCKCHAIN_ID"
           value = "tron-nile"
+        },
+        {
+          name  = "AWS_REGION"
+          value = "ap-southeast-1"
+        },
+        {
+          name  = "INCOMING_TRANSACTION_QUEUE_URL"
+          value = var.sqs.aggregator_tron_url
         }
       ]
       secrets = [
