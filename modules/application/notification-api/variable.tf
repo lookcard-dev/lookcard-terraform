@@ -35,7 +35,24 @@ locals {
     {
       name      = "SENDGRID_API_KEY"
       valueFrom = "${var.secret_manager.secret_arns["SENDGRID"]}:SENDGRID_API_KEY::"
+    },
+    {
+      name      = "FIREBASE_CREDENTIALS"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
+    },
+    {
+      name      = "FIREBASE_PROJECT_ID"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:PROJECT_ID::"
+    },
+    {
+      name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
+    },
+    {
+      name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_PRIVATE_KEY::"
     }
+
   ]
   ecs_task_env_vars = [
     {

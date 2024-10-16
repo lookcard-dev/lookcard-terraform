@@ -64,6 +64,7 @@ variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
 variable "database_secret_arn" {}
+variable "firebase_secret_arn" {}
 variable "get_block_secret_arn" {}
 variable "sqs" {}
 variable "lambda" {}

@@ -47,6 +47,10 @@ locals {
     {
       sid = "SendGridSecret"
       arn = var.secret_manager.sendgrid_secret
+    },
+    {
+      sid = "FirebaseSecret"
+      arn = var.secret_manager.firebase_secret_arn
     }
   ]
 }
