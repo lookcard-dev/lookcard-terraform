@@ -68,6 +68,7 @@ module "application" {
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   database_secret_arn                      = module.secret-manager.database_secret_arn
   get_block_secret_arn                     = module.secret-manager.get_block_secret_arn
+  firebase_secret_arn                      = module.secret-manager.firebase_secret_arn
   secret_manager                           = module.secret-manager
   dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
   dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
