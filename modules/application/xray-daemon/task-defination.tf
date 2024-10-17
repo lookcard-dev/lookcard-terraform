@@ -11,6 +11,7 @@ resource "aws_ecs_task_definition" "xray_daemon" {
     {
       name      = "xray-daemon"
       image     = "amazon/aws-xray-daemon"
+      entryPoint = ["/xray", "-t", "0.0.0.0:2337", "-b", "0.0.0.0:2337"]
       essential = true
       portMappings = [
         {
