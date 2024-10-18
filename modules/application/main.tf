@@ -89,6 +89,8 @@ module "user-api" {
   sg_alb_id               = aws_security_group.api_alb_sg.id
   env_tag                 = var.env_tag
   redis_host              = var.redis_host
+  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
 }
 
 module "notification-api" {
