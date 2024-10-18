@@ -3,6 +3,7 @@ variable "lookcardlocal_namespace" {}
 variable "cluster" {}
 variable "sg_alb_id" {}
 variable "secret_manager" {}
+variable "env_tag" {}
 
 variable "network" {
   type = object({
@@ -50,13 +51,13 @@ locals {
     },
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:CONFIG_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:USER_API_DSN::"
     }
   ]
   ecs_task_env_vars = [
     {
       name  = "RUNTIME_ENVIRONMENT"
-      value = ""
+      value = var.env_tag
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"

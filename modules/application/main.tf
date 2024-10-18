@@ -87,6 +87,7 @@ module "user-api" {
   cluster                 = aws_ecs_cluster.application.arn
   secret_manager          = var.secret_manager
   sg_alb_id               = aws_security_group.api_alb_sg.id
+  env_tag                 = var.env_tag
 }
 
 module "notification-api" {
