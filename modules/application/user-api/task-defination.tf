@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "user_api_task_definition" {
           appProtocol   = "http",
         },
       ]
-      readonlyRootFilesystem : true
+      #readonlyRootFilesystem : true
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost:${local.application.port}/healthcheckz || exit 1"]
         interval    = 30   # seconds between health checks
