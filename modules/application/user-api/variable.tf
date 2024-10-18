@@ -5,6 +5,8 @@ variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
 variable "redis_host" {}
+variable "rds_aurora_postgresql_writer_endpoint" {}
+variable "rds_aurora_postgresql_reader_endpoint" {}
 
 variable "network" {
   type = object({
@@ -31,16 +33,8 @@ locals {
 
   ecs_task_secret_vars = [
     {
-      name      = "DATABASE_HOST"
-      valueFrom = "${var.secret_manager.database_secret_arn}:host::"
-    },
-    {
       name      = "DATABASE_NAME"
-      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
-    },
-    {
-      name      = "DATABASE_READ_HOST"
-      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
@@ -69,16 +63,24 @@ locals {
       value = var.env_tag
     },
     {
-      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = "/lookcard/user-api"
-    },
-    {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
     },
     {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = "/lookcard/user-api"
+    },
+    {
       name  = "REDIS_HOST"
       value = var.redis_host
+    },
+    {
+      name  = "DATABASE_HOST"
+      value = var.rds_aurora_postgresql_writer_endpoint
+    },
+    {
+      name  = "DATABASE_READ_HOST"
+      value = var.rds_aurora_postgresql_reader_endpoint
     },
     {
       name  = "DATABASE_PORT"
