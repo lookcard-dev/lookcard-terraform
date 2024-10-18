@@ -78,5 +78,6 @@ variable "s3_data_bucket_name" {}
 variable "dynamodb_data_tb_name" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
+variable "redis_host" {}
 # variable "kms_data_generator_key_arn" {}
 # variable "kms_data_encryption_key_alpha_arn" {}
