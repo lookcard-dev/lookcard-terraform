@@ -78,7 +78,7 @@ locals {
     },
     {
       name  = "REDIS_HOST"
-      value = "lookcard-redis-cluster.abii1z.0001.apse1.cache.amazonaws.com:6379" #var.redis_host <- temp hardcode
+      value = var.redis_host
     },
     {
       name  = "DATABASE_PORT"
