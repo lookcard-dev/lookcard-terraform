@@ -1,4 +1,4 @@
-resource "aws_iam_role" "User_API_Task_Execution_Role" {
+resource "aws_iam_role" "user_api_task_execution_role" {
   name        = "User-API-Task-Execution-Role"
   description = "Role for User API task execution"
 
@@ -30,17 +30,17 @@ resource "aws_iam_policy" "User_API_env_secrets_manager_read_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "User_API_ECSTaskExecutionRolePolicy_attachment" {
-  role       = aws_iam_role.User_API_Task_Execution_Role.name
+  role       = aws_iam_role.user_api_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "User_API_secrets_manager_read_attachment" {
-  role       = aws_iam_role.User_API_Task_Execution_Role.name
+  role       = aws_iam_role.user_api_task_execution_role.name
   policy_arn = aws_iam_policy.User_API_env_secrets_manager_read_policy.arn
 }
 
-resource "aws_iam_role" "User_API_Task_Role" {
-  name        = "User-API-Task-Role"
+resource "aws_iam_role" "user_api_task_role" {
+  name        = "user-api-task-role"
   description = "Role for User API tasks"
 
   assume_role_policy = jsonencode({
@@ -55,3 +55,29 @@ resource "aws_iam_role" "User_API_Task_Role" {
   })
 }
 
+resource "aws_iam_policy" "user_api_cloudwatch_putlog_policy" {
+  name        = "UserAPICloudWatchPutLogPolicy"
+  description = "Allows user api put log to log group /lookcard/user-api"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:CreateLogStream",
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            aws_cloudwatch_log_group.ecs_log_group_user_api.arn,
+            aws_cloudwatch_log_group.application_log_group_user_api.arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "user_api_cloudwatch_putlog_attachment" {
+  role      = aws_iam_role.user_api_task_role.name
+  policy_arn = aws_iam_policy.user_api_cloudwatch_putlog_policy.arn
+}

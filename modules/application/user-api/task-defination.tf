@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "user_api_task_definition" {
   # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.User_API_Task_Role.arn
-  execution_role_arn       = aws_iam_role.User_API_Task_Execution_Role.arn
+  task_role_arn            = aws_iam_role.user_api_task_role.arn
+  execution_role_arn       = aws_iam_role.user_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -39,24 +39,14 @@ resource "aws_ecs_task_definition" "user_api_task_definition" {
         },
       ]
       readonlyRootFilesystem : true
-      mountPoints = [
-        {
-          sourceVolume  = "data",
-          containerPath = "/usr/src/data",
-        },
-      ]
-      healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost/healthcheckz || exit 1"]
-        interval    = 30   # seconds between health checks
-        timeout     = 5    # health check timeout in seconds
-        retries     = 3    # number of retries before marking container unhealthy
-        startPeriod = 60   # time to wait before performing first health check
-      }
+      # healthCheck = {
+      #   command     = ["CMD-SHELL", "curl -f http://localhost:${local.application.port}/healthcheckz || exit 1"]
+      #   interval    = 30   # seconds between health checks
+      #   timeout     = 5    # health check timeout in seconds
+      #   retries     = 3    # number of retries before marking container unhealthy
+      #   startPeriod = 10   # time to wait before performing first health check
+      # }
     }
   ])
-}
-
-resource "aws_cloudwatch_log_group" "User_API" {
-  name = "/ecs/${local.application.name}"
 }
 
