@@ -88,6 +88,7 @@ module "user-api" {
   secret_manager          = var.secret_manager
   sg_alb_id               = aws_security_group.api_alb_sg.id
   env_tag                 = var.env_tag
+  redis_host              = var.redis_host
 }
 
 module "notification-api" {
