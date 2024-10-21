@@ -55,6 +55,7 @@ variable "ecr_names" {
     "notification-v2-api"   = "notification-v2-api"
     "authentication-v2-api" = "authentication-v2-api"
     "crypto-listener"       = "crypto-listener"
+    "referral-api"          = "referral-api"
   }
 }
 

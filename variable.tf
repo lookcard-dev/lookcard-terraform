@@ -22,7 +22,7 @@ variable "aws_provider" {
 variable "image_tag" {
   type = object({
     notification         = string
-    account_api          = string 
+    account_api          = string # GitAction using unders
     authentication_api   = string 
     blockchain_api       = string 
     card_api             = string 
@@ -33,10 +33,11 @@ variable "image_tag" {
     users_api            = string 
     user-api             = string
     utility_api          = string 
-    profile_api          = string 
+    profile-api          = string  
     config_api           = string
     data_api             = string
     notification_v2      = string
+    referral-api         = string
   })
 }
 
