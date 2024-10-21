@@ -188,27 +188,27 @@ module "xray-daemon" {
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }
 
-# module "referral-api" {
-#   source = "./referral-api"
-#   vpc_id = var.network.vpc
-#   image = {
-#     url = aws_ecr_repository.look-card["referral-api"].repository_url
-#     tag = var.image_tag.referral-api
-#   }
-#   network = {
-#     vpc            = var.network.vpc
-#     private_subnet = var.network.private_subnet
-#     public_subnet  = var.network.public_subnet
-#   }
-#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-#   cluster                 = aws_ecs_cluster.application.arn
-#   secret_manager          = var.secret_manager
-#   sg_alb_id               = aws_security_group.api_alb_sg.id
-#   env_tag                 = var.env_tag
-#   redis_host              = var.redis_host
-#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-# }
+module "referral-api" {
+  source = "./referral-api"
+  vpc_id = var.network.vpc
+  image = {
+    url = aws_ecr_repository.look-card["referral-api"].repository_url
+    tag = var.image_tag.referral-api
+  }
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                 = aws_ecs_cluster.application.arn
+  secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  env_tag                 = var.env_tag
+  redis_host              = var.redis_host
+  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+}
 
 # # ********************  v1  ***********************
 
