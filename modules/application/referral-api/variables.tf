@@ -16,8 +16,6 @@ variable "network" {
   })
 }
 
-variable "cluster" {}
-
 
 variable "image" {
   type = object({
@@ -102,7 +100,7 @@ locals {
     var.secret_manager.secret_arns["SENTRY"],
   ]
   cloudwatch_log_groups = [
-    aws_cloudwatch_log_group.ecs_log_group_user_api.arn,
-    aws_cloudwatch_log_group.application_log_group_user_api.arn
+    aws_cloudwatch_log_group.ecs_log_group_referral_api.arn,
+    aws_cloudwatch_log_group.application_log_group_referral_api.arn
   ]
 }

@@ -37,6 +37,3 @@ resource "aws_ecs_task_definition" "referral_api" {
     }
   ])
 }
-resource "aws_cloudwatch_log_group" "profile_api" {
-  name = "/ecs/${local.application.name}"
-}
