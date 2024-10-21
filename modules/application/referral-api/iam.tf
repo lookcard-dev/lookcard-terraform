@@ -61,18 +61,12 @@ resource "aws_iam_policy" "referral_api_cloudwatch_putlog_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-            "logs:CreateLogStream",
-            "logs:DescribeLogStreams",
-            "logs:PutLogEvents"
-        ],
-        "Resource" : [
-            # "${aws_cloudwatch_log_group.ecs_log_group_user_api.arn}:*",
-            # "${aws_cloudwatch_log_group.application_log_group_user_api.arn}:*"
-            "${local.cloudwatch_log_groups[0]}:*"
-        ]
+      for idx, log_group_arn in local.cloudwatch_log_groups : {
+      "Effect" : "Allow",
+      "Action" : [
+        "logs:PutLogEvents"
+      ],
+        "Resource" : "${log_group_arn}:*"
       }
     ]
   })
