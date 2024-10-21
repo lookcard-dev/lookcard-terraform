@@ -56,6 +56,7 @@ variable "ecr_names" {
     "authentication-v2-api" = "authentication-v2-api"
     "crypto-listener"       = "crypto-listener"
     "referral-api"          = "referral-api"
+    "reap-proxy"            = "reap-proxy"
   }
 }
 
