@@ -47,8 +47,3 @@ resource "aws_ecs_task_definition" "data-api" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "data_api" {
-  name = "/ecs/${local.application.name}"
-}
-
-

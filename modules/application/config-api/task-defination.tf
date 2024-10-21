@@ -48,10 +48,3 @@ resource "aws_ecs_task_definition" "config-api" {
     }
   ])
 }
-resource "aws_cloudwatch_log_group" "config_api" {
-  name = "/ecs/${local.application.name}"
-}
-resource "aws_cloudwatch_log_stream" "config_api" {
-  name           = "config-api-log-stream"
-  log_group_name = aws_cloudwatch_log_group.config_api.name
-}

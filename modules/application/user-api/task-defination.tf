@@ -10,9 +10,6 @@ resource "aws_ecs_task_definition" "user_api_task_definition" {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }
-  volume {
-    name = "data"
-  }
 
   container_definitions = jsonencode([
     {

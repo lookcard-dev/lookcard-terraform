@@ -49,8 +49,3 @@ resource "aws_ecs_task_definition" "notification_v2" {
     }
   ])
 }
-
-
-resource "aws_cloudwatch_log_group" "notification_v2" {
-  name = "/ecs/${local.application.name}"
-}

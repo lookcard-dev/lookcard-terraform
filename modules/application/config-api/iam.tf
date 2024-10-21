@@ -85,7 +85,7 @@ resource "aws_iam_policy" "config_api_logging_policy" {
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
         ],
-        "Resource" : "${aws_cloudwatch_log_group.config_api.arn}:*"
+        "Resource" : "${aws_cloudwatch_log_group.application_log_group_config_api.arn}:*"
       }
     ]
   })
@@ -106,7 +106,7 @@ resource "aws_iam_policy" "config_api_logging_full_policy" {
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
         ],
-        "Resource" : "${aws_cloudwatch_log_group.config_api.arn}:*"
+        "Resource" : "${aws_cloudwatch_log_group.application_log_group_config_api.arn}:*"
       }
     ]
   })
