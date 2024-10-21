@@ -267,7 +267,7 @@ module "_user-api" {
   }
   image = {
     url = aws_ecr_repository.look-card["users-api"].repository_url
-    tag = var.image_tag.users_api
+    tag = var.image_tag._user-api
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   secret_manager          = var.secret_manager
