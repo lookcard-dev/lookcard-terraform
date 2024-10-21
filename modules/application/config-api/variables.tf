@@ -51,7 +51,7 @@ locals {
       value = "https://${var.acm.domain_api_name}"
       }, {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.config_api.name
+      value = aws_cloudwatch_log_group.application_log_group_config_api.name
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"

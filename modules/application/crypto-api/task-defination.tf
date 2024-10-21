@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "crypto-api" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "lookcard/api/${local.application.name}",
+          "awslogs-group"         = "ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -44,12 +44,8 @@ resource "aws_ecs_task_definition" "crypto-api" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-          value = aws_cloudwatch_log_group.crypto_api.name
-        },
-        {
-          name  = "AWS_CLOUDWATCH_LOG_STREAM_NAME"
-          value = aws_cloudwatch_log_stream.crypto_api.name
-        },
+          value = aws_cloudwatch_log_group.application_log_group_crypto_api.name
+        }
       ]
       portMappings = [
         {
@@ -71,11 +67,4 @@ resource "aws_ecs_task_definition" "crypto-api" {
       }
     }
   ])
-}
-resource "aws_cloudwatch_log_group" "crypto_api" {
-  name = "lookcard/api/${local.application.name}"
-}
-resource "aws_cloudwatch_log_stream" "crypto_api" {
-  name           = "${local.application.name}-log-stream"
-  log_group_name = aws_cloudwatch_log_group.crypto_api.name
 }

@@ -149,14 +149,6 @@ resource "aws_ecs_task_definition" "transaction_listener" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "transaction_listener" {
-  name = "/ecs/${local.nile-trongrid.name}"
-}
-
-resource "aws_cloudwatch_log_group" "crypto_listener_application_log" {
-  name = "/lookcard/crypto-listener/tron/nile/trongrid"
-}
-
 resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
   family       = local.nile-getblock.name
   network_mode = "bridge"
@@ -269,12 +261,4 @@ resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
       readonlyRootFilesystem : true
     }
   ])
-}
-
-resource "aws_cloudwatch_log_group" "nile_getblock" {
-  name = "/ecs/${local.nile-getblock.name}"
-}
-
-resource "aws_cloudwatch_log_group" "nile_getblock_log_group" {
-  name = "/lookcard/crypto-listener/tron/nile/getblock"
 }

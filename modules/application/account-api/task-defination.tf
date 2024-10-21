@@ -47,8 +47,5 @@ resource "aws_ecs_task_definition" "account_api" {
     }
   ])
 }
-resource "aws_cloudwatch_log_group" "account_api" {
-  name = "/ecs/${local.application.name}"
-}
 
 

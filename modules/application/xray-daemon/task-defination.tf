@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "xray_daemon" {
         logDriver = "awslogs"
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/XRayDaemon",
+          "awslogs-group"         = aws_cloudwatch_log_group.xray_daemon.name
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs"
         }
@@ -33,6 +33,4 @@ resource "aws_ecs_task_definition" "xray_daemon" {
   ])
 }
 
-resource "aws_cloudwatch_log_group" "xray_daemon" {
-  name = "/ecs/XRayDaemon"
-}
+
