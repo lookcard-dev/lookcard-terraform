@@ -34,8 +34,8 @@ variable "image_tag" {
     user-api             = string
     utility_api          = string 
     profile-api          = string  
-    config_api           = string
-    data_api             = string
+    config-api           = string
+    data-api             = string
     notification_v2      = string
     referral-api         = string
     reap-proxy           = string
