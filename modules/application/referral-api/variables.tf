@@ -34,7 +34,7 @@ locals {
   ecs_task_env_vars = [
     {
       name  = "PORT"
-      value = local.application.port
+      value = "8080"
     },
     {
       name  = "CORS_ORIGINS"
@@ -70,7 +70,7 @@ locals {
     },
     {
       name  = "DATABASE_SCHEMA"
-      value = "_user"
+      value = "referral"
     },
     {
       name  = "DATABASE_USE_SSL"
