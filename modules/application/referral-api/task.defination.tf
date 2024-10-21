@@ -34,6 +34,13 @@ resource "aws_ecs_task_definition" "referral_api" {
           appProtocol   = "http",
         },
       ]
+      healthCheck = {
+        command     = ["CMD-SHELL", "curl -f http://localhost:${local.application.port}/healthcheckz || exit 1"]
+        interval    = 30   # seconds between health checks
+        timeout     = 5    # health check timeout in seconds
+        retries     = 3    # number of retries before marking container unhealthy
+        startPeriod = 10   # time to wait before performing first health check
+      }
     }
   ])
 }
