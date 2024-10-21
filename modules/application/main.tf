@@ -144,7 +144,7 @@ module "config-api" {
   }
   image = {
     url = aws_ecr_repository.look-card["config-api"].repository_url
-    tag = var.image_tag.config_api
+    tag = var.image_tag.config-api
   }
   lookcardlocal_namespace              = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
@@ -166,7 +166,7 @@ module "data-api" {
   }
   image = {
     url = aws_ecr_repository.look-card["data-api"].repository_url
-    tag = var.image_tag.data_api
+    tag = var.image_tag.data-api
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   env_tag                 = var.env_tag
