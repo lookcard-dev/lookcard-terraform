@@ -1,7 +1,7 @@
 resource "aws_security_group" "reap_proxy_security_group" {
   depends_on  = [var.vpc_id]
   name        = "reap-proxy-security-group"
-  description = "Security group for ECS referral-api"
+  description = "Security group for ECS reap-proxy"
   vpc_id      = var.vpc_id
 
 #   dynamic "ingress" {

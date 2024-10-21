@@ -71,7 +71,7 @@ resource "aws_iam_policy" "referral_api_cloudwatch_putlog_policy" {
         "Resource" : [
             # "${aws_cloudwatch_log_group.ecs_log_group_user_api.arn}:*",
             # "${aws_cloudwatch_log_group.application_log_group_user_api.arn}:*"
-            "${local.cloudwatch_log_groups}:*"
+            "${local.cloudwatch_log_groups[0]}:*"
         ]
       }
     ]

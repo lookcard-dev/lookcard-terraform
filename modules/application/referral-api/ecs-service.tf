@@ -17,7 +17,7 @@ resource "aws_service_discovery_service" "referral_api_service" {
 
 resource "aws_ecs_service" "referral_api" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.profile-api.arn
+  task_definition = aws_ecs_task_definition.referral_api.arn
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
     weight            = 1
@@ -27,7 +27,7 @@ resource "aws_ecs_service" "referral_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.profile-api-sg.id]
+    security_groups = [aws_security_group.referral_api_security_group.id]
   }
 
   service_registries {

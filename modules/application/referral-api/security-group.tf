@@ -23,6 +23,6 @@ resource "aws_security_group" "referral_api_security_group" {
   }
 
   tags = {
-    Name = "user-api-sg"
+    Name = "referral-api-sg"
   }
 }
