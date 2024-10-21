@@ -29,8 +29,8 @@ variable "image_tag" {
     crypto_api           = string
     reporting_api        = string 
     transaction_listener = string
-    transaction_api      = string 
-    users_api            = string 
+    transaction_api      = string
+    _user-api            = string
     user-api             = string
     utility_api          = string 
     profile-api          = string  
@@ -38,7 +38,7 @@ variable "image_tag" {
     data_api             = string
     notification_v2      = string
     referral-api         = string
-    reap_proxy           = string
+    reap-proxy           = string
   })
 }
 
