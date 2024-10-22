@@ -41,9 +41,6 @@ module "crypto-listener" {
   cluster                                  = aws_ecs_cluster.listener.arn
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   secret_manager                           = var.secret_manager
-  trongrid_secret_arn                      = var.trongrid_secret_arn
-  database_secret_arn                      = var.database_secret_arn
-  get_block_secret_arn                     = var.get_block_secret_arn
   sqs                                      = var.sqs
   capacity_provider_ec2_arm64_on_demand    = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
   capacity_provider_ec2_amd64_on_demand    = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
