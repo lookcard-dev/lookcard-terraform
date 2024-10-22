@@ -12,9 +12,6 @@ variable "cluster" {}
 
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "secret_manager" {}
-variable "trongrid_secret_arn" {}
-variable "database_secret_arn" {}
-variable "get_block_secret_arn" {}
 
 variable "image" {
   type = object({
@@ -123,41 +120,41 @@ locals {
   ecs_task_secret_vars_trongrid = [
     {
       name      = "DATABASE_NAME"
-      valueFrom = "${var.database_secret_arn}:dbname::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${var.database_secret_arn}:username::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.database_secret_arn}:password::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "TRONGRID_API_KEY"
-      valueFrom = "${var.trongrid_secret_arn}:API_KEY::"
+      valueFrom = "${var.secret_manager.secret_arns["TRONGRID"]}:API_KEY::"
     },
     {
       name      = "RPC_ENDPOINT"
-      valueFrom = "${var.trongrid_secret_arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
+      valueFrom = "${var.secret_manager.secret_arns["TRONGRID"]}:NILE_JSON_RPC_HTTP_ENDPOINT::"
     }
   ]
   ecs_task_secret_vars_getblock = [
     {
       name      = "DATABASE_NAME"
-      valueFrom = "${var.database_secret_arn}:dbname::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${var.database_secret_arn}:username::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${var.database_secret_arn}:password::"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "RPC_ENDPOINT"
-      valueFrom = "${var.get_block_secret_arn}:TRON_NILE_JSON_RPC_HTTP_ENDPOINT::"
+      valueFrom = "${var.secret_manager.secret_arns["GET_BLOCK"]}:TRON_NILE_JSON_RPC_HTTP_ENDPOINT::"
     }
   ]
   iam_secrets_getblock = [
