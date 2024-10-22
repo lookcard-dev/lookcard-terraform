@@ -65,10 +65,6 @@ resource "aws_ecs_task_definition" "transaction_listener" {
           value = var.env_tag
         },
         {
-          name  = "AWS_XRAY_DAEMON_ENDPOINT"
-          value = "xray.daemon.lookcard.local:2337"
-        },
-        {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
           value = "/lookcard/crypto-listener/tron/nile/trongrid"
         },
@@ -181,10 +177,6 @@ resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
         {
           name  = "RUNTIME_ENVIRONMENT"
           value = var.env_tag
-        },
-        {
-          name  = "AWS_XRAY_DAEMON_ENDPOINT"
-          value = "xray.daemon.lookcard.local:2337"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"

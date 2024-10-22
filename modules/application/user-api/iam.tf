@@ -65,6 +65,7 @@ resource "aws_iam_policy" "user_api_cloudwatch_putlog_policy" {
         "Effect" : "Allow",
         "Action" : [
             "logs:DescribeLogStreams",
+            "logs:CreateLogStream",
             "logs:PutLogEvents"
         ],
         "Resource" : [
