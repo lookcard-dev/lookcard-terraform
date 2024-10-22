@@ -35,16 +35,28 @@ locals {
   }
   ecs_task_env_vars = [
     {
-      name  = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME"
-      value = var.dynamodb_profile_data_table_name
+      name  = "PORT"
+      value = "8080"
+    },
+    {
+      name  = "CORS_ORIGINS"
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.env_tag
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
     },
     {
-      name  = "RUNTIME_ENVIRONMENT"
-      value = var.env_tag
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.application_log_group_profile_api.name
+    },
+    {
+      name  = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME"
+      value = var.dynamodb_profile_data_table_name
     }
   ]
   ecs_task_secret_vars = [

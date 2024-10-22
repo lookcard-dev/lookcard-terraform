@@ -57,16 +57,19 @@ resource "aws_iam_role" "referral_api_task_role" {
 
 resource "aws_iam_policy" "referral_api_cloudwatch_putlog_policy" {
   name        = "ReferralAPICloudWatchPutLogPolicy"
-  description = "Allows referral api put log to log group /ecs/referral-api and /lookcard/referral-api"
+  description = "Allows referral api put log to log group /lookcard/referral-api"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      for idx, log_group_arn in local.cloudwatch_log_groups : {
-      "Effect" : "Allow",
-      "Action" : [
-        "logs:PutLogEvents"
-      ],
-        "Resource" : "${log_group_arn}:*"
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            "${aws_cloudwatch_log_group.application_log_group_referral_api.arn}:*"
+        ]
       }
     ]
   })
