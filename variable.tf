@@ -41,6 +41,8 @@ variable "image_tag" {
     reap-proxy           = string
     crypto-api           = string
     account-api          = string
+    authentication-api   = string
+    verification-api     = string
   })
 }
 

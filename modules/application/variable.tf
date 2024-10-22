@@ -34,7 +34,6 @@ variable "ecr_names" {
   description = "Map of ECR names"
   type        = map(string)
   default = {
-    "authentication-api"    = "authentication-api"
     "blockchain-api"        = "blockchain-api"
     "card-api"              = "card-api"
     "notification-api"      = "notification-api"
@@ -53,10 +52,11 @@ variable "ecr_names" {
     "config-api"            = "config-api"
     "data-api"              = "data-api"
     "notification-v2-api"   = "notification-v2-api"
-    "authentication-v2-api" = "authentication-v2-api"
     "crypto-listener"       = "crypto-listener"
     "referral-api"          = "referral-api"
     "reap-proxy"            = "reap-proxy"
+    "authentication-api"    = "authentication-api"
+    "verification-api"      = "verification-api"
   }
 }
 
