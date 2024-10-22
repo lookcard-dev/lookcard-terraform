@@ -58,7 +58,7 @@ module "account-api" {
   vpc_id           = var.network.vpc
   image = {
     url = aws_ecr_repository.look-card["account-api"].repository_url
-    tag = var.image_tag.account_api
+    tag = var.image_tag.account-api
   }
   network = {
     vpc            = var.network.vpc

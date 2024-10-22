@@ -40,6 +40,7 @@ variable "image_tag" {
     referral-api         = string
     reap-proxy           = string
     crypto-api           = string
+    account-api          = string
   })
 }
 
