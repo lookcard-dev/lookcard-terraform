@@ -43,6 +43,26 @@ locals {
 
   ecs_task_env_vars = [
     {
+      name  = "PORT"
+      value = "8080"
+    },
+    {
+      name  = "CORS_ORIGINS"
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.env_tag
+    },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
+    {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.application_log_group_data_api.name
+    },
+    {
       name  = "AWS_KMS_GENERATOR_KEY_ID"
       value = var.kms.kms_data_generator_key_id
     },
@@ -73,14 +93,6 @@ locals {
     {
       name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
       value = var.dynamodb_data_tb_name
-    },
-    {
-      name  = "AWS_XRAY_DAEMON_ENDPOINT"
-      value = "xray.daemon.lookcard.local:2337"
-    },
-    {
-      name  = "RUNTIME_ENVIRONMENT"
-      value = var.env_tag
     }
   ]
 

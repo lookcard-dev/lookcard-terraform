@@ -35,7 +35,7 @@ resource "aws_ecs_capacity_provider" "ec2_arm64_on_demand" {
   name = "EC2_ARM64_ON_DEMAND"
 
   auto_scaling_group_provider {
-    auto_scaling_group_arn = module.transaction-listener.transaction_listener_arm64_asg_arn
+    auto_scaling_group_arn = module.crypto-listener.transaction_listener_arm64_asg_arn
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_ecs_capacity_provider" "ec2_amd64_on_demand" {
   name = "EC2_AMD64_ON_DEMAND"
 
   auto_scaling_group_provider {
-    auto_scaling_group_arn = module.transaction-listener.transaction_listener_amd64_asg_arn
+    auto_scaling_group_arn = module.crypto-listener.transaction_listener_amd64_asg_arn
   }
 }
 
