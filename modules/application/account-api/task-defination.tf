@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "account_api" {
   # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.Account_API_Task_Role.arn
-  execution_role_arn       = aws_iam_role.Account_API_Task_Execution_Role.arn
+  task_role_arn            = aws_iam_role.account_api_task_role.arn
+  execution_role_arn       = aws_iam_role.account_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
