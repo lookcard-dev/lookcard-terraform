@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "crypto-api" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "ecs/${local.application.name}",
+          "awslogs-group"         = "/ecs/${local.application.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
