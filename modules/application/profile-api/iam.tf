@@ -114,3 +114,28 @@ resource "aws_iam_role_policy_attachment" "DynamoDBQueryPolicyAttachment" {
 #   roles      = [aws_iam_role.crypto_api_task_role.name]
 #   policy_arn = aws_iam_policy.CryptoAPI_KMS_GenerateDataKey_policy.arn
 # }
+
+resource "aws_iam_policy" "profile_api_cloudwatch_putlog_policy" {
+  name        = "ProfileAPICloudWatchPutLogPolicy"
+  description = "Allows profile-api put log to log group /lookcard/profile-api"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            "${aws_cloudwatch_log_group.application_log_group_profile_api.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "profile_api_cloudwatch_putlog_attachment" {
+  role      = aws_iam_role.profile_api_task_role.name
+  policy_arn = aws_iam_policy.profile_api_cloudwatch_putlog_policy.arn
+}

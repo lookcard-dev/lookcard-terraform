@@ -39,6 +39,7 @@ variable "image_tag" {
     notification_v2      = string
     referral-api         = string
     reap-proxy           = string
+    crypto-api           = string
   })
 }
 

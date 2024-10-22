@@ -11,7 +11,7 @@ module "crypto-api" {
   }
   image = {
     url = aws_ecr_repository.look-card["crypto-api"].repository_url
-    tag = var.image_tag.crypto_api
+    tag = var.image_tag.crypto-api
   }
   secret_manager             = var.secret_manager
   lookcardlocal_namespace    = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id

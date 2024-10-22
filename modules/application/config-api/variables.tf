@@ -44,22 +44,24 @@ locals {
       value = "ap-southeast-1"
     },
     {
-      name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
-      value = var.dynamodb_config_api_config_data_name
-      }, {
       name  = "CORS_ORIGINS"
-      value = "https://${var.acm.domain_api_name}"
-      }, {
-      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.application_log_group_config_api.name
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.env_tag
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
     },
     {
-      name  = "RUNTIME_ENVIRONMENT"
-      value = var.env_tag
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.application_log_group_config_api.name
+    },
+    {
+      name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
+      value = var.dynamodb_config_api_config_data_name
     }
   ]
 }

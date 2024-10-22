@@ -151,3 +151,28 @@ resource "aws_iam_role_policy_attachment" "ConfigAPI_secrets_manager_attachment"
   role       = aws_iam_role.config_api_task_execution_role.name
   policy_arn = aws_iam_policy.secrets_manager_policy.arn
 }
+
+resource "aws_iam_policy" "config_api_cloudwatch_putlog_policy" {
+  name        = "ConfigAPICloudWatchPutLogPolicy"
+  description = "Allows config-api put log to log group /lookcard/config-api"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            "${aws_cloudwatch_log_group.application_log_group_config_api.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "config_api_cloudwatch_putlog_attachment" {
+  role      = aws_iam_role.config_api_task_role.name
+  policy_arn = aws_iam_policy.config_api_cloudwatch_putlog_policy.arn
+}
