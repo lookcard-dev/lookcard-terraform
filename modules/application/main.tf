@@ -72,6 +72,10 @@ module "account-api" {
   secret_manager          = var.secret_manager
   sqs                     = var.sqs
   acm                     = var.acm
+  env_tag                 = var.env_tag
+  redis_host              = var.redis_host
+  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
 }
 module "user-api" {
   source = "./user-api"

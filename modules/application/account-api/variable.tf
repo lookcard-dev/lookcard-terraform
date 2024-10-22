@@ -7,6 +7,10 @@ variable "cluster" {}
 variable "secret_manager" {}
 variable "sqs" {}
 variable "acm" {}
+variable "env_tag" {}
+variable "redis_host" {}
+variable "rds_aurora_postgresql_writer_endpoint" {}
+variable "rds_aurora_postgresql_reader_endpoint" {}
 
 variable "network" {
   type = object({
@@ -35,36 +39,8 @@ locals {
   }
   ecs_task_secret_vars = [
     {
-      name      = "DATABASE_URL"
-      valueFrom = "${var.secret_manager.secret_arns["CRYPTO_API_ENV"]}:DATABASE_URL::"
-    },
-    {
-      name      = "FIREBASE_PROJECT_ID"
-      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:PROJECT_ID::"
-    },
-    {
-      name      = "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY"
-      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_PRIVATE_KEY::"
-    },
-    {
-      name      = "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL"
-      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:SERVICE_ACCOUNT_CLIENT_EMAIL::"
-    },
-    {
-      name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
-    },
-    {
-      name      = "API_KEY"
-      valueFrom = "${var.secret_manager.secret_arns["ELLIPTIC"]}:API_KEY::"
-    },
-    {
-      name      = "API_SECRET"
-      valueFrom = "${var.secret_manager.secret_arns["ELLIPTIC"]}:API_SECRET::"
-    },
-    {
-      name      = "DATABASE_ENDPOINT"
-      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:host::"
+      name      = "DATABASE_NAME"
+      valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
@@ -81,41 +57,53 @@ locals {
   ]
   ecs_task_env_vars = [
     {
-      name  = "CRYPTO_API_URL"
-      value = "https://${var.acm.domain_api_name}"
-      # value = "https://api.develop.not-lookcard.com"
+      name  = "PORT"
+      value = "8080"
     },
     {
-      name  = "DATABASE_NAME"
-      value = "main"
+      name  = "CORS_ORIGINS"
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.env_tag
+    },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
+    {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.application_log_group_account_api.name
+    },
+    {
+      name  = "REDIS_HOST"
+      value = var.redis_host
+    },
+    {
+      name  = "DATABASE_HOST"
+      value = var.rds_aurora_postgresql_writer_endpoint
+    },
+    {
+      name  = "DATABASE_READ_HOST"
+      value = var.rds_aurora_postgresql_reader_endpoint
+    },
+    {
+      name  = "DATABASE_PORT"
+      value = "5432"
     },
     {
       name  = "DATABASE_SCHEMA"
       value = "account"
     },
     {
-      name  = "SQS_NOTIFICATION_QUEUE_URL"
-      value = var.sqs.lookcard_notification_queue_url
-    },
-    {
-      name  = "SQS_ACCOUNT_WITHDRAWAL_QUEUE_URL"
-      value = var.sqs.crypto_fund_withdrawal_queue_url
-    },
-    {
-      name  = "DATABASE_ARGS"
-      value = "sslmode=require"
-    },
-    {
-      name  = "AWS_XRAY_DAEMON_ENDPOINT"
-      value = "xray.daemon.lookcard.local:2337"
+      name  = "DATABASE_USE_SSL"
+      value = "true"
     }
   ]
   iam_secrets = [
-    var.secret_manager.secret_arns["CRYPTO_API_ENV"],
-    var.secret_manager.secret_arns["FIREBASE"],
     var.secret_manager.secret_arns["DATABASE"],
-    var.secret_manager.secret_arns["SENTRY"],
-    var.secret_manager.secret_arns["ELLIPTIC"]
+    var.secret_manager.secret_arns["SENTRY"]
   ]
 }
 

@@ -50,7 +50,7 @@ locals {
     },
     {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = "/lookcard/referral-api"
+      value = aws_cloudwatch_log_group.application_log_group_referral_api.name
     },
     {
       name  = "REDIS_HOST"
