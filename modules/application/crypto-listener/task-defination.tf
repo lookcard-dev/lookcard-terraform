@@ -1,11 +1,10 @@
-resource "aws_ecs_task_definition" "transaction_listener" {
+resource "aws_ecs_task_definition" "tron_nile_listener_trongrid" {
   family       = local.nile-trongrid.name
   network_mode = "bridge"
-  # requires_compatibilities = ["FARGATE"]
   cpu                = "256"
   memory             = "512"
-  task_role_arn      = aws_iam_role.transaction_listener_task_role.arn
-  execution_role_arn = aws_iam_role.transaction_listener_task_exec_role.arn
+  task_role_arn      = aws_iam_role.crypto_listener_trongrid_task_role.arn
+  execution_role_arn = aws_iam_role.crypto_listener_trongrid_task_exec_role.arn
 
   runtime_platform {
     cpu_architecture        = "X86_64"
@@ -26,111 +25,8 @@ resource "aws_ecs_task_definition" "transaction_listener" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      environment = [
-        # {
-        #   name  = "NODE_ID"
-        #   value = "tron-nile-alpha" // confirm
-        # },
-        # {
-        #   name  = "NODE_ECO"
-        #   value = "TRON" // confirm
-        # },
-        # {
-        #   name  = "NODE_BLOCKCHAIN_ID"
-        #   value = "tron-nile" // confirm
-        # },
-        # {
-        #   name  = "CRYPTO_API_PROTOCOL"
-        #   value = "http"
-        # },
-        # {
-        #   name  = "CRYPTO_API_HOST"
-        #   value = "crypto.api.lookcard.local"
-        # },
-        # {
-        #   name  = "CRYPTO_API_PORT"
-        #   value = "8080"
-        # },
-        # {
-        #   name  = "DYNAMODB_BLOCK_RECORD_TABLE_NAME"
-        #   value = "Crypto_Transaction_Listener-Block_Record" // confirm
-        # },
-        # {
-        #   name  = "INCOMING_TRANSACTION_QUEUE_URL"
-        #   value = var.sqs.aggregator_tron_url
-        # },
-        # New listener env var
-        {
-          name  = "RUNTIME_ENVIRONMENT"
-          value = var.env_tag
-        },
-        {
-          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-          value = "/lookcard/crypto-listener/tron/nile/trongrid"
-        },
-        {
-          name  = "DATABASE_HOST"
-          value = var.rds_aurora_postgresql_writer_endpoint
-        },
-        {
-          name  = "DATABASE_READ_HOST"
-          value = var.rds_aurora_postgresql_reader_endpoint
-        },
-        {
-          name  = "DATABASE_PORT"
-          value = "5432"
-        },
-        {
-          name  = "DATABASE_SCHEMA"
-          value = "crypto_listener"
-        },
-        {
-          name  = "DATABASE_USE_SSL"
-          value = "true"
-        },
-        {
-          name  = "NODE_ID"
-          value = "tron-nile-trongrid"
-        },
-        {
-          name  = "NODE_ECO"
-          value = "tron"
-        },
-        {
-          name  = "NODE_BLOCKCHAIN_ID"
-          value = "tron-nile"
-        },
-        {
-          name  = "AWS_REGION"
-          value = "ap-southeast-1"
-        },
-        {
-          name  = "INCOMING_TRANSACTION_QUEUE_URL"
-          value = var.sqs.aggregator_tron_url
-        }
-      ]
-      secrets = [
-        {
-          name      = "DATABASE_NAME"
-          valueFrom = "${var.database_secret_arn}:dbname::"
-        },
-        {
-          name      = "DATABASE_USERNAME"
-          valueFrom = "${var.database_secret_arn}:username::"
-        },
-        {
-          name      = "DATABASE_PASSWORD"
-          valueFrom = "${var.database_secret_arn}:password::"
-        },
-        {
-          name      = "TRONGRID_API_KEY"
-          valueFrom = "${var.trongrid_secret_arn}:API_KEY::"
-        },
-        {
-          name      = "RPC_ENDPOINT"
-          valueFrom = "${var.trongrid_secret_arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
-        }
-      ]
+      environment = local.ecs_task_env_vars_trongrid
+      secrets = local.ecs_task_secret_vars_trongrid
       # portMappings = [
       #   {
       #     name          = "look-card-transaction-listener-8080-tcp",
@@ -148,11 +44,10 @@ resource "aws_ecs_task_definition" "transaction_listener" {
 resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
   family       = local.nile-getblock.name
   network_mode = "bridge"
-  # requires_compatibilities = ["FARGATE"]
   cpu                = "256"
   memory             = "512"
-  task_role_arn      = aws_iam_role.transaction_listener_task_role.arn
-  execution_role_arn = aws_iam_role.transaction_listener_task_exec_role.arn
+  task_role_arn      = aws_iam_role.crypto_listener_getblock_task_role.arn
+  execution_role_arn = aws_iam_role.crypto_listener_getblock_task_exec_role.arn
 
   runtime_platform {
     cpu_architecture        = "X86_64"
@@ -173,74 +68,8 @@ resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      environment = [
-        {
-          name  = "RUNTIME_ENVIRONMENT"
-          value = var.env_tag
-        },
-        {
-          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-          value = "/lookcard/crypto-listener/tron/nile/trongrid"
-        },
-        {
-          name  = "DATABASE_HOST"
-          value = var.rds_aurora_postgresql_writer_endpoint
-        },
-        {
-          name  = "DATABASE_READ_HOST"
-          value = var.rds_aurora_postgresql_reader_endpoint
-        },
-        {
-          name  = "DATABASE_PORT"
-          value = "5432"
-        },
-        {
-          name  = "DATABASE_SCHEMA"
-          value = "crypto_listener"
-        },
-        {
-          name  = "DATABASE_USE_SSL"
-          value = "true"
-        },
-        {
-          name  = "NODE_ID"
-          value = "tron-nile-getblock"
-        },
-        {
-          name  = "NODE_ECO"
-          value = "tron"
-        },
-        {
-          name  = "NODE_BLOCKCHAIN_ID"
-          value = "tron-nile"
-        },
-        {
-          name  = "AWS_REGION"
-          value = "ap-southeast-1"
-        },
-        {
-          name  = "INCOMING_TRANSACTION_QUEUE_URL"
-          value = var.sqs.aggregator_tron_url
-        }
-      ]
-      secrets = [
-        {
-          name      = "DATABASE_NAME"
-          valueFrom = "${var.database_secret_arn}:dbname::"
-        },
-        {
-          name      = "DATABASE_USERNAME"
-          valueFrom = "${var.database_secret_arn}:username::"
-        },
-        {
-          name      = "DATABASE_PASSWORD"
-          valueFrom = "${var.database_secret_arn}:password::"
-        },
-        {
-          name      = "RPC_ENDPOINT"
-          valueFrom = "${var.get_block_secret_arn}:TRON_NILE_JSON_RPC_HTTP_ENDPOINT::"
-        }
-      ]
+      environment = local.ecs_task_env_vars_getblock
+      secrets = local.ecs_task_secret_vars_getblock
       # portMappings = [
       #   {
       #     name          = "look-card-transaction-listener-8080-tcp",
