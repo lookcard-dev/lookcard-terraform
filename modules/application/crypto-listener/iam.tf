@@ -183,7 +183,7 @@ resource "aws_iam_role_policy_attachment" "crypto_listener_trongrid_sqs_attachme
 }
 
 resource "aws_iam_policy" "crypto_listener_getblock_cloudwatch_putlog_policy" {
-  name        = "crypto-api-getblock-CloudWatchPutLogPolicy"
+  name        = "crypto-listener-getblock-CloudWatchPutLogPolicy"
   description = "Allows crypto api put log to log group /lookcard/crypto-listener/tron/nile/getblock"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -204,7 +204,7 @@ resource "aws_iam_policy" "crypto_listener_getblock_cloudwatch_putlog_policy" {
 }
 
 resource "aws_iam_policy" "crypto_listener_trongrid_cloudwatch_putlog_policy" {
-  name        = "crypto-api-trongrid-CloudWatchPutLogPolicy"
+  name        = "crypto-listener-trongrid-CloudWatchPutLogPolicy"
   description = "Allows crypto api put log to log group /lookcard/crypto-listener/tron/nile/trongrid"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -231,7 +231,7 @@ resource "aws_iam_role_policy_attachment" "crypto_listener_getblock_cloudwatch_p
 
 resource "aws_iam_role_policy_attachment" "crypto_listener_trongrid_cloudwatch_putlog_attachment" {
   role      = aws_iam_role.crypto_listener_trongrid_task_role.name
-  policy_arn = aws_iam_policy.crypto_listener_getblock_cloudwatch_putlog_policy.arn
+  policy_arn = aws_iam_policy.crypto_listener_trongrid_cloudwatch_putlog_policy.arn
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
