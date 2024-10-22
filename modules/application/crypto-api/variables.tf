@@ -8,6 +8,8 @@ variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
+variable "rds_proxy_host" {}
+variable "rds_proxy_read_host" {}
 
 variable "network" {
   type = object({
@@ -73,11 +75,11 @@ locals {
     },
     {
       name  = "DATABASE_HOST"
-      value = var.rds_aurora_postgresql_writer_endpoint
+      value = var.rds_proxy_host
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = var.rds_aurora_postgresql_reader_endpoint
+      value = var.rds_proxy_read_host
     },
     {
       name  = "DATABASE_PORT"
