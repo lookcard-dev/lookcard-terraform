@@ -98,7 +98,7 @@ resource "aws_ecs_task_definition" "transaction_listener" {
         },
         {
           name  = "NODE_ECO"
-          value = "TRON"
+          value = "tron"
         },
         {
           name  = "NODE_BLOCKCHAIN_ID"
@@ -216,7 +216,7 @@ resource "aws_ecs_task_definition" "tron_nile_listener_getblock" {
         },
         {
           name  = "NODE_ECO"
-          value = "TRON"
+          value = "tron"
         },
         {
           name  = "NODE_BLOCKCHAIN_ID"

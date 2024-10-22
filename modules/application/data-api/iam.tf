@@ -63,4 +63,28 @@ resource "aws_iam_role" "data_api_task_role" {
   })
 }
 
+resource "aws_iam_policy" "data_api_cloudwatch_putlog_policy" {
+  name        = "DataAPICloudWatchPutLogPolicy"
+  description = "Allows data api put log to log group /lookcard/data-api"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            "${aws_cloudwatch_log_group.application_log_group_data_api.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "data_api_cloudwatch_putlog_attachment" {
+  role      = aws_iam_role.data_api_task_role.name
+  policy_arn = aws_iam_policy.data_api_cloudwatch_putlog_policy.arn
+}
 

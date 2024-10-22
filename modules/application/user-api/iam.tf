@@ -64,12 +64,10 @@ resource "aws_iam_policy" "user_api_cloudwatch_putlog_policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-            "logs:CreateLogStream",
             "logs:DescribeLogStreams",
             "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.ecs_log_group_user_api.arn}:*",
             "${aws_cloudwatch_log_group.application_log_group_user_api.arn}:*"
         ]
       }

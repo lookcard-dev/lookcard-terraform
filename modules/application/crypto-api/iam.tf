@@ -33,7 +33,7 @@ resource "aws_iam_policy" "crypto_api_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "*"
+        "Resource" : local.iam_secrets
       }
     ]
   })
@@ -86,4 +86,29 @@ resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
 resource "aws_iam_role_policy_attachment" "CryptoAPI_KMS_GenerateDataKey_attachment" {
   role       = aws_iam_role.crypto_api_task_role.name
   policy_arn = aws_iam_policy.CryptoAPI_KMS_GenerateDataKey_policy.arn
+}
+
+resource "aws_iam_policy" "crypto_api_cloudwatch_putlog_policy" {
+  name        = "CryptoAPICloudWatchPutLogPolicy"
+  description = "Allows crypto api put log to log group /lookcard/crypto-api"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "logs:DescribeLogStreams",
+            "logs:PutLogEvents"
+        ],
+        "Resource" : [
+            "${aws_cloudwatch_log_group.application_log_group_crypto_api.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "crypto_api_cloudwatch_putlog_attachment" {
+  role      = aws_iam_role.crypto_api_task_role.name
+  policy_arn = aws_iam_policy.crypto_api_cloudwatch_putlog_policy.arn
 }

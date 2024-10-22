@@ -19,13 +19,15 @@ module "crypto-api" {
   account_api_sg_id          = module.account-api.account_api_sg_id
   sg_alb_id                  = aws_security_group.api_alb_sg.id
   lambda                     = var.lambda
-  transaction_listener_sg_id = module.transaction-listener.transaction_listener_sg_id
-  # kms_data_generator_key_arn        = var.kms_data_generator_key_arn
-  # kms_data_encryption_key_alpha_arn = var.kms_data_encryption_key_alpha_arn
+  transaction_listener_sg_id = module.crypto-listener.transaction_listener_sg_id
+  env_tag                 = var.env_tag
+  redis_host              = var.redis_host
+  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
 }
 
-module "transaction-listener" {
-  source = "./transaction-listener"
+module "crypto-listener" {
+  source = "./crypto-listener"
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
