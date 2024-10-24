@@ -73,10 +73,13 @@ resource "aws_iam_policy" "dynamodb_access_policy" {
         "Effect": "Allow",
         "Action":[ 
           "dynamodb:Query",
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:GetItem"
         ],
-        
-        "Resource": "*"
+        "Resource": [
+          var.profile_api_ddb_table,
+          "${var.profile_api_ddb_table}/index/principal-index"
+        ]
       }
     ]
   })

@@ -85,3 +85,4 @@ variable "rds_proxy_host" {}
 variable "rds_proxy_read_host" {}
 # variable "kms_data_generator_key_arn" {}
 # variable "kms_data_encryption_key_alpha_arn" {}
+variable "profile_api_ddb_table" {}

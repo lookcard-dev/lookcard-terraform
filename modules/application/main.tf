@@ -49,8 +49,8 @@ module "crypto-listener" {
   rds_aurora_postgresql_writer_endpoint    = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint    = var.rds_aurora_postgresql_reader_endpoint
   env_tag                                  = var.env_tag
-  rds_proxy_host                        = var.rds_proxy_host
-  rds_proxy_read_host                   = var.rds_proxy_read_host
+  rds_proxy_host                           = var.rds_proxy_host
+  rds_proxy_read_host                      = var.rds_proxy_read_host
 }
 
 module "account-api" {
@@ -142,6 +142,9 @@ module "profile-api" {
   secret_manager                   = var.secret_manager
   env_tag                          = var.env_tag
   sg_alb_id                        = aws_security_group.api_alb_sg.id
+  referral_api_sg                  = module.referral-api.referral_api_sg
+  _auth_api_sg                     = module.authentication._auth_api_sg
+  profile_api_ddb_table            = var.profile_api_ddb_table
 }
 
 module "config-api" {
@@ -221,6 +224,7 @@ module "referral-api" {
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
+  _auth_api_sg                          = module.authentication._auth_api_sg
 }
 
 # # ********************  v1  ***********************

@@ -10,3 +10,7 @@
 output "authentication_tgp_arn" {
   value = aws_lb_target_group.authentication_tgp.arn
 }
+
+output "_auth_api_sg" {
+  value = aws_security_group.authentication.id
+}

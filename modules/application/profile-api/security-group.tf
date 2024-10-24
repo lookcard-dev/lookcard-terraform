@@ -4,20 +4,15 @@ resource "aws_security_group" "profile-api-sg" {
   description = "Security group for Profile API services"
   vpc_id      = var.network.vpc
 
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [var.sg_alb_id]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [var.sg_alb_id]
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      # cidr_blocks = ["0.0.0.0/0"]
+      security_groups = [var.sg_alb_id, var.referral_api_sg, var._auth_api_sg]
+    }
   }
 
   egress {
