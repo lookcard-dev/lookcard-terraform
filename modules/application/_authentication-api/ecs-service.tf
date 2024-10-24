@@ -17,7 +17,7 @@ resource "aws_lb_listener_rule" "authentication_listener_rule" {
 
 resource "aws_lb_target_group" "authentication_tgp" {
   depends_on  = [var.network]
-  name        = local.application.name
+  name        = "authentication"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
