@@ -23,7 +23,7 @@ variable "image" {
 
 locals {
     application = {
-    name      = "authentication-api"
+    name      = "_authentication-api"
     port      = 8000
     image     = var.image.url
     image_tag = var.image.tag

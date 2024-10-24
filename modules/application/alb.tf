@@ -161,7 +161,7 @@ resource "aws_lb_listener" "look-card" {
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = module.authentication.authentication_tgp_arn
+    target_group_arn = "arn:aws:elasticloadbalancing:ap-southeast-1:227720554629:targetgroup/blockchain/d8b15de58eb3ad50" #module.authentication.authentication_tgp_arn
     # target_group_arn = aws_lb_target_group.authentication_tgp111.arn
   }
   # depends_on        = [var.ssl]
