@@ -1,11 +1,11 @@
-resource "aws_ecs_task_definition" "verification_api_task_definition" {
+resource "aws_ecs_task_definition" "authentication_api_task_definition" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.verificaiton_api_task_role.arn
-  execution_role_arn       = aws_iam_role.verificaiton_api_task_execution_role.arn
+  task_role_arn            = aws_iam_role.authentication_api_task_role.arn
+  execution_role_arn       = aws_iam_role.authentication_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
