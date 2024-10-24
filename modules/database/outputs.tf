@@ -40,3 +40,7 @@ output "proxy_host" {
 output "proxy_read_host" {
   value = aws_db_proxy_endpoint.rds_proxy_read_endpoint.endpoint
 }
+
+output "profile_api_ddb_table" {
+  value = aws_dynamodb_table.profile_data.arn
+}
