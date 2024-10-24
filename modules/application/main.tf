@@ -80,6 +80,7 @@ module "account-api" {
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
 }
+
 module "user-api" {
   source = "./user-api"
   vpc_id = var.network.vpc
@@ -103,6 +104,28 @@ module "user-api" {
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
 }
+
+# module "verification-api" {
+#   source = "./verification-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["verification-api"].repository_url
+#     tag = var.image_tag.verification-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                               = aws_ecs_cluster.application.arn
+#   secret_manager                        = var.secret_manager
+#   sg_alb_id                             = aws_security_group.api_alb_sg.id
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_proxy_host                        = var.rds_proxy_host
+#   rds_proxy_read_host                   = var.rds_proxy_read_host
+# }
 
 module "notification-api" {
   source           = "./notification-api"
