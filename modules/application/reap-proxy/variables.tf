@@ -4,9 +4,6 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
-variable "redis_host" {}
-variable "rds_aurora_postgresql_writer_endpoint" {}
-variable "rds_aurora_postgresql_reader_endpoint" {}
 
 variable "network" {
   type = object({
@@ -15,8 +12,6 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
-
-variable "cluster" {}
 
 
 variable "image" {

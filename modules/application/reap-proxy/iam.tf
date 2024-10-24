@@ -21,9 +21,9 @@ resource "aws_iam_policy" "reap_proxy_env_secrets_manager_read_policy" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Sid    = "secretSid",
-      Effect = "Allow",
-      Action = ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
+      Sid      = "secretSid",
+      Effect   = "Allow",
+      Action   = ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
       Resource = local.iam_secrets
     }]
   })
@@ -53,4 +53,28 @@ resource "aws_iam_role" "reap_proxy_task_role" {
       }
     }]
   })
+}
+
+resource "aws_iam_policy" "reap_proxy_s3_policy" {
+  name        = "ReapProxyS3Policy"
+  description = "Policy for get and write object to S3 bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Sid    = "S3Sid",
+      Effect = "Allow",
+      Action = [
+        # "s3:PutObject",
+        # "s3:GetObject"
+        "*"
+      ],
+      Resource = "arn:aws:s3:::scott-temp-testing-reap-proxy/*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "reap_proxy_s3_policy_attachment" {
+  role       = aws_iam_role.reap_proxy_task_role.name
+  policy_arn = aws_iam_policy.reap_proxy_s3_policy.arn
 }
