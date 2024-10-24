@@ -1,4 +1,4 @@
-resource "aws_security_group" "reap_proxy_security_group" {
+resource "aws_security_group" "reap_proxy_sg" {
   depends_on  = [var.vpc_id]
   name        = "reap-proxy-security-group"
   description = "Security group for ECS reap-proxy"
@@ -23,6 +23,6 @@ resource "aws_security_group" "reap_proxy_security_group" {
   }
 
   tags = {
-    Name = "user-api-sg"
+    Name = "reap-proxy-sg"
   }
 }
