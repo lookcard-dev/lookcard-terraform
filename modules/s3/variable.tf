@@ -10,6 +10,7 @@ variable "aml_code" {}
 variable "front_end_endpoint" {}
 variable "cloudwatch_syn_canaries" {}
 variable "accountid_data" {}
+variable "lookcard_log" {}
 
 
 
