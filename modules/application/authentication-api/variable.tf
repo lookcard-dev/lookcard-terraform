@@ -29,10 +29,13 @@ locals {
   }
 
   ecs_task_secret_vars = [
-
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:AUTHENTICATION_API_DSN::"
+      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:AUTHENTICATION_API_SDN::"
+    },
+    {
+      name      = "FIREBASE_CREDENTIALS"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
     }
   ]
   ecs_task_env_vars = [
