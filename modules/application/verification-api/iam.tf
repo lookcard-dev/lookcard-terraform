@@ -69,14 +69,14 @@ resource "aws_iam_policy" "verificaiton_api_cloudwatch_putlog_policy" {
             "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.application_log_group_verificaiton_api.arn}:*"
+            "${aws_cloudwatch_log_group.application_log_group_verification_api.arn}:*"
         ]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "user_api_cloudwatch_putlog_attachment" {
+resource "aws_iam_role_policy_attachment" "verification_api_cloudwatch_putlog_attachment" {
   role      = aws_iam_role.verificaiton_api_task_role.name
   policy_arn = aws_iam_policy.verificaiton_api_cloudwatch_putlog_policy.arn
 }
