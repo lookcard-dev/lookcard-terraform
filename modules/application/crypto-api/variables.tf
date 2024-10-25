@@ -40,14 +40,14 @@ locals {
     image     = var.image.url
     image_tag = var.image.tag
   }
-  # load_balancer = {
-  #   signer_api_path     = ["/signer", "/signers", "/signer/*"]
-  #   blockchain_api_path = ["/blockchain", "/blockchain/*", "/blockchains"]
-  #   hdwallet_path       = ["/hd-wallet"]
-  #   signer_priority     = 10
-  #   blockchain_priority = 101
-  #   hdwallet_priority   = 100
-  # }
+  load_balancer = {
+    signer_api_path     = ["/signer", "/signers", "/signer/*"]
+    blockchain_api_path = ["/blockchain", "/blockchain/*", "/blockchains"]
+    hdwallet_path       = ["/hd-wallet"]
+    signer_priority     = 10
+    blockchain_priority = 101
+    hdwallet_priority   = 100
+  }
   ecs_task_env_vars = [
     {
       name  = "PORT"
