@@ -23,17 +23,17 @@ variable "image_tag" {
   type = object({
     notification         = string
     account_api          = string # GitAction using unders
-    authentication_api   = string 
-    blockchain_api       = string 
-    card_api             = string 
+    authentication_api   = string
+    blockchain_api       = string
+    card_api             = string
     crypto_api           = string
-    reporting_api        = string 
+    reporting_api        = string
     transaction_listener = string
     transaction_api      = string
     _user-api            = string
     user-api             = string
-    utility_api          = string 
-    profile-api          = string  
+    utility_api          = string
+    profile-api          = string
     config-api           = string
     data-api             = string
     notification_v2      = string
@@ -77,6 +77,7 @@ variable "s3_bucket" {
     front_end_endpoint      = string
     cloudwatch_syn_canaries = string
     accountid_data          = string
+    lookcard_log            = string
   })
 }
 
