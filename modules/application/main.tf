@@ -117,11 +117,12 @@ module "reap-proxy" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
+  lookcardlocal_namespace  = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                  = aws_ecs_cluster.application.arn
+  secret_manager           = var.secret_manager
+  sg_alb_id                = aws_security_group.api_alb_sg.id
+  env_tag                  = var.env_tag
+  lookcard_log_bucket_name = var.lookcard_log_bucket_name
 }
 
 module "verification-api" {
@@ -136,14 +137,14 @@ module "verification-api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_proxy_host                        = var.rds_proxy_host
-  rds_proxy_read_host                   = var.rds_proxy_read_host
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                 = aws_ecs_cluster.application.arn
+  secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  env_tag                 = var.env_tag
+  redis_host              = var.redis_host
+  rds_proxy_host          = var.rds_proxy_host
+  rds_proxy_read_host     = var.rds_proxy_read_host
 }
 
 module "authentication-api" {
@@ -158,11 +159,11 @@ module "authentication-api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                 = aws_ecs_cluster.application.arn
+  secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  env_tag                 = var.env_tag
 }
 
 module "notification-api" {

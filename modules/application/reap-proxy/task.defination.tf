@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "reap_proxy" {
         }
         # logDriver = "awsfirelens",
         # options = {
-        #   "bucket" : "scott-temp-testing-reap-proxy",
+        #   "bucket" : var.lookcard_log_bucket_name,
         #   "total_file_size" : "1M",
         #   "use_put_object" : "On",
         #   "upload_timeout" : "1m",
