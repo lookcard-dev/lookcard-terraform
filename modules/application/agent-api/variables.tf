@@ -1,16 +1,15 @@
-
+variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
-variable "transaction_listener_sg_id" {}
+variable "cluster" {}
 variable "sg_alb_id" {}
-variable "account_api_sg_id" {}
-variable "lambda" {}
+variable "secret_manager" {}
 variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "rds_proxy_host" {}
 variable "rds_proxy_read_host" {}
-variable "agent_api_sg" {}
+variable "_auth_api_sg" {}
 
 variable "network" {
   type = object({
@@ -20,12 +19,6 @@ variable "network" {
   })
 }
 
-variable "default_listener" {}
-variable "cluster" {}
-variable "kms" {}
-variable "secret_manager" {}
-# variable "kms_data_encryption_key_alpha_arn" {}
-# variable "kms_data_generator_key_arn" {}
 
 variable "image" {
   type = object({
@@ -36,18 +29,10 @@ variable "image" {
 
 locals {
   application = {
-    name      = "crypto-api"
+    name      = "agent-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
-  }
-  load_balancer = {
-    signer_api_path     = ["/signer", "/signers", "/signer/*"]
-    blockchain_api_path = ["/blockchain", "/blockchain/*", "/blockchains"]
-    hdwallet_path       = ["/hd-wallet"]
-    signer_priority     = 10
-    blockchain_priority = 101
-    hdwallet_priority   = 100
   }
   ecs_task_env_vars = [
     {
@@ -68,7 +53,7 @@ locals {
     },
     {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.application_log_group_crypto_api.name
+      value = aws_cloudwatch_log_group.application_log_group_agent_api.name
     },
     {
       name  = "REDIS_HOST"
@@ -88,7 +73,15 @@ locals {
     },
     {
       name  = "DATABASE_SCHEMA"
-      value = "crypto"
+      value = "agent"
+    },
+    {
+      name  = "DATABASE_USE_SSL"
+      value = "true"
+    },
+    {
+      name  = "BOT_TOKEN"
+      value = "5000925898:AAFExCrrpAmGfKZMaMPHqCC0ixkuHXgiSwU"
     }
   ]
   ecs_task_secret_vars = [
@@ -104,14 +97,13 @@ locals {
       name      = "DATABASE_PASSWORD"
       valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
-    {
-      name      = "SENTRY_DSN"
-      valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:CRYPTO_API_DSN::"
-    },
+    # {
+    #   name      = "SENTRY_DSN"
+    #   valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:REFERRAL_API_DSN::"
+    # }
   ]
   iam_secrets = [
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"]
   ]
 }
-

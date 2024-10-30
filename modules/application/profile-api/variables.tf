@@ -7,6 +7,8 @@ variable "profile_api_ddb_table" {}
 variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
 variable "env_tag" {}
+variable "agent_api_sg" {}
+
 variable "network" {
   type = object({
     vpc            = string
