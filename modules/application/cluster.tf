@@ -31,6 +31,38 @@ resource "aws_ecs_cluster" "aml_tron" {
   }
 }
 
+resource "aws_ecs_cluster" "administrative" {
+  name = "Administrative"
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
+  }
+}
+
+resource "aws_ecs_cluster" "webhook" {
+  name = "Webhook"
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
+  }
+}
+
+resource "aws_ecs_cluster" "composite_application" {
+  name = "Composite-Application"
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
+  }
+}
+
+resource "aws_ecs_cluster" "core_application" {
+  name = "Core-Application"
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_config.enable ? "enabled" : "disabled"
+  }
+}
+
 resource "aws_ecs_capacity_provider" "ec2_arm64_on_demand" {
   name = "EC2_ARM64_ON_DEMAND"
 
@@ -90,17 +122,42 @@ resource "aws_ecs_cluster_capacity_providers" "aml_tron" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "look_card_logs" {
-  name              = "/ecs/look_card"
-  retention_in_days = 30
+resource "aws_ecs_cluster_capacity_providers" "administrative" {
+  cluster_name       = aws_ecs_cluster.administrative.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
+  }
 }
 
-resource "aws_cloudwatch_log_group" "admin_logs" {
-  name              = "/ecs/admin"
-  retention_in_days = 30
+resource "aws_ecs_cluster_capacity_providers" "webhook" {
+  cluster_name       = aws_ecs_cluster.webhook.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
+  }
 }
 
-resource "aws_cloudwatch_log_group" "aml_tron_logs" {
-  name              = "/ecs/aml_tron"
-  retention_in_days = 30
+resource "aws_ecs_cluster_capacity_providers" "composite_application" {
+  cluster_name       = aws_ecs_cluster.composite_application.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "core_application" {
+  cluster_name       = aws_ecs_cluster.core_application.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
+  }
 }
