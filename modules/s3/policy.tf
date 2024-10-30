@@ -96,3 +96,23 @@ resource "aws_s3_bucket_policy" "vpc_log_s3_policy" {
     ]
   })
 }
+
+resource "aws_s3_bucket_policy" "lookcard_log" {
+  bucket = aws_s3_bucket.lookcard_log.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::114774131450:root"
+        },
+        "Action" : "s3:PutObject",
+        "Resource" : [
+          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/connection_logs/*",
+          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/access_logs/*"
+        ]
+      }
+    ]
+  })
+}
