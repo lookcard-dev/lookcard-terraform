@@ -43,6 +43,7 @@ variable "image_tag" {
     account-api          = string
     authentication-api   = string
     verification-api     = string
+    agent-api            = string
   })
 }
 
