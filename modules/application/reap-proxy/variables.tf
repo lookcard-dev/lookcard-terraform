@@ -4,6 +4,7 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
+variable "lookcard_log_bucket_name" {}
 
 variable "network" {
   type = object({

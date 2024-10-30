@@ -86,6 +86,7 @@ module "application" {
   rds_proxy_host                           = module.rds.proxy_host
   rds_proxy_read_host                      = module.rds.proxy_read_host
   profile_api_ddb_table                    = module.rds.profile_api_ddb_table
+  lookcard_log_bucket_name                 = var.s3_bucket.lookcard_log
   # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
   # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
 }
