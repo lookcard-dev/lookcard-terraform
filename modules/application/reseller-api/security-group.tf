@@ -1,7 +1,7 @@
-resource "aws_security_group" "agent_api_sg" {
+resource "aws_security_group" "reseller_api_sg" {
   depends_on  = [var.vpc_id]
-  name        = "agent-api-security-group"
-  description = "Security group for ECS agent-api"
+  name        = "reseller-api-security-group"
+  description = "Security group for ECS reseller-api"
   vpc_id      = var.vpc_id
 
 #   dynamic "ingress" {
@@ -23,6 +23,6 @@ resource "aws_security_group" "agent_api_sg" {
   }
 
   tags = {
-    Name = "agent-api-sg"
+    Name = "reseller-api-sg"
   }
 }
