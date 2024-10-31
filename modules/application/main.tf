@@ -316,6 +316,7 @@ module "reseller-api" {
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
   _auth_api_sg                          = module.authentication._auth_api_sg
+  default_listener                      = aws_lb_listener.look-card.arn
 }
 
 # # ********************  v1  ***********************
