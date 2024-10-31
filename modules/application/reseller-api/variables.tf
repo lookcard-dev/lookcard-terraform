@@ -29,7 +29,7 @@ variable "image" {
 
 locals {
   application = {
-    name      = "agent-api"
+    name      = "reseller-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
@@ -53,7 +53,7 @@ locals {
     },
     {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.application_log_group_agent_api.name
+      value = aws_cloudwatch_log_group.application_log_group_reseller_api.name
     },
     {
       name  = "REDIS_HOST"
@@ -73,7 +73,7 @@ locals {
     },
     {
       name  = "DATABASE_SCHEMA"
-      value = "agent"
+      value = "reseller"
     },
     {
       name  = "DATABASE_USE_SSL"

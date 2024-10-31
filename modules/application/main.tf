@@ -26,7 +26,7 @@ module "crypto-api" {
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
-  agent_api_sg                          = module.agent-api.agent_api_sg
+  reseller_api_sg                       = module.reseller-api.reseller_api_sg
 }
 
 module "crypto-listener" {
@@ -80,7 +80,7 @@ module "account-api" {
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   rds_proxy_host                        = var.rds_proxy_host
   rds_proxy_read_host                   = var.rds_proxy_read_host
-  agent_api_sg                          = module.agent-api.agent_api_sg
+  reseller_api_sg                       = module.reseller-api.reseller_api_sg
 }
 
 module "user-api" {
@@ -210,7 +210,7 @@ module "profile-api" {
   _auth_api_sg                     = module.authentication._auth_api_sg
   verification_api_sg              = module.verification-api.verification_api_sg
   profile_api_ddb_table            = var.profile_api_ddb_table
-  agent_api_sg                     = module.agent-api.agent_api_sg
+  reseller_api_sg                  = module.reseller-api.reseller_api_sg
 }
 
 module "config-api" {
@@ -293,12 +293,12 @@ module "referral-api" {
   _auth_api_sg                          = module.authentication._auth_api_sg
 }
 
-module "agent-api" {
-  source = "./agent-api"
+module "reseller-api" {
+  source = "./reseller-api"
   vpc_id = var.network.vpc
   image = {
-    url = aws_ecr_repository.look-card["agent-api"].repository_url
-    tag = var.image_tag.agent-api
+    url = aws_ecr_repository.look-card["reseller-api"].repository_url
+    tag = var.image_tag.reseller-api
   }
   network = {
     vpc            = var.network.vpc

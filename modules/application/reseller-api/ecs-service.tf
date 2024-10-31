@@ -1,5 +1,5 @@
-resource "aws_service_discovery_service" "agent_api_service" {
-  name = "agent.api"
+resource "aws_service_discovery_service" "reseller_api_service" {
+  name = "reseller.api"
 
   dns_config {
     namespace_id = var.lookcardlocal_namespace
@@ -15,9 +15,9 @@ resource "aws_service_discovery_service" "agent_api_service" {
   }
 }
 
-resource "aws_ecs_service" "agent_api" {
+resource "aws_ecs_service" "reseller_api" {
   name            = local.application.name
-  task_definition = aws_ecs_task_definition.agent-api.arn
+  task_definition = aws_ecs_task_definition.reseller-api.arn
   # launch_type     = "FARGATE"
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
@@ -28,7 +28,7 @@ resource "aws_ecs_service" "agent_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.agent_api_sg.id]
+    security_groups = [aws_security_group.reseller_api_sg.id]
   }
 
   # load_balancer {
@@ -38,7 +38,7 @@ resource "aws_ecs_service" "agent_api" {
   # }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.agent_api_service.arn
+    registry_arn = aws_service_discovery_service.reseller_api_service.arn
   }
 }
 

@@ -57,7 +57,7 @@ variable "ecr_names" {
     "reap-proxy"           = "reap-proxy"
     "authentication-api"   = "authentication-api"
     "verification-api"     = "verification-api"
-    "agent-api"            = "agent-api"
+    "reseller-api"         = "reseller-api"
   }
 }
 
