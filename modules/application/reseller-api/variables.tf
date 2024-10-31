@@ -10,6 +10,7 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "rds_proxy_host" {}
 variable "rds_proxy_read_host" {}
 variable "_auth_api_sg" {}
+variable "default_listener" {}
 
 variable "network" {
   type = object({
@@ -33,6 +34,10 @@ locals {
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
+  }
+  load_balancer = {
+    api_path = ["/agent/*", "/agents/*"]
+    priority = 300
   }
   ecs_task_env_vars = [
     {
