@@ -48,14 +48,14 @@ resource "aws_lb_target_group" "reseller_api_target_group" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.network.vpc
-  health_check {
-    interval            = 30
-    path                = "/healthcheckz"
-    timeout             = 10
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200-399"
-  }
+  # health_check {
+  #   interval            = 30
+  #   path                = "/healthcheckz"
+  #   timeout             = 10
+  #   healthy_threshold   = 2
+  #   unhealthy_threshold = 2
+  #   matcher             = "200-399"
+  # }
 }
 
 
