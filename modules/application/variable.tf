@@ -58,6 +58,7 @@ variable "ecr_names" {
     "authentication-api"   = "authentication-api"
     "verification-api"     = "verification-api"
     "reseller-api"         = "reseller-api"
+    "apigw-authorizer"     = "apigw-authorizer"
   }
 }
 
