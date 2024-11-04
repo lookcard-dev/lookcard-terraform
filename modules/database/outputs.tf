@@ -33,13 +33,13 @@ output "rds_aurora_postgresql_reader_endpoint" {
   value = aws_rds_cluster.lookcard_develop.reader_endpoint
 }
 
-output "proxy_host" {
-  value = aws_db_proxy.rds_proxy.endpoint
-}
+# output "proxy_host" {
+#   value = aws_db_proxy.rds_proxy.endpoint
+# }
 
-output "proxy_read_host" {
-  value = aws_db_proxy_endpoint.rds_proxy_read_endpoint.endpoint
-}
+# output "proxy_read_host" {
+#   value = aws_db_proxy_endpoint.rds_proxy_read_endpoint.endpoint
+# }
 
 output "profile_api_ddb_table" {
   value = aws_dynamodb_table.profile_data.arn

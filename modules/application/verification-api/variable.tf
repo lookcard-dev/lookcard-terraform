@@ -5,8 +5,8 @@ variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
 variable "redis_host" {}
-variable "rds_proxy_host" {}
-variable "rds_proxy_read_host" {}
+variable "rds_aurora_postgresql_writer_endpoint" {}
+variable "rds_aurora_postgresql_reader_endpoint" {}
 
 variable "network" {
   type = object({
@@ -76,11 +76,11 @@ locals {
     },
     {
       name  = "DATABASE_HOST"
-      value = var.rds_proxy_host
+      value = var.rds_aurora_postgresql_writer_endpoint
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = var.rds_proxy_read_host
+      value = var.rds_aurora_postgresql_reader_endpoint
     },
     {
       name  = "DATABASE_PORT"
