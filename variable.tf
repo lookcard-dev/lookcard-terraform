@@ -44,7 +44,7 @@ variable "image_tag" {
     authentication-api   = string
     verification-api     = string
     reseller-api         = string
-    apigw-authorizer     = string
+    # apigw-authorizer     = string
   })
 }
 
