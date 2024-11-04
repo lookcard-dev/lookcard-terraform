@@ -121,12 +121,12 @@ resource "aws_alb" "look-card" {
   access_logs {
     bucket  = var.lookcard_log_bucket_name
     enabled = true
-    prefix = "ELB/lookcard/access_logs"
+    prefix  = "ELB/lookcard/access_logs"
   }
   connection_logs {
-    bucket = var.lookcard_log_bucket_name
+    bucket  = var.lookcard_log_bucket_name
     enabled = true
-    prefix = "ELB/lookcard/connection_logs"
+    prefix  = "ELB/lookcard/connection_logs"
   }
 }
 
@@ -165,10 +165,20 @@ resource "aws_lb_listener" "look-card" {
   load_balancer_arn = aws_alb.look-card.arn
   port              = 80
   protocol          = "HTTP"
+  # default_action {
+  #   type             = "forward"
+  #   target_group_arn = module.authentication.authentication_tgp_arn
+  #   # target_group_arn = aws_lb_target_group.authentication_tgp111.arn
+  # }
+
   default_action {
-    type             = "forward"
-    target_group_arn = module.authentication.authentication_tgp_arn
-    # target_group_arn = aws_lb_target_group.authentication_tgp111.arn
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "No match route"
+      status_code  = "503"
+    }
   }
   # depends_on        = [var.ssl]
   # port            = 443
