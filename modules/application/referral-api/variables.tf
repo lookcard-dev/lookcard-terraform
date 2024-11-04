@@ -9,7 +9,7 @@ variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 # variable "rds_proxy_host" {}
 # variable "rds_proxy_read_host" {}
-variable "_auth_api_sg" {}
+# variable "_auth_api_sg" {}
 
 variable "network" {
   type = object({

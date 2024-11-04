@@ -7,11 +7,11 @@ resource "aws_security_group" "profile-api-sg" {
   dynamic "ingress" {
     for_each = [8080, 80]
     content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
+      from_port = ingress.value
+      to_port   = ingress.value
+      protocol  = "tcp"
       # cidr_blocks = ["0.0.0.0/0"]
-      security_groups = [var.sg_alb_id, var.referral_api_sg, var._auth_api_sg, var.verification_api_sg]
+      security_groups = [var.sg_alb_id, var.referral_api_sg, var.verification_api_sg] #var._auth_api_sg
     }
   }
 
