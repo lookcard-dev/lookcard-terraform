@@ -12,8 +12,8 @@ variable "cluster" {}
 
 variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "secret_manager" {}
-variable "rds_proxy_host" {}
-variable "rds_proxy_read_host" {}
+# variable "rds_proxy_host" {}
+# variable "rds_proxy_read_host" {}
 
 
 variable "image" {
@@ -47,11 +47,11 @@ locals {
     },
     {
       name  = "DATABASE_HOST"
-      value = var.rds_proxy_host
+      value = var.rds_aurora_postgresql_writer_endpoint
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = var.rds_proxy_read_host
+      value = var.rds_aurora_postgresql_reader_endpoint
     },
     {
       name  = "DATABASE_PORT"
@@ -89,11 +89,11 @@ locals {
     },
     {
       name  = "DATABASE_HOST"
-      value = var.rds_proxy_host
+      value = var.rds_aurora_postgresql_writer_endpoint
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = var.rds_proxy_read_host
+      value = var.rds_aurora_postgresql_reader_endpoint
     },
     {
       name  = "DATABASE_PORT"
