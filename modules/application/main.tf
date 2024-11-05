@@ -3,7 +3,7 @@
 module "crypto-api" {
   source           = "./crypto-api"
   default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.application.arn
+  cluster          = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -68,7 +68,7 @@ module "account-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
+  cluster                               = aws_ecs_cluster.core_application.arn
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   lambda                                = var.lambda
   secret_manager                        = var.secret_manager
@@ -96,7 +96,7 @@ module "user-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
+  cluster                               = aws_ecs_cluster.core_application.arn
   secret_manager                        = var.secret_manager
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   env_tag                               = var.env_tag
@@ -120,7 +120,7 @@ module "reap-proxy" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace  = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                  = aws_ecs_cluster.application.arn
+  cluster                  = aws_ecs_cluster.core_application.arn
   secret_manager           = var.secret_manager
   sg_alb_id                = aws_security_group.api_alb_sg.id
   env_tag                  = var.env_tag
@@ -140,7 +140,7 @@ module "verification-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
+  cluster                               = aws_ecs_cluster.core_application.arn
   secret_manager                        = var.secret_manager
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   env_tag                               = var.env_tag
@@ -162,7 +162,7 @@ module "authentication-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                 = aws_ecs_cluster.application.arn
+  cluster                 = aws_ecs_cluster.core_application.arn
   secret_manager          = var.secret_manager
   sg_alb_id               = aws_security_group.api_alb_sg.id
   env_tag                 = var.env_tag
@@ -172,7 +172,7 @@ module "notification-api" {
   source           = "./notification-api"
   iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
   default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.application.arn
+  cluster          = aws_ecs_cluster.core_application.arn
   image = {
     url = aws_ecr_repository.look-card["notification-v2-api"].repository_url
     tag = var.image_tag.notification_v2
@@ -191,7 +191,7 @@ module "notification-api" {
 module "profile-api" {
   source           = "./profile-api"
   default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.application.arn
+  cluster          = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -216,7 +216,7 @@ module "profile-api" {
 module "config-api" {
   source           = "./config-api"
   default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.application.arn
+  cluster          = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -238,7 +238,7 @@ module "config-api" {
 module "data-api" {
   source           = "./data-api"
   default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.application.arn
+  cluster          = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -259,7 +259,7 @@ module "data-api" {
 
 module "xray-daemon" {
   source  = "./xray-daemon"
-  cluster = aws_ecs_cluster.application.arn
+  cluster = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -281,7 +281,7 @@ module "referral-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
+  cluster                               = aws_ecs_cluster.core_application.arn
   secret_manager                        = var.secret_manager
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   env_tag                               = var.env_tag
@@ -306,7 +306,7 @@ module "reseller-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.application.arn
+  cluster                               = aws_ecs_cluster.composite_application.arn
   secret_manager                        = var.secret_manager
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   env_tag                               = var.env_tag
