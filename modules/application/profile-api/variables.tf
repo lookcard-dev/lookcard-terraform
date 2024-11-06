@@ -3,6 +3,7 @@ variable "lookcardlocal_namespace" {}
 variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "referral_api_sg" {}
+variable "account_api_sg" {}
 variable "profile_api_ddb_table" {}
 # variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
