@@ -27,7 +27,7 @@ module "crypto-api" {
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
-  bastion_sg = var.bastion_sg
+  bastion_sg      = var.bastion_sg
 }
 
 module "crypto-listener" {
@@ -83,7 +83,7 @@ module "account-api" {
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
-  bastion_sg = var.bastion_sg
+  bastion_sg      = var.bastion_sg
 }
 
 module "user-api" {
@@ -130,7 +130,7 @@ module "reap-proxy" {
   sg_alb_id                = aws_security_group.api_alb_sg.id
   env_tag                  = var.env_tag
   lookcard_log_bucket_name = var.lookcard_log_bucket_name
-  bastion_sg = var.bastion_sg
+  bastion_sg               = var.bastion_sg
 }
 
 module "verification-api" {
@@ -153,7 +153,7 @@ module "verification-api" {
   redis_host                            = var.redis_host
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg = var.bastion_sg
+  bastion_sg                            = var.bastion_sg
 }
 
 module "authentication-api" {
@@ -174,7 +174,7 @@ module "authentication-api" {
   sg_alb_id                        = aws_security_group.api_alb_sg.id
   env_tag                          = var.env_tag
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
-  bastion_sg = var.bastion_sg
+  bastion_sg                       = var.bastion_sg
 }
 
 module "notification-api" {
@@ -194,7 +194,7 @@ module "notification-api" {
   secret_manager = var.secret_manager
   env_tag        = var.env_tag
   sg_alb_id      = aws_security_group.api_alb_sg.id
-  bastion_sg = var.bastion_sg
+  bastion_sg     = var.bastion_sg
 }
 
 
@@ -217,12 +217,13 @@ module "profile-api" {
   env_tag                          = var.env_tag
   sg_alb_id                        = aws_security_group.api_alb_sg.id
   referral_api_sg                  = module.referral-api.referral_api_sg
+  account_api_sg                   = module.account-api.account_api_sg_id
   #_auth_api_sg                     = module.authentication._auth_api_sg
   verification_api_sg              = module.verification-api.verification_api_sg
   profile_api_ddb_table            = var.profile_api_ddb_table
   reseller_api_sg                  = module.reseller-api.reseller_api_sg
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
-  bastion_sg = var.bastion_sg
+  bastion_sg                       = var.bastion_sg
 }
 
 module "config-api" {
@@ -245,7 +246,7 @@ module "config-api" {
   secret_manager                       = var.secret_manager
   env_tag                              = var.env_tag
   sg_alb_id                            = aws_security_group.api_alb_sg.id
-  bastion_sg = var.bastion_sg
+  bastion_sg                           = var.bastion_sg
 }
 
 module "data-api" {
@@ -269,7 +270,7 @@ module "data-api" {
   dynamodb_data_tb_name   = var.dynamodb_data_tb_name
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
-  bastion_sg = var.bastion_sg
+  bastion_sg              = var.bastion_sg
 }
 
 module "xray-daemon" {
@@ -303,7 +304,7 @@ module "referral-api" {
   redis_host                            = var.redis_host
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg = var.bastion_sg
+  bastion_sg                            = var.bastion_sg
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   # _auth_api_sg = module.authentication._auth_api_sg
@@ -329,7 +330,7 @@ module "reseller-api" {
   redis_host                            = var.redis_host
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg = var.bastion_sg
+  bastion_sg                            = var.bastion_sg
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   # _auth_api_sg     = module.authentication._auth_api_sg
