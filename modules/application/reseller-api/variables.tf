@@ -36,7 +36,7 @@ locals {
     image_tag = var.image.tag
   }
   load_balancer = {
-    api_path = ["/agent/*", "/agents/*", "/healthcheckz"]
+    api_path = ["/agent/*", "/agents/*", "/agent", "/agents", "/healthcheckz"]
     priority = 300
   }
   ecs_task_env_vars = [
