@@ -99,7 +99,8 @@ resource "aws_iam_policy" "data_api_kms_policy" {
         "Effect" : "Allow",
         "Action" : [
             "kms:GenerateDataKey",
-            "kms:Encrypt"
+            "kms:Encrypt",
+            "kms:Decrypt"
         ],
         "Resource" : [
             "arn:aws:kms:ap-southeast-1:227720554629:key/ce295816-2522-43cf-a880-4b8410c86fc2",

@@ -124,6 +124,18 @@ locals {
     {
       name  = "CRYPTO_API_PORT"
       value = "8080"
+    },
+    {
+      name  = "REFERRAL_API_PROTOCOL"
+      value = "http"
+    },
+    {
+      name  = "REFERRAL_API_HOST"
+      value = "referral.api.lookcard.local"
+    },
+    {
+      name  = "REFERRAL_API_PORT"
+      value = "8080"
     }
   ]
   ecs_task_secret_vars = [
