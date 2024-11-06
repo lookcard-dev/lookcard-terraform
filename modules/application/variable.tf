@@ -59,6 +59,7 @@ variable "ecr_names" {
     "verification-api"     = "verification-api"
     "reseller-api"         = "reseller-api"
     "apigw-authorizer"     = "apigw-authorizer"
+    "sumsub-webhook"       = "sumsub-webhook"
   }
 }
 
