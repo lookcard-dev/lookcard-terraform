@@ -79,3 +79,16 @@ module "websocket-disconnect" {
   ddb_websocket_arn = var.ddb_websocket_arn
   lambda_code       = var.lambda_code
 }
+
+module "firebase-authorizer" {
+  source = "./firebase-authorizer"
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = var.ecr_repository_urls["apigw-authorizer"]
+    tag = var.image_tag.apigw-authorizer
+  }
+}

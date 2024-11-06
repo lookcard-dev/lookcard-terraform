@@ -4,6 +4,7 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
+variable "lambda_aggregator_tron_sg_id" {}
 
 variable "network" {
   type = object({
