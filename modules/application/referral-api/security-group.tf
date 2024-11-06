@@ -4,16 +4,16 @@ resource "aws_security_group" "referral_api_security_group" {
   description = "Security group for ECS referral-api"
   vpc_id      = var.vpc_id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #     # cidr_blocks = ["0.0.0.0/0"]
-  #     security_groups = [var._auth_api_sg]
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      # cidr_blocks = ["0.0.0.0/0"]
+      security_groups = [var.bastion_sg]
+    }
+  }
 
   egress {
     from_port   = 0

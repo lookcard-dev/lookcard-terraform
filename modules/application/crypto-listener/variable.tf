@@ -14,7 +14,7 @@ variable "dynamodb_crypto_transaction_listener_arn" {}
 variable "secret_manager" {}
 # variable "rds_proxy_host" {}
 # variable "rds_proxy_read_host" {}
-
+variable "bastion_sg" {}
 
 variable "image" {
   type = object({

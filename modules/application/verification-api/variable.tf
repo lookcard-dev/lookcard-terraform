@@ -7,6 +7,7 @@ variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
+variable "bastion_sg" {}
 
 variable "network" {
   type = object({

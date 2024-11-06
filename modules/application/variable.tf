@@ -59,6 +59,7 @@ variable "ecr_names" {
     "verification-api"     = "verification-api"
     "reseller-api"         = "reseller-api"
     "apigw-authorizer"     = "apigw-authorizer"
+    "sumsub-webhook"       = "sumsub-webhook"
   }
 }
 
@@ -90,3 +91,4 @@ variable "redis_host" {}
 variable "profile_api_ddb_table" {}
 variable "lookcard_log_bucket_name" {}
 variable "lambda_firebase_authorizer_sg_id" {}
+variable "bastion_sg" {}
