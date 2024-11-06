@@ -103,7 +103,7 @@ module "user-api" {
   redis_host                            = var.redis_host
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
+  lambda_firebase_authorizer_sg_id      = var.lambda_firebase_authorizer_sg_id
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
 }
@@ -162,11 +162,11 @@ module "authentication-api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                 = aws_ecs_cluster.core_application.arn
-  secret_manager          = var.secret_manager
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  env_tag                 = var.env_tag
+  lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                          = aws_ecs_cluster.core_application.arn
+  secret_manager                   = var.secret_manager
+  sg_alb_id                        = aws_security_group.api_alb_sg.id
+  env_tag                          = var.env_tag
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
 }
 
@@ -210,9 +210,9 @@ module "profile-api" {
   sg_alb_id                        = aws_security_group.api_alb_sg.id
   referral_api_sg                  = module.referral-api.referral_api_sg
   #_auth_api_sg                     = module.authentication._auth_api_sg
-  verification_api_sg   = module.verification-api.verification_api_sg
-  profile_api_ddb_table = var.profile_api_ddb_table
-  reseller_api_sg       = module.reseller-api.reseller_api_sg
+  verification_api_sg              = module.verification-api.verification_api_sg
+  profile_api_ddb_table            = var.profile_api_ddb_table
+  reseller_api_sg                  = module.reseller-api.reseller_api_sg
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
 }
 

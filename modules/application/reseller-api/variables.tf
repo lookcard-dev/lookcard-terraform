@@ -87,6 +87,42 @@ locals {
     {
       name  = "BOT_TOKEN"
       value = "5000925898:AAFExCrrpAmGfKZMaMPHqCC0ixkuHXgiSwU"
+    },
+    {
+      name  = "PROFILE_API_PROTOCOL"
+      value = "http"
+    },
+    {
+      name  = "PROFILE_API_HOST"
+      value = "profile.api.lookcard.local"
+    },
+    {
+      name  = "PROFILE_API_PORT"
+      value = "8080"
+    },
+    {
+      name  = "ACCOUNT_API_PROTOCOL"
+      value = "http"
+    },
+    {
+      name  = "ACCOUNT_API_HOST"
+      value = "account.api.lookcard.local"
+    },
+    {
+      name  = "ACCOUNT_API_PORT"
+      value = "8080"
+    },
+    {
+      name  = "CRYPTO_API_PROTOCOL"
+      value = "http"
+    },
+    {
+      name  = "CRYPTO_API_HOST"
+      value = "crypto.api.lookcard.local"
+    },
+    {
+      name  = "CRYPTO_API_PORT"
+      value = "8080"
     }
   ]
   ecs_task_secret_vars = [
