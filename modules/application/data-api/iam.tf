@@ -89,3 +89,26 @@ resource "aws_iam_role_policy_attachment" "data_api_cloudwatch_putlog_attachment
   policy_arn = aws_iam_policy.data_api_cloudwatch_putlog_policy.arn
 }
 
+resource "aws_iam_policy" "data_api_kms_policy" {
+  name        = "DataAPIKMSPolicy"
+  description = ""
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+            "kms:GenerateDataKey"
+        ],
+        "Resource" : [
+            "arn:aws:kms:ap-southeast-1:227720554629:key/ce295816-2522-43cf-a880-4b8410c86fc2"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "data_api_kms_policy_attachment" {
+  role      = aws_iam_role.data_api_task_role.name
+  policy_arn = aws_iam_policy.data_api_kms_policy.arn
+}
