@@ -89,4 +89,4 @@ variable "redis_host" {}
 # variable "kms_data_encryption_key_alpha_arn" {}
 variable "profile_api_ddb_table" {}
 variable "lookcard_log_bucket_name" {}
-variable "lambda_aggregator_tron_sg_id" {}
+variable "lambda_firebase_authorizer_sg_id" {}

@@ -12,7 +12,6 @@ resource "aws_lambda_function" "firebase_authorizer" {
   image_uri     = data.aws_ecr_image.apigw_authorizer.image_uri # "${var.image.url}:${var.image.tag}"
   timeout       = 300
   memory_size   = 512
-  handler       = "handlers/firebase.handler"
 
   vpc_config {
     subnet_ids         = var.network.private_subnet

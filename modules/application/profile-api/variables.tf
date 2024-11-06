@@ -8,7 +8,7 @@ variable "profile_api_ddb_table" {}
 variable "verification_api_sg" {}
 variable "env_tag" {}
 variable "reseller_api_sg" {}
-variable "lambda_aggregator_tron_sg_id" {}
+variable "lambda_firebase_authorizer_sg_id" {}
 
 variable "network" {
   type = object({

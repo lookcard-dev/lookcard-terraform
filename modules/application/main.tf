@@ -103,7 +103,7 @@ module "user-api" {
   redis_host                            = var.redis_host
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  lambda_aggregator_tron_sg_id = var.lambda_aggregator_tron_sg_id
+  lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
 }
@@ -167,7 +167,7 @@ module "authentication-api" {
   secret_manager          = var.secret_manager
   sg_alb_id               = aws_security_group.api_alb_sg.id
   env_tag                 = var.env_tag
-  lambda_aggregator_tron_sg_id = var.lambda_aggregator_tron_sg_id
+  lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
 }
 
 module "notification-api" {
@@ -213,7 +213,7 @@ module "profile-api" {
   verification_api_sg   = module.verification-api.verification_api_sg
   profile_api_ddb_table = var.profile_api_ddb_table
   reseller_api_sg       = module.reseller-api.reseller_api_sg
-  lambda_aggregator_tron_sg_id = var.lambda_aggregator_tron_sg_id
+  lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
 }
 
 module "config-api" {
