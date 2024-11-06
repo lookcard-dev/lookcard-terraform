@@ -258,6 +258,7 @@ module "data-api" {
   s3_data_bucket_name     = var.s3_data_bucket_name
   dynamodb_data_tb_name   = var.dynamodb_data_tb_name
   sg_alb_id               = aws_security_group.api_alb_sg.id
+  crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
 }
 
 module "xray-daemon" {
