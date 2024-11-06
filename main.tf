@@ -89,7 +89,7 @@ module "application" {
   lookcard_log_bucket_name = var.s3_bucket.lookcard_log
   # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
   # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
-  lambda_aggregator_tron_sg_id = module.lambda.lambda_aggregator_tron_sg_id
+  lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
 }
 
 module "ssl-cert" {
