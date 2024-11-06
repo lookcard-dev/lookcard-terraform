@@ -5,6 +5,7 @@ variable "sg_alb_id" {}
 variable "secret_manager" {}
 variable "env_tag" {}
 variable "lambda_firebase_authorizer_sg_id" {}
+variable "bastion_sg" {}
 
 variable "network" {
   type = object({

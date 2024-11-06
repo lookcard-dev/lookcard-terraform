@@ -14,6 +14,8 @@ variable "acm" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "env_tag" {}
+variable "bastion_sg" {}
+
 variable "image" {
   type = object({
     url = string

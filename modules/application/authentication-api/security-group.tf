@@ -11,7 +11,7 @@ resource "aws_security_group" "authentication_api_security_grp" {
       to_port     = ingress.value
       protocol    = "tcp"
       # cidr_blocks = ["0.0.0.0/0"]
-      security_groups = [var.lambda_firebase_authorizer_sg_id]
+      security_groups = [var.lambda_firebase_authorizer_sg_id, var.bastion_sg]
     }
   }
 

@@ -7,6 +7,7 @@ variable "secret_manager" {}
 variable "s3_data_bucket_name" {}
 variable "dynamodb_data_tb_name" {}
 variable "crypto_api_sg_id" {}
+variable "bastion_sg" {}
 
 variable "kms" {}
 variable "network" {

@@ -20,6 +20,8 @@ variable "image" {
   })
 }
 
+variable "bastion_sg" {}
+
 locals {
   application = {
     name      = "notification-v2"

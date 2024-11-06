@@ -11,7 +11,7 @@ resource "aws_security_group" "reseller_api_sg" {
       to_port     = ingress.value
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
-      # security_groups = [var._auth_api_sg]
+      # security_groups = [var.bastion_sg]
     }
   }
 
