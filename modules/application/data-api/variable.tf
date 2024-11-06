@@ -6,6 +6,7 @@ variable "env_tag" {}
 variable "secret_manager" {}
 variable "s3_data_bucket_name" {}
 variable "dynamodb_data_tb_name" {}
+variable "crypto_api_sg_id" {}
 
 variable "kms" {}
 variable "network" {

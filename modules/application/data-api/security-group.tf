@@ -9,7 +9,7 @@ resource "aws_security_group" "data-api-sg" {
     to_port     = 8080
     protocol    = "tcp"
     # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [var.sg_alb_id]
+    security_groups = [var.sg_alb_id, var.crypto_api_sg_id]
   }
 
   ingress {
@@ -17,7 +17,7 @@ resource "aws_security_group" "data-api-sg" {
     to_port     = 80
     protocol    = "tcp"
     # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [var.sg_alb_id]
+    security_groups = [var.sg_alb_id, var.crypto_api_sg_id]
   }
 
   egress {
