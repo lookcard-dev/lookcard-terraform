@@ -238,7 +238,7 @@ resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
 resource "aws_api_gateway_authorizer" "firebase_authorizer" {
   name                   = "firebase_authorizer"
   rest_api_id            = aws_api_gateway_rest_api.lookcard_api.id
-  authorizer_uri         = var.firebase_authorizer_invoke_url
+  authorizer_uri         = var.lambda_firebase_authorizer.invoke_arn
   authorizer_credentials = aws_iam_role.api_gateway_firebase_invocation_role.arn
 }
 
@@ -272,7 +272,7 @@ resource "aws_iam_policy" "api_gateway_firebase_invocation_policy" {
           "lambda:InvokeFunction"
         ],
         "Resource" : [
-          "arn:aws:lambda:ap-southeast-1:227720554629:function:Firebase_Authorizer"
+          var.lambda_firebase_authorizer.arn
         ]
       }
     ]
