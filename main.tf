@@ -90,7 +90,8 @@ module "application" {
   # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
   # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
   lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
-  bastion_sg = module.bastion.bastion_sg
+  bastion_sg                       = module.bastion.bastion_sg
+  firebase_authorizer_invoke_url   = module.lambda.firebase_authorizer_invoke_url
 }
 
 module "ssl-cert" {

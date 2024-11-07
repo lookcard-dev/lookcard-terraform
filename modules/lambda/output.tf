@@ -33,3 +33,7 @@ output "crypto_fund_withdrawal_sg_id" {
 output "lambda_firebase_authorizer_sg_id" {
   value = module.firebase-authorizer.lambda_firebase_authorizer_sg_id
 }
+
+output "firebase_authorizer_invoke_url" {
+  value = module.firebase-authorizer.firebase_authorizer_invoke_url
+}
