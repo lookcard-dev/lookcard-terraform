@@ -92,3 +92,16 @@ module "firebase-authorizer" {
     tag = var.image_tag.apigw-authorizer
   }
 }
+
+module "sumsub-webhook" {
+  source = "./sumsub-webhook"
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = var.ecr_repository_urls["sumsub-webhook"]
+    tag = var.image_tag.sumsub-webhook
+  }
+}

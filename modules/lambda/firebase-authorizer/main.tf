@@ -4,12 +4,11 @@ data "aws_ecr_image" "apigw_authorizer" {
 }
 
 resource "aws_lambda_function" "firebase_authorizer" {
-  depends_on    = [aws_iam_role.lambda_firebase_authorizer, aws_iam_role_policy_attachment.firebase_authorizer_execution_policy]
   function_name = "Firebase_Authorizer"
   role          = aws_iam_role.lambda_firebase_authorizer.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = data.aws_ecr_image.apigw_authorizer.image_uri # "${var.image.url}:${var.image.tag}"
+  image_uri     = "${var.image.url}:${var.image.tag}"
   timeout       = 300
   memory_size   = 512
 
