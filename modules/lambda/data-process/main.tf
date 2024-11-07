@@ -7,5 +7,8 @@ resource "aws_lambda_function" "data_process" {
   s3_key        = var.lambda_code.data_process_s3key
   timeout       = 300
 
+  tracing_config {
+    mode = "Active"
+  }
 }
 

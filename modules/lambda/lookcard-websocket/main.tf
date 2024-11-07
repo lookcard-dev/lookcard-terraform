@@ -8,6 +8,10 @@ resource "aws_lambda_function" "websocket" {
   s3_bucket     = "${var.general_config.env}-lambda-aml-code-${var.general_config.env}"
   s3_key        = "lookcard-websocket.zip"
   timeout       = 300
+
+  tracing_config {
+    mode = "Active"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "websocket_web" {
