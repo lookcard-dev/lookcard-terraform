@@ -140,7 +140,7 @@ resource "aws_api_gateway_stage" "stage" {
   variables = {
     "env" = var.env_tag
   }
-  xray_tracing_enabled = true 
+  xray_tracing_enabled = true
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw_logs.arn
@@ -170,7 +170,7 @@ resource "aws_apigatewayv2_integration" "push_message_integration" {
   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
   integration_type          = "AWS_PROXY"
   content_handling_strategy = "CONVERT_TO_TEXT"
-  integration_uri           = "${var.lambda.lookcard_websocket_arn}"
+  integration_uri           = var.lambda.lookcard_websocket_arn
   integration_method        = "POST"
 }
 
@@ -183,7 +183,7 @@ resource "aws_apigatewayv2_route" "push_message_route" {
 resource "aws_lambda_permission" "apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = "${var.lambda.lookcard_websocket_name}"
+  function_name = var.lambda.lookcard_websocket_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }
@@ -194,7 +194,7 @@ resource "aws_apigatewayv2_integration" "connect_integration" {
   description               = "Connection"
   connection_type           = "INTERNET"
   integration_method        = "POST"
-  integration_uri           = "${var.lambda.websocket_connect_arn}"
+  integration_uri           = var.lambda.websocket_connect_arn
 }
 
 resource "aws_apigatewayv2_route" "connect" {
@@ -206,7 +206,7 @@ resource "aws_apigatewayv2_route" "connect" {
 resource "aws_lambda_permission" "web_socket_apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = "${var.lambda.websocket_connect_name}"
+  function_name = var.lambda.websocket_connect_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
 }
@@ -217,7 +217,7 @@ resource "aws_apigatewayv2_integration" "disconnect_integration" {
   connection_type           = "INTERNET"
   content_handling_strategy = "CONVERT_TO_TEXT"
   integration_method        = "POST"
-  integration_uri           = "${var.lambda.websocket_disconnect_arn}"
+  integration_uri           = var.lambda.websocket_disconnect_arn
   passthrough_behavior      = "WHEN_NO_MATCH"
 }
 resource "aws_apigatewayv2_route" "disconnect_route" {
@@ -229,7 +229,52 @@ resource "aws_apigatewayv2_route" "disconnect_route" {
 resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = "${var.lambda.websocket_disconnect_name}"
+  function_name = var.lambda.websocket_disconnect_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
+}
+
+
+resource "aws_api_gateway_authorizer" "firebase_authorizer" {
+  name                   = "firebase_authorizer"
+  rest_api_id            = aws_api_gateway_rest_api.lookcard_api.id
+  authorizer_uri         = var.firebase_authorizer_invoke_url
+  authorizer_credentials = aws_iam_role.api_gateway_firebase_invocation_role.arn
+}
+
+resource "aws_iam_role" "api_gateway_firebase_invocation_role" {
+  name = "api-gateway-firebase-invocation-role"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "sts:AssumeRole"
+        ],
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "api_gateway_firebase_invocation_policy" {
+  name        = "apigateway-firebase-invocation-policy"
+  description = "Allows api gateway to invoke Firebase_Authorizer Lambda function"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "lambda:InvokeFunction"
+        ],
+        "Resource" : [
+          "arn:aws:lambda:ap-southeast-1:227720554629:function:Firebase_Authorizer"
+        ]
+      }
+    ]
+  })
 }

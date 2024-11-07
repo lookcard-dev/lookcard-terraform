@@ -92,3 +92,4 @@ variable "profile_api_ddb_table" {}
 variable "lookcard_log_bucket_name" {}
 variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
+variable "firebase_authorizer_invoke_url" {}
