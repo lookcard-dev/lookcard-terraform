@@ -12,6 +12,10 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
   timeout       = 900
   memory_size   = 512
 
+  tracing_config {
+    mode = "Active"
+  }
+
   environment {
     variables = local.lambda_env_vars
   }

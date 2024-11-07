@@ -12,6 +12,10 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
   timeout       = 900
   memory_size   = 512
 
+  tracing_config {
+    mode = "Active"
+  }
+
   environment {
     variables = local.lambda_env_vars
   }
@@ -23,8 +27,8 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
 }
 
 resource "aws_lambda_event_source_mapping" "crypto_fund_withdrawal_queue_event" {
-  depends_on                 = [aws_lambda_function.crypto_fund_withdrawal_function]
-  event_source_arn           = var.sqs.crypto_fund_withdrawal_queue_arn
-  function_name              = aws_lambda_function.crypto_fund_withdrawal_function.function_name
-  batch_size                 = 10 # Change as per your requirements
+  depends_on       = [aws_lambda_function.crypto_fund_withdrawal_function]
+  event_source_arn = var.sqs.crypto_fund_withdrawal_queue_arn
+  function_name    = aws_lambda_function.crypto_fund_withdrawal_function.function_name
+  batch_size       = 10 # Change as per your requirements
 }

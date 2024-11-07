@@ -7,10 +7,15 @@ resource "aws_lambda_function" "eliptic" {
   s3_key        = var.lambda_code.elliptic_s3key
   timeout       = 300
 
+  tracing_config {
+    mode = "Active"
+  }
+
   vpc_config {
     subnet_ids         = var.network.private_subnet
     security_group_ids = [aws_security_group.eliptic_sg.id]
   }
+
 }
 
 resource "aws_lambda_event_source_mapping" "eliptic" {

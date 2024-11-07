@@ -8,6 +8,10 @@ resource "aws_lambda_function" "push_notification_function" {
   s3_key        = "lookcard-pushnoification.zip"
   timeout       = 300
   # source_code_hash = data.archive_file.lambda.output_base64sha256
+  tracing_config {
+    mode = "Active"
+  }
+
   vpc_config {
     subnet_ids         = var.network.private_subnet
     security_group_ids = [aws_security_group.push_notification.id]

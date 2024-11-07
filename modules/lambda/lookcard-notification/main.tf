@@ -12,8 +12,12 @@ resource "aws_lambda_function" "lookcard_notification_function" {
   timeout       = 900
   memory_size   = 512
 
+  tracing_config {
+    mode = "Active"
+  }
+
   environment {
-    variables = local.lambda_env_vars    
+    variables = local.lambda_env_vars
   }
 
   vpc_config {
@@ -23,8 +27,8 @@ resource "aws_lambda_function" "lookcard_notification_function" {
 }
 
 resource "aws_lambda_event_source_mapping" "lookcard_notification_queue_event" {
-  depends_on                 = [aws_lambda_function.lookcard_notification_function]
-  event_source_arn           = var.sqs.lookcard_notification_queue_arn
-  function_name              = aws_lambda_function.lookcard_notification_function.function_name
-  batch_size                 = 10 # Change as per your requirements
+  depends_on       = [aws_lambda_function.lookcard_notification_function]
+  event_source_arn = var.sqs.lookcard_notification_queue_arn
+  function_name    = aws_lambda_function.lookcard_notification_function.function_name
+  batch_size       = 10 # Change as per your requirements
 }
