@@ -10,8 +10,8 @@ resource "aws_security_group" "referral_api_security_group" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      # cidr_blocks = ["0.0.0.0/0"]
-      security_groups = [var.bastion_sg]
+      cidr_blocks = ["0.0.0.0/0"]
+      # security_groups = [var.bastion_sg]
     }
   }
 
