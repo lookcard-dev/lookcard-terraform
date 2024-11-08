@@ -224,6 +224,7 @@ module "profile-api" {
   reseller_api_sg                  = module.reseller-api.reseller_api_sg
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
   bastion_sg                       = var.bastion_sg
+  crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
 }
 
 module "config-api" {
