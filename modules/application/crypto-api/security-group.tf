@@ -18,7 +18,7 @@ resource "aws_security_group" "crypto-api-sg" {
     to_port   = 80
     protocol  = "tcp"
     # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [var.sg_alb_id, var.account_api_sg_id, var.lambda.lambda_aggregator_tron_sg_id, var.lambda.crypto_fund_withdrawal_sg_id, var.reseller_api_sg, var.bastion_sg]
+    security_groups = [var.sg_alb_id, var.account_api_sg_id, var.lambda.lambda_aggregator_tron_sg_id, var.lambda.crypto_fund_withdrawal_sg_id, var.transaction_listener_sg_id, var.reseller_api_sg, var.bastion_sg]
   }
 
   egress {

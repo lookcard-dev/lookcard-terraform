@@ -109,7 +109,9 @@ module "user-api" {
   lambda_firebase_authorizer_sg_id      = var.lambda_firebase_authorizer_sg_id
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
-  bastion_sg = var.bastion_sg
+  bastion_sg      = var.bastion_sg
+  lambda          = var.lambda
+  reseller_api_sg = module.reseller-api.reseller_api_sg
 }
 
 module "reap-proxy" {
@@ -225,6 +227,7 @@ module "profile-api" {
   lambda_firebase_authorizer_sg_id = var.lambda_firebase_authorizer_sg_id
   bastion_sg                       = var.bastion_sg
   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
+  lambda                           = var.lambda
 }
 
 module "config-api" {
