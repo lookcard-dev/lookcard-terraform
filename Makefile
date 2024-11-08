@@ -16,7 +16,7 @@ download-config-file:
 	@echo "Downloading config file..."
 	@aws s3 cp s3://$(BUCKET_NAME)/terraform.tfvars.json ./terraform.tfvars.dev.json
 
-terraform-apply-dev: download-config-file
+terraform-apply-dev:
 	@echo "Applying development environment..."
 	@terraform init -reconfigure
 	@terraform apply -var-file="terraform.tfvars.dev.json" 

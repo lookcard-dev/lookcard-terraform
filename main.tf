@@ -28,6 +28,7 @@ module "S3" {
   cloudwatch_syn_canaries = var.s3_bucket.cloudwatch_syn_canaries
   accountid_data          = var.s3_bucket.accountid_data
   lookcard_log            = var.s3_bucket.lookcard_log
+  reseller_portal         = var.s3_bucket.reseller_portal
 }
 
 module "rds" {
