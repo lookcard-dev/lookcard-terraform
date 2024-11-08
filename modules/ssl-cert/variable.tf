@@ -2,6 +2,7 @@ variable "domain" {}
 variable "app_hostname" {}
 variable "admin_hostname" {}
 variable "api_hostname" {}
+variable "sumsub_webhook_hostname" {}
 
 provider "aws" {
   alias  = "east"

@@ -7,9 +7,10 @@ variable "general_config" {
 }
 variable "dns_config" {
   type = object({
-    api_hostname   = string
-    admin_hostname = string
-    hostname       = string
+    api_hostname            = string
+    admin_hostname          = string
+    hostname                = string
+    sumsub_webhook_hostname = string
   })
 }
 variable "aws_provider" {
