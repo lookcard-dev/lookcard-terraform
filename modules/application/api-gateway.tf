@@ -63,6 +63,14 @@ resource "aws_api_gateway_domain_name" "lookcard_domain" {
   }
 }
 
+# resource "aws_api_gateway_domain_name" "sumsub_webhook" {
+#   domain_name              = var.acm.domain_api_name
+#   regional_certificate_arn = var.acm.cert_api_arn # Ensure this certificate is in the same region as your API Gateway
+#   endpoint_configuration {
+#     types = ["REGIONAL"]
+#   }
+# }
+
 resource "aws_route53_record" "lookcard_api_record" {
   zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
   name    = var.dns_config.api_hostname
