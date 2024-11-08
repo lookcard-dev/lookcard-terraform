@@ -253,7 +253,7 @@ resource "aws_iam_role" "api_gateway_firebase_invocation_role" {
           "sts:AssumeRole"
         ],
         "Principal" : {
-          "Service" : "lambda.amazonaws.com"
+          "Service" : "apigateway.amazonaws.com"
         }
       }
     ]
