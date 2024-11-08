@@ -92,7 +92,7 @@ module "application" {
   # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
   lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
   bastion_sg                       = module.bastion.bastion_sg
-  lambda_firebase_authorizer   = module.lambda.lambda_firebase_authorizer
+  lambda_firebase_authorizer       = module.lambda.lambda_firebase_authorizer
 }
 
 module "ssl-cert" {
@@ -104,12 +104,13 @@ module "ssl-cert" {
 }
 
 module "cdn" {
-  source                = "./modules/cdn"
-  domain                = var.general_config.domain
-  app_hostname_cert     = module.ssl-cert.acm_app
-  alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
-  origin_s3_bucket      = module.S3.front_end_endpoint
-  cdn_logging_s3_bucket = module.S3.cloudfront_log
+  source                 = "./modules/cdn"
+  domain                 = var.general_config.domain
+  app_hostname_cert      = module.ssl-cert.acm_app
+  alternate_domain_name  = "${var.dns_config.hostname}.${var.general_config.domain}"
+  origin_s3_bucket       = module.S3.front_end_endpoint
+  cdn_logging_s3_bucket  = module.S3.cloudfront_log
+  #reseller_portal_bucket = module.S3.reseller_portal
 }
 
 module "sns_topic" {
