@@ -278,3 +278,8 @@ resource "aws_iam_policy" "api_gateway_firebase_invocation_policy" {
     ]
   })
 }
+
+resource "aws_iam_role_policy_attachment" "api_gateway_firebase_invocation_role_attachment" {
+  role       = aws_iam_role.api_gateway_firebase_invocation_role.name
+  policy_arn = aws_iam_policy.api_gateway_firebase_invocation_policy.arn
+}
