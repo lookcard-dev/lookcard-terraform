@@ -81,6 +81,7 @@ variable "s3_bucket" {
     cloudwatch_syn_canaries = string
     accountid_data          = string
     lookcard_log            = string
+    reseller_portal         = string
   })
 }
 

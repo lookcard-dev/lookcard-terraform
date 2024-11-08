@@ -31,3 +31,7 @@ resource "aws_s3_bucket" "accountid_data" {
 resource "aws_s3_bucket" "lookcard_log" {
   bucket = var.lookcard_log
 }
+
+resource "aws_s3_bucket" "reseller_portal" {
+  bucket = var.reseller_portal
+}
