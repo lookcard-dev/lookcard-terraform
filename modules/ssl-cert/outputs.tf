@@ -32,3 +32,11 @@ output "cert_api_arn" {
 output "domain_api_name" {
   value = aws_acm_certificate.api.domain_name
 }
+
+output "subsum_webhook_cert_arn" {
+  value = aws_acm_certificate.sumsub_webhook.arn
+}
+
+output "sumsub_webhook_domain_name" {
+  value = aws_acm_certificate.sumsub_webhook.domain_name
+}
