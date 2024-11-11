@@ -47,7 +47,7 @@ locals {
     },
     {
       name  = "CORS_ORIGINS"
-      value = "*"
+      value = "*,https://7649-2-58-242-76.ngrok-free.app,https://d11w961ys8kzxr.cloudfront.net"
     },
     {
       name  = "RUNTIME_ENVIRONMENT"
