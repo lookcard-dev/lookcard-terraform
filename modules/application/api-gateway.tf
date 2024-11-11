@@ -48,10 +48,11 @@ resource "aws_cloudwatch_log_group" "api_gw_logs" {
   retention_in_days = 30
 }
 
-# resource "aws_cloudwatch_log_group" "sumsub_webhook" {
-#   name              = "/aws/api-gateway/sumsub_webhook"
-#   retention_in_days = 30
-# }
+resource "aws_cloudwatch_log_group" "sumsub_webhook" {
+  name              = "/aws/api-gateway/sumsub_webhook"
+  retention_in_days = 30
+}
+
 # Define the API Gateway
 resource "aws_api_gateway_rest_api" "lookcard_api" {
   name        = "lookcard_api"
@@ -99,11 +100,11 @@ resource "aws_api_gateway_resource" "lookcard_resource" {
   path_part   = "{proxy+}"
 }
 
-# resource "aws_api_gateway_resource" "sumsub_webhook" {
-#   rest_api_id = aws_api_gateway_rest_api.sumsub_webhook.id
-#   parent_id   = aws_api_gateway_rest_api.sumsub_webhook.root_resource_id
-#   path_part   = "/webhook"
-# }
+resource "aws_api_gateway_resource" "sumsub_webhook" {
+  rest_api_id = aws_api_gateway_rest_api.sumsub_webhook.id
+  parent_id   = aws_api_gateway_rest_api.sumsub_webhook.root_resource_id
+  path_part   = "webhook"
+}
 
 # Create a Method
 resource "aws_api_gateway_method" "lookcard_method" {
@@ -117,16 +118,12 @@ resource "aws_api_gateway_method" "lookcard_method" {
   }
 }
 
-# resource "aws_api_gateway_method" "sumsub_webhook" {
-#   rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
-#   resource_id   = aws_api_gateway_resource.sumsub_webhook.id
-#   http_method   = "ANY"
-#   authorization = "NONE"
-
-#   request_parameters = {
-#     "method.request.path.proxy" = true
-#   }
-# }
+resource "aws_api_gateway_method" "sumsub_webhook" {
+  rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
+  resource_id   = aws_api_gateway_resource.sumsub_webhook.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
 
 resource "aws_api_gateway_vpc_link" "nlb_vpc_link" {
   name        = "nlb-vpc-link"
@@ -152,14 +149,14 @@ resource "aws_api_gateway_integration" "lookcard_integration" {
   }
 }
 
-# resource "aws_api_gateway_integration" "sumsub_webhook" {
-#   rest_api_id             = aws_api_gateway_rest_api.sumsub_webhook.id
-#   resource_id             = aws_api_gateway_resource.sumsub_webhook.id
-#   http_method             = aws_api_gateway_method.sumsub_webhook.http_method
-#   type                    = "AWS_PROXY"
-#   integration_http_method = "POST"
-#   uri                     = "http://${aws_alb.look-card.dns_name}/{proxy}"
-# }
+resource "aws_api_gateway_integration" "sumsub_webhook" {
+  rest_api_id             = aws_api_gateway_rest_api.sumsub_webhook.id
+  resource_id             = aws_api_gateway_resource.sumsub_webhook.id
+  http_method             = aws_api_gateway_method.sumsub_webhook.http_method
+  integration_http_method = "ANY"
+  type = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-1:227720554629:function:sumsub-webhook/invocations"
+}
 
 resource "aws_api_gateway_deployment" "lookcard_deployment" {
   depends_on = [
@@ -202,39 +199,40 @@ resource "aws_api_gateway_stage" "stage" {
   }
 }
 
-# resource "aws_api_gateway_stage" "sumsub_webhook" {
-#   deployment_id = aws_api_gateway_deployment.sumsub_webhook.id
-#   rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
-#   stage_name    = var.env_tag
-#   variables = {
-#     "env" = var.env_tag
-#   }
-#   xray_tracing_enabled = true
+resource "aws_api_gateway_stage" "sumsub_webhook" {
+  deployment_id = aws_api_gateway_deployment.sumsub_webhook.id
+  rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
+  stage_name    = var.env_tag
+  variables = {
+    "env" = var.env_tag
+  }
+  xray_tracing_enabled = true
 
-#   access_log_settings {
-#     destination_arn = aws_cloudwatch_log_group.sumsub_webhook.arn
-#     format = jsonencode({
-#       requestId      = "$context.requestId",
-#       ip             = "$context.identity.sourceIp",
-#       caller         = "$context.identity.caller",
-#       user           = "$context.identity.user",
-#       requestTime    = "$context.requestTime",
-#       httpMethod     = "$context.httpMethod",
-#       resourcePath   = "$context.resourcePath",
-#       status         = "$context.status",
-#       protocol       = "$context.protocol",
-#       responseLength = "$context.responseLength"
-#     })
-#   }
-# }
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.sumsub_webhook.arn
+    format = jsonencode({
+      requestId      = "$context.requestId",
+      ip             = "$context.identity.sourceIp",
+      caller         = "$context.identity.caller",
+      user           = "$context.identity.user",
+      requestTime    = "$context.requestTime",
+      httpMethod     = "$context.httpMethod",
+      resourcePath   = "$context.resourcePath",
+      status         = "$context.status",
+      protocol       = "$context.protocol",
+      responseLength = "$context.responseLength"
+    })
+  }
+}
 
-# resource "aws_api_gateway_deployment" "sumsub_webhook" {
-#   depends_on = [
-#     aws_api_gateway_integration.sumsub_webhook
-#   ]
+resource "aws_api_gateway_deployment" "sumsub_webhook" {
+  depends_on = [
+    aws_api_gateway_integration.sumsub_webhook,
+    aws_api_gateway_rest_api.sumsub_webhook
+  ]
 
-#   rest_api_id = aws_api_gateway_rest_api.sumsub_webhook.id
-# }
+  rest_api_id = aws_api_gateway_rest_api.sumsub_webhook.id
+}
 
 //* Push_message_Web api_gw
 resource "aws_apigatewayv2_api" "Push_message_Web" {

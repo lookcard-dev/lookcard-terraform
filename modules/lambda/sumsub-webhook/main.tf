@@ -16,3 +16,10 @@ resource "aws_lambda_function" "sumsub_webhook" {
     security_group_ids = [aws_security_group.lambda_sumsub_webhook_sg.id]
   }
 }
+
+resource "aws_lambda_permission" "allow_api_gw" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+  function_name = aws_lambda_function.sumsub_webhook.function_name
+}
