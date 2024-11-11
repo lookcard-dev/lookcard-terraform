@@ -58,10 +58,10 @@ resource "aws_api_gateway_rest_api" "lookcard_api" {
   description = "lookcard API Gateway pointing to ALB"
 }
 
-# resource "aws_api_gateway_rest_api" "sumsub_webhook" {
-#   name        = "sumsub_webhook"
-#   description = ""
-# }
+resource "aws_api_gateway_rest_api" "sumsub_webhook" {
+  name        = "sumsub_webhook"
+  description = ""
+}
 
 # Create a Custom Domain
 resource "aws_api_gateway_domain_name" "lookcard_domain" {
