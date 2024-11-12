@@ -20,4 +20,8 @@ resource "aws_lambda_function" "firebase_authorizer" {
     subnet_ids         = var.network.private_subnet
     security_group_ids = [aws_security_group.lambda_firebase_authorizer_sg.id]
   }
+
+  image_config {
+    command = ["handlers/firebase.handler"]
+  }
 }
