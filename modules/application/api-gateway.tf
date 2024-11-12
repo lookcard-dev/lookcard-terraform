@@ -154,8 +154,8 @@ resource "aws_api_gateway_integration" "sumsub_webhook" {
   resource_id             = aws_api_gateway_resource.sumsub_webhook.id
   http_method             = aws_api_gateway_method.sumsub_webhook.http_method
   integration_http_method = "ANY"
-  type = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-1:227720554629:function:sumsub-webhook/invocations"
+  type                    = "AWS_PROXY"
+  uri                     = var.lambda.sumsub_webhook.invoke_arn
 }
 
 resource "aws_api_gateway_deployment" "lookcard_deployment" {

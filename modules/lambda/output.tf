@@ -37,3 +37,7 @@ output "lambda_firebase_authorizer_sg_id" {
 output "lambda_firebase_authorizer" {
   value = module.firebase-authorizer.lambda_firebase_authorizer
 }
+
+output "sumsub_webhook" {
+  value = module.sumsub-webhook.sumsub_webhook
+}
