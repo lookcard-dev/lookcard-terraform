@@ -170,6 +170,7 @@ locals {
   ]
   iam_secrets = [
     var.secret_manager.secret_arns["DATABASE"],
-    var.secret_manager.secret_arns["SENTRY"]
+    var.secret_manager.secret_arns["SENTRY"],
+    var.secret_manager.secret_arns["TELEGRAM"]
   ]
 }
