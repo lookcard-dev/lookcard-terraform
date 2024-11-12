@@ -86,10 +86,6 @@ locals {
       value = "true"
     },
     {
-      name  = "BOT_TOKEN"
-      value = "5000925898:AAFExCrrpAmGfKZMaMPHqCC0ixkuHXgiSwU"
-    },
-    {
       name  = "PROFILE_API_PROTOCOL"
       value = "http"
     },
@@ -163,6 +159,10 @@ locals {
       name      = "DATABASE_PASSWORD"
       valueFrom = "${var.secret_manager.secret_arns["DATABASE"]}:password::"
     },
+    {
+      name      = "BOT_TOKEN"
+      valueFrom = "${var.secret_manager.secret_arns["TELEGRAM"]}:reseller-bot-token::"
+    }
     # {
     #   name      = "SENTRY_DSN"
     #   valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:REFERRAL_API_DSN::"
