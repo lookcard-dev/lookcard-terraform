@@ -24,4 +24,12 @@ resource "aws_lambda_function" "firebase_authorizer" {
   image_config {
     command = ["handlers/firebase.handler"]
   }
+
+  environment {
+    variables = {
+      SENTRY_DSN = "https://a6dd019878e8998d0117d8f298cbce5f@o4507299807428608.ingest.de.sentry.io/4508289701052496",
+      RUNTIME_ENVIRONMENT = var.env_tag,
+      AWS_XRAY_DAEMON_ENDPOINT = "xray.daemon.lookcard.local:2337"
+    }
+  }
 }

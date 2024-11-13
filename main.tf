@@ -153,6 +153,7 @@ module "lambda" {
   general_config                 = var.general_config
   image_tag                      = var.image_tag
   ecr_repository_urls            = module.application.ecr_repository_urls
+  env_tag                        = var.env_tag
 }
 
 module "elasticache" {

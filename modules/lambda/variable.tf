@@ -46,6 +46,7 @@ variable "lambda_code_s3_bucket" {}
 variable "lambda_code_data_process_s3key" {}
 variable "general_config" {}
 variable "image_tag" {}
+variable "env_tag" {}
 
 variable "ecr_repository_urls" {
   type = map(string)

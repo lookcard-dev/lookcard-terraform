@@ -91,6 +91,7 @@ module "firebase-authorizer" {
     url = var.ecr_repository_urls["apigw-authorizer"]
     tag = var.image_tag.apigw-authorizer
   }
+  env_tag = var.env_tag
 }
 
 module "sumsub-webhook" {
@@ -104,4 +105,5 @@ module "sumsub-webhook" {
     url = var.ecr_repository_urls["sumsub-webhook"]
     tag = var.image_tag.sumsub-webhook
   }
+  env_tag = var.env_tag
 }
