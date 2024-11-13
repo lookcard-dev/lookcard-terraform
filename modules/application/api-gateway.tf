@@ -64,6 +64,21 @@ resource "aws_api_gateway_rest_api" "sumsub_webhook" {
   description = ""
 }
 
+resource "aws_api_gateway_rest_api" "reap_webhook" {
+  name        = "reap_webhook"
+  description = ""
+}
+
+resource "aws_api_gateway_rest_api" "firebase_webhook" {
+  name        = "firebase_webhook"
+  description = ""
+}
+
+resource "aws_api_gateway_rest_api" "fireblocks_webhook" {
+  name        = "fireblocks_webhook"
+  description = ""
+}
+
 # Create a Custom Domain
 resource "aws_api_gateway_domain_name" "lookcard_domain" {
   domain_name              = var.acm.domain_api_name
@@ -74,8 +89,32 @@ resource "aws_api_gateway_domain_name" "lookcard_domain" {
 }
 
 resource "aws_api_gateway_domain_name" "sumsub_webhook" {
-  domain_name              = var.acm.sumsub_webhook_domain_name
-  regional_certificate_arn = var.acm.subsum_webhook_cert_arn # Ensure this certificate is in the same region as your API Gateway
+  domain_name              = var.acm.sumsub_webhook.domain_name
+  regional_certificate_arn = var.acm.sumsub_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+
+resource "aws_api_gateway_domain_name" "reap_webhook" {
+  domain_name              = var.acm.reap_webhook.domain_name
+  regional_certificate_arn = var.acm.reap_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+
+resource "aws_api_gateway_domain_name" "firebase_webhook" {
+  domain_name              = var.acm.firebase_webhook.domain_name
+  regional_certificate_arn = var.acm.firebase_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+
+resource "aws_api_gateway_domain_name" "fireblocks_webhook" {
+  domain_name              = var.acm.fireblocks_webhook.domain_name
+  regional_certificate_arn = var.acm.fireblocks_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -93,6 +132,54 @@ resource "aws_route53_record" "lookcard_api_record" {
   }
 }
 
+resource "aws_route53_record" "sumsub_webhook" {
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = var.dns_config.sumsub_webhook_hostname
+  type    = "A"
+
+  alias {
+    name                   = aws_api_gateway_domain_name.sumsub_webhook.regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.sumsub_webhook.regional_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "reap_webhook" {
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = var.dns_config.reap_webhook_hostname
+  type    = "A"
+
+  alias {
+    name                   = aws_api_gateway_domain_name.reap_webhook.regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.reap_webhook.regional_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "firebase_webhook" {
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = var.dns_config.firebase_webhook_hostname
+  type    = "A"
+
+  alias {
+    name                   = aws_api_gateway_domain_name.firebase_webhook.regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.firebase_webhook.regional_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "fireblocks_webhook" {
+  zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
+  name    = var.dns_config.fireblocks_webhook_hostname
+  type    = "A"
+
+  alias {
+    name                   = aws_api_gateway_domain_name.fireblocks_webhook.regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.fireblocks_webhook.regional_zone_id
+    evaluate_target_health = false
+  }
+}
+
 # Create a Resource
 resource "aws_api_gateway_resource" "lookcard_resource" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
@@ -103,6 +190,24 @@ resource "aws_api_gateway_resource" "lookcard_resource" {
 resource "aws_api_gateway_resource" "sumsub_webhook" {
   rest_api_id = aws_api_gateway_rest_api.sumsub_webhook.id
   parent_id   = aws_api_gateway_rest_api.sumsub_webhook.root_resource_id
+  path_part   = "webhook"
+}
+
+resource "aws_api_gateway_resource" "reap_webhook" {
+  rest_api_id = aws_api_gateway_rest_api.reap_webhook.id
+  parent_id   = aws_api_gateway_rest_api.reap_webhook.root_resource_id
+  path_part   = "webhook"
+}
+
+resource "aws_api_gateway_resource" "firebase_webhook" {
+  rest_api_id = aws_api_gateway_rest_api.firebase_webhook.id
+  parent_id   = aws_api_gateway_rest_api.firebase_webhook.root_resource_id
+  path_part   = "webhook"
+}
+
+resource "aws_api_gateway_resource" "fireblocks_webhook" {
+  rest_api_id = aws_api_gateway_rest_api.fireblocks_webhook.id
+  parent_id   = aws_api_gateway_rest_api.fireblocks_webhook.root_resource_id
   path_part   = "webhook"
 }
 
@@ -121,6 +226,27 @@ resource "aws_api_gateway_method" "lookcard_method" {
 resource "aws_api_gateway_method" "sumsub_webhook" {
   rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
   resource_id   = aws_api_gateway_resource.sumsub_webhook.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "reap_webhook" {
+  rest_api_id   = aws_api_gateway_rest_api.reap_webhook.id
+  resource_id   = aws_api_gateway_resource.reap_webhook.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "firebase_webhook" {
+  rest_api_id   = aws_api_gateway_rest_api.firebase_webhook.id
+  resource_id   = aws_api_gateway_resource.firebase_webhook.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "fireblocks_webhook" {
+  rest_api_id   = aws_api_gateway_rest_api.fireblocks_webhook.id
+  resource_id   = aws_api_gateway_resource.fireblocks_webhook.id
   http_method   = "ANY"
   authorization = "NONE"
 }
