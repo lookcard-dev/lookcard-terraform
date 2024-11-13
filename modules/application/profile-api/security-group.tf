@@ -11,7 +11,7 @@ resource "aws_security_group" "profile-api-sg" {
       to_port   = ingress.value
       protocol  = "tcp"
       # cidr_blocks = ["0.0.0.0/0"]
-      security_groups = [var.sg_alb_id, var.referral_api_sg, var.verification_api_sg, var.lambda_firebase_authorizer_sg_id, var.reseller_api_sg, var.account_api_sg, var.bastion_sg, var.crypto_api_sg_id, var.lambda.lambda_aggregator_tron_sg_id] #var._auth_api_sg
+      security_groups = [var.sg_alb_id, var.referral_api_sg, var.verification_api_sg, var.lambda_firebase_authorizer_sg_id, var.reseller_api_sg, var.account_api_sg, var.bastion_sg, var.crypto_api_sg_id, var.lambda.lambda_aggregator_tron_sg_id,var.user_api_sg] #var._auth_api_sg
     }
   }
 

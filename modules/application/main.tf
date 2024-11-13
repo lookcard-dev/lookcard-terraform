@@ -220,6 +220,7 @@ module "profile-api" {
   sg_alb_id                        = aws_security_group.api_alb_sg.id
   referral_api_sg                  = module.referral-api.referral_api_sg
   account_api_sg                   = module.account-api.account_api_sg_id
+  user_api_sg                      = module.user-api.user_api_sg
   #_auth_api_sg                     = module.authentication._auth_api_sg
   verification_api_sg              = module.verification-api.verification_api_sg
   profile_api_ddb_table            = var.profile_api_ddb_table

@@ -5,6 +5,7 @@ variable "secret_manager" {}
 variable "referral_api_sg" {}
 variable "account_api_sg" {}
 variable "profile_api_ddb_table" {}
+variable "user_api_sg"{}
 # variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
 variable "env_tag" {}
