@@ -12,3 +12,5 @@ variable "image" {
     tag = string
   })
 }
+
+variable "env_tag" {}
