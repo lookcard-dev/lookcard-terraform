@@ -3,6 +3,9 @@ variable "app_hostname" {}
 variable "admin_hostname" {}
 variable "api_hostname" {}
 variable "sumsub_webhook_hostname" {}
+variable "reap_webhook_hostname" {}
+variable "firebase_webhook_hostname" {}
+variable "fireblocks_webhook_hostname" {}
 
 provider "aws" {
   alias  = "east"
