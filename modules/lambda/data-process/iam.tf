@@ -16,6 +16,11 @@ resource "aws_iam_role_policy_attachment" "data_process_vpc_policy_attachment" {
 
 }
 
+resource "aws_iam_role_policy_attachment" "data_process_xraydaemon_write_policy" {
+  role       = aws_iam_role.data_process_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
 resource "aws_iam_policy" "data_process_sqs_policy" {
   name        = "SQS_Access_Data_Process"
   description = "Lambda data-process policy"

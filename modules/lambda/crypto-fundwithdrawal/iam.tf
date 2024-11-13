@@ -72,6 +72,11 @@ resource "aws_iam_role_policy_attachment" "Lambda_crypto_fund__execution_notific
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "crypto_fund_withdrawal_xraydaemon_write_policy" {
+  role       = aws_iam_role.crypto_fund_withdrawal_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
 resource "aws_iam_role_policy_attachment" "crypto_fund_withdrawal_sqs_send_message_attachment" {
   role       = aws_iam_role.crypto_fund_withdrawal_role.name
   policy_arn = aws_iam_policy.Lambda_Crypto_Fund_Withdrawal_sqs_send_message_policy.arn

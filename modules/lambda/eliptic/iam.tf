@@ -14,6 +14,11 @@ resource "aws_iam_role_policy_attachment" "eliptic_vpc_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "eliptic_xraydaemon_write_policy" {
+  role       = aws_iam_role.eliptic_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
 resource "aws_iam_policy" "eliptic_secrets_manager_read_policy" {
   name        = "SecretsManagerReadOnlyPolicyEliptic"
   description = "Allows read-only access to Secrets Manager"
