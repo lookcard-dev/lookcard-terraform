@@ -39,3 +39,8 @@ resource "aws_iam_policy_attachment" "Push_Notification_manager_read_attachment"
   roles      = [aws_iam_role.push_notification_role.name]
   policy_arn = aws_iam_policy.push_notification_secrets_manager_read_policy.arn
 }
+
+resource "aws_iam_role_policy_attachment" "lookcard_push_notification_xraydaemon_write_policy" {
+  role       = aws_iam_role.push_notification_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}

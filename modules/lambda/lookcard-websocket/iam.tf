@@ -40,4 +40,7 @@ resource "aws_iam_policy_attachment" "websocket_secrets_manager_read_attachment"
   policy_arn = aws_iam_policy.websocket_secrets_manager_read_policy.arn
 }
 
-
+resource "aws_iam_role_policy_attachment" "websocket_xraydaemon_write_policy" {
+  role       = aws_iam_role.websocket_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}

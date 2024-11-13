@@ -37,3 +37,7 @@ resource "aws_iam_role_policy_attachment" "websocket_vpc_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "websocket_connect_xraydaemon_write_policy" {
+  role       = aws_iam_role.websocket_connect_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}

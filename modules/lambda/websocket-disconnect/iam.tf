@@ -37,3 +37,8 @@ resource "aws_iam_role_policy_attachment" "websocket_disconnect_vpc_policy_attac
   role       = aws_iam_role.websocket_disconnect_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+resource "aws_iam_role_policy_attachment" "websocket_disconnect_xraydaemon_write_policy" {
+  role       = aws_iam_role.websocket_disconnect_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}

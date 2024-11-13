@@ -20,3 +20,8 @@ resource "aws_iam_role_policy_attachment" "lambda_sumbsub_webhook" {
   role       = aws_iam_role.lambda_sumbsub_webhook.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+resource "aws_iam_role_policy_attachment" "sumbsub_webhook_xraydaemon_write_policy" {
+  role       = aws_iam_role.lambda_sumbsub_webhook.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
