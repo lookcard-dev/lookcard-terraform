@@ -20,7 +20,11 @@ variable "dns_config" {
   type = object({
     hostname       = string
     api_hostname   = string
-    admin_hostname = string
+    admin_hostname           = string
+    sumsub_webhook_hostname = string
+    reap_webhook_hostname   = string
+    firebase_webhook_hostname = string
+    fireblocks_webhook_hostname = string
   })
 }
 
