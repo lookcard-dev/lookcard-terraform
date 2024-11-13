@@ -102,6 +102,9 @@ module "ssl-cert" {
   admin_hostname          = "${var.dns_config.admin_hostname}.${var.general_config.domain}"
   api_hostname            = "${var.dns_config.api_hostname}.${var.general_config.domain}"
   sumsub_webhook_hostname = "${var.dns_config.sumsub_webhook_hostname}.${var.general_config.domain}"
+  reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
+  firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
+  fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
 }
 
 module "cdn" {
