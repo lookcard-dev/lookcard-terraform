@@ -226,28 +226,28 @@ resource "aws_api_gateway_method" "lookcard_method" {
 resource "aws_api_gateway_method" "sumsub_webhook" {
   rest_api_id   = aws_api_gateway_rest_api.sumsub_webhook.id
   resource_id   = aws_api_gateway_resource.sumsub_webhook.id
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_method" "reap_webhook" {
   rest_api_id   = aws_api_gateway_rest_api.reap_webhook.id
   resource_id   = aws_api_gateway_resource.reap_webhook.id
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_method" "firebase_webhook" {
   rest_api_id   = aws_api_gateway_rest_api.firebase_webhook.id
   resource_id   = aws_api_gateway_resource.firebase_webhook.id
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_method" "fireblocks_webhook" {
   rest_api_id   = aws_api_gateway_rest_api.fireblocks_webhook.id
   resource_id   = aws_api_gateway_resource.fireblocks_webhook.id
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
@@ -279,7 +279,7 @@ resource "aws_api_gateway_integration" "sumsub_webhook" {
   rest_api_id             = aws_api_gateway_rest_api.sumsub_webhook.id
   resource_id             = aws_api_gateway_resource.sumsub_webhook.id
   http_method             = aws_api_gateway_method.sumsub_webhook.http_method
-  integration_http_method = "ANY"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.lambda.sumsub_webhook.invoke_arn
 }
