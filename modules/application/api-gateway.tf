@@ -281,7 +281,7 @@ resource "aws_api_gateway_integration" "sumsub_webhook" {
   http_method             = aws_api_gateway_method.sumsub_webhook.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.lambda.sumsub_webhook.invoke_arn
+  uri                     = module.sumsub-webhook.sumsub_webhook.invoke_arn
 }
 
 resource "aws_api_gateway_deployment" "lookcard_deployment" {
@@ -439,7 +439,7 @@ resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
 resource "aws_api_gateway_authorizer" "firebase_authorizer" {
   name                   = "firebase_authorizer"
   rest_api_id            = aws_api_gateway_rest_api.lookcard_api.id
-  authorizer_uri         = var.lambda_firebase_authorizer.invoke_arn
+  authorizer_uri         = module.firebase-authorizer.lambda_firebase_authorizer.invoke_arn
   authorizer_credentials = aws_iam_role.api_gateway_firebase_invocation_role.arn
 }
 
@@ -473,7 +473,7 @@ resource "aws_iam_policy" "api_gateway_firebase_invocation_policy" {
           "lambda:InvokeFunction"
         ],
         "Resource" : [
-          var.lambda_firebase_authorizer.arn
+          module.firebase-authorizer.lambda_firebase_authorizer.arn
         ]
       }
     ]
