@@ -11,7 +11,7 @@ resource "aws_security_group" "lambda_sumsub_webhook_sg" {
   }
 
   tags = {
-    Name = "lambda-firebase-authorizer-sg"
+    Name = "lambda-sumsub-webhook-sg"
   }
 }
 

@@ -30,14 +30,14 @@ output "crypto_fund_withdrawal_sg_id" {
   value = module.crypto-fundwithdrawal.crypto_fund_withdrawal_sg_id
 }
 
-output "lambda_firebase_authorizer_sg_id" {
-  value = module.firebase-authorizer.lambda_firebase_authorizer_sg_id
-}
+# output "lambda_firebase_authorizer_sg_id" {
+#   value = module.firebase-authorizer.lambda_firebase_authorizer_sg_id
+# }
 
-output "lambda_firebase_authorizer" {
-  value = module.firebase-authorizer.lambda_firebase_authorizer
-}
+# output "lambda_firebase_authorizer" {
+#   value = module.firebase-authorizer.lambda_firebase_authorizer
+# }
 
-output "sumsub_webhook" {
-  value = module.sumsub-webhook.sumsub_webhook
-}
+# output "sumsub_webhook" {
+#   value = module.sumsub-webhook.sumsub_webhook
+# }
