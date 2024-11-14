@@ -342,6 +342,36 @@ module "reseller-api" {
   default_listener = aws_lb_listener.look-card.arn
 }
 
+# # ********************  Lambda functions  ***********************
+
+# module "firebase-authorizer" {
+#   source = "./firebase-authorizer"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = var.ecr_repository_urls["apigw-authorizer"]
+#     tag = var.image_tag.apigw-authorizer
+#   }
+#   env_tag = var.env_tag
+# }
+
+# module "sumsub-webhook" {
+#   source = "./sumsub-webhook"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = var.ecr_repository_urls["sumsub-webhook"]
+#     tag = var.image_tag.sumsub-webhook
+#   }
+#   env_tag = var.env_tag
+# }
+
 # # ********************  v1  ***********************
 
 # module "authentication" {
