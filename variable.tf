@@ -50,6 +50,7 @@ variable "image_tag" {
     reseller-api         = string
     apigw-authorizer     = string
     sumsub-webhook       = string
+    reap-webhook         = string
   })
 }
 
