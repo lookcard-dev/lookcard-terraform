@@ -64,6 +64,7 @@ variable "ecr_names" {
     "reseller-api"         = "reseller-api"
     "apigw-authorizer"     = "apigw-authorizer"
     "sumsub-webhook"       = "sumsub-webhook"
+    "reap-webhook"         = "reap-webhook"
   }
 }
 
