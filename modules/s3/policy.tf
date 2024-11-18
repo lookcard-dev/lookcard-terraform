@@ -117,26 +117,26 @@ resource "aws_s3_bucket_policy" "lookcard_log" {
   })
 }
 
-# resource "aws_s3_bucket_policy" "reseller_portal" {
-#   bucket = aws_s3_bucket.reseller_portal.id
-#   policy = jsonencode({
-#     "Version" : "2008-10-17",
-#     "Id" : "PolicyForCloudFrontPrivateContent",
-#     "Statement" : [
-#       {
-#         "Sid" : "AllowCloudFrontServicePrincipal",
-#         "Effect" : "Allow",
-#         "Principal" : {
-#           "Service" : "cloudfront.amazonaws.com"
-#         },
-#         "Action" : "s3:GetObject",
-#         "Resource" : "${aws_s3_bucket.reseller_portal.arn}/*",
-#         "Condition" : {
-#           "StringEquals" : {
-#             "AWS:SourceArn" : "arn:aws:cloudfront::271609687710:distribution/EEJKS7P0CJDYH"
-#           }
-#         }
-#       }
-#     ]
-#   })
-# }
+resource "aws_s3_bucket_policy" "reseller_portal" {
+  bucket = aws_s3_bucket.reseller_portal.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Id" : "PolicyForCloudFrontPrivateContent",
+    "Statement" : [
+      {
+        "Sid" : "AllowCloudFrontServicePrincipalReadOnly",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudfront.amazonaws.com"
+        },
+        "Action" : "s3:GetObject",
+        "Resource" : "${aws_s3_bucket.reseller_portal.arn}/*",
+        "Condition" : {
+          "StringEquals" : {
+            "AWS:SourceArn" : var.cloudfront.reseller_portal.arn
+          }
+        }
+      }
+    ]
+  })
+}

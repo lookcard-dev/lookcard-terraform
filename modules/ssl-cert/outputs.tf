@@ -60,3 +60,10 @@ output "fireblocks_webhook" {
     domain_name = aws_acm_certificate.fireblocks_webhook.domain_name
   }
 }
+
+output "reseller_portal" {
+  value = {
+    cert_arn = aws_acm_certificate.reseller_portal.arn
+    domain_name = aws_acm_certificate.reseller_portal.domain_name
+  }
+}

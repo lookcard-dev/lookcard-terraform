@@ -14,6 +14,7 @@ variable "dns_config" {
     reap_webhook_hostname   = string
     firebase_webhook_hostname = string
     fireblocks_webhook_hostname = string
+    reseller_portal_hostname    = string
   })
 }
 variable "aws_provider" {

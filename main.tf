@@ -29,6 +29,7 @@ module "S3" {
   accountid_data          = var.s3_bucket.accountid_data
   lookcard_log            = var.s3_bucket.lookcard_log
   reseller_portal         = var.s3_bucket.reseller_portal
+  cloudfront  = module.cdn
 }
 
 module "rds" {
@@ -105,6 +106,7 @@ module "ssl-cert" {
   reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
   firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
   fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
+  reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
 }
 
 module "cdn" {
@@ -112,9 +114,11 @@ module "cdn" {
   domain                = var.general_config.domain
   app_hostname_cert     = module.ssl-cert.acm_app
   alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
+  alternate_reseller_domain_name = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
   origin_s3_bucket      = module.S3.front_end_endpoint
   cdn_logging_s3_bucket = module.S3.cloudfront_log
-  #reseller_portal_bucket = module.S3.reseller_portal
+  reseller_portal_bucket = module.S3.reseller_portal_bucket
+  ssl_cert                = module.ssl-cert
 }
 
 module "sns_topic" {

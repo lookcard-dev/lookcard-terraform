@@ -32,3 +32,7 @@ output "cloudwatch_syn_canaries" {
 output "accountid_data" {
   value = aws_s3_bucket.accountid_data.bucket
 }
+
+output "reseller_portal_bucket" {
+  value = aws_s3_bucket.reseller_portal
+}
