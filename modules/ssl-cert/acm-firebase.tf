@@ -4,6 +4,7 @@
 resource "aws_acm_certificate" "firebase_webhook" {
   domain_name       = var.firebase_webhook_hostname
   validation_method = "DNS"
+  provider                = aws.east
   lifecycle {
     create_before_destroy = true
   }
@@ -21,6 +22,7 @@ resource "aws_route53_record" "firebase_webhook_cert" {
 resource "aws_acm_certificate_validation" "firebase_webhook_validation" {
   certificate_arn         = aws_acm_certificate.firebase_webhook.arn
   validation_record_fqdns = [aws_route53_record.firebase_webhook_cert.fqdn]
+  provider                = aws.east
 }
 
 
