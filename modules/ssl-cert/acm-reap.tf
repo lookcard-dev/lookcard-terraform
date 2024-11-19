@@ -1,6 +1,7 @@
 resource "aws_acm_certificate" "reap_webhook" {
   domain_name       = var.reap_webhook_hostname
   validation_method = "DNS"
+  provider                = aws.east
   lifecycle {
     create_before_destroy = true
   }
@@ -18,4 +19,5 @@ resource "aws_route53_record" "reap_webhook_cert" {
 resource "aws_acm_certificate_validation" "reap_webhook_validation" {
   certificate_arn         = aws_acm_certificate.reap_webhook.arn
   validation_record_fqdns = [aws_route53_record.reap_webhook_cert.fqdn]
+  provider                = aws.east
 }
