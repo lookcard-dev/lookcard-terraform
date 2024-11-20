@@ -36,3 +36,8 @@ output "accountid_data" {
 output "reseller_portal_bucket" {
   value = aws_s3_bucket.reseller_portal
 }
+
+output "waf_log" {
+  value = aws_s3_bucket.waf_log.arn
+
+}

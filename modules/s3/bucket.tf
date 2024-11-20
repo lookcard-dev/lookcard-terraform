@@ -35,3 +35,7 @@ resource "aws_s3_bucket" "lookcard_log" {
 resource "aws_s3_bucket" "reseller_portal" {
   bucket = var.reseller_portal
 }
+
+resource "aws_s3_bucket" "waf_log" {
+  bucket = var.waf_log
+}
