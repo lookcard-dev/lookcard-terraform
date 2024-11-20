@@ -18,3 +18,5 @@ variable "domain" {
 variable "reseller_portal_bucket" {}
 
 variable "ssl_cert" {}
+
+variable "waf_log" {}

@@ -120,6 +120,7 @@ module "cdn" {
   cdn_logging_s3_bucket = module.S3.cloudfront_log
   reseller_portal_bucket = module.S3.reseller_portal_bucket
   ssl_cert                = module.ssl-cert
+  waf_log                 = module.S3.waf_log
 }
 
 module "sns_topic" {
