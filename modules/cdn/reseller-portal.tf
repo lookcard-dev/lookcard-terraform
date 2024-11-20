@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "reseller_portal" {
 
   }
 
-  web_acl_id = aws_wafv2_web_acl.cdn_waf.arn
+  web_acl_id = aws_wafv2_web_acl.portal.arn
 }
 
 resource "aws_route53_record" "reseller_portal_record" {
