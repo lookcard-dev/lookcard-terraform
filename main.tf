@@ -29,6 +29,7 @@ module "S3" {
   accountid_data          = var.s3_bucket.accountid_data
   lookcard_log            = var.s3_bucket.lookcard_log
   reseller_portal         = var.s3_bucket.reseller_portal
+  waf_log                 = var.s3_bucket.waf_log
   cloudfront  = module.cdn
 }
 

@@ -13,7 +13,7 @@ variable "accountid_data" {}
 variable "lookcard_log" {}
 variable "reseller_portal" {}
 variable "cloudfront" {}
-
+variable "waf_log" {}
 
 
 

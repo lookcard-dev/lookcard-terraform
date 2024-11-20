@@ -88,6 +88,7 @@ variable "s3_bucket" {
     accountid_data          = string
     lookcard_log            = string
     reseller_portal         = string
+    waf_log                 = string
   })
 }
 
