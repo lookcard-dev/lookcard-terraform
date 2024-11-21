@@ -41,14 +41,14 @@ resource "aws_route_table" "private-route-table" {
   }
 
   tags = {
-    Name = "private-subnet-route-table-${element(aws_subnet.private-subnet.*.availability_zone, count.index)}"
+    Name = "private-subnet-route-table-${element(aws_subnet.private_subnet.*.availability_zone, count.index)}"
   }
 }
 
 
 resource "aws_route_table_association" "private_subnet_association" {
-  count          = length(aws_subnet.private-subnet) # Ensure count matches the number of private subnets
-  subnet_id      = element(aws_subnet.private-subnet.*.id, count.index)
+  count          = length(aws_subnet.private_subnet) # Ensure count matches the number of private subnets
+  subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
   route_table_id = element(aws_route_table.private-route-table.*.id, count.index)
 }
 
@@ -83,22 +83,20 @@ resource "aws_route_table" "isolated-route-table" {
 }
 
 resource "aws_route_table_association" "isolated_subnet_association" {
-  count          = length(aws_subnet.isolated-subnet)
-  subnet_id      = aws_subnet.isolated-subnet[count.index].id
+  count          = length(aws_subnet.isolated_subnet)
+  subnet_id      = aws_subnet.isolated_subnet[count.index].id
   route_table_id = aws_route_table.isolated-route-table.id
 }
 
 resource "aws_route_table_association" "database_subnet_association" {
-  count          = length(aws_subnet.database-subnet)
-  subnet_id      = aws_subnet.database-subnet[count.index].id
+  count          = length(aws_subnet.database_subnet)
+  subnet_id      = aws_subnet.database_subnet[count.index].id
   route_table_id = aws_route_table.database-route-table.id
 }
 
 
 resource "aws_route_table_association" "public_subnet_association" {
-  count          = length(aws_subnet.public-subnet)
-  subnet_id      = aws_subnet.public-subnet[count.index].id
+  count          = length(aws_subnet.public_subnet)
+  subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public-route-table.id
 }
-
-

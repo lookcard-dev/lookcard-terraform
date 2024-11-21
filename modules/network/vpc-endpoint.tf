@@ -2,7 +2,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = aws_vpc.vpc.id
   service_name      = "com.amazonaws.ap-southeast-1.ecr.api"
   vpc_endpoint_type = "Interface"
-  subnet_ids        = tolist(aws_subnet.private-subnet[*].id)
+  subnet_ids        = tolist(aws_subnet.private_subnet[*].id)
 
   security_group_ids = [aws_security_group.vpc_endpoint.id]
 
@@ -17,7 +17,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = aws_vpc.vpc.id
   service_name      = "com.amazonaws.ap-southeast-1.ecr.dkr"
   vpc_endpoint_type = "Interface"
-  subnet_ids        = tolist(aws_subnet.private-subnet[*].id)
+  subnet_ids        = tolist(aws_subnet.private_subnet[*].id)
 
   security_group_ids = [aws_security_group.vpc_endpoint.id]
 

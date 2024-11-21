@@ -1,7 +1,7 @@
 
 # look-card-Public-Subnet
 
-resource "aws_subnet" "public-subnet" {
+resource "aws_subnet" "public_subnet" {
   depends_on              = [aws_vpc.vpc]
   count                   = length(var.network.public_subnet_cidr_list)
   vpc_id                  = aws_vpc.vpc.id
@@ -16,7 +16,7 @@ resource "aws_subnet" "public-subnet" {
 
 # look-card-Private-Sub
 
-resource "aws_subnet" "private-subnet" {
+resource "aws_subnet" "private_subnet" {
   depends_on              = [aws_vpc.vpc]
   count                   = length(var.network.private_subnet_cidr_list)
   vpc_id                  = aws_vpc.vpc.id
@@ -30,7 +30,7 @@ resource "aws_subnet" "private-subnet" {
 
 # look-card-Database-Sub
 
-resource "aws_subnet" "database-subnet" {
+resource "aws_subnet" "database_subnet" {
   depends_on              = [aws_vpc.vpc]
   count                   = length(var.network.database_subnet_cidr_list)
   vpc_id                  = aws_vpc.vpc.id
@@ -44,7 +44,7 @@ resource "aws_subnet" "database-subnet" {
 
 # look-card-isolated-Sub
 
-resource "aws_subnet" "isolated-subnet" {
+resource "aws_subnet" "isolated_subnet" {
   depends_on              = [aws_vpc.vpc]
   count                   = length(var.network.isolated_subnet_cidr_list)
   vpc_id                  = aws_vpc.vpc.id
