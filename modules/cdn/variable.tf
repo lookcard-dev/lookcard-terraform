@@ -4,7 +4,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "app_hostname_cert" {}
 variable "alternate_domain_name" {}
 variable "alternate_reseller_domain_name" {}
 variable "origin_s3_bucket" {}

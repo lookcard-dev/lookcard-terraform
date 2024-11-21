@@ -113,7 +113,6 @@ module "ssl-cert" {
 module "cdn" {
   source                = "./modules/cdn"
   domain                = var.general_config.domain
-  app_hostname_cert     = module.ssl-cert.acm_app
   alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
   alternate_reseller_domain_name = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
   origin_s3_bucket      = module.S3.front_end_endpoint
@@ -172,15 +171,15 @@ module "elasticache" {
   }
 }
 
-module "vpc-endpoint" {
-  source = "./modules/vpc-endpoint"
-  network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
-  }
-  rt_private_id = module.VPC.rt_private_id[0]
-}
+# module "vpc-endpoint" {
+#   source = "./modules/vpc-endpoint"
+#   network = {
+#     vpc            = module.VPC.vpc
+#     private_subnet = module.VPC.private_subnet_ids
+#     public_subnet  = module.VPC.public_subnet_ids
+#   }
+#   rt_private_id = module.VPC.rt_private_id[0]
+# }
 
 module "syn_canaries" {
   source    = "./modules/syn_canaries"
