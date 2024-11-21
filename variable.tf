@@ -89,6 +89,14 @@ variable "s3_bucket" {
     lookcard_log            = string
     reseller_portal         = string
     waf_log                 = string
+    lookcard_download       = string
+    lookcard_metadata       = string
+    lookcard_data           = string
+    lookcard_corporate_portal = string
+    lookcard_verification_portal = string
+    lookcard_reseller_portal = string
+    lookcard_merchant_portal = string
+    lookcard_admin_console = string
   })
 }
 
