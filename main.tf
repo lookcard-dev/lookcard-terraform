@@ -198,3 +198,10 @@ module "bastion" {
     public_subnet  = module.VPC.public_subnet_ids
   }
 }
+
+module "storage" {
+  source                  = "./modules/storage"
+  s3_bucket               = var.s3_bucket
+  environment             = var.general_config
+  aws_provider            = var.aws_provider
+}
