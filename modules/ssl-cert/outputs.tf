@@ -1,6 +1,6 @@
-output "acm_app" {
-  value = aws_acm_certificate.app
-}
+# output "acm_app" {
+#   value = aws_acm_certificate.app
+# }
 
 
 # output "acm_certificate_arn" {

@@ -73,7 +73,7 @@ resource "aws_instance" "nat" {
   count                  = var.network_config.gateway_enabled ? 0 : var.network_config.replica_number
   ami                    = data.aws_ami.nat_ami.id
   instance_type          = "t3.small"
-  subnet_id              = aws_subnet.public-subnet[2].id
+  subnet_id              = aws_subnet.public_subnet[2].id
   vpc_security_group_ids = [aws_security_group.nat_sg.id] # 使用安全组的ID
   source_dest_check      = false
   tags = {
@@ -101,6 +101,6 @@ resource "aws_eip_association" "nat_eip_assoc" {
 resource "aws_nat_gateway" "nat_gw" {
   count       = var.network_config.gateway_enabled ? 1 : 0
   allocation_id = element(aws_eip.nat_eip.*.id, 0)
-  subnet_id   = element(aws_subnet.public-subnet.*.id, 0)
+  subnet_id   = element(aws_subnet.public_subnet.*.id, 0)
   depends_on = [aws_eip.nat_eip]
 }

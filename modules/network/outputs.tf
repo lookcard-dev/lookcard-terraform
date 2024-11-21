@@ -5,15 +5,15 @@ output "vpc" {
 }
 
 output "public_subnet_ids" {
-  value = aws_subnet.public-subnet[*].id
+  value = aws_subnet.public_subnet[*].id
 }
 
 output "private_subnet_ids" {
-  value = aws_subnet.private-subnet[*].id
+  value = aws_subnet.private_subnet[*].id
 }
 
 output "database_subnet_ids" {
-  value = aws_subnet.database-subnet[*].id
+  value = aws_subnet.database_subnet[*].id
 }
 
 output "rt_private_id" {
@@ -21,7 +21,7 @@ output "rt_private_id" {
 }
 
 output "public_subnet_cidr_lists" {
-  value = aws_subnet.public-subnet[*].cidr_block
+  value = aws_subnet.public_subnet[*].cidr_block
 }
 
 # output "Database_Sub_ids" {
