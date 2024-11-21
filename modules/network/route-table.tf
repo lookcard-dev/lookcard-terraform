@@ -1,5 +1,5 @@
 # Public Route Table 
-resource "aws_route_table" "public-route-table" {
+resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.vpc.id
 
   route {
@@ -14,7 +14,7 @@ resource "aws_route_table" "public-route-table" {
 
 
 # Nat Gateway Route Table
-resource "aws_route_table" "private-route-table" {
+resource "aws_route_table" "private_route_table" {
   count  = var.network_config.replica_number
   vpc_id = aws_vpc.vpc.id
 
@@ -49,11 +49,11 @@ resource "aws_route_table" "private-route-table" {
 resource "aws_route_table_association" "private_subnet_association" {
   count          = length(aws_subnet.private_subnet) # Ensure count matches the number of private subnets
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
-  route_table_id = element(aws_route_table.private-route-table.*.id, count.index)
+  route_table_id = element(aws_route_table.private_route_table.*.id, count.index)
 }
 
 # Assuming you have a list of private subnets defined elsewhere, named aws_subnet.look-card-Private-Sub
-resource "aws_route_table" "database-route-table" {
+resource "aws_route_table" "database_route_table" {
 
   vpc_id = aws_vpc.vpc.id
 
@@ -69,7 +69,7 @@ resource "aws_route_table" "database-route-table" {
 
 }
 
-resource "aws_route_table" "isolated-route-table" {
+resource "aws_route_table" "isolated_route_table" {
   vpc_id = aws_vpc.vpc.id
   lifecycle {
     ignore_changes = [
@@ -85,18 +85,18 @@ resource "aws_route_table" "isolated-route-table" {
 resource "aws_route_table_association" "isolated_subnet_association" {
   count          = length(aws_subnet.isolated_subnet)
   subnet_id      = aws_subnet.isolated_subnet[count.index].id
-  route_table_id = aws_route_table.isolated-route-table.id
+  route_table_id = aws_route_table.isolated_route_table.id
 }
 
 resource "aws_route_table_association" "database_subnet_association" {
   count          = length(aws_subnet.database_subnet)
   subnet_id      = aws_subnet.database_subnet[count.index].id
-  route_table_id = aws_route_table.database-route-table.id
+  route_table_id = aws_route_table.database_route_table.id
 }
 
 
 resource "aws_route_table_association" "public_subnet_association" {
   count          = length(aws_subnet.public_subnet)
   subnet_id      = aws_subnet.public_subnet[count.index].id
-  route_table_id = aws_route_table.public-route-table.id
+  route_table_id = aws_route_table.public_route_table.id
 }

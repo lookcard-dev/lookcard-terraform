@@ -31,7 +31,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
 resource "aws_vpc_endpoint" "s3_gateway" {
   vpc_id       = aws_vpc.vpc.id
   service_name = "com.amazonaws.ap-southeast-1.s3"
-  route_table_ids = [aws_route_table.private-route-table[0].id]
+  route_table_ids = [aws_route_table.private_route_table[0].id]
 
   tags = {
     Name = "s3-endpoint"
