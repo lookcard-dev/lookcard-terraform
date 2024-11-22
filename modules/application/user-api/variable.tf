@@ -53,6 +53,10 @@ locals {
     {
       name      = "SENTRY_DSN"
       valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:USER_API_DSN::"
+    },
+    {
+      name      = "FIREBASE_CREDENTIALS"
+      valueFrom = "${var.secret_manager.secret_arns["FIREBASE"]}:CREDENTIALS::"
     }
   ]
   ecs_task_env_vars = [
@@ -104,5 +108,6 @@ locals {
   iam_secrets = [
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"],
+    var.secret_manager.secret_arns["FIREBASE"]
   ]
 }
