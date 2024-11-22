@@ -98,3 +98,10 @@ variable "lookcard_log_bucket_name" {}
 # variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
 # variable "lambda_firebase_authorizer" {}
+
+# reseller-portal module
+variable "storage" {}
+variable "security" {}
+variable "reseller_portal_hostname" {}
+variable "aws_provider" {}
+variable "s3_bucket" {}

@@ -30,7 +30,7 @@ module "S3" {
   lookcard_log            = var.s3_bucket.lookcard_log
   reseller_portal         = var.s3_bucket.reseller_portal
   waf_log                 = var.s3_bucket.waf_log
-  cloudfront  = module.cdn
+  # cloudfront  = module.cdn
 }
 
 module "rds" {
@@ -95,6 +95,14 @@ module "application" {
   # lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
   bastion_sg                       = module.bastion.bastion_sg
   # lambda_firebase_authorizer       = module.lambda.lambda_firebase_authorizer
+
+
+  # reseller-portal module
+  security = module.security
+  storage = module.storage
+  reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
+  aws_provider          = var.aws_provider
+  s3_bucket           = module.S3
 }
 
 module "ssl-cert" {
@@ -107,20 +115,19 @@ module "ssl-cert" {
   reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
   firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
   fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
-  reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
 }
 
-module "cdn" {
-  source                = "./modules/cdn"
-  domain                = var.general_config.domain
-  alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
-  alternate_reseller_domain_name = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
-  origin_s3_bucket      = module.S3.front_end_endpoint
-  cdn_logging_s3_bucket = module.S3.cloudfront_log
-  reseller_portal_bucket = module.S3.reseller_portal_bucket
-  ssl_cert                = module.ssl-cert
-  waf_log                 = module.S3.waf_log
-}
+# module "cdn" {
+#   source                = "./modules/cdn"
+#   domain                = var.general_config.domain
+#   alternate_domain_name = "${var.dns_config.hostname}.${var.general_config.domain}"
+#   alternate_reseller_domain_name = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
+#   origin_s3_bucket      = module.S3.front_end_endpoint
+#   cdn_logging_s3_bucket = module.S3.cloudfront_log
+#   reseller_portal_bucket = module.S3.reseller_portal_bucket
+#   ssl_cert                = module.ssl-cert
+#   waf_log                 = module.S3.waf_log
+# }
 
 module "sns_topic" {
   source                  = "./modules/monitor"
@@ -204,4 +211,9 @@ module "storage" {
   s3_bucket               = var.s3_bucket
   environment             = var.general_config
   aws_provider            = var.aws_provider
+}
+
+module "security" {
+  source = "./modules/security"
+  waf_logging_s3_bucket = module.S3.waf_log
 }
