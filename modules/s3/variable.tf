@@ -12,7 +12,7 @@ variable "cloudwatch_syn_canaries" {}
 variable "accountid_data" {}
 variable "lookcard_log" {}
 variable "reseller_portal" {}
-variable "cloudfront" {}
+# variable "cloudfront" {}
 variable "waf_log" {}
 
 

@@ -119,12 +119,12 @@ resource "aws_alb" "look-card" {
   }
 
   access_logs {
-    bucket  = var.lookcard_log_bucket_name
+    bucket  = "227720554629-lookcard-log" #var.lookcard_log_bucket_name
     enabled = true
     prefix  = "ELB/lookcard/access_logs"
   }
   connection_logs {
-    bucket  = var.lookcard_log_bucket_name
+    bucket  = "227720554629-lookcard-log" #var.lookcard_log_bucket_name
     enabled = true
     prefix  = "ELB/lookcard/connection_logs"
   }

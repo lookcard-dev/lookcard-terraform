@@ -28,9 +28,9 @@ resource "aws_s3_bucket" "cloudwatch_syn_canaries" {
 resource "aws_s3_bucket" "accountid_data" {
   bucket = var.accountid_data
 }
-resource "aws_s3_bucket" "lookcard_log" {
-  bucket = var.lookcard_log
-}
+# resource "aws_s3_bucket" "lookcard_log" {
+#   bucket = var.lookcard_log
+# }
 
 resource "aws_s3_bucket" "reseller_portal" {
   bucket = var.reseller_portal

@@ -372,6 +372,18 @@ module "sumsub-webhook" {
   env_tag = var.env_tag
 }
 
+# # ********************  v2 Portal  ***********************
+
+module "reseller-portal" {
+  source = "./reseller-portal"
+  domain = var.domain
+  storage = var.storage
+  security = var.security
+  reseller_portal_hostname = var.reseller_portal_hostname
+  aws_provider = var.aws_provider
+  s3_bucket = var.s3_bucket
+}
+
 # # ********************  v1  ***********************
 
 # module "authentication" {

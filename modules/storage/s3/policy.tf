@@ -41,13 +41,13 @@
 # }
 
 # resource "aws_s3_bucket_ownership_controls" "cloudfront_log_ownership" {
-#   bucket = aws_s3_bucket.cloudfront_log.id
+#   bucket = aws_s3_bucket.lookcard_log.id
 #   rule {
 #     object_ownership = "BucketOwnerPreferred"
 #   }
 # }
 # resource "aws_s3_bucket_acl" "cdn_log_acl" {
-#   bucket = aws_s3_bucket.cloudfront_log.id
+#   bucket = aws_s3_bucket.lookcard_log.id
 #   acl    = "private"
 # }
 # resource "aws_s3_bucket_policy" "vpc_log_s3_policy" {
@@ -97,25 +97,25 @@
 #   })
 # }
 
-# resource "aws_s3_bucket_policy" "lookcard_log" {
-#   bucket = aws_s3_bucket.lookcard_log.id
-#   policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       {
-#         "Effect" : "Allow",
-#         "Principal" : {
-#           "AWS" : "arn:aws:iam::114774131450:root"
-#         },
-#         "Action" : "s3:PutObject",
-#         "Resource" : [
-#           "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/connection_logs/*",
-#           "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/access_logs/*"
-#         ]
-#       }
-#     ]
-#   })
-# }
+resource "aws_s3_bucket_policy" "lookcard_log" {
+  bucket = aws_s3_bucket.lookcard_log.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::114774131450:root"
+        },
+        "Action" : "s3:PutObject",
+        "Resource" : [
+          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/connection_logs/*",
+          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/access_logs/*"
+        ]
+      }
+    ]
+  })
+}
 
 # resource "aws_s3_bucket_policy" "reseller_portal" {
 #   bucket = aws_s3_bucket.reseller_portal.id

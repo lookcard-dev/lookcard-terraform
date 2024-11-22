@@ -37,3 +37,9 @@
 #   value = aws_s3_bucket.waf_log.arn
 
 # }
+
+output "lookcard_log_bucket" {
+  value = {
+    bucket_domain_name = aws_s3_bucket.lookcard_log.bucket_domain_name
+  }
+}
