@@ -61,7 +61,7 @@ resource "aws_iam_policy" "Withdrawal_SQS_policy" {
         "Action" : [
           "sqs:SendMessage"
         ],
-        "Resource" : "${var.sqs.crypto_fund_withdrawal_queue_arn}"
+        "Resource" : "${var.sqs.cryptocurrency_withdrawal.arn}"
       }
     ]
   })

@@ -50,7 +50,7 @@ resource "aws_iam_policy" "Lambda_Crypto_Fund_Withdrawal_sqs_send_message_policy
           "sqs:SendMessage"
         ],
         "Resource" : [
-            "${var.sqs.crypto_fund_withdrawal_queue_arn}"
+            "${var.sqs.cryptocurrency_withdrawal.arn}"
         ]
       }
     ]

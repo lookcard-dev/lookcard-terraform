@@ -22,13 +22,13 @@ resource "aws_sqs_queue" "eliptic" {
   }
 }
 
-resource "aws_sqs_queue" "aggregator_tron_queue" {
-  name                        = "Aggregator_Tron.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
-  visibility_timeout_seconds  = 900
-  delay_seconds               = 120 
-}
+# resource "aws_sqs_queue" "aggregator_tron_queue" {
+#   name                        = "Aggregator_Tron.fifo"
+#   fifo_queue                  = true
+#   content_based_deduplication = true
+#   visibility_timeout_seconds  = 900
+#   delay_seconds               = 120 
+# }
 
 resource "aws_sqs_queue" "notification" {
   name                       = "Notification"
@@ -52,19 +52,19 @@ resource "aws_sqs_queue" "push_message_web" {
   visibility_timeout_seconds = 360
 }
 
-resource "aws_sqs_queue" "lookcard_notification_queue" {
-  name                        = "Lookcard_Notification.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
-  visibility_timeout_seconds  = 1000
-}
+# resource "aws_sqs_queue" "lookcard_notification_queue" {
+#   name                        = "Lookcard_Notification.fifo"
+#   fifo_queue                  = true
+#   content_based_deduplication = true
+#   visibility_timeout_seconds  = 1000
+# }
 
-resource "aws_sqs_queue" "crypto_fund_withdrawal_queue" {
-  name                        = "Crypto_Fund_Withdrawal.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
-  visibility_timeout_seconds  = 1000
-}
+# resource "aws_sqs_queue" "crypto_fund_withdrawal_queue" {
+#   name                        = "Crypto_Fund_Withdrawal.fifo"
+#   fifo_queue                  = true
+#   content_based_deduplication = true
+#   visibility_timeout_seconds  = 1000
+# }
 
 # resource "aws_lambda_event_source_mapping" "Lookcard_Notification_Queue_event" {
 #   depends_on                 = [aws_lambda_function.lookcard_notification_function]

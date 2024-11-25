@@ -75,8 +75,8 @@ resource "aws_iam_policy" "account_api_sqs_sendmessage" {
           "sqs:SendMessage"
         ],
         "Resource" : [
-          "${var.sqs.lookcard_notification_queue_arn}",
-          "${var.sqs.crypto_fund_withdrawal_queue_arn}"
+          "${var.sqs.notification_dispatcher.arn}",
+          "${var.sqs.cryptocurrency_withdrawal.arn}"
         ]
       }
     ]

@@ -28,6 +28,8 @@ module "crypto-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
   bastion_sg      = var.bastion_sg
+  lambda_cryptocurrency_sweeper        = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_withdrawal     = module.cryptocurrency-withdrawal-processor
 }
 
 module "crypto-listener" {
@@ -45,7 +47,7 @@ module "crypto-listener" {
   cluster                                  = aws_ecs_cluster.listener.arn
   dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   secret_manager                           = var.secret_manager
-  sqs                                      = var.sqs
+  sqs                                      = module.sqs
   capacity_provider_ec2_arm64_on_demand    = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
   capacity_provider_ec2_amd64_on_demand    = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
   rds_aurora_postgresql_writer_endpoint    = var.rds_aurora_postgresql_writer_endpoint
@@ -74,7 +76,7 @@ module "account-api" {
   sg_alb_id                             = aws_security_group.api_alb_sg.id
   lambda                                = var.lambda
   secret_manager                        = var.secret_manager
-  sqs                                   = var.sqs
+  sqs                                   = module.sqs
   acm                                   = var.acm
   env_tag                               = var.env_tag
   redis_host                            = var.redis_host
@@ -84,6 +86,8 @@ module "account-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
   bastion_sg      = var.bastion_sg
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
 }
 
 module "user-api" {
@@ -112,6 +116,8 @@ module "user-api" {
   bastion_sg      = var.bastion_sg
   lambda          = var.lambda
   reseller_api_sg = module.reseller-api.reseller_api_sg
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
 }
 
 module "reap-proxy" {
@@ -228,7 +234,7 @@ module "profile-api" {
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
-  lambda                           = var.lambda
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
 }
 
 module "config-api" {
@@ -372,6 +378,28 @@ module "sumsub-webhook" {
   env_tag = var.env_tag
 }
 
+module "cryptocurrency-withdrawal-processor" {
+  source = "./cryptocurrency-withdrawal-processor"
+  sqs    = module.sqs
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  secret_manager = var.secret_manager
+}
+
+module "cryptocurrency-sweeper" {
+  source = "./cryptocurrency-sweeper"
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  sqs            = module.sqs
+  secret_manager = var.secret_manager
+}
+
 # # ********************  v2 Portal  ***********************
 
 module "reseller-portal" {
@@ -383,6 +411,12 @@ module "reseller-portal" {
   aws_provider = var.aws_provider
   s3_bucket = var.s3_bucket
 }
+
+# # ********************  v2 SQS  ***********************
+module "sqs" {
+  source = "./sqs"
+}
+
 
 # # ********************  v1  ***********************
 

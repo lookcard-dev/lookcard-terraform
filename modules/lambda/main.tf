@@ -1,24 +1,24 @@
-module "aggregator-tron" {
-  source = "./aggregator-tron"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  sqs            = var.sqs
-  secret_manager = var.secret_manager
-}
+# module "aggregator-tron" {
+#   source = "./aggregator-tron"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   sqs            = var.sqs
+#   secret_manager = var.secret_manager
+# }
 
-module "crypto-fundwithdrawal" {
-  source = "./crypto-fundwithdrawal"
-  sqs    = var.sqs
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  secret_manager = var.secret_manager
-}
+# module "crypto-fundwithdrawal" {
+#   source = "./crypto-fundwithdrawal"
+#   sqs    = var.sqs
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   secret_manager = var.secret_manager
+# }
 
 module "data-process" {
   source         = "./data-process"
@@ -39,16 +39,16 @@ module "eliptic" {
   secret_manager = var.secret_manager
 }
 
-module "lookcard-notification" {
-  source = "./lookcard-notification"
-  sqs    = var.sqs
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  secret_manager = var.secret_manager
-}
+# module "lookcard-notification" {
+#   source = "./lookcard-notification"
+#   sqs    = var.sqs
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   secret_manager = var.secret_manager
+# }
 
 module "lookcard-websocket" {
   source         = "./lookcard-websocket"
