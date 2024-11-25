@@ -22,13 +22,13 @@ output "websocket_disconnect_name" {
   value = module.websocket-disconnect.websocket_disconnect_name
 }
 
-output "lambda_aggregator_tron_sg_id" {
-  value = module.aggregator-tron.lambda_aggregator_tron_sg_id
-}
+# output "lambda_aggregator_tron_sg_id" {
+#   value = module.aggregator-tron.lambda_aggregator_tron_sg_id
+# }
 
-output "crypto_fund_withdrawal_sg_id" {
-  value = module.crypto-fundwithdrawal.crypto_fund_withdrawal_sg_id
-}
+# output "crypto_fund_withdrawal_sg_id" {
+#   value = module.crypto-fundwithdrawal.crypto_fund_withdrawal_sg_id
+# }
 
 # output "lambda_firebase_authorizer_sg_id" {
 #   value = module.firebase-authorizer.lambda_firebase_authorizer_sg_id

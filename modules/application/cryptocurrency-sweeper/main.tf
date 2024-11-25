@@ -28,7 +28,7 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
 
 resource "aws_lambda_event_source_mapping" "aggregator_tron_queue_event" {
   depends_on       = [aws_lambda_function.aggregator_tron_functions]
-  event_source_arn = var.sqs.aggregator_tron_arn
+  event_source_arn = var.sqs.cryptocurrency_sweeper.arn
   function_name    = aws_lambda_function.aggregator_tron_functions.function_name
   batch_size       = 10 # Change as per your requirements
 }

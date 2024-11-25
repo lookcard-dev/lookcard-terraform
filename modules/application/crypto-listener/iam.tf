@@ -156,7 +156,7 @@ resource "aws_iam_policy" "transaction_listener_sqs_send_message_policy" {
         Action = [
           "sqs:SendMessage"
         ]
-        Resource = var.sqs.aggregator_tron_arn
+        Resource = var.sqs.cryptocurrency_sweeper.arn
       },
     ]
   })

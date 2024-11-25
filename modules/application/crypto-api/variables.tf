@@ -12,6 +12,8 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 # variable "rds_proxy_read_host" {}
 variable "reseller_api_sg" {}
 variable "bastion_sg" {}
+variable "lambda_cryptocurrency_sweeper" {}
+variable "lambda_cryptocurrency_withdrawal" {}
 
 variable "network" {
   type = object({
