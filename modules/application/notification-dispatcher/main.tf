@@ -8,7 +8,7 @@ resource "aws_lambda_function" "notification_dispatcher" {
   role          = aws_iam_role.notification_dispatcher.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = data.aws_ecr_image.notification_dispatcher.image_uri
+  image_uri     = data.aws_ecr_image.notification_dispatcher.image_uri #"${var.image.url}:${var.image.tag}"
   timeout       = 900
   memory_size   = 512
 

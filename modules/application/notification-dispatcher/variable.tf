@@ -5,6 +5,14 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
+
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 variable "sqs" {}
 variable "secret_manager" {}
 

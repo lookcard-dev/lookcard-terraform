@@ -8,7 +8,7 @@ resource "aws_lambda_function" "aggregator_tron_functions" {
   role          = aws_iam_role.lambda_aggregator_tron_roles.arn // Secret manager - Aggregator-env
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = data.aws_ecr_image.aggregator_tron_data.image_uri
+  image_uri     = data.aws_ecr_image.aggregator_tron_data.image_uri #"${var.image.url}:${var.image.tag}"
   timeout       = 900
   memory_size   = 512
 
