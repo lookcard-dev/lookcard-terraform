@@ -9,7 +9,7 @@ resource "aws_lambda_function" "notification_dispatcher" {
   architectures = ["x86_64"]
   package_type  = "Image"
   image_uri     = data.aws_ecr_image.notification_dispatcher.image_uri #"${var.image.url}:${var.image.tag}"
-  timeout       = 900
+  timeout       = 60
   memory_size   = 512
 
   tracing_config {
