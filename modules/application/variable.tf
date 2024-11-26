@@ -63,8 +63,23 @@ variable "ecr_names" {
     "verification-api"     = "verification-api"
     "reseller-api"         = "reseller-api"
     "apigw-authorizer"     = "apigw-authorizer"
-    "sumsub-webhook"       = "sumsub-webhook"
     "reap-webhook"         = "reap-webhook"
+
+    #v2 Lambda Function
+    "account-statement-generator" = "account-statement-generator"
+    "account-balance-snapshot-processor" = "account-balance-snapshot-processor"
+    "card-balance-snapshot-processor" = "card-balance-snapshot-processor"
+    "card-transaction-reconciliation-processor" = "card-transaction-reconciliation-processor"
+    "individual-card-statement-generator" = "individual-card-statement-generator"
+    "individual-card-payment-notification-processor" = "individual-card-payment-notification-processor"
+    "individual-card-finance-charge-processor" = "individual-card-finance-charge-processor"
+    "cryptocurrency-sweep-processor" = "cryptocurrency-sweep-processor"
+    "cryptocurrency-batch-sweep-processor" = "cryptocurrency-batch-sweep-processor"
+    "cryptocurrency-withdrawal-processor" = "cryptocurrency-withdrawal-processor"
+    "notification-dispatcher" = "notification-dispatcher"
+    "firebase-authorizer"  = "firebase-authorizer"
+    "sumsub-webhook"       = "sumsub-webhook"
+    "fireblocks-webhook"   = "fireblocks-webhook"
   }
 }
 
