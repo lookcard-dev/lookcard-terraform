@@ -27,7 +27,7 @@ module "crypto-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
   bastion_sg      = var.bastion_sg
-  lambda_cryptocurrency_sweeper        = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_sweeper        = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal     = module.cryptocurrency-withdrawal-processor
 }
 
@@ -85,7 +85,7 @@ module "account-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
   bastion_sg      = var.bastion_sg
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
 }
 
@@ -115,7 +115,7 @@ module "user-api" {
   bastion_sg      = var.bastion_sg
   # lambda          = var.lambda
   reseller_api_sg = module.reseller-api.reseller_api_sg
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
 }
 
@@ -233,7 +233,7 @@ module "profile-api" {
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
+  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
 }
 
 module "config-api" {
@@ -392,16 +392,16 @@ module "cryptocurrency-withdrawal-processor" {
   secret_manager = var.secret_manager
 }
 
-module "cryptocurrency-sweeper" {
-  source = "./cryptocurrency-sweeper"
+module "cryptocurrency-sweep-processor" {
+  source = "./cryptocurrency-sweep-processor"
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
   image = {
-    url = aws_ecr_repository.look-card["cryptocurrency-withdrawal-processor"].repository_url
-    tag = var.image_tag.cryptocurrency-withdrawal-processor
+    url = aws_ecr_repository.look-card["cryptocurrency-sweep-processor"].repository_url
+    tag = var.image_tag.cryptocurrency-sweep-processor
   }
   sqs            = module.sqs
   secret_manager = var.secret_manager
