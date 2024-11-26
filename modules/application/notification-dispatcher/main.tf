@@ -1,14 +1,14 @@
-data "aws_ecr_image" "lookcard-notification" {
+data "aws_ecr_image" "notification_dispatcher" {
   repository_name = "lookcard-notification"
   most_recent     = true
 }
 
-resource "aws_lambda_function" "lookcard_notification_function" {
-  function_name = "Lookcard_Notification"
-  role          = aws_iam_role.lookcard_notification_role.arn
+resource "aws_lambda_function" "notification_dispatcher" {
+  function_name = "Notification_Dispatcher"
+  role          = aws_iam_role.notification_dispatcher.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = data.aws_ecr_image.lookcard-notification.image_uri
+  image_uri     = data.aws_ecr_image.notification_dispatcher.image_uri
   timeout       = 900
   memory_size   = 512
 
@@ -22,13 +22,13 @@ resource "aws_lambda_function" "lookcard_notification_function" {
 
   vpc_config {
     subnet_ids         = var.network.private_subnet
-    security_group_ids = [aws_security_group.lookcard_notification_sg.id]
+    security_group_ids = [aws_security_group.notification_dispatcher.id]
   }
 }
 
-resource "aws_lambda_event_source_mapping" "lookcard_notification_queue_event" {
-  depends_on       = [aws_lambda_function.lookcard_notification_function]
+resource "aws_lambda_event_source_mapping" "notification_dispatcher_queue_event" {
+  depends_on       = [aws_lambda_function.notification_dispatcher]
   event_source_arn = var.sqs.notification_dispatcher.arn
-  function_name    = aws_lambda_function.lookcard_notification_function.function_name
+  function_name    = aws_lambda_function.notification_dispatcher.function_name
   batch_size       = 10 # Change as per your requirements
 }

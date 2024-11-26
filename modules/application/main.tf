@@ -400,6 +400,17 @@ module "cryptocurrency-sweeper" {
   secret_manager = var.secret_manager
 }
 
+module "notification-dispatcher" {
+  source = "./notification-dispatcher"
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+    public_subnet  = var.network.public_subnet
+  }
+  sqs            = module.sqs
+  secret_manager = var.secret_manager
+}
+
 # # ********************  v2 Portal  ***********************
 
 module "reseller-portal" {
