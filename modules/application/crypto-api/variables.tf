@@ -3,7 +3,7 @@ variable "lookcardlocal_namespace" {}
 variable "transaction_listener_sg_id" {}
 variable "sg_alb_id" {}
 variable "account_api_sg_id" {}
-variable "lambda" {}
+# variable "lambda" {}
 variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}

@@ -2,7 +2,6 @@ variable "default_listener" {}
 variable "vpc_id" {}
 variable "lookcardlocal_namespace" {}
 variable "sg_alb_id" {}
-variable "lambda" {}
 variable "cluster" {}
 variable "secret_manager" {}
 variable "sqs" {}

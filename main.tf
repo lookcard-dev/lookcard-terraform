@@ -66,8 +66,8 @@ module "application" {
     public_subnet_cidr_list = module.VPC.public_subnet_cidr_lists
   }
   image_tag                                = var.image_tag
-  sqs                                      = module.sqs
-  lambda                                   = module.lambda
+  # sqs                                      = module.sqs
+  # lambda                                   = module.lambda
   dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   database_secret_arn                      = module.secret-manager.database_secret_arn
@@ -134,39 +134,39 @@ module "sns_topic" {
   sns_subscriptions_email = var.sns_subscriptions_email
 }
 
-module "sqs" {
-  source = "./modules/sqs"
-}
+# module "sqs" {
+#   source = "./modules/sqs"
+# }
 
-module "lambda" {
-  source            = "./modules/lambda"
-  ddb_websocket_arn = module.rds.ddb_websocket.arn
-  network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
-  }
-  vpc_id = module.VPC.vpc
-  lambda_code = {
-    s3_bucket                  = "${var.s3_bucket.aml_code}-${var.general_config.env}"
-    data_process_s3key         = var.lambda_code.data_process_s3key
-    elliptic_s3key             = var.lambda_code.elliptic_s3key
-    websocket_connect_s3key    = var.lambda_code.websocket_connect_s3key
-    websocket_disconnect_s3key = var.lambda_code.websocket_disconnect_s3key
-    push_message_s3key         = var.lambda_code.push_message_s3key
-    push_notification_s3key    = var.lambda_code.push_notification_s3key
-    withdrawal_s3key           = var.lambda_code.withdrawal_s3key
-  }
-  lambda_code_s3_bucket          = "${var.s3_bucket.aml_code}-${var.general_config.env}"
-  lambda_code_data_process_s3key = var.lambda_code.data_process_s3key
-  sqs                            = module.sqs
-  secret_manager                 = module.secret-manager
-  dynamodb_table_arn             = module.rds.dynamodb_table_arn
-  general_config                 = var.general_config
-  image_tag                      = var.image_tag
-  ecr_repository_urls            = module.application.ecr_repository_urls
-  env_tag                        = var.env_tag
-}
+# module "lambda" {
+#   source            = "./modules/lambda"
+#   ddb_websocket_arn = module.rds.ddb_websocket.arn
+#   network = {
+#     vpc            = module.VPC.vpc
+#     private_subnet = module.VPC.private_subnet_ids
+#     public_subnet  = module.VPC.public_subnet_ids
+#   }
+#   vpc_id = module.VPC.vpc
+#   lambda_code = {
+#     s3_bucket                  = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+#     data_process_s3key         = var.lambda_code.data_process_s3key
+#     elliptic_s3key             = var.lambda_code.elliptic_s3key
+#     websocket_connect_s3key    = var.lambda_code.websocket_connect_s3key
+#     websocket_disconnect_s3key = var.lambda_code.websocket_disconnect_s3key
+#     push_message_s3key         = var.lambda_code.push_message_s3key
+#     push_notification_s3key    = var.lambda_code.push_notification_s3key
+#     withdrawal_s3key           = var.lambda_code.withdrawal_s3key
+#   }
+#   lambda_code_s3_bucket          = "${var.s3_bucket.aml_code}-${var.general_config.env}"
+#   lambda_code_data_process_s3key = var.lambda_code.data_process_s3key
+#   sqs                            = module.sqs
+#   secret_manager                 = module.secret-manager
+#   dynamodb_table_arn             = module.rds.dynamodb_table_arn
+#   general_config                 = var.general_config
+#   image_tag                      = var.image_tag
+#   ecr_repository_urls            = module.application.ecr_repository_urls
+#   env_tag                        = var.env_tag
+# }
 
 module "elasticache" {
   source = "./modules/elasticache"

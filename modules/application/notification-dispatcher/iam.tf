@@ -28,9 +28,7 @@ resource "aws_iam_policy" "notification_dispatcher_secrets_manager_read_policy" 
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [
-            local.secrets
-        ]
+        "Resource" : local.secrets
       }
     ]
   })

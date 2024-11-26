@@ -20,10 +20,10 @@ locals {
     lambda_env_vars = {
       "FROM_EMAIL"     = "no-reply@lookcard.io"
       "APP_NAME"       = "LOOKCARD"
-      "AWS_SECRET_ARN" = "${var.secret_manager.notification_env_secret_arn}"
+      "AWS_SECRET_ARN" = "${var.secret_manager.secret_arns["NOTIFICATION_ENV"]}"
     }
     secrets = [
-      var.secret_manager.notification_env_secret_arn
+      var.secret_manager.secret_arns["NOTIFICATION_ENV"]
     ]
 }
 

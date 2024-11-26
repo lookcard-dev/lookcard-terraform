@@ -352,73 +352,73 @@ resource "aws_apigatewayv2_api" "Push_message_Web" {
   route_selection_expression = "$request.body.action"
 }
 
-resource "aws_apigatewayv2_integration" "push_message_integration" {
-  api_id                    = aws_apigatewayv2_api.Push_message_Web.id
-  integration_type          = "AWS_PROXY"
-  content_handling_strategy = "CONVERT_TO_TEXT"
-  integration_uri           = var.lambda.lookcard_websocket_arn
-  integration_method        = "POST"
-}
+# resource "aws_apigatewayv2_integration" "push_message_integration" {
+#   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
+#   integration_type          = "AWS_PROXY"
+#   content_handling_strategy = "CONVERT_TO_TEXT"
+#   integration_uri           = var.lambda.lookcard_websocket_arn
+#   integration_method        = "POST"
+# }
 
-resource "aws_apigatewayv2_route" "push_message_route" {
-  api_id    = aws_apigatewayv2_api.Push_message_Web.id
-  route_key = "POST /pushmessage"
-  target    = "integrations/${aws_apigatewayv2_integration.push_message_integration.id}"
-}
+# resource "aws_apigatewayv2_route" "push_message_route" {
+#   api_id    = aws_apigatewayv2_api.Push_message_Web.id
+#   route_key = "POST /pushmessage"
+#   target    = "integrations/${aws_apigatewayv2_integration.push_message_integration.id}"
+# }
 
-resource "aws_lambda_permission" "apigateway_permission" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = var.lambda.lookcard_websocket_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
-}
-resource "aws_apigatewayv2_integration" "connect_integration" {
-  api_id                    = aws_apigatewayv2_api.Push_message_Web.id
-  integration_type          = "AWS_PROXY"
-  content_handling_strategy = "CONVERT_TO_TEXT"
-  description               = "Connection"
-  connection_type           = "INTERNET"
-  integration_method        = "POST"
-  integration_uri           = var.lambda.websocket_connect_arn
-}
+# resource "aws_lambda_permission" "apigateway_permission" {
+#   statement_id  = "AllowExecutionFromAPIGateway"
+#   action        = "lambda:InvokeFunction"
+#   function_name = var.lambda.lookcard_websocket_name
+#   principal     = "apigateway.amazonaws.com"
+#   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
+# }
+# resource "aws_apigatewayv2_integration" "connect_integration" {
+#   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
+#   integration_type          = "AWS_PROXY"
+#   content_handling_strategy = "CONVERT_TO_TEXT"
+#   description               = "Connection"
+#   connection_type           = "INTERNET"
+#   integration_method        = "POST"
+#   integration_uri           = var.lambda.websocket_connect_arn
+# }
 
-resource "aws_apigatewayv2_route" "connect" {
-  route_key = "$connect"
-  api_id    = aws_apigatewayv2_api.Push_message_Web.id
-  target    = "integrations/${aws_apigatewayv2_integration.connect_integration.id}"
-}
+# resource "aws_apigatewayv2_route" "connect" {
+#   route_key = "$connect"
+#   api_id    = aws_apigatewayv2_api.Push_message_Web.id
+#   target    = "integrations/${aws_apigatewayv2_integration.connect_integration.id}"
+# }
 
-resource "aws_lambda_permission" "web_socket_apigateway_permission" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = var.lambda.websocket_connect_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
-}
+# resource "aws_lambda_permission" "web_socket_apigateway_permission" {
+#   statement_id  = "AllowExecutionFromAPIGateway"
+#   action        = "lambda:InvokeFunction"
+#   function_name = var.lambda.websocket_connect_name
+#   principal     = "apigateway.amazonaws.com"
+#   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
+# }
 
-resource "aws_apigatewayv2_integration" "disconnect_integration" {
-  api_id                    = aws_apigatewayv2_api.Push_message_Web.id
-  integration_type          = "AWS"
-  connection_type           = "INTERNET"
-  content_handling_strategy = "CONVERT_TO_TEXT"
-  integration_method        = "POST"
-  integration_uri           = var.lambda.websocket_disconnect_arn
-  passthrough_behavior      = "WHEN_NO_MATCH"
-}
-resource "aws_apigatewayv2_route" "disconnect_route" {
-  route_key = "$disconnect"
-  api_id    = aws_apigatewayv2_api.Push_message_Web.id
-  target    = "integrations/${aws_apigatewayv2_integration.disconnect_integration.id}"
-}
+# resource "aws_apigatewayv2_integration" "disconnect_integration" {
+#   api_id                    = aws_apigatewayv2_api.Push_message_Web.id
+#   integration_type          = "AWS"
+#   connection_type           = "INTERNET"
+#   content_handling_strategy = "CONVERT_TO_TEXT"
+#   integration_method        = "POST"
+#   integration_uri           = var.lambda.websocket_disconnect_arn
+#   passthrough_behavior      = "WHEN_NO_MATCH"
+# }
+# resource "aws_apigatewayv2_route" "disconnect_route" {
+#   route_key = "$disconnect"
+#   api_id    = aws_apigatewayv2_api.Push_message_Web.id
+#   target    = "integrations/${aws_apigatewayv2_integration.disconnect_integration.id}"
+# }
 
-resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = var.lambda.websocket_disconnect_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
-}
+# resource "aws_lambda_permission" "web_disconnect_apigateway_permission" {
+#   statement_id  = "AllowExecutionFromAPIGateway"
+#   action        = "lambda:InvokeFunction"
+#   function_name = var.lambda.websocket_disconnect_name
+#   principal     = "apigateway.amazonaws.com"
+#   source_arn    = "${aws_apigatewayv2_api.Push_message_Web.execution_arn}/*"
+# }
 
 
 resource "aws_api_gateway_authorizer" "firebase_authorizer" {
