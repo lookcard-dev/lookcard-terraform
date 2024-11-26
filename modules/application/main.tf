@@ -18,7 +18,6 @@ module "crypto-api" {
   kms                                   = var.kms
   account_api_sg_id                     = module.account-api.account_api_sg_id
   sg_alb_id                             = aws_security_group.api_alb_sg.id
-  lambda                                = var.lambda
   transaction_listener_sg_id            = module.crypto-listener.transaction_listener_sg_id
   env_tag                               = var.env_tag
   redis_host                            = var.redis_host
@@ -74,7 +73,7 @@ module "account-api" {
   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
   cluster                               = aws_ecs_cluster.core_application.arn
   sg_alb_id                             = aws_security_group.api_alb_sg.id
-  lambda                                = var.lambda
+  # lambda                                = var.lambda
   secret_manager                        = var.secret_manager
   sqs                                   = module.sqs
   acm                                   = var.acm
@@ -114,7 +113,7 @@ module "user-api" {
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   bastion_sg      = var.bastion_sg
-  lambda          = var.lambda
+  # lambda          = var.lambda
   reseller_api_sg = module.reseller-api.reseller_api_sg
   lambda_cryptocurrency_sweeper = module.cryptocurrency-sweeper
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
@@ -386,6 +385,10 @@ module "cryptocurrency-withdrawal-processor" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
+  image = {
+    url = aws_ecr_repository.look-card["cryptocurrency-withdrawal-processor"].repository_url
+    tag = var.image_tag.cryptocurrency-withdrawal-processor
+  }
   secret_manager = var.secret_manager
 }
 
@@ -395,6 +398,10 @@ module "cryptocurrency-sweeper" {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["cryptocurrency-withdrawal-processor"].repository_url
+    tag = var.image_tag.cryptocurrency-withdrawal-processor
   }
   sqs            = module.sqs
   secret_manager = var.secret_manager
@@ -406,6 +413,10 @@ module "notification-dispatcher" {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
+  }
+  image = {
+    url = aws_ecr_repository.look-card["notification-dispatcher"].repository_url
+    tag = var.image_tag.notification-dispatcher
   }
   sqs            = module.sqs
   secret_manager = var.secret_manager

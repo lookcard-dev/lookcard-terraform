@@ -91,8 +91,8 @@ variable "trongrid_secret_arn" {}
 variable "database_secret_arn" {}
 variable "firebase_secret_arn" {}
 variable "get_block_secret_arn" {}
-variable "sqs" {}
-variable "lambda" {}
+# variable "sqs" {}
+# variable "lambda" {}
 variable "dynamodb_config_api_config_data_name" {}
 variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}

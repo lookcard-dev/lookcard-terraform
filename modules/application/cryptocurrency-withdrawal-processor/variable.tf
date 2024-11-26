@@ -6,6 +6,13 @@ variable "network" {
   })
 }
 
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 variable "sqs" {}
 variable "secret_manager" {}
 locals {
@@ -19,8 +26,8 @@ locals {
     }
 
     secrets = [
-      var.secret_manager.elliptic_secret_arn,
-      var.secret_manager.system_crypto_wallet_secret_arn
+      var.secret_manager.secret_arns["ELLIPTIC"],
+      var.secret_manager.secret_arns["SYSTEM_CRYPTO_WALLET"]
     ]
 
     sqs_queues = [

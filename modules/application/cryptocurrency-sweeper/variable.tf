@@ -6,6 +6,13 @@ variable "network" {
   })
 }
 
+variable "image" {
+  type = object({
+    url = string
+    tag = string
+  })
+}
+
 variable "sqs" {}
 variable "secret_manager" {}
 
@@ -23,9 +30,9 @@ locals {
       "SECRET_MANAGER_NAME"             = "Aggregator-env"     
     }
     secrets = [
-      var.secret_manager.coinranking_secret_arn,
-      var.secret_manager.elliptic_secret_arn,
-      var.secret_manager.system_crypto_wallet_secret_arn
+      var.secret_manager.secret_arns["COINRANKING"],
+      var.secret_manager.secret_arns["ELLIPTIC"],
+      var.secret_manager.secret_arns["SYSTEM_CRYPTO_WALLET"]
     ]
     sqs_queues = [
       var.sqs.notification_dispatcher.arn

@@ -8,7 +8,7 @@ resource "aws_lambda_function" "crypto_fund_withdrawal_function" {
   role          = aws_iam_role.crypto_fund_withdrawal_role.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = data.aws_ecr_image.crypto_fund_withdrawal.image_uri
+  image_uri     = data.aws_ecr_image.crypto_fund_withdrawal.image_uri #"${var.image.url}:${var.image.tag}"
   timeout       = 900
   memory_size   = 512
 
