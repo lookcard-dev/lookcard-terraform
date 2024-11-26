@@ -1,7 +1,7 @@
-resource "aws_security_group" "lookcard_notification_sg" {
+resource "aws_security_group" "notification_dispatcher" {
   depends_on  = [var.network]
-  name        = "lookcard-notification-security-group"
-  description = "Security group for Lambda Lookcard Notification"
+  name        = "notification-dispatcher-sg"
+  description = "Security group for Lambda Notification Dispatcher"
   vpc_id      = var.network.vpc
 
   egress {
