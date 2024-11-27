@@ -36,15 +36,15 @@ module "S3" {
 module "rds" {
   source = "./modules/database"
   network = {
-    vpc             = module.VPC.vpc
-    private_subnet  = module.VPC.private_subnet_ids
-    public_subnet   = module.VPC.public_subnet_ids
-    database_subnet = module.VPC.database_subnet_ids
+    vpc             = module.network.vpc
+    private_subnet  = module.network.private_subnet_ids
+    public_subnet   = module.network.public_subnet_ids
+    database_subnet = module.network.database_subnet_ids
   }
   secret_manager = module.secret-manager
 }
 
-module "VPC" {
+module "network" {
   source  = "./modules/network"
   network = var.network
   network_config = {
@@ -60,10 +60,10 @@ module "application" {
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
   network = {
-    vpc                     = module.VPC.vpc
-    private_subnet          = module.VPC.private_subnet_ids
-    public_subnet           = module.VPC.public_subnet_ids
-    public_subnet_cidr_list = module.VPC.public_subnet_cidr_lists
+    vpc                     = module.network.vpc
+    private_subnet          = module.network.private_subnet_ids
+    public_subnet           = module.network.public_subnet_ids
+    public_subnet_cidr_list = module.network.public_subnet_cidr_lists
   }
   image_tag                                = var.image_tag
   # sqs                                      = module.sqs
@@ -200,9 +200,9 @@ module "kms" {
 module "bastion" {
   source = "./modules/bastion"
   network = {
-    vpc            = module.VPC.vpc
-    private_subnet = module.VPC.private_subnet_ids
-    public_subnet  = module.VPC.public_subnet_ids
+    vpc            = module.network.vpc
+    private_subnet = module.network.private_subnet_ids
+    public_subnet  = module.network.public_subnet_ids
   }
 }
 
@@ -213,14 +213,18 @@ module "storage" {
   aws_provider            = var.aws_provider
   secret_manager          = module.secret-manager
   network = {
-    vpc                     = module.VPC.vpc
-    private_subnet          = module.VPC.private_subnet_ids
-    public_subnet           = module.VPC.public_subnet_ids
-    database_subnet         = module.VPC.database_subnet_ids
+    vpc                     = module.network.vpc
+    private_subnet          = module.network.private_subnet_ids
+    public_subnet           = module.network.public_subnet_ids
+    database_subnet         = module.network.database_subnet_ids
   }
 }
 
 module "security" {
   source = "./modules/security"
   waf_logging_s3_bucket = module.S3.waf_log
+}
+
+module "utils" {
+  source = "./modules/utils"
 }
