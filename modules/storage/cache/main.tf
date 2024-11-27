@@ -1,11 +1,3 @@
-
-resource "aws_cloudwatch_log_group" "elasticache_log" {
-  name = "elasticache_log"
-  tags = {
-    stage = "development"
-  }
-}
-
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
   name       = "lookcard-redis-group"
   subnet_ids = var.network.database_subnet[*]
