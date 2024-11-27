@@ -1,102 +1,102 @@
-# Public Route Table 
-resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.vpc.id
+# # Public Route Table 
+# resource "aws_route_table" "public_route_table" {
+#   vpc_id = aws_vpc.vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.internet_gateway.id
-  }
-  tags = {
-    Name = "public-subnet-route-table"
-  }
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     gateway_id = aws_internet_gateway.internet_gateway.id
+#   }
+#   tags = {
+#     Name = "public-subnet-route-table"
+#   }
 
-}
-
-
-# Nat Gateway Route Table
-resource "aws_route_table" "private_route_table" {
-  count  = var.network_config.replica_number
-  vpc_id = aws_vpc.vpc.id
-
-  dynamic "route" {
-    for_each = var.network_config.gateway_enabled ? [] : [for i in range(0, var.network_config.replica_number) : i]
-    content {
-      cidr_block           = "0.0.0.0/0"
-      network_interface_id = aws_instance.nat[route.value].primary_network_interface_id
-    }
-  }
-
-  dynamic "route" {
-    for_each = var.network_config.gateway_enabled ? [1] : []
-    content {
-      cidr_block = "0.0.0.0/0"
-      gateway_id = aws_nat_gateway.nat_gw[0].id
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      route,
-    ]
-  }
-
-  tags = {
-    Name = "private-subnet-route-table-${element(aws_subnet.private_subnet.*.availability_zone, count.index)}"
-  }
-}
+# }
 
 
-resource "aws_route_table_association" "private_subnet_association" {
-  count          = length(aws_subnet.private_subnet) # Ensure count matches the number of private subnets
-  subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
-  route_table_id = element(aws_route_table.private_route_table.*.id, count.index)
-}
+# # Nat Gateway Route Table
+# resource "aws_route_table" "private_route_table" {
+#   count  = var.network_config.replica_number
+#   vpc_id = aws_vpc.vpc.id
 
-# Assuming you have a list of private subnets defined elsewhere, named aws_subnet.look-card-Private-Sub
-resource "aws_route_table" "database_route_table" {
+#   dynamic "route" {
+#     for_each = var.network_config.gateway_enabled ? [] : [for i in range(0, var.network_config.replica_number) : i]
+#     content {
+#       cidr_block           = "0.0.0.0/0"
+#       network_interface_id = aws_instance.nat[route.value].primary_network_interface_id
+#     }
+#   }
 
-  vpc_id = aws_vpc.vpc.id
+#   dynamic "route" {
+#     for_each = var.network_config.gateway_enabled ? [1] : []
+#     content {
+#       cidr_block = "0.0.0.0/0"
+#       gateway_id = aws_nat_gateway.nat_gw[0].id
+#     }
+#   }
 
+#   lifecycle {
+#     ignore_changes = [
+#       route,
+#     ]
+#   }
 
-  lifecycle {
-    ignore_changes = [
-      route,
-    ]
-  }
-  tags = {
-    Name = "database-route-table"
-  }
-
-}
-
-resource "aws_route_table" "isolated_route_table" {
-  vpc_id = aws_vpc.vpc.id
-  lifecycle {
-    ignore_changes = [
-      route,
-    ]
-  }
-  tags = {
-    Name = "isolated-route-table"
-  }
-
-}
-
-resource "aws_route_table_association" "isolated_subnet_association" {
-  count          = length(aws_subnet.isolated_subnet)
-  subnet_id      = aws_subnet.isolated_subnet[count.index].id
-  route_table_id = aws_route_table.isolated_route_table.id
-}
-
-resource "aws_route_table_association" "database_subnet_association" {
-  count          = length(aws_subnet.database_subnet)
-  subnet_id      = aws_subnet.database_subnet[count.index].id
-  route_table_id = aws_route_table.database_route_table.id
-}
+#   tags = {
+#     Name = "private-subnet-route-table-${element(aws_subnet.private_subnet.*.availability_zone, count.index)}"
+#   }
+# }
 
 
-resource "aws_route_table_association" "public_subnet_association" {
-  count          = length(aws_subnet.public_subnet)
-  subnet_id      = aws_subnet.public_subnet[count.index].id
-  route_table_id = aws_route_table.public_route_table.id
-}
+# resource "aws_route_table_association" "private_subnet_association" {
+#   count          = length(aws_subnet.private_subnet) # Ensure count matches the number of private subnets
+#   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
+#   route_table_id = element(aws_route_table.private_route_table.*.id, count.index)
+# }
+
+# # Assuming you have a list of private subnets defined elsewhere, named aws_subnet.look-card-Private-Sub
+# resource "aws_route_table" "database_route_table" {
+
+#   vpc_id = aws_vpc.vpc.id
+
+
+#   lifecycle {
+#     ignore_changes = [
+#       route,
+#     ]
+#   }
+#   tags = {
+#     Name = "database-route-table"
+#   }
+
+# }
+
+# resource "aws_route_table" "isolated_route_table" {
+#   vpc_id = aws_vpc.vpc.id
+#   lifecycle {
+#     ignore_changes = [
+#       route,
+#     ]
+#   }
+#   tags = {
+#     Name = "isolated-route-table"
+#   }
+
+# }
+
+# resource "aws_route_table_association" "isolated_subnet_association" {
+#   count          = length(aws_subnet.isolated_subnet)
+#   subnet_id      = aws_subnet.isolated_subnet[count.index].id
+#   route_table_id = aws_route_table.isolated_route_table.id
+# }
+
+# resource "aws_route_table_association" "database_subnet_association" {
+#   count          = length(aws_subnet.database_subnet)
+#   subnet_id      = aws_subnet.database_subnet[count.index].id
+#   route_table_id = aws_route_table.database_route_table.id
+# }
+
+
+# resource "aws_route_table_association" "public_subnet_association" {
+#   count          = length(aws_subnet.public_subnet)
+#   subnet_id      = aws_subnet.public_subnet[count.index].id
+#   route_table_id = aws_route_table.public_route_table.id
+# }
