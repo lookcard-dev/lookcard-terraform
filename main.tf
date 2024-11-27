@@ -85,7 +85,7 @@ module "application" {
   dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
   rds_aurora_postgresql_writer_endpoint    = module.rds.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint    = module.rds.rds_aurora_postgresql_reader_endpoint
-  redis_host                               = module.elasticache.redis_host
+  redis_host                               = module.storage.redis_host
   # rds_proxy_host                           = module.rds.proxy_host
   # rds_proxy_read_host                      = module.rds.proxy_read_host
   profile_api_ddb_table    = module.rds.profile_api_ddb_table
@@ -168,15 +168,15 @@ module "sns_topic" {
 #   env_tag                        = var.env_tag
 # }
 
-module "elasticache" {
-  source = "./modules/elasticache"
-  network = {
-    vpc             = module.VPC.vpc
-    private_subnet  = module.VPC.private_subnet_ids
-    public_subnet   = module.VPC.public_subnet_ids
-    database_subnet = module.VPC.database_subnet_ids
-  }
-}
+# module "elasticache" {
+#   source = "./modules/elasticache"
+#   network = {
+#     vpc             = module.VPC.vpc
+#     private_subnet  = module.VPC.private_subnet_ids
+#     public_subnet   = module.VPC.public_subnet_ids
+#     database_subnet = module.VPC.database_subnet_ids
+#   }
+# }
 
 # module "vpc-endpoint" {
 #   source = "./modules/vpc-endpoint"
@@ -211,6 +211,12 @@ module "storage" {
   s3_bucket               = var.s3_bucket
   environment             = var.general_config
   aws_provider            = var.aws_provider
+  network = {
+    vpc                     = module.VPC.vpc
+    private_subnet          = module.VPC.private_subnet_ids
+    public_subnet           = module.VPC.public_subnet_ids
+    database_subnet         = module.VPC.database_subnet_ids
+  }
 }
 
 module "security" {

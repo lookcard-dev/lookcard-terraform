@@ -1,6 +1,3 @@
-variable "s3_bucket" {}
-variable "environment" {}
-variable "aws_provider" {}
 variable "network" {
   type = object({
     vpc             = string
@@ -9,3 +6,8 @@ variable "network" {
     database_subnet = list(string)
   })
 }
+
+
+
+
+
