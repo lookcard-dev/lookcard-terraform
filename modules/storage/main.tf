@@ -15,3 +15,9 @@ module "cache" {
     database_subnet = var.network.database_subnet
   }
 }
+
+module "database" {
+  source = "./database"
+  network = var.network
+  secret_manager = var.secret_manager
+}

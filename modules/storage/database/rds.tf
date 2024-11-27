@@ -3,39 +3,39 @@ provider "aws" {
 }
 
 # Define the DB subnet group
-# resource "aws_db_subnet_group" "rds_subnet" {
-#   name       = "lookcard_rds_subnet"
-#   subnet_ids = var.network.database_subnet[*]
-# }
+resource "aws_db_subnet_group" "rds_subnet" {
+  name       = "lookcard_rds_subnet"
+  subnet_ids = var.network.database_subnet[*]
+}
 
 // rds cluster
-# resource "aws_rds_cluster" "lookcard_develop" {
-#   cluster_identifier     = "lookcard-develop-db"
-#   engine                 = "aurora-postgresql"
-#   engine_mode            = "provisioned"
-#   database_name          = "develop"
-#   master_username        = "develop"
-#   master_password        = local.password
-#   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
-#   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
-#   storage_encrypted      = true
-#   skip_final_snapshot    = true
-#   deletion_protection    = false
-#   serverlessv2_scaling_configuration {
-#     max_capacity = 5.0
-#     min_capacity = 0.5
-#   }
-# }
+resource "aws_rds_cluster" "lookcard_develop" {
+  cluster_identifier     = "lookcard-develop-db"
+  engine                 = "aurora-postgresql"
+  engine_mode            = "provisioned"
+  database_name          = "develop"
+  master_username        = "develop"
+  master_password        = local.password
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
+  storage_encrypted      = true
+  skip_final_snapshot    = true
+  deletion_protection    = false
+  serverlessv2_scaling_configuration {
+    max_capacity = 5.0
+    min_capacity = 0.5
+  }
+}
 
-# # # # Define the write instance
-# resource "aws_rds_cluster_instance" "write_instance" {
-#   cluster_identifier = aws_rds_cluster.lookcard_develop.id
-#   instance_class     = "db.serverless"
-#   engine             = aws_rds_cluster.lookcard_develop.engine
-#   engine_version     = aws_rds_cluster.lookcard_develop.engine_version
-#   publicly_accessible = false
-#   count = 2
-# }
+# # # Define the write instance
+resource "aws_rds_cluster_instance" "write_instance" {
+  cluster_identifier = aws_rds_cluster.lookcard_develop.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.lookcard_develop.engine
+  engine_version     = aws_rds_cluster.lookcard_develop.engine_version
+  publicly_accessible = false
+  count = 2
+}
 
 // rds read_instance
 # Define the read instance
@@ -132,29 +132,29 @@ provider "aws" {
 # }
 
 # Define the security group
-# resource "aws_security_group" "db_rds_sg" {
-#   name        = "database-security-group"
-#   description = "Security group for RDS services"
-#   vpc_id      = var.network.vpc
+resource "aws_security_group" "db_rds_sg" {
+  name        = "database-security-group"
+  description = "Security group for RDS services"
+  vpc_id      = var.network.vpc
 
-#   ingress {
-#     from_port   = 5432
-#     to_port     = 5432
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "look-card-DB-sg"
-#   }
-# }
+  tags = {
+    Name = "look-card-DB-sg"
+  }
+}
 
 # IAM role and policy attachment for monitoring
 # resource "aws_iam_role" "rds_monitoring_role" {
