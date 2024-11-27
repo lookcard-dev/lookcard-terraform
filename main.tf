@@ -93,7 +93,8 @@ module "application" {
   # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
   # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
   # lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
-  bastion_sg                       = module.bastion.bastion_sg
+  # bastion_sg                       = module.bastion.bastion_sg
+  bastion_sg                       = module.utils.bastion_sg
   # lambda_firebase_authorizer       = module.lambda.lambda_firebase_authorizer
 
 
@@ -197,14 +198,14 @@ module "kms" {
   source = "./modules/kms"
 }
 
-module "bastion" {
-  source = "./modules/bastion"
-  network = {
-    vpc            = module.network.vpc
-    private_subnet = module.network.private_subnet_ids
-    public_subnet  = module.network.public_subnet_ids
-  }
-}
+# module "bastion" {
+#   source = "./modules/bastion"
+#   network = {
+#     vpc            = module.network.vpc
+#     private_subnet = module.network.private_subnet_ids
+#     public_subnet  = module.network.public_subnet_ids
+#   }
+# }
 
 module "storage" {
   source                  = "./modules/storage"
@@ -227,4 +228,9 @@ module "security" {
 
 module "utils" {
   source = "./modules/utils"
+  network = {
+    vpc            = module.network.vpc
+    private_subnet = module.network.private_subnet_ids
+    public_subnet  = module.network.public_subnet_ids
+  }
 }
