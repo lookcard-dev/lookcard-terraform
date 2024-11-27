@@ -83,8 +83,8 @@ module "application" {
   kms                                      = module.kms
   s3_data_bucket_name                      = module.S3.accountid_data
   dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
-  rds_aurora_postgresql_writer_endpoint    = module.rds.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint    = module.rds.rds_aurora_postgresql_reader_endpoint
+  rds_aurora_postgresql_writer_endpoint    = module.storage.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint    = module.storage.rds_aurora_postgresql_reader_endpoint
   redis_host                               = module.storage.redis_host
   # rds_proxy_host                           = module.rds.proxy_host
   # rds_proxy_read_host                      = module.rds.proxy_read_host
@@ -211,6 +211,7 @@ module "storage" {
   s3_bucket               = var.s3_bucket
   environment             = var.general_config
   aws_provider            = var.aws_provider
+  secret_manager          = module.secret-manager
   network = {
     vpc                     = module.VPC.vpc
     private_subnet          = module.VPC.private_subnet_ids
