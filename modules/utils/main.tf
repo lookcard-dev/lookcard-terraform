@@ -3,7 +3,7 @@ module "bastion" {
   network = var.network
 }
 
-module "syn-canary" {
-  source = "./monitor/syn-canary"
+module "monitor" {
+  source = "./monitor"
   syn_canary_s3_bucket = var.syn_canary_s3_bucket
 }
