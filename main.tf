@@ -12,8 +12,8 @@ provider "aws" {
   region = var.aws_provider.region
 }
 
-module "secret-manager" {
-  source = "./modules/secret-manager"
+module "secret" {
+  source = "./modules/secret"
 }
 
 module "S3" {
@@ -55,11 +55,11 @@ module "application" {
     public_subnet_cidr_list = module.network.public_subnet_cidr_lists
   }
   image_tag                                = var.image_tag
-  trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
-  database_secret_arn                      = module.secret-manager.database_secret_arn
-  get_block_secret_arn                     = module.secret-manager.get_block_secret_arn
-  firebase_secret_arn                      = module.secret-manager.firebase_secret_arn
-  secret_manager                           = module.secret-manager
+  trongrid_secret_arn                      = module.secret.trongrid_secret_arn
+  database_secret_arn                      = module.secret.database_secret_arn
+  get_block_secret_arn                     = module.secret.get_block_secret_arn
+  firebase_secret_arn                      = module.secret.firebase_secret_arn
+  secret_manager                           = module.secret
   lookcard_api_domain                      = module.application.lookcard_api_domain
   env_tag                                  = var.env_tag
   acm                                      = module.certificate
@@ -186,7 +186,7 @@ module "storage" {
   s3_bucket               = var.s3_bucket
   environment             = var.general_config
   aws_provider            = var.aws_provider
-  secret_manager          = module.secret-manager
+  secret_manager          = module.secret
   network = {
     vpc                     = module.network.vpc
     private_subnet          = module.network.private_subnet_ids
