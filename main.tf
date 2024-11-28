@@ -79,7 +79,7 @@ module "application" {
   lookcard_api_domain                      = module.application.lookcard_api_domain
   dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
   env_tag                                  = var.env_tag
-  acm                                      = module.ssl-cert
+  acm                                      = module.certificate
   kms                                      = module.kms
   s3_data_bucket_name                      = module.S3.accountid_data
   dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
@@ -106,8 +106,8 @@ module "application" {
   s3_bucket           = module.S3
 }
 
-module "ssl-cert" {
-  source                  = "./modules/ssl-cert"
+module "certificate" {
+  source                  = "./modules/certificate"
   domain                  = var.general_config.domain
   app_hostname            = "${var.dns_config.hostname}.${var.general_config.domain}"
   admin_hostname          = "${var.dns_config.admin_hostname}.${var.general_config.domain}"
