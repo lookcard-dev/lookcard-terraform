@@ -59,7 +59,7 @@ resource "aws_iam_policy" "config_api_dynamodb_read_write_policy" {
           "dynamodb:Scan",
           "dynamodb:UpdateItem"
         ],
-        "Resource" : var.dynamodb_config_api_config_data_arn
+        "Resource" : aws_dynamodb_table.config_api_config_data.arn
       }
     ]
   })

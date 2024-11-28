@@ -77,8 +77,8 @@ resource "aws_iam_policy" "dynamodb_access_policy" {
           "dynamodb:GetItem"
         ],
         "Resource": [
-          var.profile_api_ddb_table,
-          "${var.profile_api_ddb_table}/index/principal-index"
+          aws_dynamodb_table.profile_data.arn,
+          "${aws_dynamodb_table.profile_data.arn}/index/principal-index"
         ]
       }
     ]

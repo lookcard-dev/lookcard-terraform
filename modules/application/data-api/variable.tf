@@ -5,7 +5,6 @@ variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
 variable "s3_data_bucket_name" {}
-variable "dynamodb_data_tb_name" {}
 variable "crypto_api_sg_id" {}
 variable "bastion_sg" {}
 
@@ -94,7 +93,7 @@ locals {
     },
     {
       name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
-      value = var.dynamodb_data_tb_name
+      value = aws_dynamodb_table.data_api_data.name
     }
   ]
 

@@ -119,3 +119,27 @@ resource "aws_iam_role_policy_attachment" "data_api_kms_policy_attachment" {
   role      = aws_iam_role.data_api_task_role.name
   policy_arn = aws_iam_policy.data_api_kms_policy.arn
 }
+
+resource "aws_iam_policy" "data_api_dynamodb_read_write_policy" {
+  name        = "DataAPIDynamoDbReadWritePolicy"
+  description = "Allows get, put and query to DynamoDB resources"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query"
+        ],
+        "Resource" : aws_dynamodb_table.data_api_data.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "data_api_dynamodb_read_write_attachment" {
+  role       = aws_iam_role.data_api_task_role.name
+  policy_arn = aws_iam_policy.data_api_dynamodb_read_write_policy.arn
+}

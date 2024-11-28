@@ -44,7 +44,6 @@ module "crypto-listener" {
   }
   vpc_id                                   = var.network.vpc
   cluster                                  = aws_ecs_cluster.listener.arn
-  dynamodb_crypto_transaction_listener_arn = var.dynamodb_crypto_transaction_listener_arn
   secret_manager                           = var.secret_manager
   sqs                                      = module.sqs
   capacity_provider_ec2_arm64_on_demand    = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
@@ -219,7 +218,6 @@ module "profile-api" {
     tag = var.image_tag.profile-api
   }
   lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  dynamodb_profile_data_table_name = var.dynamodb_profile_data_table_name
   secret_manager                   = var.secret_manager
   env_tag                          = var.env_tag
   sg_alb_id                        = aws_security_group.api_alb_sg.id
@@ -228,7 +226,6 @@ module "profile-api" {
   user_api_sg                      = module.user-api.user_api_sg
   #_auth_api_sg                     = module.authentication._auth_api_sg
   verification_api_sg              = module.verification-api.verification_api_sg
-  profile_api_ddb_table            = var.profile_api_ddb_table
   reseller_api_sg                  = module.reseller-api.reseller_api_sg
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
@@ -250,8 +247,6 @@ module "config-api" {
     tag = var.image_tag.config-api
   }
   lookcardlocal_namespace              = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  dynamodb_config_api_config_data_name = var.dynamodb_config_api_config_data_name
-  dynamodb_config_api_config_data_arn  = var.dynamodb_config_api_config_data_arn
   acm                                  = var.acm
   secret_manager                       = var.secret_manager
   env_tag                              = var.env_tag
@@ -277,7 +272,6 @@ module "data-api" {
   secret_manager          = var.secret_manager
   kms                     = var.kms
   s3_data_bucket_name     = var.s3_data_bucket_name
-  dynamodb_data_tb_name   = var.dynamodb_data_tb_name
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
   bastion_sg              = var.bastion_sg

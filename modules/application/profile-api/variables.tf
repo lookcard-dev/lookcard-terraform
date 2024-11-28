@@ -1,10 +1,8 @@
 variable "sg_alb_id" {}
 variable "lookcardlocal_namespace" {}
-variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "referral_api_sg" {}
 variable "account_api_sg" {}
-variable "profile_api_ddb_table" {}
 variable "user_api_sg"{}
 # variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
@@ -68,7 +66,7 @@ locals {
     },
     {
       name  = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME"
-      value = var.dynamodb_profile_data_table_name
+      value = aws_dynamodb_table.profile_data.name
     }
   ]
   ecs_task_secret_vars = [
