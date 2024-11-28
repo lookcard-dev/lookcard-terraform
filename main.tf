@@ -104,10 +104,6 @@ module "certificate" {
 #   waf_log                 = module.S3.waf_log
 # }
 
-module "sns_topic" {
-  source                  = "./modules/monitor"
-  sns_subscriptions_email = var.sns_subscriptions_email
-}
 
 # module "sqs" {
 #   source = "./modules/sqs"
@@ -203,4 +199,5 @@ module "utils" {
     public_subnet  = module.network.public_subnet_ids
   }
   syn_canary_s3_bucket = module.S3.cloudwatch_syn_canaries
+  sns_subscriptions_email = var.sns_subscriptions_email
 }

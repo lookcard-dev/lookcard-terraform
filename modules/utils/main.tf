@@ -6,4 +6,5 @@ module "bastion" {
 module "monitor" {
   source = "./monitor"
   syn_canary_s3_bucket = var.syn_canary_s3_bucket
+  sns_subscriptions_email = var.sns_subscriptions_email
 }
