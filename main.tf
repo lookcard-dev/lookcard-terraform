@@ -163,11 +163,6 @@ module "sns_topic" {
 #   rt_private_id = module.VPC.rt_private_id[0]
 # }
 
-module "syn_canaries" {
-  source    = "./modules/syn_canaries"
-  s3_bucket = module.S3.cloudwatch_syn_canaries
-}
-
 module "kms" {
   source = "./modules/kms"
 }
@@ -207,4 +202,5 @@ module "utils" {
     private_subnet = module.network.private_subnet_ids
     public_subnet  = module.network.public_subnet_ids
   }
+  syn_canary_s3_bucket = module.S3.cloudwatch_syn_canaries
 }

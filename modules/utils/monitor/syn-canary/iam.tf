@@ -29,7 +29,7 @@ resource "aws_iam_role_policy" "cw_canary_policy" {
           "s3:GetObject"
         ],
         Resource = [
-          "arn:aws:s3:::${var.s3_bucket}/canary/ap-southeast-1/lookcard-tron/*"
+          "arn:aws:s3:::${var.syn_canary_s3_bucket}/canary/ap-southeast-1/lookcard-tron/*"
         ]
       },
       {
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "cw_canary_policy" {
           "s3:GetBucketLocation"
         ],
         Resource = [
-          "arn:aws:s3:::${var.s3_bucket}"
+          "arn:aws:s3:::${var.syn_canary_s3_bucket}"
         ]
       },
       {

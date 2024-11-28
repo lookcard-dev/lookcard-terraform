@@ -6,7 +6,7 @@ data "archive_file" "canary_lambda" {
 # Canary
 resource "aws_synthetics_canary" "canary" {
   name                 = "lookcard-tron"
-  artifact_s3_location = "s3://${var.s3_bucket}/canary/ap-southeast-1/lookcard-tron/"
+  artifact_s3_location = "s3://${var.syn_canary_s3_bucket}/canary/ap-southeast-1/lookcard-tron/"
   execution_role_arn   = aws_iam_role.cw_canary_role.arn
   runtime_version      = "syn-nodejs-puppeteer-8.0"
   handler              = "apiCanaryBlueprint.handler"
