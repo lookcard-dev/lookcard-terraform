@@ -125,25 +125,6 @@ resource "aws_iam_role" "crypto_listener_trongrid_task_role" {
   })
 }
 
-resource "aws_iam_policy" "transaction_listener_ddb_policy" {
-  name        = "Transaction-Listener-ReadWriteDDB"
-  description = "Allows read-only access to Secret - TRONGRID"
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "dynamodb:*"
-        ],
-        "Resource" : [
-          var.dynamodb_crypto_transaction_listener_arn
-        ]
-      }
-    ]
-  })
-}
-
 resource "aws_iam_policy" "transaction_listener_sqs_send_message_policy" {
   name        = "SQSSendMessagePolicy"
   description = "Allows sending messages to a specific SQS queue"
@@ -160,16 +141,6 @@ resource "aws_iam_policy" "transaction_listener_sqs_send_message_policy" {
       },
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "crypto_listener_getblock_ddb_attachment" {
-  role       = aws_iam_role.crypto_listener_trongrid_task_role.name
-  policy_arn = aws_iam_policy.transaction_listener_ddb_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "crypto_listener_trongrid_ddb_attachment" {
-  role       = aws_iam_role.crypto_listener_trongrid_task_role.name
-  policy_arn = aws_iam_policy.transaction_listener_ddb_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "crypto_listener_getblock_sqs_attachment" {

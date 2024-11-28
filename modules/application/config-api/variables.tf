@@ -8,8 +8,6 @@ variable "network" {
   })
 }
 variable "default_listener" {}
-variable "dynamodb_config_api_config_data_name" {}
-variable "dynamodb_config_api_config_data_arn" {}
 variable "acm" {}
 variable "cluster" {}
 variable "secret_manager" {}
@@ -63,7 +61,7 @@ locals {
     },
     {
       name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
-      value = var.dynamodb_config_api_config_data_name
+      value = aws_dynamodb_table.config_api_config_data.name
     }
   ]
 }

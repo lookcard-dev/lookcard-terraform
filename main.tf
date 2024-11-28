@@ -33,17 +33,6 @@ module "S3" {
   # cloudfront  = module.cdn
 }
 
-module "rds" {
-  source = "./modules/database"
-  network = {
-    vpc             = module.network.vpc
-    private_subnet  = module.network.private_subnet_ids
-    public_subnet   = module.network.public_subnet_ids
-    database_subnet = module.network.database_subnet_ids
-  }
-  secret_manager = module.secret-manager
-}
-
 module "network" {
   source  = "./modules/network"
   network = var.network
@@ -66,36 +55,21 @@ module "application" {
     public_subnet_cidr_list = module.network.public_subnet_cidr_lists
   }
   image_tag                                = var.image_tag
-  # sqs                                      = module.sqs
-  # lambda                                   = module.lambda
-  dynamodb_crypto_transaction_listener_arn = module.rds.dynamodb_crypto_transaction_listener_arn
   trongrid_secret_arn                      = module.secret-manager.trongrid_secret_arn
   database_secret_arn                      = module.secret-manager.database_secret_arn
   get_block_secret_arn                     = module.secret-manager.get_block_secret_arn
   firebase_secret_arn                      = module.secret-manager.firebase_secret_arn
   secret_manager                           = module.secret-manager
-  dynamodb_config_api_config_data_name     = module.rds.dynamodb_config_api_config_data_name
-  dynamodb_config_api_config_data_arn      = module.rds.dynamodb_config_api_config_data_arn
   lookcard_api_domain                      = module.application.lookcard_api_domain
-  dynamodb_profile_data_table_name         = module.rds.dynamodb_profile_data_table_name
   env_tag                                  = var.env_tag
   acm                                      = module.certificate
   kms                                      = module.kms
   s3_data_bucket_name                      = module.S3.accountid_data
-  dynamodb_data_tb_name                    = module.rds.dynamodb_data_api_data_table_name
   rds_aurora_postgresql_writer_endpoint    = module.storage.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint    = module.storage.rds_aurora_postgresql_reader_endpoint
   redis_host                               = module.storage.redis_host
-  # rds_proxy_host                           = module.rds.proxy_host
-  # rds_proxy_read_host                      = module.rds.proxy_read_host
-  profile_api_ddb_table    = module.rds.profile_api_ddb_table
   lookcard_log_bucket_name = var.s3_bucket.lookcard_log
-  # kms_data_encryption_key_alpha_arn        = module.kms.kms_data_encryption_key_alpha_arn
-  # kms_data_generator_key_arn               = module.kms.kms_data_generator_key_arn
-  # lambda_firebase_authorizer_sg_id = module.lambda.lambda_firebase_authorizer_sg_id
-  # bastion_sg                       = module.bastion.bastion_sg
   bastion_sg                       = module.utils.bastion_sg
-  # lambda_firebase_authorizer       = module.lambda.lambda_firebase_authorizer
 
 
   # reseller-portal module

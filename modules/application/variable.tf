@@ -84,8 +84,6 @@ variable "ecr_names" {
 }
 
 variable "image_tag" {}
-variable "dynamodb_crypto_transaction_listener_arn" {}
-variable "dynamodb_profile_data_table_name" {}
 variable "secret_manager" {}
 variable "trongrid_secret_arn" {}
 variable "database_secret_arn" {}
@@ -93,14 +91,11 @@ variable "firebase_secret_arn" {}
 variable "get_block_secret_arn" {}
 # variable "sqs" {}
 # variable "lambda" {}
-variable "dynamodb_config_api_config_data_name" {}
-variable "dynamodb_config_api_config_data_arn" {}
 variable "lookcard_api_domain" {}
 variable "env_tag" {}
 variable "acm" {}
 variable "kms" {}
 variable "s3_data_bucket_name" {}
-variable "dynamodb_data_tb_name" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "redis_host" {}
@@ -108,7 +103,6 @@ variable "redis_host" {}
 # variable "rds_proxy_read_host" {}
 # variable "kms_data_generator_key_arn" {}
 # variable "kms_data_encryption_key_alpha_arn" {}
-variable "profile_api_ddb_table" {}
 variable "lookcard_log_bucket_name" {}
 # variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
