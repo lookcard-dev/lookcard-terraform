@@ -44,7 +44,7 @@ module "network" {
 
 module "application" {
   source             = "./modules/application"
-  alb_logging_bucket = module.S3.alb_log.id
+  # alb_logging_bucket = module.S3.alb_log.id
   domain             = var.general_config.domain
   dns_config         = var.dns_config
   ecs_cluster_config = var.ecs_cluster_config
@@ -64,7 +64,7 @@ module "application" {
   env_tag                                  = var.env_tag
   acm                                      = module.certificate
   kms                                      = module.kms
-  s3_data_bucket_name                      = module.S3.accountid_data
+  # s3_data_bucket_name                      = module.S3.accountid_data
   rds_aurora_postgresql_writer_endpoint    = module.storage.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint    = module.storage.rds_aurora_postgresql_reader_endpoint
   redis_host                               = module.storage.redis_host
@@ -188,7 +188,7 @@ module "storage" {
 
 module "security" {
   source = "./modules/security"
-  waf_logging_s3_bucket = module.S3.waf_log
+  waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
 }
 
 module "utils" {
@@ -198,6 +198,6 @@ module "utils" {
     private_subnet = module.network.private_subnet_ids
     public_subnet  = module.network.public_subnet_ids
   }
-  syn_canary_s3_bucket = module.S3.cloudwatch_syn_canaries
+  syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
   sns_subscriptions_email = var.sns_subscriptions_email
 }

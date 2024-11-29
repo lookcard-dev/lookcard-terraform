@@ -4,7 +4,7 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
-variable "s3_data_bucket_name" {}
+# variable "s3_data_bucket_name" {}
 variable "crypto_api_sg_id" {}
 variable "bastion_sg" {}
 
@@ -87,10 +87,10 @@ locals {
       name  = "AWS_KMS_ENCRYPTION_KEY_ID_ECHO"
       value = var.kms.kms_data_encryption_key_id_echo
     },
-    {
-      name  = "AWS_S3_DATA_BUCKET_NAME"
-      value = var.s3_data_bucket_name
-    },
+    # {
+    #   name  = "AWS_S3_DATA_BUCKET_NAME"
+    #   value = var.s3_data_bucket_name
+    # },
     {
       name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
       value = aws_dynamodb_table.data_api_data.name

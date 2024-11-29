@@ -271,7 +271,7 @@ module "data-api" {
   env_tag                 = var.env_tag
   secret_manager          = var.secret_manager
   kms                     = var.kms
-  s3_data_bucket_name     = var.s3_data_bucket_name
+  # s3_data_bucket_name     = var.s3_data_bucket_name
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
   bastion_sg              = var.bastion_sg
