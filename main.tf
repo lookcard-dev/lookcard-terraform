@@ -16,23 +16,6 @@ module "secret" {
   source = "./modules/secret"
 }
 
-module "S3" {
-  source                  = "./modules/s3"
-  environment             = var.general_config.env
-  ekyc_data               = var.s3_bucket.ekyc_data
-  alb_log                 = var.s3_bucket.alb_log
-  cloudfront_log          = var.s3_bucket.cloudfront_log
-  vpc_flow_log            = var.s3_bucket.vpc_flow_log
-  aml_code                = var.s3_bucket.aml_code
-  front_end_endpoint      = var.s3_bucket.front_end_endpoint
-  cloudwatch_syn_canaries = var.s3_bucket.cloudwatch_syn_canaries
-  accountid_data          = var.s3_bucket.accountid_data
-  lookcard_log            = var.s3_bucket.lookcard_log
-  reseller_portal         = var.s3_bucket.reseller_portal
-  waf_log                 = var.s3_bucket.waf_log
-  # cloudfront  = module.cdn
-}
-
 module "network" {
   source  = "./modules/network"
   network = var.network
@@ -77,7 +60,7 @@ module "application" {
   storage = module.storage
   reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
   aws_provider          = var.aws_provider
-  s3_bucket           = module.S3
+  s3_bucket           = module.storage
 }
 
 module "certificate" {
