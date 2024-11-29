@@ -43,3 +43,13 @@ output "lookcard_log_bucket" {
     bucket_domain_name = aws_s3_bucket.lookcard_log.bucket_domain_name
   }
 }
+
+output "waf_log_bucket" {
+  value = {
+    arn = aws_s3_bucket.waf_log.arn
+  }
+}
+
+output "cloudwatch_syn_canaries" {
+  value = aws_s3_bucket.cloudwatch_syn_canaries.bucket
+}

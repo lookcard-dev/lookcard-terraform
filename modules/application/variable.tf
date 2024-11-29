@@ -7,7 +7,7 @@ variable "network" {
     public_subnet_cidr_list = list(string)
   })
 }
-variable "alb_logging_bucket" {}
+# variable "alb_logging_bucket" {}
 data "aws_caller_identity" "current" {}
 
 variable "domain" {}
@@ -95,7 +95,7 @@ variable "lookcard_api_domain" {}
 variable "env_tag" {}
 variable "acm" {}
 variable "kms" {}
-variable "s3_data_bucket_name" {}
+# variable "s3_data_bucket_name" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "redis_host" {}
