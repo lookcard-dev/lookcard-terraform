@@ -43,7 +43,7 @@ module "application" {
   get_block_secret_arn                     = module.secret.get_block_secret_arn
   firebase_secret_arn                      = module.secret.firebase_secret_arn
   secret_manager                           = module.secret
-  lookcard_api_domain                      = module.application.lookcard_api_domain
+  # lookcard_api_domain                      = module.application.lookcard_api_domain
   env_tag                                  = var.env_tag
   acm                                      = module.certificate
   kms                                      = module.kms
@@ -183,4 +183,13 @@ module "utils" {
   }
   syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
   sns_subscriptions_email = var.sns_subscriptions_email
+}
+
+module "apigw" {
+  source = "./modules/apigw"
+  acm = module.certificate
+  application = module.application
+  env_tag = var.env_tag
+  dns_config = var.dns_config
+  domain = var.general_config.domain
 }

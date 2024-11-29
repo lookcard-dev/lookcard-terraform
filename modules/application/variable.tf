@@ -91,7 +91,7 @@ variable "firebase_secret_arn" {}
 variable "get_block_secret_arn" {}
 # variable "sqs" {}
 # variable "lambda" {}
-variable "lookcard_api_domain" {}
+# variable "lookcard_api_domain" {}
 variable "env_tag" {}
 variable "acm" {}
 variable "kms" {}
