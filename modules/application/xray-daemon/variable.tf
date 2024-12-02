@@ -7,3 +7,10 @@ variable "network" {
     public_subnet  = list(string)
   })
 }
+
+locals {
+  application = {
+    name      = "xray-daemon"
+  }
+  inbound_allow_sg_list = []
+}

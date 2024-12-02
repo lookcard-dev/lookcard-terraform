@@ -167,6 +167,7 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["TRONGRID"]
   ]
+  inbound_allow_sg_list = []
 }
 variable "sqs" {}
 variable "capacity_provider_ec2_arm64_on_demand" {}

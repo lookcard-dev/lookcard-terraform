@@ -111,5 +111,6 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"]
   ]
+  inbound_allow_sg_list = []
 }
 

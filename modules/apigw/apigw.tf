@@ -166,14 +166,14 @@ resource "aws_api_gateway_deployment" "lookcard_deployment" {
 resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
   domain_name = aws_api_gateway_domain_name.lookcard_domain.domain_name
   api_id      = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name  = var.env_tag
+  stage_name  = "Develop" #var.env_tag - temp hard code for solve the terraform apply issue
 }
 
 # API Gateway Stage with CloudWatch Logs
 resource "aws_api_gateway_stage" "stage" {
   deployment_id = aws_api_gateway_deployment.lookcard_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name    = var.env_tag
+  stage_name    = "Develop" #var.env_tag <- temp hard code for solve the terraform apply issue 
   variables = {
     "env" = var.env_tag
   }

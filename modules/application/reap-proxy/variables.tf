@@ -48,4 +48,5 @@ locals {
   cloudwatch_log_groups = [
     aws_cloudwatch_log_group.ecs_log_group_reap_proxy.arn
   ]
+  inbound_allow_sg_list = []
 }

@@ -106,4 +106,5 @@ locals {
   cloudwatch_log_groups = [
     aws_cloudwatch_log_group.application_log_group_referral_api.arn
   ]
+  inbound_allow_sg_list = []
 }
