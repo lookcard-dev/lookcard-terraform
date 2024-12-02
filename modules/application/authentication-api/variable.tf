@@ -66,4 +66,5 @@ locals {
     var.secret_manager.secret_arns["FIREBASE"],
     var.secret_manager.secret_arns["SENTRY"],
   ]
+  inbound_allow_sg_list = []
 }

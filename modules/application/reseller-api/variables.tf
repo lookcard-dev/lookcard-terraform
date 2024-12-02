@@ -173,4 +173,5 @@ locals {
     var.secret_manager.secret_arns["SENTRY"],
     var.secret_manager.secret_arns["TELEGRAM"]
   ]
+  inbound_allow_sg_list = []
 }

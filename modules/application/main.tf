@@ -27,6 +27,7 @@ module "crypto-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   reseller_api_sg = module.reseller-api.reseller_api_sg
   bastion_sg      = var.bastion_sg
+  crypto_listener_module = module.crypto-listener
   lambda_cryptocurrency_sweeper        = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal     = module.cryptocurrency-withdrawal-processor
 }

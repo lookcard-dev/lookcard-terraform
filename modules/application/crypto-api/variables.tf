@@ -14,6 +14,7 @@ variable "reseller_api_sg" {}
 variable "bastion_sg" {}
 variable "lambda_cryptocurrency_sweeper" {}
 variable "lambda_cryptocurrency_withdrawal" {}
+variable "crypto_listener_module" {}
 
 variable "network" {
   type = object({
@@ -116,5 +117,9 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"]
   ]
+  inbound_allow_sg_list = [
+    var.bastion_sg,
+    var.crypto_listener_module.crypto_listener_sg.id
+  ] 
 }
 

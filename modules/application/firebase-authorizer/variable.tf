@@ -21,4 +21,7 @@ locals {
       "RUNTIME_ENVIRONMENT"             = var.env_tag
       "AWS_XRAY_DAEMON_ENDPOINT"        = "xray.daemon.lookcard.local:2337"
     }
+    inbound_allow_sg_list = [
+      
+    ]
 }

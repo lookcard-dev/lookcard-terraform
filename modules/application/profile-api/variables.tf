@@ -75,4 +75,7 @@ locals {
       valueFrom = "${var.secret_manager.secret_arns["SENTRY"]}:PROFILE_API_DSN::"
     }
   ]
+  inbound_allow_sg_list = [
+
+  ]
 }

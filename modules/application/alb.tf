@@ -161,6 +161,52 @@ resource "aws_security_group" "api_alb_sg" {
   }
 }
 
+resource "aws_security_group" "private_alb_sg" {
+  depends_on  = [var.network]
+  name        = "private-alb-sg"
+  description = "Use for Private ALB"
+  vpc_id      = var.network.vpc
+
+  dynamic "ingress" {
+    for_each = [80, 443]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      security_groups = [aws_security_group.private_nlb_sg.id]
+    }
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "private-alb-sg"
+  }
+}
+
+resource "aws_security_group" "private_nlb_sg" {
+  depends_on  = [var.network]
+  name        = "private-nlb-sg"
+  description = "Use for Private NLB"
+  vpc_id      = var.network.vpc
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "private-nlb-sg"
+  }
+}
+
 resource "aws_lb_listener" "look-card" {
   load_balancer_arn = aws_alb.look-card.arn
   port              = 80

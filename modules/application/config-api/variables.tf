@@ -64,5 +64,8 @@ locals {
       value = aws_dynamodb_table.config_api_config_data.name
     }
   ]
+  inbound_allow_sg_list = [
+    
+  ]
 }
 
