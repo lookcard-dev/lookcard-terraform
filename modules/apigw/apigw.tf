@@ -158,13 +158,7 @@ resource "aws_api_gateway_integration" "sumsub_webhook" {
 
 resource "aws_api_gateway_deployment" "lookcard_deployment" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
-
-  # depends_on = [ aws_api_gateway_method.lookcard_method ]
-  # triggers = {
-  #   redeployment = sha1(jsonencode([
-  #       aws_api_gateway_method.lookcard_method.id,
-  #   ]))
-  # }
+  
   stage_description = "${md5(file("${path.module}/apigw.tf"))}"
   lifecycle {
     create_before_destroy = true
