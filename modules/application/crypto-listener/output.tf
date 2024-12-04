@@ -8,6 +8,12 @@ output "crypto_listener_sg" {
   }
 }
 
+output "tron_listener_ecs_svc_sg" {
+  value = {
+    id = aws_security_group.tron_listener_ecs_svc_sg.id
+  }
+}
+
 output "transaction_listener_arm64_asg_arn" {
   value = aws_autoscaling_group.transaction_listener_arm64.arn
 }

@@ -10,3 +10,9 @@ output "lambda_firebase_authorizer" {
     arn        = aws_lambda_function.firebase_authorizer.arn
   }
 }
+
+output "firebase_authorizer_lambda_func_sg" {
+  value = {
+    id = aws_security_group.lambda_firebase_authorizer_sg.id
+  }
+}

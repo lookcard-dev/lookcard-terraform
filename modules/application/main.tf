@@ -87,6 +87,8 @@ module "account-api" {
   bastion_sg      = var.bastion_sg
   lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
+  crypto_api_module = module.crypto-api
+  reseller_api_module = module.reseller-api
 }
 
 module "user-api" {
@@ -117,6 +119,8 @@ module "user-api" {
   reseller_api_sg = module.reseller-api.reseller_api_sg
   lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
+  firebase_authorizer_module = module.firebase-authorizer
+  reseller_module = module.reseller-api
 }
 
 module "reap-proxy" {
@@ -161,6 +165,8 @@ module "verification-api" {
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   bastion_sg                            = var.bastion_sg
+  sumsub_webhook_module = module.sumsub-webhook
+  reseller_api_module = module.reseller-api
 }
 
 module "authentication-api" {
@@ -182,6 +188,7 @@ module "authentication-api" {
   env_tag                          = var.env_tag
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
+  firebase_authorizer_module = module.firebase-authorizer
 }
 
 module "notification-api" {
@@ -232,6 +239,11 @@ module "profile-api" {
   bastion_sg                       = var.bastion_sg
   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
   lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
+  crypto_api_module = module.crypto-api
+  user_api_module = module.user-api
+  account_api_module = module.account-api
+  reseller_api_module = module.reseller-api
+  firebase_authorizer_module = module.firebase-authorizer
 }
 
 module "config-api" {
@@ -253,6 +265,9 @@ module "config-api" {
   env_tag                              = var.env_tag
   sg_alb_id                            = aws_security_group.api_alb_sg.id
   bastion_sg                           = var.bastion_sg
+  crypto_api_module = module.crypto-api
+  account_api_module = module.account-api
+  reseller_api_module = module.reseller-api
 }
 
 module "data-api" {
@@ -276,6 +291,7 @@ module "data-api" {
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
   bastion_sg              = var.bastion_sg
+  account_api_module = module.account-api
 }
 
 module "xray-daemon" {
@@ -287,6 +303,7 @@ module "xray-daemon" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  network_config = var.network_config
 }
 
 module "referral-api" {
@@ -310,6 +327,8 @@ module "referral-api" {
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   bastion_sg                            = var.bastion_sg
+  reseller_api_module = module.reseller-api
+  private_alb_sg = aws_security_group.private_alb_sg
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   # _auth_api_sg = module.authentication._auth_api_sg
@@ -340,6 +359,7 @@ module "reseller-api" {
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   # _auth_api_sg     = module.authentication._auth_api_sg
   default_listener = aws_lb_listener.look-card.arn
+  private_alb_sg = aws_security_group.private_alb_sg
 }
 
 # # ********************  Lambda functions  ***********************

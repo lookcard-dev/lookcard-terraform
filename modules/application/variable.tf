@@ -7,6 +7,8 @@ variable "network" {
     public_subnet_cidr_list = list(string)
   })
 }
+variable "network_config" {}
+
 # variable "alb_logging_bucket" {}
 data "aws_caller_identity" "current" {}
 

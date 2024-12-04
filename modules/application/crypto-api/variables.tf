@@ -119,7 +119,8 @@ locals {
   ]
   inbound_allow_sg_list = [
     var.bastion_sg,
-    var.crypto_listener_module.crypto_listener_sg.id
+    var.crypto_listener_module.tron_listener_ecs_svc_sg.id,
+    # Missing fireblock webhook lambda func sg
   ] 
 }
 

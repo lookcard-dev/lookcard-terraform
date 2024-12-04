@@ -16,7 +16,8 @@ variable "reseller_api_sg" {}
 variable "bastion_sg" {}
 variable "lambda_cryptocurrency_sweeper" {}
 variable "lambda_cryptocurrency_withdrawal" {}
-
+variable "crypto_api_module" {}
+variable "reseller_api_module" {}
 
 variable "network" {
   type = object({
@@ -111,6 +112,11 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"]
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.crypto_api_module.crypto_api_ecs_svc_sg.id,
+    var.reseller_api_module.reseller_api_ecs_svc_sg.id,
+    var.bastion_sg
+    # Missing app api sg
+  ]
 }
 

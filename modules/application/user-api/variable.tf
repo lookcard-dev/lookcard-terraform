@@ -14,6 +14,8 @@ variable "bastion_sg" {}
 variable "reseller_api_sg" {}
 variable "lambda_cryptocurrency_sweeper" {}
 variable "lambda_cryptocurrency_withdrawal" {}
+variable "firebase_authorizer_module" {}
+variable "reseller_module" {}
 
 variable "network" {
   type = object({
@@ -113,5 +115,8 @@ locals {
   ]
   inbound_allow_sg_list = [
     var.bastion_sg,
+    var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id,
+    var.reseller_module.reseller_api_ecs_svc_sg.id
+    # Missing card api sg, app api, firebase webhook lambda func sg
   ]
 }

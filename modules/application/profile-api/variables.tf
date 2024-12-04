@@ -13,6 +13,13 @@ variable "bastion_sg" {}
 variable "crypto_api_sg_id" {}
 variable "lambda_cryptocurrency_sweeper" {}
 
+variable "crypto_api_module" {}
+variable "user_api_module" {}
+variable "account_api_module" {}
+variable "reseller_api_module" {}
+variable "firebase_authorizer_module" {}
+
+
 variable "network" {
   type = object({
     vpc            = string
@@ -76,6 +83,12 @@ locals {
     }
   ]
   inbound_allow_sg_list = [
-
+    var.crypto_api_module.crypto_api_ecs_svc_sg.id,
+    var.user_api_module.user_api_ecs_svc_sg.id,
+    var.account_api_module.account_api_ecs_svc_sg.id,
+    var.bastion_sg,
+    var.reseller_api_module.reseller_api_ecs_svc_sg.id,
+    var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id
+    # Missing app-api, firehose-webhook
   ]
 }

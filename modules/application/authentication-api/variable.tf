@@ -6,6 +6,7 @@ variable "secret_manager" {}
 variable "env_tag" {}
 variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
+variable "firebase_authorizer_module" {}
 
 variable "network" {
   type = object({
@@ -66,5 +67,8 @@ locals {
     var.secret_manager.secret_arns["FIREBASE"],
     var.secret_manager.secret_arns["SENTRY"],
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id,
+    var.bastion_sg
+  ]
 }

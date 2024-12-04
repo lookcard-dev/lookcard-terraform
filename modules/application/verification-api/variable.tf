@@ -8,6 +8,8 @@ variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "bastion_sg" {}
+variable "sumsub_webhook_module" {}
+variable "reseller_api_module" {}
 
 variable "network" {
   type = object({
@@ -100,5 +102,9 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"],
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.sumsub_webhook_module.sumsub_webhook_lambda_func_sg.id,
+    var.reseller_api_module.reseller_api_ecs_svc_sg.id,
+    var.bastion_sg
+  ]
 }

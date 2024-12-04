@@ -7,6 +7,7 @@ variable "env_tag" {}
 variable "lookcard_log_bucket_name" {}
 variable "bastion_sg" {}
 
+
 variable "network" {
   type = object({
     vpc            = string
@@ -48,5 +49,8 @@ locals {
   cloudwatch_log_groups = [
     aws_cloudwatch_log_group.ecs_log_group_reap_proxy.arn
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.bastion_sg
+    # Missing card api sg
+  ]
 }
