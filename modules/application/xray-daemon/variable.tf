@@ -8,6 +8,8 @@ variable "network" {
   })
 }
 
+variable "network_config" {}
+
 locals {
   application = {
     name      = "xray-daemon"

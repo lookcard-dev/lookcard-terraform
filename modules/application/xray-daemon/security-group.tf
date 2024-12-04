@@ -30,13 +30,12 @@ resource "aws_security_group" "xray_daemon_ecs_svc_sg" {
   vpc_id      = var.network.vpc
 
   dynamic "ingress" {
-    for_each = [8080, 80]
+    for_each = [2337]
     content {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-      security_groups = local.inbound_allow_sg_list[*]
+      cidr_blocks = [var.network_config.vpc_cidr]
     }
   }
 

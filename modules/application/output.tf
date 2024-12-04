@@ -31,3 +31,9 @@ output "lambda_function_firebase_authorizer" {
     invoke_arn = module.firebase-authorizer.lambda_firebase_authorizer.invoke_arn
   }
 }
+
+output "private_alb_sg" {
+  value = {
+    id = aws_security_group.private_alb_sg.id
+  }
+}

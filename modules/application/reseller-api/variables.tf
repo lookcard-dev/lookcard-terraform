@@ -12,6 +12,7 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 # variable "_auth_api_sg" {}
 variable "default_listener" {}
 variable "bastion_sg" {}
+variable "private_alb_sg" {}
 
 variable "network" {
   type = object({
@@ -173,5 +174,7 @@ locals {
     var.secret_manager.secret_arns["SENTRY"],
     var.secret_manager.secret_arns["TELEGRAM"]
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.private_alb_sg.id,
+  ]
 }

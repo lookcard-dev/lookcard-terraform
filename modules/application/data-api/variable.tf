@@ -7,6 +7,7 @@ variable "secret_manager" {}
 # variable "s3_data_bucket_name" {}
 variable "crypto_api_sg_id" {}
 variable "bastion_sg" {}
+variable "account_api_module" {}
 
 variable "kms" {}
 variable "network" {
@@ -97,6 +98,8 @@ locals {
     }
   ]
   inbound_allow_sg_list = [
-
+    var.account_api_module.account_api_ecs_svc_sg.id,
+    var.bastion_sg
+    # Missing app api sg
   ]
 }

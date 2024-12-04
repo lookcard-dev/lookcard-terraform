@@ -61,6 +61,7 @@ module "application" {
   reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
   aws_provider          = var.aws_provider
   s3_bucket           = module.storage
+  network_config = var.network
 }
 
 module "certificate" {

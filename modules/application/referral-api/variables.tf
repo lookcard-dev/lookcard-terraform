@@ -11,6 +11,9 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 # variable "rds_proxy_read_host" {}
 # variable "_auth_api_sg" {}
 variable "bastion_sg" {}
+variable "reseller_api_module" {}
+variable "private_alb_sg" {}
+
 
 variable "network" {
   type = object({
@@ -106,5 +109,10 @@ locals {
   cloudwatch_log_groups = [
     aws_cloudwatch_log_group.application_log_group_referral_api.arn
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.reseller_api_module.reseller_api_ecs_svc_sg.id,
+    var.private_alb_sg.id,
+    var.bastion_sg
+    # Missing app api sg
+  ]
 }
