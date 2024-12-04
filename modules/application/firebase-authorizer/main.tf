@@ -24,3 +24,10 @@ resource "aws_lambda_function" "firebase_authorizer" {
     variables = local.lambda_env_vars
   }
 }
+
+resource "aws_lambda_permission" "api_gateway" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+  function_name = aws_lambda_function.firebase_authorizer.function_name
+}
