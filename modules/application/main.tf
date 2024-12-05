@@ -360,6 +360,7 @@ module "reseller-api" {
   # _auth_api_sg     = module.authentication._auth_api_sg
   default_listener = aws_lb_listener.look-card.arn
   private_alb_sg = aws_security_group.private_alb_sg
+  # apigw_module = var.apigw_module
 }
 
 # # ********************  Lambda functions  ***********************

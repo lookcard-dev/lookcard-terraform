@@ -62,6 +62,7 @@ module "application" {
   aws_provider          = var.aws_provider
   s3_bucket           = module.storage
   network_config = var.network
+  # apigw_module = module.apigw
 }
 
 module "certificate" {

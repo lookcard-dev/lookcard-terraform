@@ -67,3 +67,10 @@ output "fireblocks_webhook" {
 #     domain_name = aws_acm_certificate.reseller_portal.domain_name
 #   }
 # }
+
+output "reseller_api" {
+  value = {
+    cert_arn = aws_acm_certificate.reseller_api.arn
+    domain_name = aws_acm_certificate.reseller_api.domain_name
+  }
+}

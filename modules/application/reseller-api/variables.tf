@@ -13,6 +13,7 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "default_listener" {}
 variable "bastion_sg" {}
 variable "private_alb_sg" {}
+# variable "apigw_module" {}
 
 variable "network" {
   type = object({
