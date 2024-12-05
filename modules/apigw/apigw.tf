@@ -12,6 +12,11 @@ resource "aws_api_gateway_rest_api" "webhook" {
   description = ""
 }
 
+resource "aws_api_gateway_rest_api" "reseller_api" {
+  name        = "reseller_api"
+  description = ""
+}
+
 resource "aws_api_gateway_domain_name" "lookcard_domain" {
   domain_name              = var.acm.domain_api_name
   regional_certificate_arn = var.acm.cert_api_arn # Ensure this certificate is in the same region as your API Gateway
