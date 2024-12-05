@@ -74,6 +74,7 @@ module "certificate" {
   reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
   firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
   fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
+  apigw_reseller_hostname = "${var.dns_config.apigw_reseller_hostname}.${var.general_config.domain}"
 }
 
 # module "cdn" {
