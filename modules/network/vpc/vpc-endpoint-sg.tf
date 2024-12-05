@@ -28,14 +28,15 @@ resource "aws_security_group" "ecr_dkr_endpoint_sg" {
   description = "Use for VPC Endpoint - ECR DKR"
   vpc_id      = aws_vpc.vpc.id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = [var.network.vpc_cidr]
+    }
+  }
 
   egress {
     from_port   = 0
@@ -55,14 +56,15 @@ resource "aws_security_group" "ecr_api_endpoint_sg" {
   description = "Use for VPC Endpoint - ECR API"
   vpc_id      = aws_vpc.vpc.id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = [var.network.vpc_cidr]
+    }
+  }
 
   egress {
     from_port   = 0
@@ -82,14 +84,15 @@ resource "aws_security_group" "sqs_endpoint_sg" {
   description = "Use for VPC Endpoint - SQS"
   vpc_id      = aws_vpc.vpc.id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = [var.network.vpc_cidr]
+    }
+  }
 
   egress {
     from_port   = 0
@@ -109,14 +112,15 @@ resource "aws_security_group" "secrets_manager_endpoint_sg" {
   description = "Use for VPC Endpoint - Secrets Manager"
   vpc_id      = aws_vpc.vpc.id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = [var.network.vpc_cidr]
+    }
+  }
 
   egress {
     from_port   = 0
@@ -136,14 +140,15 @@ resource "aws_security_group" "firehose_endpoint_sg" {
   description = "Use for VPC Endpoint - Firehose"
   vpc_id      = aws_vpc.vpc.id
 
-  # dynamic "ingress" {
-  #   for_each = [8080, 80]
-  #   content {
-  #     from_port   = ingress.value
-  #     to_port     = ingress.value
-  #     protocol    = "tcp"
-  #   }
-  # }
+  dynamic "ingress" {
+    for_each = [8080, 80]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = [var.network.vpc_cidr]
+    }
+  }
 
   egress {
     from_port   = 0

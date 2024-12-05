@@ -18,6 +18,8 @@ variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
+variable "private_alb_sg" {}
+
 
 locals {
   application = {
@@ -94,5 +96,7 @@ locals {
     var.secret_manager.secret_arns["DATABASE"],
     var.secret_manager.secret_arns["SENTRY"]
   ]
-  inbound_allow_sg_list = []
+  inbound_allow_sg_list = [
+    var.private_alb_sg.id
+  ]
 }
