@@ -1,4 +1,5 @@
 resource "aws_acm_certificate" "reseller_api" {
+  provider                = aws.east
   domain_name       = var.apigw_reseller_hostname
   validation_method = "DNS"
   lifecycle {
@@ -8,6 +9,7 @@ resource "aws_acm_certificate" "reseller_api" {
 
 resource "aws_route53_record" "reseller_api_certs" {
   allow_overwrite = true
+  provider                = aws.east
   name            = tolist(aws_acm_certificate.reseller_api.domain_validation_options)[0].resource_record_name
   records         = [tolist(aws_acm_certificate.reseller_api.domain_validation_options)[0].resource_record_value]
   type            = tolist(aws_acm_certificate.reseller_api.domain_validation_options)[0].resource_record_type
@@ -16,6 +18,7 @@ resource "aws_route53_record" "reseller_api_certs" {
 }
 
 resource "aws_acm_certificate_validation" "reseller_api_validation" {
+  provider                = aws.east
   certificate_arn         = aws_acm_certificate.reseller_api.arn
   validation_record_fqdns = [aws_route53_record.reseller_api_certs.fqdn]
 }
