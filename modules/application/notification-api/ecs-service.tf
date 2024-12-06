@@ -1,3 +1,20 @@
+resource "aws_service_discovery_service" "notification_v2_service" {
+  name = "notification.api"
+
+  dns_config {
+    namespace_id = var.lookcardlocal_namespace
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+  }
+
+  health_check_custom_config {
+    failure_threshold = 1
+  }
+}
+
 
 resource "aws_ecs_service" "notification_v2" {
   name            = local.application.name
@@ -13,6 +30,10 @@ resource "aws_ecs_service" "notification_v2" {
     subnets          = var.network.private_subnet
     security_groups  = [aws_security_group.notification_v2.id]
     assign_public_ip = false
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.notification_v2_service.arn
   }
   # load_balancer {
   #   target_group_arn = aws_lb_target_group.notification_v2_target_group.arn

@@ -209,6 +209,7 @@ module "notification-api" {
   env_tag        = var.env_tag
   sg_alb_id      = aws_security_group.api_alb_sg.id
   bastion_sg     = var.bastion_sg
+  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
 }
 
 
