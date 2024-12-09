@@ -1,6 +1,6 @@
 resource "aws_wafv2_web_acl" "api" {
   name  = "api"
-  scope = "CLOUDFRONT"
+  scope = "REGIONAL"
   default_action {
     allow {
 
@@ -104,6 +104,11 @@ resource "aws_wafv2_web_acl" "api" {
       sampled_requests_enabled   = true
     }
   }
+}
+
+resource "aws_wafv2_web_acl_association" "api_gateway_waf_association" {
+  resource_arn = var.reseller_api_stage.arn
+  web_acl_arn  = aws_wafv2_web_acl.api.arn
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "api" {

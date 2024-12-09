@@ -175,6 +175,7 @@ module "storage" {
 module "security" {
   source = "./modules/security"
   waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
+  reseller_api_stage = module.apigw.reseller_api_stage
 }
 
 module "utils" {
