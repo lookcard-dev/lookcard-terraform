@@ -76,6 +76,7 @@ module "certificate" {
   firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
   fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
   apigw_reseller_hostname = "${var.dns_config.apigw_reseller_hostname}.${var.general_config.domain}"
+  webhook_hostname = "${var.dns_config.webhook_hostname}.${var.general_config.domain}"
 }
 
 # module "cdn" {

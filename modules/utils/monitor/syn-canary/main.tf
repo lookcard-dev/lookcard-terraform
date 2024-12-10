@@ -17,7 +17,7 @@ resource "aws_synthetics_canary" "canary" {
   failure_retention_period = 31
 
   schedule {
-    expression = "rate(1 minute)"
+    expression = "rate(10 minutes)"
   }
   run_config {
     timeout_in_seconds = 15

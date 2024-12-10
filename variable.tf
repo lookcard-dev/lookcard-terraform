@@ -16,6 +16,7 @@ variable "dns_config" {
     fireblocks_webhook_hostname = string
     reseller_portal_hostname    = string
     apigw_reseller_hostname    = string
+    webhook_hostname          = string
   })
 }
 variable "aws_provider" {

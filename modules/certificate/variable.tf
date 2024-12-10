@@ -8,6 +8,7 @@ variable "firebase_webhook_hostname" {}
 variable "fireblocks_webhook_hostname" {}
 # variable "reseller_portal_hostname" {}
 variable "apigw_reseller_hostname" {}
+variable "webhook_hostname" {}
 
 provider "aws" {
   alias  = "east"

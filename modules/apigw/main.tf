@@ -12,9 +12,11 @@
 #   dns_config = var.dns_config
 # }
 
-# module "webhook-api" {
-#   source = "./webhook-api"
-#   env_tag = var.env_tag
-#   domain = var.domain
-#   dns_config = var.dns_config
-# }
+module "webhook-api" {
+  source = "./webhook-api"
+  env_tag = var.env_tag
+  acm = var.acm
+  application = var.application
+  domain = var.domain
+  dns_config = var.dns_config
+}
