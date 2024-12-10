@@ -33,34 +33,6 @@ output "domain_api_name" {
   value = aws_acm_certificate.api.domain_name
 }
 
-output "sumsub_webhook" {
-  value = {
-    cert_arn = aws_acm_certificate.sumsub_webhook.arn
-    domain_name = aws_acm_certificate.sumsub_webhook.domain_name
-  }
-}
-
-output "reap_webhook" {
-  value = {
-    cert_arn = aws_acm_certificate.reap_webhook.arn
-    domain_name = aws_acm_certificate.reap_webhook.domain_name
-  }
-}
-
-output "firebase_webhook" {
-  value = {
-    cert_arn = aws_acm_certificate.firebase_webhook.arn
-    domain_name = aws_acm_certificate.firebase_webhook.domain_name
-  }
-}
-
-output "fireblocks_webhook" {
-  value = {
-    cert_arn = aws_acm_certificate.fireblocks_webhook.arn
-    domain_name = aws_acm_certificate.fireblocks_webhook.domain_name
-  }
-}
-
 # output "reseller_portal" {
 #   value = {
 #     cert_arn = aws_acm_certificate.reseller_portal.arn
@@ -72,5 +44,12 @@ output "reseller_api" {
   value = {
     cert_arn = aws_acm_certificate.reseller_api.arn
     domain_name = aws_acm_certificate.reseller_api.domain_name
+  }
+}
+
+output "webhook" {
+  value = {
+    cert_arn = aws_acm_certificate.webhook.arn
+    domain_name = aws_acm_certificate.webhook.domain_name
   }
 }

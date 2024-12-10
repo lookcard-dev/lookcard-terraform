@@ -7,10 +7,10 @@ resource "aws_api_gateway_rest_api" "lookcard_api" {
   description = "lookcard API Gateway pointing to ALB"
 }
 
-resource "aws_api_gateway_rest_api" "webhook" {
-  name        = "webhook"
-  description = ""
-}
+# resource "aws_api_gateway_rest_api" "webhook" {
+#   name        = "webhook"
+#   description = ""
+# }
 
 resource "aws_api_gateway_rest_api" "reseller_api" {
   name        = "reseller_api"
@@ -25,37 +25,37 @@ resource "aws_api_gateway_domain_name" "lookcard_domain" {
   }
 }
 
-resource "aws_api_gateway_domain_name" "sumsub_webhook" {
-  domain_name              = var.acm.sumsub_webhook.domain_name
-  certificate_arn = var.acm.sumsub_webhook.cert_arn
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-}
+# resource "aws_api_gateway_domain_name" "sumsub_webhook" {
+#   domain_name              = var.acm.sumsub_webhook.domain_name
+#   certificate_arn = var.acm.sumsub_webhook.cert_arn
+#   endpoint_configuration {
+#     types = ["EDGE"]
+#   }
+# }
 
-resource "aws_api_gateway_domain_name" "reap_webhook" {
-  domain_name              = var.acm.reap_webhook.domain_name
-  certificate_arn = var.acm.reap_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-}
+# resource "aws_api_gateway_domain_name" "reap_webhook" {
+#   domain_name              = var.acm.reap_webhook.domain_name
+#   certificate_arn = var.acm.reap_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+#   endpoint_configuration {
+#     types = ["EDGE"]
+#   }
+# }
 
-resource "aws_api_gateway_domain_name" "firebase_webhook" {
-  domain_name              = var.acm.firebase_webhook.domain_name
-  certificate_arn = var.acm.firebase_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-}
+# resource "aws_api_gateway_domain_name" "firebase_webhook" {
+#   domain_name              = var.acm.firebase_webhook.domain_name
+#   certificate_arn = var.acm.firebase_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+#   endpoint_configuration {
+#     types = ["EDGE"]
+#   }
+# }
 
-resource "aws_api_gateway_domain_name" "fireblocks_webhook" {
-  domain_name              = var.acm.fireblocks_webhook.domain_name
-  certificate_arn = var.acm.fireblocks_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-}
+# resource "aws_api_gateway_domain_name" "fireblocks_webhook" {
+#   domain_name              = var.acm.fireblocks_webhook.domain_name
+#   certificate_arn = var.acm.fireblocks_webhook.cert_arn # Ensure this certificate is in the same region as your API Gateway
+#   endpoint_configuration {
+#     types = ["EDGE"]
+#   }
+# }
 
 resource "aws_api_gateway_domain_name" "reseller_api" {
   domain_name              = var.acm.reseller_api.domain_name
@@ -71,29 +71,29 @@ resource "aws_api_gateway_resource" "lookcard_resource" {
   path_part   = "{proxy+}"
 }
 
-resource "aws_api_gateway_resource" "sumsub_webhook" {
-  rest_api_id = aws_api_gateway_rest_api.webhook.id
-  parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
-  path_part   = "sumsub"
-}
+# resource "aws_api_gateway_resource" "sumsub_webhook" {
+#   rest_api_id = aws_api_gateway_rest_api.webhook.id
+#   parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
+#   path_part   = "sumsub"
+# }
 
-resource "aws_api_gateway_resource" "reap_webhook" {
-  rest_api_id = aws_api_gateway_rest_api.webhook.id
-  parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
-  path_part   = "reap"
-}
+# resource "aws_api_gateway_resource" "reap_webhook" {
+#   rest_api_id = aws_api_gateway_rest_api.webhook.id
+#   parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
+#   path_part   = "reap"
+# }
 
-resource "aws_api_gateway_resource" "firebase_webhook" {
-  rest_api_id = aws_api_gateway_rest_api.webhook.id
-  parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
-  path_part   = "firebase"
-}
+# resource "aws_api_gateway_resource" "firebase_webhook" {
+#   rest_api_id = aws_api_gateway_rest_api.webhook.id
+#   parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
+#   path_part   = "firebase"
+# }
 
-resource "aws_api_gateway_resource" "fireblocks_webhook" {
-  rest_api_id = aws_api_gateway_rest_api.webhook.id
-  parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
-  path_part   = "fireblocks"
-}
+# resource "aws_api_gateway_resource" "fireblocks_webhook" {
+#   rest_api_id = aws_api_gateway_rest_api.webhook.id
+#   parent_id   = aws_api_gateway_rest_api.webhook.root_resource_id
+#   path_part   = "fireblocks"
+# }
 
 resource "aws_api_gateway_resource" "reseller_api_root_resource" {
   for_each = toset(var.reseller_api_root_resource)
@@ -121,33 +121,33 @@ resource "aws_api_gateway_method" "lookcard_method" {
   }
 }
 
-resource "aws_api_gateway_method" "sumsub_webhook" {
-  rest_api_id   = aws_api_gateway_rest_api.webhook.id
-  resource_id   = aws_api_gateway_resource.sumsub_webhook.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "sumsub_webhook" {
+#   rest_api_id   = aws_api_gateway_rest_api.webhook.id
+#   resource_id   = aws_api_gateway_resource.sumsub_webhook.id
+#   http_method   = "POST"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "reap_webhook" {
-  rest_api_id   = aws_api_gateway_rest_api.webhook.id
-  resource_id   = aws_api_gateway_resource.reap_webhook.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "reap_webhook" {
+#   rest_api_id   = aws_api_gateway_rest_api.webhook.id
+#   resource_id   = aws_api_gateway_resource.reap_webhook.id
+#   http_method   = "POST"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "firebase_webhook" {
-  rest_api_id   = aws_api_gateway_rest_api.webhook.id
-  resource_id   = aws_api_gateway_resource.firebase_webhook.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "firebase_webhook" {
+#   rest_api_id   = aws_api_gateway_rest_api.webhook.id
+#   resource_id   = aws_api_gateway_resource.firebase_webhook.id
+#   http_method   = "POST"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "fireblocks_webhook" {
-  rest_api_id   = aws_api_gateway_rest_api.webhook.id
-  resource_id   = aws_api_gateway_resource.fireblocks_webhook.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "fireblocks_webhook" {
+#   rest_api_id   = aws_api_gateway_rest_api.webhook.id
+#   resource_id   = aws_api_gateway_resource.fireblocks_webhook.id
+#   http_method   = "POST"
+#   authorization = "NONE"
+# }
 
 resource "aws_api_gateway_method" "reseller_api_root_resource_method" {
   for_each = { for pair in setproduct(var.reseller_api_root_resource, var.methods) : "${pair[0]}/${pair[1]}" => pair }
@@ -192,14 +192,14 @@ resource "aws_api_gateway_integration" "lookcard_integration" {
   }
 }
 
-resource "aws_api_gateway_integration" "sumsub_webhook" {
-  rest_api_id             = aws_api_gateway_rest_api.webhook.id
-  resource_id             = aws_api_gateway_resource.sumsub_webhook.id
-  http_method             = aws_api_gateway_method.sumsub_webhook.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = var.application.lambda_function_sumsub_webhook.invoke_arn
-}
+# resource "aws_api_gateway_integration" "sumsub_webhook" {
+#   rest_api_id             = aws_api_gateway_rest_api.webhook.id
+#   resource_id             = aws_api_gateway_resource.sumsub_webhook.id
+#   http_method             = aws_api_gateway_method.sumsub_webhook.http_method
+#   integration_http_method = "POST"
+#   type                    = "AWS_PROXY"
+#   uri                     = var.application.lambda_function_sumsub_webhook.invoke_arn
+# }
 
 resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" {
   for_each = { for pair in setproduct(var.reseller_api_root_resource, var.methods) : "${pair[0]}/${pair[1]}" => pair }
