@@ -1,0 +1,17 @@
+variable "acm" {}
+variable "env_tag" {}
+variable "application" {}
+variable "dns_config" {}
+variable "domain" {}
+variable "nlb_vpc_link" {}
+variable "firebase_authorizer_invocation_role" {}
+
+variable "methods" {
+  type    = list(string)
+  default = ["GET", "POST", "PUT"]  # List of HTTP methods
+}
+
+variable "reseller_api_root_resource" {
+  type    = list(string)
+  default = ["reseller", "resellers"]
+}

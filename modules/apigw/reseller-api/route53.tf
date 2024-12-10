@@ -1,3 +1,7 @@
+data "aws_route53_zone" "hosted_zone_id" {
+  name = var.domain
+}
+
 resource "aws_route53_record" "reseller_api" {
   zone_id = data.aws_route53_zone.hosted_zone_id.zone_id
   name    = var.dns_config.apigw_reseller_hostname

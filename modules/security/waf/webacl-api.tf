@@ -106,10 +106,10 @@ resource "aws_wafv2_web_acl" "api" {
   }
 }
 
-resource "aws_wafv2_web_acl_association" "api_gateway_waf_association" {
-  resource_arn = var.reseller_api_stage.arn
-  web_acl_arn  = aws_wafv2_web_acl.api.arn
-}
+# resource "aws_wafv2_web_acl_association" "api_gateway_waf_association" {
+#   resource_arn = var.reseller_api_stage.arn
+#   web_acl_arn  = aws_wafv2_web_acl.api.arn
+# }
 
 resource "aws_wafv2_web_acl_logging_configuration" "api" {
   log_destination_configs = [var.waf_logging_s3_bucket]
