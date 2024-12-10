@@ -21,3 +21,14 @@ variable "root_resource_methods" {
     "POST"
   ]
 }
+
+locals {
+  rest_api = {
+    name = "webhook"
+    description = ""
+  }
+  cloudwatch_log_group = {
+    name = "/aws/api-gateway/webhook"
+    retention_in_days = 30
+  }
+}

@@ -16,8 +16,8 @@ module "reseller-api" {
   firebase_authorizer_invocation_role = aws_iam_role.api_gateway_firebase_invocation_role
 }
 
-module "webhook-api" {
-  source = "./webhook-api"
+module "webhook" {
+  source = "./webhook"
   env_tag = var.env_tag
   acm = var.acm
   application = var.application

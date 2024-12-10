@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "reseller_api" {
-  name        = "reseller_api"
-  description = ""
+  name        = local.rest_api.name
+  description = local.rest_api.description
 }
 
 resource "aws_api_gateway_domain_name" "reseller_api" {
