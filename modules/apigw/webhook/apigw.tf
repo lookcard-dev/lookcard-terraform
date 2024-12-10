@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "webhook" {
-  name        = "webhook"
-  description = ""
+  name        = local.rest_api.name
+  description = local.rest_api.description
 }
 
 resource "aws_api_gateway_domain_name" "webhook" {

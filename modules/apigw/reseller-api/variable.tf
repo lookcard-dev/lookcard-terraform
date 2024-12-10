@@ -15,3 +15,14 @@ variable "reseller_api_root_resource" {
   type    = list(string)
   default = ["reseller", "resellers"]
 }
+
+locals {
+  rest_api = {
+    name = "reseller_api"
+    description = ""
+  }
+  cloudwatch_log_group = {
+    name = "/aws/api-gateway/reseller-api"
+    retention_in_days = 30
+  }
+}
