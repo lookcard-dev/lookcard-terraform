@@ -5,6 +5,7 @@ variable "dns_config" {}
 variable "domain" {}
 variable "nlb_vpc_link" {}
 variable "firebase_authorizer_invocation_role" {}
+variable "security_module" {}
 
 variable "methods" {
   type    = list(string)
