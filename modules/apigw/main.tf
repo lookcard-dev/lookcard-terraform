@@ -14,6 +14,7 @@ module "reseller-api" {
   application = var.application
   nlb_vpc_link = aws_api_gateway_vpc_link.nlb_vpc_link
   firebase_authorizer_invocation_role = aws_iam_role.api_gateway_firebase_invocation_role
+  security_module = var.security_module
 }
 
 module "webhook" {
@@ -23,4 +24,5 @@ module "webhook" {
   application = var.application
   domain = var.domain
   dns_config = var.dns_config
+  security_module = var.security_module
 }

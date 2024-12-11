@@ -197,4 +197,5 @@ module "apigw" {
   env_tag = var.env_tag
   dns_config = var.dns_config
   domain = var.general_config.domain
+  security_module = module.security
 }

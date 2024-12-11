@@ -3,7 +3,7 @@ variable "env_tag" {}
 variable "application" {}
 variable "dns_config" {}
 variable "domain" {}
-
+variable "security_module" {}
 
 variable "api_gw_resource" {
   type = list(string)
