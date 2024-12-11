@@ -1,56 +1,45 @@
-resource "aws_api_gateway_account" "account_settings" {
-  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch_role.arn
-}
-
 resource "aws_api_gateway_rest_api" "lookcard_api" {
-  name        = "lookcard_api"
-  description = "lookcard API Gateway pointing to ALB"
+  name        = local.rest_api.name
+  description = local.rest_api.description
 }
 
-resource "aws_api_gateway_domain_name" "lookcard_domain" {
+resource "aws_api_gateway_domain_name" "lookcard_api" {
   domain_name              = var.acm.domain_api_name
-  regional_certificate_arn = var.acm.cert_api_arn # Ensure this certificate is in the same region as your API Gateway
+  certificate_arn = var.acm.cert_api_arn 
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types = ["EDGE"]
   }
 }
 
-resource "aws_api_gateway_resource" "lookcard_resource" {
+resource "aws_api_gateway_resource" "lookcard_api_root_proxy_resource" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
   parent_id   = aws_api_gateway_rest_api.lookcard_api.root_resource_id
   path_part   = "{proxy+}"
 }
 
-resource "aws_api_gateway_method" "lookcard_method" {
+resource "aws_api_gateway_method" "lookcard_api_root_proxy_method" {
   rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
-  resource_id   = aws_api_gateway_resource.lookcard_resource.id
+  resource_id   = aws_api_gateway_resource.lookcard_api_root_proxy_resource.id
   http_method   = "ANY"
   authorization = "CUSTOM"
-  authorizer_id = aws_api_gateway_authorizer.firebase_authorizer.id
-
-  request_parameters = {
-    "method.request.path.proxy" = true
-  }
+  authorizer_id = aws_api_gateway_authorizer.lookcard_api_authorizer.id
 }
 
-resource "aws_api_gateway_integration" "lookcard_integration" {
+resource "aws_api_gateway_integration" "lookcard_api_root_proxy_resource_integration" {
   rest_api_id             = aws_api_gateway_rest_api.lookcard_api.id
-  resource_id             = aws_api_gateway_resource.lookcard_resource.id
-  http_method             = aws_api_gateway_method.lookcard_method.http_method
+  resource_id             = aws_api_gateway_resource.lookcard_api_root_proxy_resource.id
+  http_method             = aws_api_gateway_method.lookcard_api_root_proxy_method.http_method
   type                    = "HTTP_PROXY"
   integration_http_method = "ANY"
   uri                     = "http://${var.application.alb_lookcard.dns_name}/{proxy}"
   connection_type         = "VPC_LINK"
-  connection_id           = aws_api_gateway_vpc_link.nlb_vpc_link.id
-  request_parameters = {
-    "integration.request.path.proxy" = "method.request.path.proxy"
-  }
+  connection_id           = var.nlb_vpc_link.id
 }
 
-resource "aws_api_gateway_stage" "stage" {
-  deployment_id = aws_api_gateway_deployment.lookcard_deployment.id
+resource "aws_api_gateway_stage" "lookcard_api" {
+  deployment_id = aws_api_gateway_deployment.lookcard_api.id
   rest_api_id   = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name    = "Develop" #var.env_tag <- temp hard code for solve the terraform apply issue 
+  stage_name    = var.env_tag
   variables = {
     "env" = var.env_tag
   }
@@ -73,7 +62,7 @@ resource "aws_api_gateway_stage" "stage" {
   }
 }
 
-resource "aws_api_gateway_deployment" "lookcard_deployment" {
+resource "aws_api_gateway_deployment" "lookcard_api" {
   rest_api_id = aws_api_gateway_rest_api.lookcard_api.id
   
   stage_description = "${md5(file("${path.module}/apigw.tf"))}"
@@ -82,15 +71,15 @@ resource "aws_api_gateway_deployment" "lookcard_deployment" {
   }
 }
 
-resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
-  domain_name = aws_api_gateway_domain_name.lookcard_domain.domain_name
+resource "aws_api_gateway_base_path_mapping" "lookcard_api" {
+  domain_name = aws_api_gateway_domain_name.lookcard_api.domain_name
   api_id      = aws_api_gateway_rest_api.lookcard_api.id
-  stage_name  = "Develop" #var.env_tag - temp hard code for solve the terraform apply issue
+  stage_name  = var.env_tag
 }
 
-resource "aws_api_gateway_authorizer" "firebase_authorizer" {
-  name                   = "firebase_authorizer"
+resource "aws_api_gateway_authorizer" "lookcard_api_authorizer" {
+  name                   = "lookcard_api_firebase_authorizer"
   rest_api_id            = aws_api_gateway_rest_api.lookcard_api.id
   authorizer_uri         = var.application.lambda_function_firebase_authorizer.invoke_arn
-  authorizer_credentials = aws_iam_role.api_gateway_firebase_invocation_role.arn
+  authorizer_credentials = var.firebase_authorizer_invocation_role.arn
 }
