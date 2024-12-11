@@ -1,6 +1,7 @@
 # api.test.lookcard.io
 resource "aws_acm_certificate" "api" {
   domain_name       = var.api_hostname
+  provider          = aws.east
   validation_method = "DNS"
   lifecycle {
     create_before_destroy = true
@@ -17,6 +18,7 @@ resource "aws_route53_record" "api_certs" {
 }
 
 resource "aws_acm_certificate_validation" "api_validation" {
+  provider          = aws.east
   certificate_arn         = aws_acm_certificate.api.arn
   validation_record_fqdns = [aws_route53_record.api_certs.fqdn]
 }
