@@ -27,7 +27,7 @@ resource "aws_ecs_service" "referral_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.referral_api_security_group.id]
+    security_groups = [aws_security_group.referral_api_ecs_svc_sg.id]
   }
 
   service_registries {

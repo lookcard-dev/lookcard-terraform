@@ -28,7 +28,7 @@ resource "aws_ecs_service" "reseller_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.reseller_api_sg.id]
+    security_groups = [aws_security_group.reseller_api_ecs_svc_sg.id]
   }
 
   load_balancer {

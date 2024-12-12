@@ -27,7 +27,7 @@ resource "aws_ecs_service" "crypto_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.crypto-api-sg.id]
+    security_groups = [aws_security_group.crypto_api_ecs_svc_sg.id]
   }
 
   # load_balancer {

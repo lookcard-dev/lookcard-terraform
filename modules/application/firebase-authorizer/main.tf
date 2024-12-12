@@ -13,7 +13,7 @@ resource "aws_lambda_function" "firebase_authorizer" {
 
   vpc_config {
     subnet_ids         = var.network.private_subnet
-    security_group_ids = [aws_security_group.lambda_firebase_authorizer_sg.id]
+    security_group_ids = [aws_security_group.firebase_authorizer_lambda_func_sg.id]
   }
 
   image_config {
