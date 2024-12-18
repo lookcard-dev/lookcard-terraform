@@ -17,6 +17,11 @@ variable "reseller_api_root_resource" {
   default = ["reseller", "resellers"]
 }
 
+variable "reseller_api_resellers_resource" {
+  type    = list(string)
+  default = ["tier", "tiers", "{proxy+}"]
+}
+
 locals {
   rest_api = {
     name = "reseller_api"
