@@ -439,6 +439,51 @@ module "notification-dispatcher" {
   secret_manager = var.secret_manager
 }
 
+# module "crypto-processor-broadcast-transaction" {
+#   source = "./crypto-processor-broadcast-transaction"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["crypto-processor"].repository_url
+#     tag = var.image_tag.crypto-processor-broadcast-transaction
+#   }
+#   sqs            = module.sqs
+#   secret_manager = var.secret_manager
+# }
+
+# module "crypto-processor-sweep" {
+#   source = "./crypto-processor-sweep"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["crypto-processor"].repository_url
+#     tag = var.image_tag.crypto-processor-broadcast-transaction
+#   }
+#   sqs            = module.sqs
+#   secret_manager = var.secret_manager
+# }
+
+# module "crypto-processor-withdrawal" {
+#   source = "./crypto-processor-withdrawal"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["crypto-processor"].repository_url
+#     tag = var.image_tag.crypto-processor-broadcast-transaction
+#   }
+#   sqs            = module.sqs
+#   secret_manager = var.secret_manager
+# }
+
 # # ********************  v2 Portal  ***********************
 
 module "reseller-portal" {
