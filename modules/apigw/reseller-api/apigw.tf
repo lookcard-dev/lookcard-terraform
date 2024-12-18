@@ -43,8 +43,8 @@ resource "aws_api_gateway_method" "reseller_api_root_resource_method" {
   rest_api_id   = aws_api_gateway_rest_api.reseller_api.id
   resource_id   = aws_api_gateway_resource.reseller_api_root_resource[each.value[0]].id
   http_method   = each.value[1]
-  authorization = "CUSTOM"
-  authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+  authorization = "NONE" #"CUSTOM"
+  # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
 }
 
 resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
@@ -54,8 +54,8 @@ resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
   rest_api_id   = aws_api_gateway_rest_api.reseller_api.id
   resource_id   = aws_api_gateway_resource.reseller_api_reseller_proxy_resource.id
   http_method   = each.key
-  authorization = "CUSTOM"
-  authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+  authorization = "NONE" #"CUSTOM"
+  # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
 }
 
 resource "aws_api_gateway_method" "reseller_api_resellers_resource_method" {
@@ -65,8 +65,8 @@ resource "aws_api_gateway_method" "reseller_api_resellers_resource_method" {
   rest_api_id   = aws_api_gateway_rest_api.reseller_api.id
   resource_id   = aws_api_gateway_resource.reseller_api_resellers_resource[each.value[0]].id
   http_method   = each.value[1]
-  authorization = "CUSTOM"
-  authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+  authorization = "NONE" #"CUSTOM"
+  # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
 }
 
 resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" {
