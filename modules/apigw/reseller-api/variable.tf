@@ -14,7 +14,7 @@ variable "methods" {
 
 variable "reseller_api_root_resource" {
   type    = list(string)
-  default = ["reseller", "resellers"]
+  default = ["reseller", "resellers", "tier", "tiers"]
 }
 
 variable "reseller_api_resellers_resource" {
