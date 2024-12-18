@@ -23,7 +23,7 @@ resource "aws_ecs_service" "authentication_api_ecs_service" {
   cluster       = var.cluster
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.authentication_api_security_grp.id]
+    security_groups = [aws_security_group.authentication_api_ecs_svc_sg.id]
   }
   service_registries {
     registry_arn = aws_service_discovery_service.authentication_api_service.arn

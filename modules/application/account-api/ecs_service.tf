@@ -26,7 +26,7 @@ resource "aws_ecs_service" "account_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.account_api_sg.id]
+    security_groups = [aws_security_group.account_api_ecs_svc_sg.id]
   }
 
   load_balancer {

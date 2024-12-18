@@ -10,6 +10,6 @@ resource "aws_ecs_service" "reap_webhook" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.profile-api-sg.id]
+    security_groups = [aws_security_group.reap_webhook_ecs_svc_sg.id]
   }
 }

@@ -37,3 +37,18 @@ resource "aws_vpc_endpoint" "s3_gateway" {
     Name = "s3-endpoint"
   }
 }
+
+resource "aws_vpc_endpoint" "sqs_interface" {
+  vpc_id       = aws_vpc.vpc.id
+  service_name = "com.amazonaws.ap-southeast-1.sqs"
+  vpc_endpoint_type = "Interface"
+  subnet_ids        = tolist(aws_subnet.private_subnet[*].id)
+
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
+  private_dns_enabled = true
+
+  tags = {
+    Name = "sqs-interface"
+  }
+}

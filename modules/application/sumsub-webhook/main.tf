@@ -13,7 +13,7 @@ resource "aws_lambda_function" "sumsub_webhook" {
 
   vpc_config {
     subnet_ids         = var.network.private_subnet
-    security_group_ids = [aws_security_group.lambda_sumsub_webhook_sg.id]
+    security_group_ids = [aws_security_group.sumsub_webhook_lambda_func_sg.id]
   }
 
   environment {

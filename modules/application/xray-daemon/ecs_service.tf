@@ -25,7 +25,7 @@ resource "aws_ecs_service" "xray_daemon" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.xray_daemon_sg.id]
+    security_groups = [aws_security_group.xray_daemon_ecs_svc_sg.id]
   }
     service_registries {
     registry_arn   = aws_service_discovery_service.xray_daemon_service.arn

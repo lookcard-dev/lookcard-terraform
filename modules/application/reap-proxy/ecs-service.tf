@@ -10,7 +10,7 @@ resource "aws_ecs_service" "reap_proxy" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.reap_proxy_sg.id]
+    security_groups = [aws_security_group.reap_proxy_ecs_svc_sg.id]
   }
 
 #   service_registries {

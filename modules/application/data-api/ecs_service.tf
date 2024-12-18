@@ -19,7 +19,6 @@ resource "aws_service_discovery_service" "data_api_service" {
 resource "aws_ecs_service" "data_api" {
   name            = local.application.name
   task_definition = aws_ecs_task_definition.data-api.arn
-  # launch_type     = "FARGATE"
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
     weight            = 1
@@ -29,7 +28,7 @@ resource "aws_ecs_service" "data_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.data-api-sg.id]
+    security_groups = [aws_security_group.data_api_ecs_svc_sg.id]
   }
 
   # load_balancer {

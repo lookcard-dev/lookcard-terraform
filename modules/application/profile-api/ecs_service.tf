@@ -28,7 +28,7 @@ resource "aws_ecs_service" "profile_api" {
 
   network_configuration {
     subnets         = var.network.private_subnet
-    security_groups = [aws_security_group.profile-api-sg.id]
+    security_groups = [aws_security_group.profile_api_ecs_svc_sg.id]
   }
 
   # load_balancer {

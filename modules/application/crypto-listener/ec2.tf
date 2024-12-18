@@ -10,7 +10,7 @@ resource "aws_launch_template" "transaction_listener_arm64" {
   name                   = "ecs-transaction-listener-launch-template-arm64"
   instance_type          = "t4g.medium"
   image_id               = data.aws_ssm_parameter.ecs_optimized_bottlerocket_arm64_ami.value
-  vpc_security_group_ids = [aws_security_group.transaction_listener_sg.id]
+  vpc_security_group_ids = [aws_security_group.tron_listener_ecs_svc_sg.id]
 
   user_data = filebase64("${path.module}/userdata.toml")
 
@@ -30,7 +30,7 @@ resource "aws_launch_template" "transaction_listener_amd64" {
   name                   = "ecs-transaction-listener-launch-template-amd64"
   instance_type          = "t3a.medium"
   image_id               = data.aws_ssm_parameter.ecs_optimized_bottlerocket_amd64_ami.value
-  vpc_security_group_ids = [aws_security_group.transaction_listener_sg.id]
+  vpc_security_group_ids = [aws_security_group.tron_listener_ecs_svc_sg.id]
 
   user_data = filebase64("${path.module}/userdata.toml")
 
