@@ -57,6 +57,7 @@ variable "image_tag" {
     cryptocurrency-sweep-processor = string
     cryptocurrency-withdrawal-processor = string
     notification-dispatcher = string
+    crypto-processor = string
   })
 }
 

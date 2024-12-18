@@ -66,6 +66,7 @@ variable "ecr_names" {
     "reseller-api"         = "reseller-api"
     "apigw-authorizer"     = "apigw-authorizer"
     "reap-webhook"         = "reap-webhook"
+    "crypto-processor"     = "crypto-processor"
 
     #v2 Lambda Function
     "account-statement-generator" = "account-statement-generator"
