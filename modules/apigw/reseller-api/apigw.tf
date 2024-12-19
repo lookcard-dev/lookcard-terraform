@@ -36,6 +36,9 @@ resource "aws_api_gateway_method" "reseller_api_root_resource_method" {
   http_method   = each.value[1]
   authorization = "NONE" #"CUSTOM"
   # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
@@ -47,6 +50,10 @@ resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
   http_method   = each.key
   authorization = "NONE" #"CUSTOM"
   # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" {
@@ -61,6 +68,10 @@ resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" 
   uri                     = "http://${var.application.alb_lookcard.dns_name}/{proxy}"
   connection_type         = "VPC_LINK"
   connection_id           = var.nlb_vpc_link.id
+
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 }
 
 resource "aws_api_gateway_integration" "reseller_api_reseller_proxy_resource_integration" {
@@ -75,6 +86,10 @@ resource "aws_api_gateway_integration" "reseller_api_reseller_proxy_resource_int
   uri                     = "http://${var.application.alb_lookcard.dns_name}/{proxy}"
   connection_type         = "VPC_LINK"
   connection_id           = var.nlb_vpc_link.id
+
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 }
 
 resource "aws_api_gateway_stage" "reseller_api" {
