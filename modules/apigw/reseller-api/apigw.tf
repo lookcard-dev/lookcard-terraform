@@ -38,6 +38,7 @@ resource "aws_api_gateway_method" "reseller_api_root_resource_method" {
   # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
   request_parameters = {
     "method.request.path.proxy" = true
+    "method.request.header.host" = true
   }
 }
 
@@ -53,6 +54,7 @@ resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
 
   request_parameters = {
     "method.request.path.proxy" = true
+    "method.request.header.host" = true
   }
 }
 
@@ -71,6 +73,7 @@ resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" 
 
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
   }
 }
 
@@ -89,6 +92,7 @@ resource "aws_api_gateway_integration" "reseller_api_reseller_proxy_resource_int
 
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
   }
 }
 
