@@ -56,23 +56,3 @@ resource "aws_lb_target_group" "account_api_target_group" {
     matcher             = "200-399"
   }
 }
-
-resource "aws_lb_listener_rule" "account_api_listener_rule" {
-  listener_arn = var.default_listener
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.account_api_target_group.arn
-  }
-
-  condition {
-    path_pattern {
-      values = local.load_balancer.api_path
-    }
-  }
-
-  priority = 150
-  tags = {
-    Name = "${local.application.name}-rule"
-  }
-}
