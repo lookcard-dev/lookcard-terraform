@@ -24,8 +24,9 @@ resource "aws_lb_listener_rule" "reseller_api_rule" {
   }
 
   condition {
-    host_header {
-      values = ["api.reseller.develop.not-lookcard.com"]# local.load_balancer.api_path
+    http_header {
+      http_header_name = "X-Forwarded-Host"
+      values = ["api.reseller.develop.not-lookcard.com"]
     }
   }
 
