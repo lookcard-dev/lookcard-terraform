@@ -16,6 +16,10 @@ module "secret" {
   source = "./modules/secret"
 }
 
+module "kms" {
+  source = "./modules/kms"
+}
+
 module "network" {
   source  = "./modules/network"
   network = var.network
@@ -24,6 +28,50 @@ module "network" {
     gateway_enabled = false
   }
 }
+
+module "storage" {
+  source                  = "./modules/storage"
+  s3_bucket               = var.s3_bucket
+  environment             = var.general_config
+  aws_provider            = var.aws_provider
+  secret_manager          = module.secret
+  network = {
+    vpc                     = module.network.vpc
+    private_subnet          = module.network.private_subnet_ids
+    public_subnet           = module.network.public_subnet_ids
+    database_subnet         = module.network.database_subnet_ids
+  }
+}
+
+module "utils" {
+  source = "./modules/utils"
+  network = {
+    vpc            = module.network.vpc
+    private_subnet = module.network.private_subnet_ids
+    public_subnet  = module.network.public_subnet_ids
+  }
+  syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
+  sns_subscriptions_email = var.sns_subscriptions_email
+}
+
+module "security" {
+  source = "./modules/security"
+  waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
+  # reseller_api_stage = module.apigw.reseller_api_stage
+}
+
+
+module "apigw" {
+  source = "./modules/apigw"
+  acm = module.certificate
+  application = module.application
+  env_tag = var.env_tag
+  dns_config = var.dns_config
+  domain = var.general_config.domain
+  security_module = module.security
+}
+
+
 
 module "application" {
   source             = "./modules/application"
@@ -146,9 +194,6 @@ module "certificate" {
 #   rt_private_id = module.VPC.rt_private_id[0]
 # }
 
-module "kms" {
-  source = "./modules/kms"
-}
 
 # module "bastion" {
 #   source = "./modules/bastion"
@@ -159,43 +204,8 @@ module "kms" {
 #   }
 # }
 
-module "storage" {
-  source                  = "./modules/storage"
-  s3_bucket               = var.s3_bucket
-  environment             = var.general_config
-  aws_provider            = var.aws_provider
-  secret_manager          = module.secret
-  network = {
-    vpc                     = module.network.vpc
-    private_subnet          = module.network.private_subnet_ids
-    public_subnet           = module.network.public_subnet_ids
-    database_subnet         = module.network.database_subnet_ids
-  }
-}
 
-module "security" {
-  source = "./modules/security"
-  waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
-  # reseller_api_stage = module.apigw.reseller_api_stage
-}
 
-module "utils" {
-  source = "./modules/utils"
-  network = {
-    vpc            = module.network.vpc
-    private_subnet = module.network.private_subnet_ids
-    public_subnet  = module.network.public_subnet_ids
-  }
-  syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
-  sns_subscriptions_email = var.sns_subscriptions_email
-}
 
-module "apigw" {
-  source = "./modules/apigw"
-  acm = module.certificate
-  application = module.application
-  env_tag = var.env_tag
-  dns_config = var.dns_config
-  domain = var.general_config.domain
-  security_module = module.security
-}
+
+
