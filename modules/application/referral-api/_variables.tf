@@ -7,13 +7,10 @@ variable "env_tag" {}
 variable "redis_host" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
-# variable "rds_proxy_host" {}
-# variable "rds_proxy_read_host" {}
-# variable "_auth_api_sg" {}
 variable "bastion_sg" {}
 variable "reseller_api_module" {}
 variable "private_alb_sg" {}
-
+# variable "profile_api_module" {}
 
 variable "network" {
   type = object({
@@ -111,6 +108,7 @@ locals {
   ]
   inbound_allow_sg_list = [
     var.reseller_api_module.reseller_api_ecs_svc_sg.id,
+    # var.profile_api_module.profile_api_sg.id,
     var.private_alb_sg.id,
     var.bastion_sg
     # Missing app api sg

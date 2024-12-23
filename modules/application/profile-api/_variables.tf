@@ -1,13 +1,13 @@
 variable "sg_alb_id" {}
 variable "lookcardlocal_namespace" {}
 variable "secret_manager" {}
-variable "referral_api_sg" {}
 variable "account_api_sg" {}
 variable "user_api_sg"{}
 # variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
 variable "env_tag" {}
 variable "reseller_api_sg" {}
+variable "referral_api_sg" {}
 variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
 variable "crypto_api_sg_id" {}
@@ -18,7 +18,7 @@ variable "user_api_module" {}
 variable "account_api_module" {}
 variable "reseller_api_module" {}
 variable "firebase_authorizer_module" {}
-
+variable "referral_api_ecs_svc_sg" {}
 
 variable "network" {
   type = object({
@@ -83,12 +83,14 @@ locals {
     }
   ]
   inbound_allow_sg_list = [
+    var.bastion_sg,
+    var.referral_api_sg,
     var.crypto_api_module.crypto_api_ecs_svc_sg.id,
     var.user_api_module.user_api_ecs_svc_sg.id,
     var.account_api_module.account_api_ecs_svc_sg.id,
-    var.bastion_sg,
     var.reseller_api_module.reseller_api_ecs_svc_sg.id,
-    var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id
+    var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id,
+    var.referral_api_ecs_svc_sg,
     # Missing app-api, firehose-webhook
   ]
 }
