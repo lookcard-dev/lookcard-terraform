@@ -233,7 +233,6 @@ module "profile-api" {
   referral_api_sg                  = module.referral-api.referral_api_sg
   account_api_sg                   = module.account-api.account_api_sg_id
   user_api_sg                      = module.user-api.user_api_sg
-  #_auth_api_sg                     = module.authentication._auth_api_sg
   verification_api_sg              = module.verification-api.verification_api_sg
   reseller_api_sg                  = module.reseller-api.reseller_api_sg
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
@@ -245,6 +244,8 @@ module "profile-api" {
   account_api_module = module.account-api
   reseller_api_module = module.reseller-api
   firebase_authorizer_module = module.firebase-authorizer
+  referral_api_ecs_svc_sg                  = module.referral-api.referral_api_ecs_svc_sg
+
 }
 
 module "config-api" {
@@ -328,8 +329,8 @@ module "referral-api" {
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   bastion_sg                            = var.bastion_sg
-  reseller_api_module = module.reseller-api
-  private_alb_sg = aws_security_group.private_alb_sg
+  reseller_api_module                   = module.reseller-api
+  private_alb_sg                        = aws_security_group.private_alb_sg
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
   # _auth_api_sg = module.authentication._auth_api_sg

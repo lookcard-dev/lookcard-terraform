@@ -17,6 +17,11 @@ variable "reseller_api_root_resource" {
   default = ["reseller", "resellers", "tier", "tiers"]
 }
 
+variable "reseller_api_proxy_resource" {
+  type    = list(string)
+  default = ["resellers"]
+}
+
 variable "reseller_api_resellers_resource" {
   type    = list(string)
   default = ["tier", "tiers", "{proxy+}"]

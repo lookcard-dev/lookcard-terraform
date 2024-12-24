@@ -60,14 +60,17 @@ resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
 
 resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" {
   depends_on = [ aws_api_gateway_rest_api.reseller_api, aws_api_gateway_resource.reseller_api_root_resource, aws_api_gateway_method.reseller_api_root_resource_method ]
-  for_each = { for pair in setproduct(var.reseller_api_root_resource, var.methods) : "${pair[0]}/${pair[1]}" => pair }
+  for_each = { for pair in setproduct(var.reseller_api_root_resource, var.methods) : "${pair[0]}/${pair[1]}" => {
+    resource = pair[0]
+    method = pair[1]
+  }}
 
   rest_api_id             = aws_api_gateway_rest_api.reseller_api.id
-  resource_id             = aws_api_gateway_resource.reseller_api_root_resource[each.value[0]].id
-  http_method             = each.value[1]
+  resource_id             = aws_api_gateway_resource.reseller_api_root_resource[each.value.resource].id
+  http_method             = each.value.method
   type                    = "HTTP_PROXY"
   integration_http_method = "ANY"
-  uri                     = "http://${var.application.alb_lookcard.dns_name}/{proxy}"
+  uri                     = "http://${var.application.alb_lookcard.dns_name}/${each.value.resource}"
   connection_type         = "VPC_LINK"
   connection_id           = var.nlb_vpc_link.id
 
@@ -78,18 +81,26 @@ resource "aws_api_gateway_integration" "reseller_api_root_resource_integration" 
 }
 
 resource "aws_api_gateway_integration" "reseller_api_reseller_proxy_resource_integration" {
-  depends_on = [ aws_api_gateway_rest_api.reseller_api, aws_api_gateway_resource.reseller_api_reseller_proxy_resource, aws_api_gateway_method.reseller_api_reseller_proxy_method ]
-  for_each = toset(var.methods)
+  depends_on = [
+    aws_api_gateway_rest_api.reseller_api,
+    aws_api_gateway_resource.reseller_api_reseller_proxy_resource,
+    aws_api_gateway_method.reseller_api_reseller_proxy_method
+  ]
+  for_each = { for pair in setproduct(var.reseller_api_proxy_resource, var.methods) : "${pair[0]}/${pair[1]}" => {
+    resource = pair[0]
+    method = pair[1]
+  }}
 
-  rest_api_id             = aws_api_gateway_rest_api.reseller_api.id
-  resource_id             = aws_api_gateway_resource.reseller_api_reseller_proxy_resource.id
-  http_method             = each.key
-  type                    = "HTTP_PROXY"
+  rest_api_id           = aws_api_gateway_rest_api.reseller_api.id
+  resource_id           = aws_api_gateway_resource.reseller_api_reseller_proxy_resource.id
+  http_method           = each.value.method
+  type                  = "HTTP_PROXY"
   integration_http_method = "ANY"
-  uri                     = "http://${var.application.alb_lookcard.dns_name}/{proxy}"
-  connection_type         = "VPC_LINK"
-  connection_id           = var.nlb_vpc_link.id
-
+  uri                   = "http://${var.application.alb_lookcard.dns_name}/${each.value.resource}/{proxy}"
+  connection_type       = "VPC_LINK"
+  connection_id         = var.nlb_vpc_link.id
+  cache_key_parameters = ["method.request.path.proxy"]
+  
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
     "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
@@ -123,10 +134,24 @@ resource "aws_api_gateway_stage" "reseller_api" {
 }
 
 resource "aws_api_gateway_deployment" "reseller_api" {
-  depends_on = [ aws_api_gateway_method.reseller_api_root_resource_method, aws_api_gateway_integration.reseller_api_root_resource_integration ]
+  depends_on = [
+    aws_api_gateway_method.reseller_api_root_resource_method,
+    aws_api_gateway_integration.reseller_api_root_resource_integration,
+    aws_api_gateway_method.reseller_api_reseller_proxy_method,
+    aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration
+  ]
 
   rest_api_id = aws_api_gateway_rest_api.reseller_api.id
-  stage_description = "${md5(file("${path.module}/apigw.tf"))}"
+  
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_method.reseller_api_root_resource_method,
+      aws_api_gateway_integration.reseller_api_root_resource_integration,
+      aws_api_gateway_method.reseller_api_reseller_proxy_method,
+      aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration
+    ]))
+  }
+
   lifecycle {
     create_before_destroy = true
   }
