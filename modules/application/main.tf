@@ -286,6 +286,7 @@ module "data-api" {
     tag = var.image_tag.data-api
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
   env_tag                 = var.env_tag
   secret_manager          = var.secret_manager
   kms                     = var.kms

@@ -8,6 +8,9 @@ variable "secret_manager" {}
 variable "crypto_api_sg_id" {}
 variable "bastion_sg" {}
 variable "account_api_module" {}
+variable "user_api_ecs_svc_sg" {
+  
+}
 
 variable "kms" {}
 variable "network" {
@@ -95,10 +98,15 @@ locals {
     {
       name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
       value = aws_dynamodb_table.data_api_data.name
+    },
+    {
+      name  = "AWS_DYNAMODB_NONCE_TABLE_NAME"
+      value = aws_dynamodb_table.data_api_nonce.name
     }
   ]
   inbound_allow_sg_list = [
     var.account_api_module.account_api_ecs_svc_sg.id,
+    var.user_api_ecs_svc_sg,
     var.bastion_sg
     # Missing app api sg
   ]
