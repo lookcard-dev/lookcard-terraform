@@ -3,7 +3,5 @@ output "user_api_sg" {
 }
 
 output "user_api_ecs_svc_sg" {
-  value = {
-    id = aws_security_group.user_api_ecs_svc_sg.id
-  }
+  value = aws_security_group.user_api_ecs_svc_sg.id
 }
