@@ -19,7 +19,7 @@ variable "reseller_api_root_resource" {
 
 variable "reseller_api_proxy_resource" {
   type    = list(string)
-  default = ["resellers"]
+  default = ["reseller", "resellers"]
 }
 
 variable "reseller_api_resellers_resource" {
