@@ -133,7 +133,10 @@ resource "aws_iam_policy" "data_api_dynamodb_read_write_policy" {
           "dynamodb:PutItem",
           "dynamodb:Query"
         ],
-        "Resource" : aws_dynamodb_table.data_api_data.arn
+        "Resource" : [
+          aws_dynamodb_table.data_api_data.arn,
+          aws_dynamodb_table.data_api_nonce.arn
+        ]
       }
     ]
   })
