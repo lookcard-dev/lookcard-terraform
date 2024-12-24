@@ -27,6 +27,13 @@ resource "aws_api_gateway_resource" "reseller_api_reseller_proxy_resource" {
   path_part   = "{proxy+}"
 }
 
+resource "aws_api_gateway_resource" "reseller_api_resellers_proxy_resource" {
+  depends_on = [ aws_api_gateway_rest_api.reseller_api ]
+  rest_api_id = aws_api_gateway_rest_api.reseller_api.id
+  parent_id   = aws_api_gateway_resource.reseller_api_root_resource["resellers"].id
+  path_part   = "{proxy+}"
+}
+
 resource "aws_api_gateway_method" "reseller_api_root_resource_method" {
   depends_on = [ aws_api_gateway_rest_api.reseller_api, aws_api_gateway_resource.reseller_api_root_resource ]
   for_each = { for pair in setproduct(var.reseller_api_root_resource, var.methods) : "${pair[0]}/${pair[1]}" => pair }
@@ -48,6 +55,22 @@ resource "aws_api_gateway_method" "reseller_api_reseller_proxy_method" {
 
   rest_api_id   = aws_api_gateway_rest_api.reseller_api.id
   resource_id   = aws_api_gateway_resource.reseller_api_reseller_proxy_resource.id
+  http_method   = each.key
+  authorization = "NONE" #"CUSTOM"
+  # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+    "method.request.header.host" = true
+  }
+}
+
+resource "aws_api_gateway_method" "reseller_api_resellers_proxy_method" {
+  depends_on = [ aws_api_gateway_rest_api.reseller_api, aws_api_gateway_resource.reseller_api_resellers_proxy_resource ]
+  for_each = toset(var.methods)
+
+  rest_api_id   = aws_api_gateway_rest_api.reseller_api.id
+  resource_id   = aws_api_gateway_resource.reseller_api_resellers_proxy_resource.id
   http_method   = each.key
   authorization = "NONE" #"CUSTOM"
   # authorizer_id = aws_api_gateway_authorizer.reseller_api_authorizer.id
@@ -84,19 +107,41 @@ resource "aws_api_gateway_integration" "reseller_api_reseller_proxy_resource_int
   depends_on = [
     aws_api_gateway_rest_api.reseller_api,
     aws_api_gateway_resource.reseller_api_reseller_proxy_resource,
-    aws_api_gateway_method.reseller_api_reseller_proxy_method
+    aws_api_gateway_method.reseller_api_reseller_proxy_method,
+    aws_api_gateway_resource.reseller_api_resellers_proxy_resource
   ]
-  for_each = { for pair in setproduct(var.reseller_api_proxy_resource, var.methods) : "${pair[0]}/${pair[1]}" => {
-    resource = pair[0]
-    method = pair[1]
-  }}
+  for_each = toset(var.methods)
 
   rest_api_id           = aws_api_gateway_rest_api.reseller_api.id
   resource_id           = aws_api_gateway_resource.reseller_api_reseller_proxy_resource.id
-  http_method           = each.value.method
+  http_method           = each.key
   type                  = "HTTP_PROXY"
   integration_http_method = "ANY"
-  uri                   = "http://${var.application.alb_lookcard.dns_name}/${each.value.resource}/{proxy}"
+  uri                   = "http://${var.application.alb_lookcard.dns_name}/reseller/{proxy}"
+  connection_type       = "VPC_LINK"
+  connection_id         = var.nlb_vpc_link.id
+  cache_key_parameters = ["method.request.path.proxy"]
+  
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+  }
+}
+
+resource "aws_api_gateway_integration" "resellers_api_resellers_proxy_resource_integration" {
+  depends_on = [
+    aws_api_gateway_rest_api.reseller_api,
+    aws_api_gateway_resource.reseller_api_resellers_proxy_resource,
+    aws_api_gateway_method.reseller_api_resellers_proxy_method
+  ]
+  for_each = toset(var.methods)
+
+  rest_api_id           = aws_api_gateway_rest_api.reseller_api.id
+  resource_id           = aws_api_gateway_resource.reseller_api_resellers_proxy_resource.id
+  http_method           = each.key
+  type                  = "HTTP_PROXY"
+  integration_http_method = "ANY"
+  uri                   = "http://${var.application.alb_lookcard.dns_name}/resellers/{proxy}"
   connection_type       = "VPC_LINK"
   connection_id         = var.nlb_vpc_link.id
   cache_key_parameters = ["method.request.path.proxy"]
@@ -138,7 +183,9 @@ resource "aws_api_gateway_deployment" "reseller_api" {
     aws_api_gateway_method.reseller_api_root_resource_method,
     aws_api_gateway_integration.reseller_api_root_resource_integration,
     aws_api_gateway_method.reseller_api_reseller_proxy_method,
-    aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration
+    aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration,
+    aws_api_gateway_method.reseller_api_resellers_proxy_method,
+    aws_api_gateway_integration.resellers_api_resellers_proxy_resource_integration
   ]
 
   rest_api_id = aws_api_gateway_rest_api.reseller_api.id
@@ -148,7 +195,9 @@ resource "aws_api_gateway_deployment" "reseller_api" {
       aws_api_gateway_method.reseller_api_root_resource_method,
       aws_api_gateway_integration.reseller_api_root_resource_integration,
       aws_api_gateway_method.reseller_api_reseller_proxy_method,
-      aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration
+      aws_api_gateway_integration.reseller_api_reseller_proxy_resource_integration,
+      aws_api_gateway_method.reseller_api_resellers_proxy_method,
+      aws_api_gateway_integration.resellers_api_resellers_proxy_resource_integration
     ]))
   }
 
