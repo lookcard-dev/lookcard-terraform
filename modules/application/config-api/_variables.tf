@@ -66,6 +66,10 @@ locals {
     {
       name  = "AWS_DYNAMODB_CONFIG_DATA_TABLE_NAME"
       value = aws_dynamodb_table.config_api_config_data.name
+    },
+    {
+      name  = "AWS_DYNAMODB_CONFIG_HISTORY_TABLE_NAME"
+      value = aws_dynamodb_table.config_api_config_history.name
     }
   ]
   inbound_allow_sg_list = [
@@ -73,7 +77,6 @@ locals {
     var.account_api_module.account_api_ecs_svc_sg.id,
     var.reseller_api_module.reseller_api_ecs_svc_sg.id,
     var.bastion_sg
-    # Missing app api
   ]
 }
 
