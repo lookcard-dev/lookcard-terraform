@@ -86,7 +86,7 @@ locals {
     var.bastion_sg,
     var.referral_api_sg,
     var.crypto_api_module.crypto_api_ecs_svc_sg.id,
-    var.user_api_module.user_api_ecs_svc_sg.id,
+    var.user_api_module.user_api_ecs_svc_sg,
     var.account_api_module.account_api_ecs_svc_sg.id,
     var.reseller_api_module.reseller_api_ecs_svc_sg.id,
     var.firebase_authorizer_module.firebase_authorizer_lambda_func_sg.id,

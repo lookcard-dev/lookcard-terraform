@@ -29,30 +29,30 @@ resource "aws_ecs_service" "account_api" {
     security_groups = [aws_security_group.account_api_ecs_svc_sg.id]
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.account_api_target_group.arn
-    container_name   = local.application.name
-    container_port   = local.application.port
-  }
+  # load_balancer {
+  #   target_group_arn = aws_lb_target_group.account_api_target_group.arn
+  #   container_name   = local.application.name
+  #   container_port   = local.application.port
+  # }
 
   service_registries {
     registry_arn = aws_service_discovery_service.account_api_service.arn
   }
 }
 
-resource "aws_lb_target_group" "account_api_target_group" {
-  name        = local.application.name
-  port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.network.vpc
+# resource "aws_lb_target_group" "account_api_target_group" {
+#   name        = local.application.name
+#   port        = 80
+#   protocol    = "HTTP"
+#   target_type = "ip"
+#   vpc_id      = var.network.vpc
 
-  health_check {
-    interval            = 30
-    path                = "/healthcheckz"
-    timeout             = 10
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200-399"
-  }
-}
+#   health_check {
+#     interval            = 30
+#     path                = "/healthcheckz"
+#     timeout             = 10
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     matcher             = "200-399"
+#   }
+# }
