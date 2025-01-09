@@ -196,7 +196,7 @@ module "notification-api" {
   cluster          = aws_ecs_cluster.core_application.arn
   image = {
     url = aws_ecr_repository.look-card["notification-api"].repository_url
-    tag = var.image_tag.notifigcation-api
+    tag = var.image_tag.notification-api
   }
   network = {
     vpc            = var.network.vpc
