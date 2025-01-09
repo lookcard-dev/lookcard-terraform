@@ -29,6 +29,7 @@ variable "aws_provider" {
 variable "image_tag" {
   type = object({
     notification         = string
+    notification-api     = string
     account_api          = string # GitAction using unders
     authentication_api   = string
     blockchain_api       = string

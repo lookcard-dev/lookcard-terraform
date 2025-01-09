@@ -67,6 +67,10 @@ output "get_block_secret_arn" {
   value = aws_secretsmanager_secret.lookcard_secrets["GET_BLOCK"].arn
 }
 
+output "postmark_secret_arn" {
+  value = aws_secretsmanager_secret.lookcard_secrets["POSTMARK"].arn
+}
+
 # loop arns
 output "secret_arns" {
   value       = { for s in aws_secretsmanager_secret.lookcard_secrets : s.name => s.arn }

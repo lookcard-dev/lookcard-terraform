@@ -41,7 +41,7 @@ resource "aws_security_group" "crypto_api_ecs_svc_sg" {
   vpc_id      = var.network.vpc
 
   dynamic "ingress" {
-    for_each = [8080, 80]
+    for_each = [8080]
     content {
       from_port   = ingress.value
       to_port     = ingress.value

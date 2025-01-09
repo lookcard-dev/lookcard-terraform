@@ -21,6 +21,7 @@ variable "secret_names" {
     "GET_BLOCK",
     "DRPC",
     "INFURA",
+    "POSTMARK",
     // evvo lab 
     "ENV",
     "TOKEN", //
@@ -30,6 +31,6 @@ variable "secret_names" {
     "NOTIFICATION_ENV",
     "AGGREGATOR_ENV",
     "DID_PROCESSOR_LAMBDA",
-    "DB_MASTER_PASSWORD"
+    "DB_MASTER_PASSWORD",
   ]
 }

@@ -193,12 +193,10 @@ module "authentication-api" {
 
 module "notification-api" {
   source           = "./notification-api"
-  iam_role         = aws_iam_role.lookcard_ecs_task_role.arn
-  default_listener = aws_lb_listener.look-card.arn
   cluster          = aws_ecs_cluster.core_application.arn
   image = {
-    url = aws_ecr_repository.look-card["notification-v2-api"].repository_url
-    tag = var.image_tag.notification_v2
+    url = aws_ecr_repository.look-card["notification-api"].repository_url
+    tag = var.image_tag.notifigcation-api
   }
   network = {
     vpc            = var.network.vpc
@@ -209,7 +207,8 @@ module "notification-api" {
   env_tag        = var.env_tag
   sg_alb_id      = aws_security_group.api_alb_sg.id
   bastion_sg     = var.bastion_sg
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
 }
 
 
@@ -293,6 +292,7 @@ module "data-api" {
   # s3_data_bucket_name     = var.s3_data_bucket_name
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
+  crypto_api_ecs_svc_sg   = module.crypto-api.crypto_api_ecs_svc_sg
   bastion_sg              = var.bastion_sg
   account_api_module = module.account-api
 }

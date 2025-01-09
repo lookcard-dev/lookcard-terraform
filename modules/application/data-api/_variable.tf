@@ -4,8 +4,8 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
-# variable "s3_data_bucket_name" {}
 variable "crypto_api_sg_id" {}
+variable "crypto_api_ecs_svc_sg" {}
 variable "bastion_sg" {}
 variable "account_api_module" {}
 variable "user_api_ecs_svc_sg" {
@@ -107,6 +107,7 @@ locals {
   inbound_allow_sg_list = [
     var.account_api_module.account_api_ecs_svc_sg.id,
     var.user_api_ecs_svc_sg,
+    var.crypto_api_ecs_svc_sg.id,
     var.bastion_sg
     # Missing app api sg
   ]

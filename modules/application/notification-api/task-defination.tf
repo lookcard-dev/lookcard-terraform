@@ -1,12 +1,12 @@
 
-resource "aws_ecs_task_definition" "notification_v2" {
+resource "aws_ecs_task_definition" "notification_api" {
   family                   = local.application.name
   network_mode             = "awsvpc"
   # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = var.iam_role
-  execution_role_arn       = var.iam_role
+  task_role_arn            = aws_iam_role.notification_api_task_role.arn
+  execution_role_arn       = aws_iam_role.notification_api_task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "notification_v2" {
       environment = local.ecs_task_env_vars
       portMappings = [
         {
-          name          = "look-card-notification-v2-tcp",
+          name          = "look-card-notification-api-tcp",
           containerPort = local.application.port,
           hostPort      = local.application.port,
           protocol      = "tcp",
