@@ -4,7 +4,7 @@ variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
 variable "bastion_sg" {}
-variable "user_api_ecs_svc_sg" {
+variable "data_api_ecs_svc_sg" {
 }
 variable "network" {
   type = object({
@@ -79,7 +79,16 @@ locals {
     var.secret_manager.secret_arns["TWILIO"],
   ]
   inbound_allow_sg_list = [
-    var.user_api_ecs_svc_sg,
-    var.bastion_sg
+    data.aws_security_group.data_api_ecs_svc_sg.id,
+    data.aws_security_group.bastion_sg.id,
   ]
 }
+
+data "aws_security_group" "data_api_ecs_svc_sg" {
+  name = "data-api-ecs-svc-sg"
+}
+data "aws_security_group" "bastion_sg" {
+  name = "bastion-security-group"
+}
+
+

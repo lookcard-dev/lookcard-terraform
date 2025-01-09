@@ -8,9 +8,8 @@ variable "crypto_api_sg_id" {}
 variable "crypto_api_ecs_svc_sg" {}
 variable "bastion_sg" {}
 variable "account_api_module" {}
-variable "user_api_ecs_svc_sg" {
-  
-}
+variable "user_api_ecs_svc_sg" {}
+variable "verification_api_ecs_svc_sg" {}
 
 variable "kms" {}
 variable "network" {
@@ -108,6 +107,7 @@ locals {
     var.account_api_module.account_api_ecs_svc_sg.id,
     var.user_api_ecs_svc_sg,
     var.crypto_api_ecs_svc_sg.id,
+    var.verification_api_ecs_svc_sg,
     var.bastion_sg
     # Missing app api sg
   ]

@@ -208,7 +208,7 @@ module "notification-api" {
   sg_alb_id      = aws_security_group.api_alb_sg.id
   bastion_sg     = var.bastion_sg
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
+  data_api_ecs_svc_sg = module.data-api.data_api_ecs_svc_sg
 }
 
 
@@ -285,7 +285,6 @@ module "data-api" {
     tag = var.image_tag.data-api
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
   env_tag                 = var.env_tag
   secret_manager          = var.secret_manager
   kms                     = var.kms
@@ -293,6 +292,8 @@ module "data-api" {
   sg_alb_id               = aws_security_group.api_alb_sg.id
   crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
   crypto_api_ecs_svc_sg   = module.crypto-api.crypto_api_ecs_svc_sg
+  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
+  verification_api_ecs_svc_sg = module.verification-api.verification_api_ecs_svc_sg
   bastion_sg              = var.bastion_sg
   account_api_module = module.account-api
 }

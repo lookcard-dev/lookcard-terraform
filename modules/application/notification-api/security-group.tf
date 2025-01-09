@@ -31,7 +31,7 @@ resource "aws_security_group" "notification_api" {
   }
 }
 
-resource "aws_security_group" "data_api_ecs_svc_sg" {
+resource "aws_security_group" "notification_api_ecs_svc_sg" {
   depends_on  = [var.network]
   name        = "${local.application.name}-ecs-svc-sg"
   description = "Use for ECS service - ${local.application.name}"
