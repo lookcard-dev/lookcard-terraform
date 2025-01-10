@@ -131,6 +131,8 @@ resource "aws_iam_policy" "data_api_dynamodb_read_write_policy" {
         "Action" : [
           "dynamodb:GetItem",
           "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
           "dynamodb:Query"
         ],
         "Resource" : [
