@@ -8,14 +8,7 @@ resource "aws_security_group" "edns_api_sg" {
     from_port   = 8080
     to_port     = 8080  
     protocol    = "tcp"
-    security_groups = [var.sg_alb_id, var.lambda_cryptocurrency_sweeper.lambda_aggregator_tron_sg.id, var.lambda_cryptocurrency_withdrawal.crypto_fund_withdrawal_sg.id, var.reseller_api_sg, var.bastion_sg]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    security_groups = [var.sg_alb_id, var.lambda_cryptocurrency_sweeper.lambda_aggregator_tron_sg.id, var.lambda_cryptocurrency_withdrawal.crypto_fund_withdrawal_sg.id, var.reseller_api_sg, var.bastion_sg] #var.reseller_api_sg
+    security_groups = [var.sg_alb_id, var.lambda_cryptocurrency_sweeper.lambda_aggregator_tron_sg.id, var.lambda_cryptocurrency_withdrawal.crypto_fund_withdrawal_sg.id, ]
   }
 
   egress {
@@ -37,7 +30,7 @@ resource "aws_security_group" "edns_api_ecs_svc_sg" {
   vpc_id      = var.network.vpc
 
   dynamic "ingress" {
-    for_each = [8080, 80]
+    for_each = [8080]
     content {
       from_port   = ingress.value
       to_port     = ingress.value

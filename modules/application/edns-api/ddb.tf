@@ -8,6 +8,11 @@ resource "aws_dynamodb_table" "edns_api_domain_data" {
     type = "S"
   }
 
+  attribute {
+    name = "ownerProfileId"
+    type = "S"
+  }
+
   global_secondary_index {
     name               = "ownerProfileId_index"
     hash_key          = "ownerProfileId"

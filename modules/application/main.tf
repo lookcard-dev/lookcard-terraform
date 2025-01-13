@@ -455,12 +455,10 @@ module "edns-api" {
   secret_manager = var.secret_manager
   sg_alb_id = aws_security_group.api_alb_sg.id
   env_tag = var.env_tag
-  bastion_sg = var.bastion_sg
   lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
   lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
   crypto_api_module = module.crypto-api
   reseller_api_module = module.reseller-api
-  reseller_api_sg = module.reseller-api.reseller_api_sg.id
 }
 
 

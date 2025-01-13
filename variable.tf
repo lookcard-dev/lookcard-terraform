@@ -55,6 +55,7 @@ variable "image_tag" {
     apigw-authorizer     = string
     sumsub-webhook       = string
     reap-webhook         = string
+    edns-api             = string
     cryptocurrency-sweep-processor = string
     cryptocurrency-withdrawal-processor = string
     notification-dispatcher = string

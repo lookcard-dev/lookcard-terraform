@@ -3,12 +3,10 @@ variable "lookcardlocal_namespace" {}
 variable "sg_alb_id" {}
 variable "cluster" {}
 variable "secret_manager" {}
-variable "bastion_sg" {}
 variable "lambda_cryptocurrency_sweeper" {}
 variable "lambda_cryptocurrency_withdrawal" {}
 variable "crypto_api_module" {}
 variable "reseller_api_module" {}
-variable "reseller_api_sg" {}
 variable "env_tag" {}
 
 variable "network" {
@@ -58,17 +56,25 @@ locals {
     },
     {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.application_log_group_account_api.name
+      value = aws_cloudwatch_log_group.application_log_group_edns_api.name
     },
 
   ]
   iam_secrets = [
     var.secret_manager.secret_arns["SENTRY"]
   ]
+  
   inbound_allow_sg_list = [
-    var.crypto_api_module.crypto_api_ecs_svc_sg.id,
-    var.reseller_api_module.reseller_api_ecs_svc_sg.id,
-    var.bastion_sg
-    # Missing app api sg
+    data.aws_security_group.reseller_api_sg.id, 
+    data.aws_security_group.bastion_sg.id
   ]
+}
+
+
+data "aws_security_group" "reseller_api_sg" {
+  name = "reseller-api-security-group"
+}
+
+data "aws_security_group" "bastion_sg" {
+  name = "bastion-security-group"
 }
