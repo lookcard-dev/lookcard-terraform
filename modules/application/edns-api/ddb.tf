@@ -1,10 +1,10 @@
 resource "aws_dynamodb_table" "edns_api_domain_data" {
   name           = "EDNS_API-Domain_Data"
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "key"
+  hash_key       = "domain"
 
   attribute {
-    name = "key"
+    name = "domain"
     type = "S"
   }
 
