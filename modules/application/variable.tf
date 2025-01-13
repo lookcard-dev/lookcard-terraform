@@ -67,6 +67,7 @@ variable "ecr_names" {
     "apigw-authorizer"     = "apigw-authorizer"
     "reap-webhook"         = "reap-webhook"
     "crypto-processor"     = "crypto-processor"
+    "edns-api"             = "edns-api"
 
     #v2 Lambda Function
     "account-statement-generator" = "account-statement-generator"
@@ -92,29 +93,16 @@ variable "trongrid_secret_arn" {}
 variable "database_secret_arn" {}
 variable "firebase_secret_arn" {}
 variable "get_block_secret_arn" {}
-# variable "sqs" {}
-# variable "lambda" {}
-# variable "lookcard_api_domain" {}
 variable "env_tag" {}
 variable "acm" {}
 variable "kms" {}
-# variable "s3_data_bucket_name" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}
 variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "redis_host" {}
-# variable "rds_proxy_host" {}
-# variable "rds_proxy_read_host" {}
-# variable "kms_data_generator_key_arn" {}
-# variable "kms_data_encryption_key_alpha_arn" {}
 variable "lookcard_log_bucket_name" {}
-# variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
-# variable "lambda_firebase_authorizer" {}
-
-# reseller-portal module
 variable "storage" {}
 variable "security" {}
 variable "reseller_portal_hostname" {}
 variable "aws_provider" {}
 variable "s3_bucket" {}
-# variable "apigw_module" {}
