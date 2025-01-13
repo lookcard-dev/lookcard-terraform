@@ -148,3 +148,31 @@ resource "aws_iam_role_policy_attachment" "data_api_dynamodb_read_write_attachme
   role       = aws_iam_role.data_api_task_role.name
   policy_arn = aws_iam_policy.data_api_dynamodb_read_write_policy.arn
 }
+
+resource "aws_iam_policy" "data_api_s3_access_policy" {
+  name        = "DataAPIS3AccessPolicy"
+  description = "Allows access to S3 bucket for Data API"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ],
+        "Resource" : [
+          aws_s3_bucket.data_bucket.arn,
+          "${aws_s3_bucket.data_bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "data_api_s3_access_attachment" {
+  role       = aws_iam_role.data_api_task_role.name
+  policy_arn = aws_iam_policy.data_api_s3_access_policy.arn
+}

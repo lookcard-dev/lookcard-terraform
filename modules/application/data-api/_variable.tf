@@ -90,10 +90,10 @@ locals {
       name  = "AWS_KMS_ENCRYPTION_KEY_ID_ECHO"
       value = var.kms.kms_data_encryption_key_id_echo
     },
-    # {
-    #   name  = "AWS_S3_DATA_BUCKET_NAME"
-    #   value = var.s3_data_bucket_name
-    # },
+    {
+      name  = "AWS_S3_DATA_BUCKET_NAME"
+      value = aws_s3_bucket.data_bucket.bucket
+    },
     {
       name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
       value = aws_dynamodb_table.data_api_data.name
