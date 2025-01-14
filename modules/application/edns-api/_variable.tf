@@ -53,6 +53,10 @@ locals {
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
+    },   
+    {
+      name= "AWS_DYNAMODB_DOMAIN_TABLE_NAME"
+      value = aws_dynamodb_table.edns_api_domain_data.name
     },
     {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
