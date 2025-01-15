@@ -41,7 +41,7 @@ module "crypto-listener" {
   }
   image = {
     url = aws_ecr_repository.look-card["crypto-listener"].repository_url
-    tag = var.image_tag.transaction_listener
+    tag = var.image_tag.crypto-listener
   }
   vpc_id                                   = var.network.vpc
   cluster                                  = aws_ecs_cluster.listener.arn
@@ -244,7 +244,6 @@ module "profile-api" {
   reseller_api_module = module.reseller-api
   firebase_authorizer_module = module.firebase-authorizer
   referral_api_ecs_svc_sg                  = module.referral-api.referral_api_ecs_svc_sg
-
 }
 
 module "config-api" {
@@ -393,35 +392,35 @@ module "sumsub-webhook" {
   env_tag = var.env_tag
 }
 
-module "cryptocurrency-withdrawal-processor" {
-  source = "./cryptocurrency-withdrawal-processor"
-  sqs    = module.sqs
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["cryptocurrency-withdrawal-processor"].repository_url
-    tag = var.image_tag.cryptocurrency-withdrawal-processor
-  }
-  secret_manager = var.secret_manager
-}
+# module "cryptocurrency-withdrawal-processor" {
+#   source = "./cryptocurrency-withdrawal-processor"
+#   sqs    = module.sqs
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["cryptocurrency-withdrawal-processor"].repository_url
+#     tag = var.image_tag.cryptocurrency-withdrawal-processor
+#   }
+#   secret_manager = var.secret_manager
+# }
 
-module "cryptocurrency-sweep-processor" {
-  source = "./cryptocurrency-sweep-processor"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["cryptocurrency-sweep-processor"].repository_url
-    tag = var.image_tag.cryptocurrency-sweep-processor
-  }
-  sqs            = module.sqs
-  secret_manager = var.secret_manager
-}
+# module "cryptocurrency-sweep-processor" {
+#   source = "./cryptocurrency-sweep-processor"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["cryptocurrency-sweep-processor"].repository_url
+#     tag = var.image_tag.cryptocurrency-sweep-processor
+#   }
+#   sqs            = module.sqs
+#   secret_manager = var.secret_manager
+# }
 
 module "notification-dispatcher" {
   source = "./notification-dispatcher"
