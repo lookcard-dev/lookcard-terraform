@@ -4,7 +4,7 @@ variable "lookcardlocal_namespace" {}
 variable "sg_alb_id" {}
 variable "cluster" {}
 variable "secret_manager" {}
-variable "sqs" {}
+# variable "sqs" {}
 variable "acm" {}
 variable "env_tag" {}
 variable "redis_host" {}
@@ -14,8 +14,6 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 # variable "rds_proxy_read_host" {}
 variable "reseller_api_sg" {}
 variable "bastion_sg" {}
-variable "lambda_cryptocurrency_sweeper" {}
-variable "lambda_cryptocurrency_withdrawal" {}
 variable "crypto_api_module" {}
 variable "reseller_api_module" {}
 

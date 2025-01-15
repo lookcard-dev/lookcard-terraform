@@ -12,8 +12,6 @@ variable "rds_aurora_postgresql_reader_endpoint" {}
 variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
 variable "reseller_api_sg" {}
-variable "lambda_cryptocurrency_sweeper" {}
-variable "lambda_cryptocurrency_withdrawal" {}
 variable "firebase_authorizer_module" {}
 variable "reseller_module" {}
 

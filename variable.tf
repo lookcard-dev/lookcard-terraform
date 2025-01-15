@@ -28,26 +28,27 @@ variable "aws_provider" {
 
 variable "image_tag" {
   type = object({
-    notification         = string
+    # notification         = string
     notification-api     = string
-    account_api          = string # GitAction using unders
-    authentication_api   = string
-    blockchain_api       = string
-    card_api             = string
-    crypto_api           = string
-    reporting_api        = string
-    transaction_listener = string
-    transaction_api      = string
-    _user-api            = string
+    # account_api          = string # GitAction using unders
+    # authentication_api   = string
+    # blockchain_api       = string
+    # card_api             = string
+    # crypto_api           = string
+    # reporting_api        = string
+    # transaction_listener = string
+    # transaction_api      = string
+    # _user-api            = string
     user-api             = string
-    utility_api          = string
+    # utility_api          = string
     profile-api          = string
     config-api           = string
     data-api             = string
-    notification_v2      = string
+    # notification_v2      = string
     referral-api         = string
     reap-proxy           = string
     crypto-api           = string
+    crypto-listener      = string
     account-api          = string
     authentication-api   = string
     verification-api     = string
@@ -56,9 +57,9 @@ variable "image_tag" {
     sumsub-webhook       = string
     reap-webhook         = string
     edns-api             = string
-    cryptocurrency-sweep-processor = string
-    cryptocurrency-withdrawal-processor = string
-    notification-dispatcher = string
+    # cryptocurrency-sweep-processor = string
+    # cryptocurrency-withdrawal-processor = string
+    # notification-dispatcher = string
     crypto-processor = string
   })
 }

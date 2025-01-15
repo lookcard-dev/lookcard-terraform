@@ -1,8 +1,8 @@
-variable "sg_alb_id" {}
+# variable "sg_alb_id" {}
 variable "lookcardlocal_namespace" {}
 variable "secret_manager" {}
 variable "account_api_sg" {}
-variable "user_api_sg"{}
+variable "user_api_sg" {}
 # variable "_auth_api_sg" {}
 variable "verification_api_sg" {}
 variable "env_tag" {}
@@ -11,7 +11,6 @@ variable "referral_api_sg" {}
 variable "lambda_firebase_authorizer_sg_id" {}
 variable "bastion_sg" {}
 variable "crypto_api_sg_id" {}
-variable "lambda_cryptocurrency_sweeper" {}
 
 variable "crypto_api_module" {}
 variable "user_api_module" {}
@@ -28,7 +27,7 @@ variable "network" {
   })
 }
 
-variable "default_listener" {}
+# variable "default_listener" {}
 variable "cluster" {}
 
 
@@ -39,16 +38,17 @@ variable "image" {
   })
 }
 
+variable "allow_to_security_group_ids" {
+  type    = list(string)
+  default = []
+}
+
 locals {
   application = {
     name      = "profile-api"
     port      = 8080
     image     = var.image.url
     image_tag = var.image.tag
-  }
-  load_balancer = {
-    profile_api_path = ["/profiles", "/profiles/*"]
-    profile_priority = 201
   }
   ecs_task_env_vars = [
     {

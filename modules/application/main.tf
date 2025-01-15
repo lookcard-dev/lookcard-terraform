@@ -25,11 +25,9 @@ module "crypto-api" {
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
-  reseller_api_sg = module.reseller-api.reseller_api_sg
-  bastion_sg      = var.bastion_sg
+  reseller_api_sg        = module.reseller-api.reseller_api_sg
+  bastion_sg             = var.bastion_sg
   crypto_listener_module = module.crypto-listener
-  lambda_cryptocurrency_sweeper        = module.cryptocurrency-sweep-processor
-  lambda_cryptocurrency_withdrawal     = module.cryptocurrency-withdrawal-processor
 }
 
 module "crypto-listener" {
@@ -43,15 +41,15 @@ module "crypto-listener" {
     url = aws_ecr_repository.look-card["crypto-listener"].repository_url
     tag = var.image_tag.crypto-listener
   }
-  vpc_id                                   = var.network.vpc
-  cluster                                  = aws_ecs_cluster.listener.arn
-  secret_manager                           = var.secret_manager
-  sqs                                      = module.sqs
-  capacity_provider_ec2_arm64_on_demand    = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
-  capacity_provider_ec2_amd64_on_demand    = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
-  rds_aurora_postgresql_writer_endpoint    = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint    = var.rds_aurora_postgresql_reader_endpoint
-  env_tag                                  = var.env_tag
+  vpc_id         = var.network.vpc
+  cluster        = aws_ecs_cluster.listener.arn
+  secret_manager = var.secret_manager
+  # sqs                                      = module.sqs
+  capacity_provider_ec2_arm64_on_demand = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
+  capacity_provider_ec2_amd64_on_demand = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
+  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+  env_tag                               = var.env_tag
   # rds_proxy_host                           = var.rds_proxy_host
   # rds_proxy_read_host                      = var.rds_proxy_read_host
   bastion_sg = var.bastion_sg
@@ -70,12 +68,12 @@ module "account-api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.core_application.arn
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  cluster                 = aws_ecs_cluster.core_application.arn
+  sg_alb_id               = aws_security_group.api_alb_sg.id
   # lambda                                = var.lambda
-  secret_manager                        = var.secret_manager
-  sqs                                   = module.sqs
+  secret_manager = var.secret_manager
+  # sqs                                   = module.sqs
   acm                                   = var.acm
   env_tag                               = var.env_tag
   redis_host                            = var.redis_host
@@ -83,11 +81,9 @@ module "account-api" {
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
-  reseller_api_sg = module.reseller-api.reseller_api_sg
-  bastion_sg      = var.bastion_sg
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
-  lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
-  crypto_api_module = module.crypto-api
+  reseller_api_sg     = module.reseller-api.reseller_api_sg
+  bastion_sg          = var.bastion_sg
+  crypto_api_module   = module.crypto-api
   reseller_api_module = module.reseller-api
 }
 
@@ -114,13 +110,11 @@ module "user-api" {
   lambda_firebase_authorizer_sg_id      = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   # rds_proxy_host                        = var.rds_proxy_host
   # rds_proxy_read_host                   = var.rds_proxy_read_host
-  bastion_sg      = var.bastion_sg
+  bastion_sg = var.bastion_sg
   # lambda          = var.lambda
-  reseller_api_sg = module.reseller-api.reseller_api_sg
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
-  lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
+  reseller_api_sg            = module.reseller-api.reseller_api_sg
   firebase_authorizer_module = module.firebase-authorizer
-  reseller_module = module.reseller-api
+  reseller_module            = module.reseller-api
 }
 
 module "reap-proxy" {
@@ -165,8 +159,8 @@ module "verification-api" {
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   bastion_sg                            = var.bastion_sg
-  sumsub_webhook_module = module.sumsub-webhook
-  reseller_api_module = module.reseller-api
+  sumsub_webhook_module                 = module.sumsub-webhook
+  reseller_api_module                   = module.reseller-api
 }
 
 module "authentication-api" {
@@ -188,12 +182,12 @@ module "authentication-api" {
   env_tag                          = var.env_tag
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
-  firebase_authorizer_module = module.firebase-authorizer
+  firebase_authorizer_module       = module.firebase-authorizer
 }
 
 module "notification-api" {
-  source           = "./notification-api"
-  cluster          = aws_ecs_cluster.core_application.arn
+  source  = "./notification-api"
+  cluster = aws_ecs_cluster.core_application.arn
   image = {
     url = aws_ecr_repository.look-card["notification-api"].repository_url
     tag = var.image_tag.notification-api
@@ -203,19 +197,19 @@ module "notification-api" {
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  secret_manager = var.secret_manager
-  env_tag        = var.env_tag
-  sg_alb_id      = aws_security_group.api_alb_sg.id
-  bastion_sg     = var.bastion_sg
+  secret_manager          = var.secret_manager
+  env_tag                 = var.env_tag
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  bastion_sg              = var.bastion_sg
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  data_api_ecs_svc_sg = module.data-api.data_api_ecs_svc_sg
+  data_api_ecs_svc_sg     = module.data-api.data_api_ecs_svc_sg
 }
 
 
 module "profile-api" {
-  source           = "./profile-api"
-  default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.core_application.arn
+  source = "./profile-api"
+  # default_listener = aws_lb_listener.look-card.arn
+  cluster = aws_ecs_cluster.core_application.arn
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
@@ -225,10 +219,10 @@ module "profile-api" {
     url = aws_ecr_repository.look-card["profile-api"].repository_url
     tag = var.image_tag.profile-api
   }
-  lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  secret_manager                   = var.secret_manager
-  env_tag                          = var.env_tag
-  sg_alb_id                        = aws_security_group.api_alb_sg.id
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  secret_manager          = var.secret_manager
+  env_tag                 = var.env_tag
+  # sg_alb_id                        = aws_security_group.api_alb_sg.id
   referral_api_sg                  = module.referral-api.referral_api_sg
   account_api_sg                   = module.account-api.account_api_sg_id
   user_api_sg                      = module.user-api.user_api_sg
@@ -237,13 +231,12 @@ module "profile-api" {
   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
   bastion_sg                       = var.bastion_sg
   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
-  crypto_api_module = module.crypto-api
-  user_api_module = module.user-api
-  account_api_module = module.account-api
-  reseller_api_module = module.reseller-api
-  firebase_authorizer_module = module.firebase-authorizer
-  referral_api_ecs_svc_sg                  = module.referral-api.referral_api_ecs_svc_sg
+  crypto_api_module                = module.crypto-api
+  user_api_module                  = module.user-api
+  account_api_module               = module.account-api
+  reseller_api_module              = module.reseller-api
+  firebase_authorizer_module       = module.firebase-authorizer
+  referral_api_ecs_svc_sg          = module.referral-api.referral_api_ecs_svc_sg
 }
 
 module "config-api" {
@@ -259,15 +252,15 @@ module "config-api" {
     url = aws_ecr_repository.look-card["config-api"].repository_url
     tag = var.image_tag.config-api
   }
-  lookcardlocal_namespace              = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  acm                                  = var.acm
-  secret_manager                       = var.secret_manager
-  env_tag                              = var.env_tag
-  sg_alb_id                            = aws_security_group.api_alb_sg.id
-  bastion_sg                           = var.bastion_sg
-  crypto_api_module = module.crypto-api
-  account_api_module = module.account-api
-  reseller_api_module = module.reseller-api
+  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  acm                     = var.acm
+  secret_manager          = var.secret_manager
+  env_tag                 = var.env_tag
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  bastion_sg              = var.bastion_sg
+  crypto_api_module       = module.crypto-api
+  account_api_module      = module.account-api
+  reseller_api_module     = module.reseller-api
 }
 
 module "data-api" {
@@ -288,13 +281,13 @@ module "data-api" {
   secret_manager          = var.secret_manager
   kms                     = var.kms
   # s3_data_bucket_name     = var.s3_data_bucket_name
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  crypto_api_sg_id        = module.crypto-api.crypto_api_sg_id
-  crypto_api_ecs_svc_sg   = module.crypto-api.crypto_api_ecs_svc_sg
-  user_api_ecs_svc_sg = module.user-api.user_api_ecs_svc_sg
+  sg_alb_id                   = aws_security_group.api_alb_sg.id
+  crypto_api_sg_id            = module.crypto-api.crypto_api_sg_id
+  crypto_api_ecs_svc_sg       = module.crypto-api.crypto_api_ecs_svc_sg
+  user_api_ecs_svc_sg         = module.user-api.user_api_ecs_svc_sg
   verification_api_ecs_svc_sg = module.verification-api.verification_api_ecs_svc_sg
-  bastion_sg              = var.bastion_sg
-  account_api_module = module.account-api
+  bastion_sg                  = var.bastion_sg
+  account_api_module          = module.account-api
 }
 
 module "xray-daemon" {
@@ -306,7 +299,7 @@ module "xray-daemon" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  network_config = var.network_config
+  network_config          = var.network_config
 }
 
 module "referral-api" {
@@ -358,8 +351,8 @@ module "reseller-api" {
   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
   bastion_sg                            = var.bastion_sg
-  default_listener = aws_lb_listener.look-card.arn
-  private_alb_sg = aws_security_group.private_alb_sg
+  default_listener                      = aws_lb_listener.look-card.arn
+  private_alb_sg                        = aws_security_group.private_alb_sg
 }
 
 # # ********************  Lambda functions  ***********************
@@ -392,6 +385,24 @@ module "sumsub-webhook" {
   env_tag = var.env_tag
 }
 
+module "crypto-processor" {
+  source = "./crypto-processor"
+  network = {
+    vpc            = var.network.vpc
+    private_subnet = var.network.private_subnet
+  }
+
+  image = {
+    url = aws_ecr_repository.look-card["crypto-processor"].repository_url
+    tag = var.image_tag.crypto-processor
+  }
+
+  allow_to_security_group_ids = {
+    sweep      = []
+    withdrawal = []
+  }
+}
+
 # module "cryptocurrency-withdrawal-processor" {
 #   source = "./cryptocurrency-withdrawal-processor"
 #   sqs    = module.sqs
@@ -422,20 +433,20 @@ module "sumsub-webhook" {
 #   secret_manager = var.secret_manager
 # }
 
-module "notification-dispatcher" {
-  source = "./notification-dispatcher"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["notification-dispatcher"].repository_url
-    tag = var.image_tag.notification-dispatcher
-  }
-  sqs            = module.sqs
-  secret_manager = var.secret_manager
-}
+# module "notification-dispatcher" {
+#   source = "./notification-dispatcher"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["notification-dispatcher"].repository_url
+#     tag = var.image_tag.notification-dispatcher
+#   }
+#   sqs            = module.sqs
+#   secret_manager = var.secret_manager
+# }
 
 module "edns-api" {
   source = "./edns-api"
@@ -450,31 +461,23 @@ module "edns-api" {
     public_subnet  = var.network.public_subnet
   }
   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster = aws_ecs_cluster.core_application.arn
-  secret_manager = var.secret_manager
-  sg_alb_id = aws_security_group.api_alb_sg.id
-  env_tag = var.env_tag
-  lambda_cryptocurrency_sweeper = module.cryptocurrency-sweep-processor
-  lambda_cryptocurrency_withdrawal = module.cryptocurrency-withdrawal-processor
-  crypto_api_module = module.crypto-api
-  reseller_api_module = module.reseller-api
+  cluster                 = aws_ecs_cluster.core_application.arn
+  secret_manager          = var.secret_manager
+  sg_alb_id               = aws_security_group.api_alb_sg.id
+  env_tag                 = var.env_tag
+  crypto_api_module       = module.crypto-api
+  reseller_api_module     = module.reseller-api
 }
 
 
 # # ********************  v2 Portal  ***********************
 
 module "reseller-portal" {
-  source = "./reseller-portal"
-  domain = var.domain
-  storage = var.storage
-  security = var.security
+  source                   = "./reseller-portal"
+  domain                   = var.domain
+  storage                  = var.storage
+  security                 = var.security
   reseller_portal_hostname = var.reseller_portal_hostname
-  aws_provider = var.aws_provider
-  s3_bucket = var.s3_bucket
+  aws_provider             = var.aws_provider
+  s3_bucket                = var.s3_bucket
 }
-
-# # ********************  v2 SQS  ***********************
-module "sqs" {
-  source = "./sqs"
-}
-

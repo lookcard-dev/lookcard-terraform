@@ -125,34 +125,6 @@ resource "aws_iam_role" "crypto_listener_trongrid_task_role" {
   })
 }
 
-resource "aws_iam_policy" "transaction_listener_sqs_send_message_policy" {
-  name        = "SQSSendMessagePolicy"
-  description = "Allows sending messages to a specific SQS queue"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "sqs:SendMessage"
-        ]
-        Resource = var.sqs.cryptocurrency_sweeper.arn
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "crypto_listener_getblock_sqs_attachment" {
-  role       = aws_iam_role.crypto_listener_trongrid_task_role.name
-  policy_arn = aws_iam_policy.transaction_listener_sqs_send_message_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "crypto_listener_trongrid_sqs_attachment" {
-  role       = aws_iam_role.crypto_listener_trongrid_task_role.name
-  policy_arn = aws_iam_policy.transaction_listener_sqs_send_message_policy.arn
-}
-
 resource "aws_iam_policy" "crypto_listener_getblock_cloudwatch_putlog_policy" {
   name        = "crypto-listener-getblock-CloudWatchPutLogPolicy"
   description = "Allows crypto api put log to log group /lookcard/crypto-listener/tron/nile/getblock"

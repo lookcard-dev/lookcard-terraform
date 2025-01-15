@@ -169,7 +169,7 @@ locals {
   ]
   inbound_allow_sg_list = []
 }
-variable "sqs" {}
+# variable "sqs" {}
 variable "capacity_provider_ec2_arm64_on_demand" {}
 variable "capacity_provider_ec2_amd64_on_demand" {}
 variable "rds_aurora_postgresql_writer_endpoint" {}

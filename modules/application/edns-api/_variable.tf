@@ -3,8 +3,6 @@ variable "lookcardlocal_namespace" {}
 variable "sg_alb_id" {}
 variable "cluster" {}
 variable "secret_manager" {}
-variable "lambda_cryptocurrency_sweeper" {}
-variable "lambda_cryptocurrency_withdrawal" {}
 variable "crypto_api_module" {}
 variable "reseller_api_module" {}
 variable "env_tag" {}

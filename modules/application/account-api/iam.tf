@@ -63,32 +63,6 @@ resource "aws_iam_role" "account_api_task_role" {
   })
 }
 
-resource "aws_iam_policy" "account_api_sqs_sendmessage" {
-  name        = "AccountAPI-SQSSendMessage"
-  description = "Allows send message to Lookcard_Notification.fifo SQS Queue"
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sqs:SendMessage"
-        ],
-        "Resource" : [
-          "${var.sqs.notification_dispatcher.arn}",
-          "${var.sqs.cryptocurrency_withdrawal.arn}"
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "Account_API_SQS_SendMessage_attachment" {
-  role       = aws_iam_role.account_api_task_role.name
-  policy_arn = aws_iam_policy.account_api_sqs_sendmessage.arn
-}
-
-
 resource "aws_iam_policy" "account_api_cloudwatch_putlog_policy" {
   name        = "AccountAPICloudWatchPutLogPolicy"
   description = "Allows account-api put log to log group /lookcard/account-api"
