@@ -398,7 +398,7 @@ module "crypto-processor" {
   }
 
   allow_to_security_group_ids = {
-    sweep      = []
+    sweep      = [module.account-api.account_api_ecs_svc_sg.id, module.config-api.config_api_ecs_svc_sg.id, module.crypto-api.crypto_api_ecs_svc_sg.id, module.profile-api.profile_api_sg.id]
     withdrawal = []
   }
 }
