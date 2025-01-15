@@ -1,5 +1,5 @@
 output "kms_data_encryption_key_id_alpha" {
-  value = aws_kms_key.data_encryption_key_alpha.id
+  value = aws_kms_key.data_encryption_key_alpha
 }
 
 # output "kms_data_encryption_key_alpha_arn" {
@@ -7,17 +7,17 @@ output "kms_data_encryption_key_id_alpha" {
 # }
 
 output "kms_data_encryption_key_id_beta" {
-  value = aws_kms_key.data_encryption_key_beta.id
+  value = aws_kms_key.data_encryption_key_beta
 }
 
 output "kms_data_encryption_key_id_charlie" {
-  value = aws_kms_key.data_encryption_key_charlie.id
+  value = aws_kms_key.data_encryption_key_charlie
 }
 
 output "kms_data_encryption_key_id_delta" {
-  value = aws_kms_key.data_encryption_key_delta.id
+  value = aws_kms_key.data_encryption_key_delta
 }
 
 output "kms_data_encryption_key_id_echo" {
-  value = aws_kms_key.data_encryption_key_echo.id
+  value = aws_kms_key.data_encryption_key_echo
 }

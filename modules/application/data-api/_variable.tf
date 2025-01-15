@@ -68,27 +68,11 @@ locals {
     },
     {
       name  = "AWS_KMS_GENERATOR_KEY_ID"
-      value = var.kms.kms_data_generator_key_id
+      value = var.kms.kms_data_generator_key_id.arn
     },
     {
       name  = "AWS_KMS_ENCRYPTION_KEY_ID_ALPHA"
-      value = var.kms.kms_data_encryption_key_id_alpha
-    },
-    {
-      name  = "AWS_KMS_ENCRYPTION_KEY_ID_BETA"
-      value = var.kms.kms_data_encryption_key_id_beta
-    },
-    {
-      name  = "AWS_KMS_ENCRYPTION_KEY_ID_CHARLIE"
-      value = var.kms.kms_data_encryption_key_id_charlie
-    },
-    {
-      name  = "AWS_KMS_ENCRYPTION_KEY_ID_DELTA"
-      value = var.kms.kms_data_encryption_key_id_delta
-    },
-    {
-      name  = "AWS_KMS_ENCRYPTION_KEY_ID_ECHO"
-      value = var.kms.kms_data_encryption_key_id_echo
+      value = var.kms.kms_data_encryption_key_id_alpha.arn
     },
     {
       name  = "AWS_S3_DATA_BUCKET_NAME"

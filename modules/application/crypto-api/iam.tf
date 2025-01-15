@@ -89,3 +89,27 @@ resource "aws_iam_role_policy_attachment" "crypto_api_cloudwatch_putlog_attachme
   role      = aws_iam_role.crypto_api_task_role.name
   policy_arn = aws_iam_policy.crypto_api_cloudwatch_putlog_policy.arn
 }
+
+resource "aws_iam_policy" "crypto_api_kms_policy" {
+  name        = "CryptoAPIKMSPolicy"
+  description = "Allows KMS operations for crypto worker key"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:Sign",
+          "kms:Verify", 
+          "kms:GetPublicKey"
+        ],
+        "Resource" : "arn:aws:kms:*:*:key/*/lookcard/crypto/worker/alpha"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "crypto_api_kms_policy_attachment" {
+  role       = aws_iam_role.crypto_api_task_role.name
+  policy_arn = aws_iam_policy.crypto_api_kms_policy.arn
+}

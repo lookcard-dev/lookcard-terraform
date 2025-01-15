@@ -1,5 +1,5 @@
 output "kms_data_generator_key_id" {
-  value = aws_kms_key.data_generator_key.id
+  value = aws_kms_key.data_generator_key
 }
 
 # output "kms_data_encryption_key_alpha_arn" {
