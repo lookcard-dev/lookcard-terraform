@@ -1,24 +1,3 @@
-
-variable "general_config" {
-  type = object({
-    env    = string
-    domain = string
-  })
-}
-variable "dns_config" {
-  type = object({
-    api_hostname            = string
-    admin_hostname          = string
-    hostname                = string
-    sumsub_webhook_hostname = string
-    reap_webhook_hostname   = string
-    firebase_webhook_hostname = string
-    fireblocks_webhook_hostname = string
-    reseller_portal_hostname    = string
-    apigw_reseller_hostname    = string
-    webhook_hostname          = string
-  })
-}
 variable "aws_provider" {
   type = object({
     region     = string
@@ -26,101 +5,113 @@ variable "aws_provider" {
   })
 }
 
-variable "image_tag" {
+variable "domain" {
   type = object({
-    # notification         = string
-    notification-api     = string
-    # account_api          = string # GitAction using unders
-    # authentication_api   = string
-    # blockchain_api       = string
-    # card_api             = string
-    # crypto_api           = string
-    # reporting_api        = string
-    # transaction_listener = string
-    # transaction_api      = string
-    # _user-api            = string
-    user-api             = string
-    # utility_api          = string
-    profile-api          = string
-    config-api           = string
-    data-api             = string
-    # notification_v2      = string
-    referral-api         = string
-    reap-proxy           = string
-    crypto-api           = string
-    crypto-listener      = string
-    account-api          = string
-    authentication-api   = string
-    verification-api     = string
-    reseller-api         = string
-    apigw-authorizer     = string
-    sumsub-webhook       = string
-    reap-webhook         = string
-    edns-api             = string
-    # cryptocurrency-sweep-processor = string
-    # cryptocurrency-withdrawal-processor = string
-    # notification-dispatcher = string
-    crypto-processor = string
+    general = string
+    admin   = string
   })
+  default = {
+    general = "develop.not-lookcard.com"
+    admin   = "develop.not-lookcard.com"
+  }
 }
 
-
-variable "lambda_code" {
-  type = object({
-    websocket_connect_s3key    = string
-    websocket_disconnect_s3key = string
-    data_process_s3key         = string
-    elliptic_s3key             = string
-    push_message_s3key         = string
-    push_notification_s3key    = string
-    withdrawal_s3key           = string
-  })
-}
 variable "network" {
   type = object({
-    vpc_cidr                  = string
-    public_subnet_cidr_list   = list(string)
-    private_subnet_cidr_list  = list(string)
-    database_subnet_cidr_list = list(string)
-    isolated_subnet_cidr_list = list(string)
+    cidr = object({
+      vpc = string
+      subnets = object({
+        public   = list(string)
+        private  = list(string)
+        database = list(string)
+        isolated = list(string)
+      })
+    })
+    nat = object({
+      provider = string
+      count    = number
+    })
   })
 }
-variable "s3_bucket" {
+
+variable "runtime_environment" {
+  type = string
+  validation {
+    condition     = contains(["develop", "testing", "staging", "production", "sandbox"], var.runtime_environment)
+    error_message = "runtime_environment must be one of: develop, testing, staging, production, or sandbox"
+  }
+}
+
+variable "image_tag" {
   type = object({
-    ekyc_data               = string
-    alb_log                 = string
-    cloudfront_log          = string
-    vpc_flow_log            = string
-    aml_code                = string
-    front_end_endpoint      = string
-    cloudwatch_syn_canaries = string
-    accountid_data          = string
-    lookcard_log            = string
-    reseller_portal         = string
-    waf_log                 = string
-    lookcard_download       = string
-    lookcard_metadata       = string
-    lookcard_data           = string
-    lookcard_corporate_portal = string
-    lookcard_verification_portal = string
-    lookcard_reseller_portal = string
-    lookcard_merchant_portal = string
-    lookcard_admin_console = string
+    card_api           = string
+    user_api           = string
+    profile_api        = string
+    config_api         = string
+    data_api           = string
+    verification_api   = string
+    authentication_api = string
+    account_api        = string
+    referral_api       = string
+    notification_api   = string
+    reseller_api       = string
+    edns_api           = string
+    enrollment_api     = string
+    register_api       = string
+    crypto_api         = string
+    crypto_listener    = string
+    crypto_processor   = string
+    cronjob            = string
+    reap_proxy         = string
+    apigw_authorizer   = string
   })
 }
 
-variable "ecs_cluster_config" {
-  type = object({
-    enable = bool
-  })
+variable "secret"{
+
 }
 
-variable "sns_subscriptions_email" {
-  type = list(string)
+locals {
+  hostname = {
+    public = {
+      verification_portal = "verify"
+      corporate_portal    = "portal.corporate"
+      corporate_api       = "api.corporate"
+      merchant_portal     = "portal.merchant"
+      merchant_api        = "merchant_api"
+      reseller_portal     = "portal.reseller"
+      reseller_api        = "api.reseller"
+      app_api             = "api"
+      admin_api           = "api.admin"
+      admin_console       = "console.admin"
+      webhook             = "webhook"
+      downloadable        = "download"
+      enrollment_portal   = "enroll"
+      enrollment_api      = "api.enroll"
+      registration_portal = "register"
+      registration_api    = "api.register"
+      metadata            = "metadata"
+      static              = "static"
+    }
+
+    internal = {
+      card_api           = "card.api"
+      profile_api        = "profile.api"
+      data_api           = "data.api"
+      notification_api   = "notification.api"
+      user_api           = "user.api"
+      config_api         = "config.api"
+      account_api        = "account.api"
+      authentication_api = "authentication.api"
+      verification_api   = "verification.api"
+      edns_api           = "edns.api"
+      crypto_api         = "crypto.api"
+      referral_api       = "referral.api"
+      reseller_api       = "reseller.api"
+      reap_proxy         = "reap.proxy"
+      xray_daemon        = "xray.daemon"
+      sumsub_webhook     = "sumsub.webhook"
+      reap_webhook       = "reap.webhook"
+    }
+  }
 }
-
-variable "env_tag" {}
-
-
-
-

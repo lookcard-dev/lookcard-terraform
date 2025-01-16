@@ -1,3 +1,13 @@
+# terraform {
+#   backend "s3" {
+#     bucket         = "${var.aws_provider.account_id}-lookcard-terraform"
+#     key            = "${var.runtime_environment}/state/terraform.tfstate"
+#     region         = var.aws_provider.region
+#     encrypt        = true
+#     dynamodb_table = "terraform"
+#   }
+# }
+
 terraform {
   backend "s3" {
     bucket         = "lookcard-terraform-backend-development"
@@ -12,120 +22,118 @@ provider "aws" {
   region = var.aws_provider.region
 }
 
-module "secret" {
-  source = "./modules/secret"
-}
+# module "secret" {
+#   source = "./modules/secret"
+# }
 
-module "kms" {
-  source = "./modules/kms"
-}
+# module "kms" {
+#   source = "./modules/kms"
+# }
 
 module "network" {
   source  = "./modules/network"
   network = var.network
-  network_config = {
-    replica_number  = 1
-    gateway_enabled = false
-  }
+
+  aws_provider = var.aws_provider
 }
 
-module "storage" {
-  source                  = "./modules/storage"
-  s3_bucket               = var.s3_bucket
-  environment             = var.general_config
-  aws_provider            = var.aws_provider
-  secret_manager          = module.secret
-  network = {
-    vpc                     = module.network.vpc
-    private_subnet          = module.network.private_subnet_ids
-    public_subnet           = module.network.public_subnet_ids
-    database_subnet         = module.network.database_subnet_ids
-  }
-}
+# module "storage" {
+#   source                  = "./modules/storage"
+#   s3_bucket               = var.s3_bucket
+#   environment             = var.general_config
+#   aws_provider            = var.aws_provider
+#   secret_manager          = module.secret
+#   network = {
+#     vpc                     = module.network.vpc
+#     private_subnet          = module.network.private_subnet_ids
+#     public_subnet           = module.network.public_subnet_ids
+#     database_subnet         = module.network.database_subnet_ids
+#   }
+# }
 
-module "utils" {
-  source = "./modules/utils"
-  network = {
-    vpc            = module.network.vpc
-    private_subnet = module.network.private_subnet_ids
-    public_subnet  = module.network.public_subnet_ids
-  }
-  syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
-  sns_subscriptions_email = var.sns_subscriptions_email
-}
+# module "utils" {
+#   source = "./modules/utils"
+#   network = {
+#     vpc            = module.network.vpc
+#     private_subnet = module.network.private_subnet_ids
+#     public_subnet  = module.network.public_subnet_ids
+#   }
+#   syn_canary_s3_bucket = module.storage.cloudwatch_syn_canaries
+#   sns_subscriptions_email = var.sns_subscriptions_email
+# }
 
-module "security" {
-  source = "./modules/security"
-  waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
-  # reseller_api_stage = module.apigw.reseller_api_stage
-}
-
-
-module "apigw" {
-  source = "./modules/apigw"
-  acm = module.certificate
-  application = module.application
-  env_tag = var.env_tag
-  dns_config = var.dns_config
-  domain = var.general_config.domain
-  security_module = module.security
-}
+# module "security" {
+#   source = "./modules/security"
+#   waf_logging_s3_bucket = module.storage.waf_log_bucket.arn
+#   # reseller_api_stage = module.apigw.reseller_api_stage
+# }
 
 
-
-module "application" {
-  source             = "./modules/application"
-  # alb_logging_bucket = module.S3.alb_log.id
-  domain             = var.general_config.domain
-  dns_config         = var.dns_config
-  ecs_cluster_config = var.ecs_cluster_config
-  network = {
-    vpc                     = module.network.vpc
-    private_subnet          = module.network.private_subnet_ids
-    public_subnet           = module.network.public_subnet_ids
-    public_subnet_cidr_list = module.network.public_subnet_cidr_lists
-  }
-  image_tag                                = var.image_tag
-  trongrid_secret_arn                      = module.secret.trongrid_secret_arn
-  database_secret_arn                      = module.secret.database_secret_arn
-  get_block_secret_arn                     = module.secret.get_block_secret_arn
-  firebase_secret_arn                      = module.secret.firebase_secret_arn
-  secret_manager                           = module.secret
-  # lookcard_api_domain                      = module.application.lookcard_api_domain
-  env_tag                                  = var.env_tag
-  acm                                      = module.certificate
-  kms                                      = module.kms
-  # s3_data_bucket_name                      = module.S3.accountid_data
-  rds_aurora_postgresql_writer_endpoint    = module.storage.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint    = module.storage.rds_aurora_postgresql_reader_endpoint
-  redis_host                               = module.storage.redis_host
-  lookcard_log_bucket_name = var.s3_bucket.lookcard_log
-  bastion_sg                       = module.utils.bastion_sg
+# module "apigw" {
+#   source = "./modules/apigw"
+#   acm = module.certificate
+#   application = module.application
+#   env_tag = var.env_tag
+#   dns_config = var.dns_config
+#   domain = var.general_config.domain
+#   security_module = module.security
+# }
 
 
-  # reseller-portal module
-  security = module.security
-  storage = module.storage
-  reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
-  aws_provider          = var.aws_provider
-  s3_bucket           = module.storage
-  network_config = var.network
-  # apigw_module = module.apigw
-}
 
-module "certificate" {
-  source                  = "./modules/certificate"
-  domain                  = var.general_config.domain
-  app_hostname            = "${var.dns_config.hostname}.${var.general_config.domain}"
-  admin_hostname          = "${var.dns_config.admin_hostname}.${var.general_config.domain}"
-  api_hostname            = "${var.dns_config.api_hostname}.${var.general_config.domain}"
-  sumsub_webhook_hostname = "${var.dns_config.sumsub_webhook_hostname}.${var.general_config.domain}"
-  reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
-  firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
-  fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
-  apigw_reseller_hostname = "${var.dns_config.apigw_reseller_hostname}.${var.general_config.domain}"
-  webhook_hostname = "${var.dns_config.webhook_hostname}.${var.general_config.domain}"
-}
+# module "application" {
+#   source             = "./modules/application"
+#   # alb_logging_bucket = module.S3.alb_log.id
+#   domain             = var.general_config.domain
+#   dns_config         = var.dns_config
+#   ecs_cluster_config = var.ecs_cluster_config
+#   network = {
+#     vpc                     = module.network.vpc
+#     private_subnet          = module.network.private_subnet_ids
+#     public_subnet           = module.network.public_subnet_ids
+#     public_subnet_cidr_list = module.network.public_subnet_cidr_lists
+#   }
+#   image_tag                                = var.image_tag
+#   trongrid_secret_arn                      = module.secret.trongrid_secret_arn
+#   database_secret_arn                      = module.secret.database_secret_arn
+#   get_block_secret_arn                     = module.secret.get_block_secret_arn
+#   firebase_secret_arn                      = module.secret.firebase_secret_arn
+#   secret_manager                           = module.secret
+#   # lookcard_api_domain                      = module.application.lookcard_api_domain
+#   env_tag                                  = var.env_tag
+#   acm                                      = module.certificate
+#   kms                                      = module.kms
+#   # s3_data_bucket_name                      = module.S3.accountid_data
+#   rds_aurora_postgresql_writer_endpoint    = module.storage.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint    = module.storage.rds_aurora_postgresql_reader_endpoint
+#   redis_host                               = module.storage.redis_host
+#   lookcard_log_bucket_name = var.s3_bucket.lookcard_log
+#   bastion_sg                       = module.utils.bastion_sg
+
+
+#   # reseller-portal module
+#   security = module.security
+#   storage = module.storage
+#   reseller_portal_hostname    = "${var.dns_config.reseller_portal_hostname}.${var.general_config.domain}"
+#   aws_provider          = var.aws_provider
+#   s3_bucket           = module.storage
+#   network_config = var.network
+#   # apigw_module = module.apigw
+# }
+
+# module "certificate" {
+#   source                  = "./modules/certificate"
+#   domain                  = var.general_config.domain
+#   app_hostname            = "${var.dns_config.hostname}.${var.general_config.domain}"
+#   admin_hostname          = "${var.dns_config.admin_hostname}.${var.general_config.domain}"
+#   api_hostname            = "${var.dns_config.api_hostname}.${var.general_config.domain}"
+#   sumsub_webhook_hostname = "${var.dns_config.sumsub_webhook_hostname}.${var.general_config.domain}"
+#   reap_webhook_hostname   = "${var.dns_config.reap_webhook_hostname}.${var.general_config.domain}"
+#   firebase_webhook_hostname = "${var.dns_config.firebase_webhook_hostname}.${var.general_config.domain}"
+#   fireblocks_webhook_hostname = "${var.dns_config.fireblocks_webhook_hostname}.${var.general_config.domain}"
+#   apigw_reseller_hostname = "${var.dns_config.apigw_reseller_hostname}.${var.general_config.domain}"
+#   webhook_hostname = "${var.dns_config.webhook_hostname}.${var.general_config.domain}"
+# }
 
 # module "cdn" {
 #   source                = "./modules/cdn"

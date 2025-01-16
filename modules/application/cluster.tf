@@ -38,25 +38,25 @@ resource "aws_ecs_cluster" "core_application" {
   }
 }
 
-resource "aws_ecs_capacity_provider" "ec2_arm64_on_demand" {
-  name = "EC2_ARM64_ON_DEMAND"
+# resource "aws_ecs_capacity_provider" "ec2_arm64_on_demand" {
+#   name = "EC2_ARM64_ON_DEMAND"
 
-  auto_scaling_group_provider {
-    auto_scaling_group_arn = module.crypto-listener.transaction_listener_arm64_asg_arn
-  }
-}
+#   auto_scaling_group_provider {
+#     auto_scaling_group_arn = module.crypto-listener.transaction_listener_arm64_asg_arn
+#   }
+# }
 
-resource "aws_ecs_capacity_provider" "ec2_amd64_on_demand" {
-  name = "EC2_AMD64_ON_DEMAND"
+# resource "aws_ecs_capacity_provider" "ec2_amd64_on_demand" {
+#   name = "EC2_AMD64_ON_DEMAND"
 
-  auto_scaling_group_provider {
-    auto_scaling_group_arn = module.crypto-listener.transaction_listener_amd64_asg_arn
-  }
-}
+#   auto_scaling_group_provider {
+#     auto_scaling_group_arn = module.crypto-listener.transaction_listener_amd64_asg_arn
+#   }
+# }
 
 resource "aws_ecs_cluster_capacity_providers" "listener" {
   cluster_name       = aws_ecs_cluster.listener.name
-  capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.ec2_amd64_on_demand.name, aws_ecs_capacity_provider.ec2_arm64_on_demand.name]
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100

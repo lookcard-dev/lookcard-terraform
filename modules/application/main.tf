@@ -1,361 +1,364 @@
-# # ********************  v2  ***********************
-
 module "crypto-api" {
   source           = "./crypto-api"
-  default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.core_application.arn
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
+
+  runtime_environment = var.env_tag
+
+  cluster_arn          = aws_ecs_cluster.core_application.arn
+
+  namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+
   image = {
     url = aws_ecr_repository.look-card["crypto-api"].repository_url
     tag = var.image_tag.crypto-api
   }
-  secret_manager                        = var.secret_manager
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  kms                                   = var.kms
-  account_api_sg_id                     = module.account-api.account_api_sg_id
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  transaction_listener_sg_id            = module.crypto-listener.transaction_listener_sg_id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  # rds_proxy_host                        = var.rds_proxy_host
-  # rds_proxy_read_host                   = var.rds_proxy_read_host
-  reseller_api_sg        = module.reseller-api.reseller_api_sg
-  bastion_sg             = var.bastion_sg
-  crypto_listener_module = module.crypto-listener
-}
-
-module "crypto-listener" {
-  source = "./crypto-listener"
   network = {
     vpc            = var.network.vpc
     private_subnet = var.network.private_subnet
     public_subnet  = var.network.public_subnet
   }
-  image = {
-    url = aws_ecr_repository.look-card["crypto-listener"].repository_url
-    tag = var.image_tag.crypto-listener
+
+  database = {
+    writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+    reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+    credentials_secret_arn = var.secret_manager.secret_arns["DATABASE"]
   }
-  vpc_id         = var.network.vpc
-  cluster        = aws_ecs_cluster.listener.arn
-  secret_manager = var.secret_manager
-  # sqs                                      = module.sqs
-  capacity_provider_ec2_arm64_on_demand = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
-  capacity_provider_ec2_amd64_on_demand = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  env_tag                               = var.env_tag
-  # rds_proxy_host                           = var.rds_proxy_host
-  # rds_proxy_read_host                      = var.rds_proxy_read_host
-  bastion_sg = var.bastion_sg
+
+  cache = {
+    redis_endpoint = var.redis_host
+  }
+
+  monitor = {
+    sentry_secret_arn = var.secret_manager.secret_arns["SENTRY"]
+  }
+
+  allow_to_security_group_ids = []
+
 }
 
-module "account-api" {
-  source           = "./account-api"
-  default_listener = aws_lb_listener.look-card.arn
-  vpc_id           = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["account-api"].repository_url
-    tag = var.image_tag.account-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                 = aws_ecs_cluster.core_application.arn
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  # lambda                                = var.lambda
-  secret_manager = var.secret_manager
-  # sqs                                   = module.sqs
-  acm                                   = var.acm
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  # rds_proxy_host                        = var.rds_proxy_host
-  # rds_proxy_read_host                   = var.rds_proxy_read_host
-  reseller_api_sg     = module.reseller-api.reseller_api_sg
-  bastion_sg          = var.bastion_sg
-  crypto_api_module   = module.crypto-api
-  reseller_api_module = module.reseller-api
-}
+# module "crypto-listener" {
+#   source = "./crypto-listener"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["crypto-listener"].repository_url
+#     tag = var.image_tag.crypto-listener
+#   }
+#   vpc_id         = var.network.vpc
+#   cluster        = aws_ecs_cluster.listener.arn
+#   secret_manager = var.secret_manager
+#   # sqs                                      = module.sqs
+#   capacity_provider_ec2_arm64_on_demand = aws_ecs_capacity_provider.ec2_arm64_on_demand.name
+#   capacity_provider_ec2_amd64_on_demand = aws_ecs_capacity_provider.ec2_amd64_on_demand.name
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   env_tag                               = var.env_tag
+#   # rds_proxy_host                           = var.rds_proxy_host
+#   # rds_proxy_read_host                      = var.rds_proxy_read_host
+#   bastion_sg = var.bastion_sg
+# }
 
-module "user-api" {
-  source = "./user-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["user-api"].repository_url
-    tag = var.image_tag.user-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.core_application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  lambda_firebase_authorizer_sg_id      = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
-  # rds_proxy_host                        = var.rds_proxy_host
-  # rds_proxy_read_host                   = var.rds_proxy_read_host
-  bastion_sg = var.bastion_sg
-  # lambda          = var.lambda
-  reseller_api_sg            = module.reseller-api.reseller_api_sg
-  firebase_authorizer_module = module.firebase-authorizer
-  reseller_module            = module.reseller-api
-}
+# module "account-api" {
+#   source           = "./account-api"
+#   default_listener = aws_lb_listener.look-card.arn
+#   vpc_id           = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["account-api"].repository_url
+#     tag = var.image_tag.account-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                 = aws_ecs_cluster.core_application.arn
+#   sg_alb_id               = aws_security_group.api_alb_sg.id
+#   # lambda                                = var.lambda
+#   secret_manager = var.secret_manager
+#   # sqs                                   = module.sqs
+#   acm                                   = var.acm
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   # rds_proxy_host                        = var.rds_proxy_host
+#   # rds_proxy_read_host                   = var.rds_proxy_read_host
+#   reseller_api_sg     = module.reseller-api.reseller_api_sg
+#   bastion_sg          = var.bastion_sg
+#   crypto_api_module   = module.crypto-api
+#   reseller_api_module = module.reseller-api
+# }
 
-module "reap-proxy" {
-  source = "./reap-proxy"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["reap-proxy"].repository_url
-    tag = var.image_tag.reap-proxy
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace  = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                  = aws_ecs_cluster.core_application.arn
-  secret_manager           = var.secret_manager
-  sg_alb_id                = aws_security_group.api_alb_sg.id
-  env_tag                  = var.env_tag
-  lookcard_log_bucket_name = var.lookcard_log_bucket_name
-  bastion_sg               = var.bastion_sg
-}
+# module "user-api" {
+#   source = "./user-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["user-api"].repository_url
+#     tag = var.image_tag.user-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                               = aws_ecs_cluster.core_application.arn
+#   secret_manager                        = var.secret_manager
+#   sg_alb_id                             = aws_security_group.api_alb_sg.id
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   lambda_firebase_authorizer_sg_id      = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
+#   # rds_proxy_host                        = var.rds_proxy_host
+#   # rds_proxy_read_host                   = var.rds_proxy_read_host
+#   bastion_sg = var.bastion_sg
+#   # lambda          = var.lambda
+#   reseller_api_sg            = module.reseller-api.reseller_api_sg
+#   firebase_authorizer_module = module.firebase-authorizer
+#   reseller_module            = module.reseller-api
+# }
 
-module "verification-api" {
-  source = "./verification-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["verification-api"].repository_url
-    tag = var.image_tag.verification-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.core_application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg                            = var.bastion_sg
-  sumsub_webhook_module                 = module.sumsub-webhook
-  reseller_api_module                   = module.reseller-api
-}
+# module "reap-proxy" {
+#   source = "./reap-proxy"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["reap-proxy"].repository_url
+#     tag = var.image_tag.reap-proxy
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace  = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                  = aws_ecs_cluster.core_application.arn
+#   secret_manager           = var.secret_manager
+#   sg_alb_id                = aws_security_group.api_alb_sg.id
+#   env_tag                  = var.env_tag
+#   lookcard_log_bucket_name = var.lookcard_log_bucket_name
+#   bastion_sg               = var.bastion_sg
+# }
 
-module "authentication-api" {
-  source = "./authentication-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["authentication-api"].repository_url
-    tag = var.image_tag.authentication-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                          = aws_ecs_cluster.core_application.arn
-  secret_manager                   = var.secret_manager
-  sg_alb_id                        = aws_security_group.api_alb_sg.id
-  env_tag                          = var.env_tag
-  lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
-  bastion_sg                       = var.bastion_sg
-  firebase_authorizer_module       = module.firebase-authorizer
-}
+# module "verification-api" {
+#   source = "./verification-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["verification-api"].repository_url
+#     tag = var.image_tag.verification-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                               = aws_ecs_cluster.core_application.arn
+#   secret_manager                        = var.secret_manager
+#   sg_alb_id                             = aws_security_group.api_alb_sg.id
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   bastion_sg                            = var.bastion_sg
+#   sumsub_webhook_module                 = module.sumsub-webhook
+#   reseller_api_module                   = module.reseller-api
+# }
 
-module "notification-api" {
-  source  = "./notification-api"
-  cluster = aws_ecs_cluster.core_application.arn
-  image = {
-    url = aws_ecr_repository.look-card["notification-api"].repository_url
-    tag = var.image_tag.notification-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  secret_manager          = var.secret_manager
-  env_tag                 = var.env_tag
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  bastion_sg              = var.bastion_sg
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  data_api_ecs_svc_sg     = module.data-api.data_api_ecs_svc_sg
-}
+# module "authentication-api" {
+#   source = "./authentication-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["authentication-api"].repository_url
+#     tag = var.image_tag.authentication-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace          = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                          = aws_ecs_cluster.core_application.arn
+#   secret_manager                   = var.secret_manager
+#   sg_alb_id                        = aws_security_group.api_alb_sg.id
+#   env_tag                          = var.env_tag
+#   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
+#   bastion_sg                       = var.bastion_sg
+#   firebase_authorizer_module       = module.firebase-authorizer
+# }
+
+# module "notification-api" {
+#   source  = "./notification-api"
+#   cluster = aws_ecs_cluster.core_application.arn
+#   image = {
+#     url = aws_ecr_repository.look-card["notification-api"].repository_url
+#     tag = var.image_tag.notification-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   secret_manager          = var.secret_manager
+#   env_tag                 = var.env_tag
+#   sg_alb_id               = aws_security_group.api_alb_sg.id
+#   bastion_sg              = var.bastion_sg
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   data_api_ecs_svc_sg     = module.data-api.data_api_ecs_svc_sg
+# }
 
 
-module "profile-api" {
-  source = "./profile-api"
-  # default_listener = aws_lb_listener.look-card.arn
-  cluster = aws_ecs_cluster.core_application.arn
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["profile-api"].repository_url
-    tag = var.image_tag.profile-api
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  secret_manager          = var.secret_manager
-  env_tag                 = var.env_tag
-  # sg_alb_id                        = aws_security_group.api_alb_sg.id
-  referral_api_sg                  = module.referral-api.referral_api_sg
-  account_api_sg                   = module.account-api.account_api_sg_id
-  user_api_sg                      = module.user-api.user_api_sg
-  verification_api_sg              = module.verification-api.verification_api_sg
-  reseller_api_sg                  = module.reseller-api.reseller_api_sg
-  lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
-  bastion_sg                       = var.bastion_sg
-  crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
-  crypto_api_module                = module.crypto-api
-  user_api_module                  = module.user-api
-  account_api_module               = module.account-api
-  reseller_api_module              = module.reseller-api
-  firebase_authorizer_module       = module.firebase-authorizer
-  referral_api_ecs_svc_sg          = module.referral-api.referral_api_ecs_svc_sg
-}
+# module "profile-api" {
+#   source = "./profile-api"
+#   # default_listener = aws_lb_listener.look-card.arn
+#   cluster = aws_ecs_cluster.core_application.arn
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["profile-api"].repository_url
+#     tag = var.image_tag.profile-api
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   secret_manager          = var.secret_manager
+#   env_tag                 = var.env_tag
+#   # sg_alb_id                        = aws_security_group.api_alb_sg.id
+#   referral_api_sg                  = module.referral-api.referral_api_sg
+#   account_api_sg                   = module.account-api.account_api_sg_id
+#   user_api_sg                      = module.user-api.user_api_sg
+#   verification_api_sg              = module.verification-api.verification_api_sg
+#   reseller_api_sg                  = module.reseller-api.reseller_api_sg
+#   lambda_firebase_authorizer_sg_id = module.firebase-authorizer.lambda_firebase_authorizer_sg.id
+#   bastion_sg                       = var.bastion_sg
+#   crypto_api_sg_id                 = module.crypto-api.crypto_api_sg_id
+#   crypto_api_module                = module.crypto-api
+#   user_api_module                  = module.user-api
+#   account_api_module               = module.account-api
+#   reseller_api_module              = module.reseller-api
+#   firebase_authorizer_module       = module.firebase-authorizer
+#   referral_api_ecs_svc_sg          = module.referral-api.referral_api_ecs_svc_sg
+# }
 
-module "config-api" {
-  source           = "./config-api"
-  default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.core_application.arn
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["config-api"].repository_url
-    tag = var.image_tag.config-api
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  acm                     = var.acm
-  secret_manager          = var.secret_manager
-  env_tag                 = var.env_tag
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  bastion_sg              = var.bastion_sg
-  crypto_api_module       = module.crypto-api
-  account_api_module      = module.account-api
-  reseller_api_module     = module.reseller-api
-}
+# module "config-api" {
+#   source           = "./config-api"
+#   default_listener = aws_lb_listener.look-card.arn
+#   cluster          = aws_ecs_cluster.core_application.arn
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["config-api"].repository_url
+#     tag = var.image_tag.config-api
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   acm                     = var.acm
+#   secret_manager          = var.secret_manager
+#   env_tag                 = var.env_tag
+#   sg_alb_id               = aws_security_group.api_alb_sg.id
+#   bastion_sg              = var.bastion_sg
+#   crypto_api_module       = module.crypto-api
+#   account_api_module      = module.account-api
+#   reseller_api_module     = module.reseller-api
+# }
 
-module "data-api" {
-  source           = "./data-api"
-  default_listener = aws_lb_listener.look-card.arn
-  cluster          = aws_ecs_cluster.core_application.arn
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["data-api"].repository_url
-    tag = var.image_tag.data-api
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  env_tag                 = var.env_tag
-  secret_manager          = var.secret_manager
-  kms                     = var.kms
-  # s3_data_bucket_name     = var.s3_data_bucket_name
-  sg_alb_id                   = aws_security_group.api_alb_sg.id
-  crypto_api_sg_id            = module.crypto-api.crypto_api_sg_id
-  crypto_api_ecs_svc_sg       = module.crypto-api.crypto_api_ecs_svc_sg
-  user_api_ecs_svc_sg         = module.user-api.user_api_ecs_svc_sg
-  verification_api_ecs_svc_sg = module.verification-api.verification_api_ecs_svc_sg
-  bastion_sg                  = var.bastion_sg
-  account_api_module          = module.account-api
-}
+# module "data-api" {
+#   source           = "./data-api"
+#   default_listener = aws_lb_listener.look-card.arn
+#   cluster          = aws_ecs_cluster.core_application.arn
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["data-api"].repository_url
+#     tag = var.image_tag.data-api
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   env_tag                 = var.env_tag
+#   secret_manager          = var.secret_manager
+#   kms                     = var.kms
+#   # s3_data_bucket_name     = var.s3_data_bucket_name
+#   sg_alb_id                   = aws_security_group.api_alb_sg.id
+#   user_api_ecs_svc_sg         = module.user-api.user_api_ecs_svc_sg
+#   verification_api_ecs_svc_sg = module.verification-api.verification_api_ecs_svc_sg
+#   bastion_sg                  = var.bastion_sg
+#   account_api_module          = module.account-api
+# }
 
-module "xray-daemon" {
-  source  = "./xray-daemon"
-  cluster = aws_ecs_cluster.core_application.arn
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  network_config          = var.network_config
-}
+# module "xray-daemon" {
+#   source  = "./xray-daemon"
+#   cluster = aws_ecs_cluster.core_application.arn
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   network_config          = var.network_config
+# }
 
-module "referral-api" {
-  source = "./referral-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["referral-api"].repository_url
-    tag = var.image_tag.referral-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.core_application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg                            = var.bastion_sg
-  reseller_api_module                   = module.reseller-api
-  private_alb_sg                        = aws_security_group.private_alb_sg
-  # rds_proxy_host                        = var.rds_proxy_host
-  # rds_proxy_read_host                   = var.rds_proxy_read_host
-  # _auth_api_sg = module.authentication._auth_api_sg
-}
+# module "referral-api" {
+#   source = "./referral-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["referral-api"].repository_url
+#     tag = var.image_tag.referral-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                               = aws_ecs_cluster.core_application.arn
+#   secret_manager                        = var.secret_manager
+#   sg_alb_id                             = aws_security_group.api_alb_sg.id
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   bastion_sg                            = var.bastion_sg
+#   reseller_api_module                   = module.reseller-api
+#   private_alb_sg                        = aws_security_group.private_alb_sg
+#   # rds_proxy_host                        = var.rds_proxy_host
+#   # rds_proxy_read_host                   = var.rds_proxy_read_host
+#   # _auth_api_sg = module.authentication._auth_api_sg
+# }
 
-module "reseller-api" {
-  source = "./reseller-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["reseller-api"].repository_url
-    tag = var.image_tag.reseller-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                               = aws_ecs_cluster.composite_application.arn
-  secret_manager                        = var.secret_manager
-  sg_alb_id                             = aws_security_group.api_alb_sg.id
-  env_tag                               = var.env_tag
-  redis_host                            = var.redis_host
-  rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-  rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-  bastion_sg                            = var.bastion_sg
-  default_listener                      = aws_lb_listener.look-card.arn
-  private_alb_sg                        = aws_security_group.private_alb_sg
-}
+# module "reseller-api" {
+#   source = "./reseller-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["reseller-api"].repository_url
+#     tag = var.image_tag.reseller-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace               = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                               = aws_ecs_cluster.composite_application.arn
+#   secret_manager                        = var.secret_manager
+#   sg_alb_id                             = aws_security_group.api_alb_sg.id
+#   env_tag                               = var.env_tag
+#   redis_host                            = var.redis_host
+#   rds_aurora_postgresql_writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
+#   rds_aurora_postgresql_reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
+#   bastion_sg                            = var.bastion_sg
+#   default_listener                      = aws_lb_listener.look-card.arn
+#   private_alb_sg                        = aws_security_group.private_alb_sg
+# }
 
-# # ********************  Lambda functions  ***********************
+# # # ********************  Lambda functions  ***********************
 
 module "firebase-authorizer" {
   source = "./firebase-authorizer"
@@ -385,23 +388,24 @@ module "sumsub-webhook" {
   env_tag = var.env_tag
 }
 
-module "crypto-processor" {
-  source = "./crypto-processor"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-  }
+# module "crypto-processor" {
+#   source = "./crypto-processor"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#   }
 
-  image = {
-    url = aws_ecr_repository.look-card["crypto-processor"].repository_url
-    tag = var.image_tag.crypto-processor
-  }
+#   image = {
+#     url = aws_ecr_repository.look-card["crypto-processor"].repository_url
+#     tag = var.image_tag.crypto-processor
+#   }
 
-  allow_to_security_group_ids = {
-    sweep      = [module.account-api.account_api_ecs_svc_sg.id, module.config-api.config_api_ecs_svc_sg.id, module.crypto-api.crypto_api_ecs_svc_sg.id, module.profile-api.profile_api_sg.id]
-    withdrawal = []
-  }
-}
+#   allow_to_security_group_ids = {
+#     # sweep      = [module.account-api.account_api_ecs_svc_sg.id, module.config-api.config_api_ecs_svc_sg.id, module.profile-api.profile_api_sg.id]
+#     sweep = []
+#     withdrawal = []
+#   }
+# }
 
 # module "cryptocurrency-withdrawal-processor" {
 #   source = "./cryptocurrency-withdrawal-processor"
@@ -448,26 +452,26 @@ module "crypto-processor" {
 #   secret_manager = var.secret_manager
 # }
 
-module "edns-api" {
-  source = "./edns-api"
-  vpc_id = var.network.vpc
-  image = {
-    url = aws_ecr_repository.look-card["edns-api"].repository_url
-    tag = var.image_tag.edns-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
-  cluster                 = aws_ecs_cluster.core_application.arn
-  secret_manager          = var.secret_manager
-  sg_alb_id               = aws_security_group.api_alb_sg.id
-  env_tag                 = var.env_tag
-  crypto_api_module       = module.crypto-api
-  reseller_api_module     = module.reseller-api
-}
+# module "edns-api" {
+#   source = "./edns-api"
+#   vpc_id = var.network.vpc
+#   image = {
+#     url = aws_ecr_repository.look-card["edns-api"].repository_url
+#     tag = var.image_tag.edns-api
+#   }
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   lookcardlocal_namespace = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+#   cluster                 = aws_ecs_cluster.core_application.arn
+#   secret_manager          = var.secret_manager
+#   sg_alb_id               = aws_security_group.api_alb_sg.id
+#   env_tag                 = var.env_tag
+#   crypto_api_module       = module.crypto-api
+#   reseller_api_module     = module.reseller-api
+# }
 
 
 # # ********************  v2 Portal  ***********************

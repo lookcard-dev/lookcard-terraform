@@ -1,5 +1,5 @@
 resource "aws_iam_role" "task_execution_role" {
-  name = "crypto_api_task_execution_role"
+  name = "${var.application_name}-task-execution-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -44,7 +44,7 @@ resource "aws_iam_role_policy_attachment" "SecretsReadOnlyPolicy_attachment" {
 }
 
 resource "aws_iam_role" "task_role" {
-  name = "crypto-api-task-role"
+  name = "${var.application_name}-task-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -84,27 +84,4 @@ resource "aws_iam_policy" "cloudwatch_log_policy" {
 resource "aws_iam_role_policy_attachment" "CloudWatchLogPolicy_attachment" {
   role      = aws_iam_role.task_role.name
   policy_arn = aws_iam_policy.cloudwatch_log_policy.arn
-}
-
-resource "aws_iam_policy" "kms_signer_keys_policy" {
-  name        = "KMSSignerKeysPolicy"
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "kms:Sign",
-          "kms:Verify", 
-          "kms:GetPublicKey"
-        ],
-        "Resource" : var.signer_keys_arn
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "KMSSignerKeysPolicy_attachment" {
-  role       = aws_iam_role.task_role.name
-  policy_arn = aws_iam_policy.kms_signer_keys_policy.arn
 }

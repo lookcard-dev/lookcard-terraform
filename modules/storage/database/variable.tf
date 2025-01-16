@@ -1,10 +1,24 @@
-variable "network" {
+variable "aws_provider" {
   type = object({
-    vpc            = string
-    private_subnet = list(string)
-    public_subnet  = list(string)
-    database_subnet = list(string)
+    region     = string
+    account_id = string
   })
+}
+
+variable "runtime_environment" {
+  type = string
+  validation {
+    condition     = contains(["develop", "testing", "staging", "production", "sandbox"], var.runtime_environment)
+    error_message = "runtime_environment must be one of: develop, testing, staging, production, or sandbox"
+  }
+}
+
+variable "vpc_id"{
+  type = string
+}
+
+variable "subnet_ids" {
+  type = list(string)
 }
 
 data "aws_secretsmanager_secret_version" "database_secret_version" {
@@ -16,7 +30,7 @@ locals {
   password      = local.secret_values["password"]
 }
 
-variable "secret_manager" {}
+# variable "secret_manager" {}
 # variable "websoclet_table_name" {
 #   type    = string
 #   default = "WebSocket"

@@ -4,8 +4,8 @@ variable "cluster" {}
 variable "sg_alb_id" {}
 variable "env_tag" {}
 variable "secret_manager" {}
-variable "crypto_api_sg_id" {}
-variable "crypto_api_ecs_svc_sg" {}
+# variable "crypto_api_sg_id" {}
+# variable "crypto_api_ecs_svc_sg" {}
 variable "bastion_sg" {}
 variable "account_api_module" {}
 variable "user_api_ecs_svc_sg" {}

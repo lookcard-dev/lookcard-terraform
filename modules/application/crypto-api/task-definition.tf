@@ -1,11 +1,10 @@
-resource "aws_ecs_task_definition" "crypto-api" {
+resource "aws_ecs_task_definition" "task_definition" {
   family                   = local.application.name
   network_mode             = "awsvpc"
-  # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.crypto_api_task_role.arn
-  execution_role_arn       = aws_iam_role.crypto_api_task_execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
+  execution_role_arn       = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -24,11 +23,11 @@ resource "aws_ecs_task_definition" "crypto-api" {
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      environment = local.ecs_task_env_vars
-      secrets = local.ecs_task_secret_vars
+      environment = local.environment_variables
+      secrets = local.environment_secrets
       portMappings = [
         {
-          name          = "look-card-crypto-api-8080-tcp",
+          name          = "8080-tcp",
           containerPort = local.application.port,
           hostPort      = local.application.port,
           protocol      = "tcp",

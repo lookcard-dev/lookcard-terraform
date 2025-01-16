@@ -1,20 +1,36 @@
-provider "aws" {
-  region = "ap-southeast-1"
+resource "aws_security_group" "security_group" {
+  name        = "database-sg"
+  vpc_id      = var.network.vpc
+
+  // TODO:
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 # Define the DB subnet group
-resource "aws_db_subnet_group" "rds_subnet" {
-  name       = "lookcard_rds_subnet"
-  subnet_ids = var.network.database_subnet[*]
+resource "aws_db_subnet_group" "subnet_group" {
+  name       = "database_subnet_group"
+  subnet_ids = var.subnet_ids
 }
 
 // rds cluster
-resource "aws_rds_cluster" "lookcard_develop" {
-  cluster_identifier     = "lookcard-develop-db"
+resource "aws_rds_cluster" "cluster" {
+  cluster_identifier     = "datastore"
   engine                 = "aurora-postgresql"
   engine_mode            = "provisioned"
-  database_name          = "develop"
-  master_username        = "develop"
+  database_name          = var.runtime_environment
+  master_username        = var.runtime_environment
   master_password        = local.password
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.db_rds_sg.id]
@@ -22,17 +38,16 @@ resource "aws_rds_cluster" "lookcard_develop" {
   skip_final_snapshot    = true
   deletion_protection    = false
   serverlessv2_scaling_configuration {
-    max_capacity = 5.0
+    max_capacity = 2.0
     min_capacity = 0.5
   }
 }
 
-# # # Define the write instance
-resource "aws_rds_cluster_instance" "write_instance" {
-  cluster_identifier = aws_rds_cluster.lookcard_develop.id
+resource "aws_rds_cluster_instance" "writer" {
+  cluster_identifier = aws_rds_cluster.cluster.id
   instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.lookcard_develop.engine
-  engine_version     = aws_rds_cluster.lookcard_develop.engine_version
+  engine             = aws_rds_cluster.cluster.engine
+  engine_version     = aws_rds_cluster.cluster.engine_version
   publicly_accessible = false
   count = 2
 }
@@ -132,29 +147,6 @@ resource "aws_rds_cluster_instance" "write_instance" {
 # }
 
 # Define the security group
-resource "aws_security_group" "db_rds_sg" {
-  name        = "database-security-group"
-  description = "Security group for RDS services"
-  vpc_id      = var.network.vpc
-
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "look-card-DB-sg"
-  }
-}
 
 # IAM role and policy attachment for monitoring
 # resource "aws_iam_role" "rds_monitoring_role" {
