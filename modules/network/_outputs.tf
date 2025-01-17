@@ -20,6 +20,10 @@ output "database_subnet_ids" {
   value = module.vpc.database_subnet_ids
 }
 
+output "cloudmap_namespace_id"{
+  value = module.cloudmap.namespace_id
+}
+
 # output "rt_private_id" {
 #   value = module.vpc.rt_private_id
 # }

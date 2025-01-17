@@ -17,18 +17,34 @@ variable "vpc_id"{
   type = string
 }
 
-variable "subnet_ids" {
-  type = object({
-    datacache = list(string)
-    datastore = list(string)
-  })  
+variable "cluster_id"{
+  type = string
 }
 
-variable "allow_from_security_group_ids" {
+variable "namespace_id"{
+  type = string
+}
+
+variable "network" {
   type = object({
-    datacache = list(string)
-    datastore = list(string)
-  })  
+    vpc            = string
+    private_subnet_ids = list(string)
+    public_subnet_ids  = list(string)
+    isolated_subnet_ids = list(string)
+  })
+}
+
+variable "datastore" {
+  type = object({
+    writer_endpoint = string
+    reader_endpoint = string
+  })
+}
+
+variable "datacache" {
+  type = object({
+    endpoint = string
+  })
 }
 
 variable "components" {

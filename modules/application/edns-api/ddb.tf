@@ -14,7 +14,7 @@ resource "aws_dynamodb_table" "edns_api_domain_data" {
   }
 
   global_secondary_index {
-    name               = "ownerProfileId_index"
+    name               = "ownerProfileId-index"
     hash_key          = "ownerProfileId"
     projection_type    = "ALL"
   }

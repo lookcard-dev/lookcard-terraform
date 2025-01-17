@@ -1,7 +1,6 @@
 
 resource "aws_service_discovery_service" "discovery_service" {
-  name = replace(var.application_name, "-", ".")
-
+  name = replace(var.name, "-", ".")
   dns_config {
     namespace_id = var.namespace_id
     dns_records {
@@ -15,14 +14,14 @@ resource "aws_service_discovery_service" "discovery_service" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-  name            = var.application_name
+  name            = var.name
   task_definition = aws_ecs_task_definition.task_definition.arn
   capacity_provider_strategy {
-    capacity_provider = "FARGATE_SPOT"
+    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
     weight            = 1
   }
   desired_count = 1
-  cluster       = var.cluster_arn
+  cluster       = var.cluster_id
 
   network_configuration {
     subnets         = var.network.private_subnet

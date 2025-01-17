@@ -1,5 +1,5 @@
-resource "aws_iam_role" "profile_api_task_execution_role" {
-  name = "profile_api_task_execution_role"
+resource "aws_iam_role" "task_execution_role" {
+  name = "${var.name}-task-execution-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -16,15 +16,13 @@ resource "aws_iam_role" "profile_api_task_execution_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "Profile_API_ECSTaskExecutionRolePolicy_attachment" {
-  role       = aws_iam_role.profile_api_task_execution_role.name
+resource "aws_iam_role_policy_attachment" "ECSTaskExecutionRolePolicy_attachment" {
+  role       = aws_iam_role.task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
-resource "aws_iam_policy" "profile_api_env_secrets_manager_read_policy" {
-  name        = "ProfileAPISecretsReadOnlyPolicy"
-  description = "Allows read-only access to Secret - ProfileAPI-env"
+resource "aws_iam_policy" "secrets_read_only_policy" {
+  name        = "SecretsReadOnlyPolicy"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -34,19 +32,19 @@ resource "aws_iam_policy" "profile_api_env_secrets_manager_read_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : "*"
+        "Resource" : [var.database.credentials_secret_arn, var.monitor.sentry_secret_arn]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ProfileAPI_secrets_manager_read_attachment" {
-  role       = aws_iam_role.profile_api_task_execution_role.name
-  policy_arn = aws_iam_policy.profile_api_env_secrets_manager_read_policy.arn
+resource "aws_iam_role_policy_attachment" "SecretsReadOnlyPolicy_attachment" {
+  role       = aws_iam_role.task_execution_role.name
+  policy_arn = aws_iam_policy.secrets_read_only_policy.arn
 }
 
-resource "aws_iam_role" "profile_api_task_role" {
-  name = "profile-api-task-role"
+resource "aws_iam_role" "task_role" {
+  name = "${var.name}-task-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -61,66 +59,10 @@ resource "aws_iam_role" "profile_api_task_role" {
       }
     ]
   })
-  tags = {}
 }
 
-resource "aws_iam_policy" "dynamodb_access_policy" {
-  name = "DynamoDBQueryAccessPolicy"
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action":[ 
-          "dynamodb:Query",
-          "dynamodb:PutItem",
-          "dynamodb:GetItem"
-        ],
-        "Resource": [
-          aws_dynamodb_table.profile_data.arn,
-          "${aws_dynamodb_table.profile_data.arn}/index/principal-index"
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "DynamoDBQueryPolicyAttachment" {
-  role       = aws_iam_role.profile_api_task_role.name
-  policy_arn = aws_iam_policy.dynamodb_access_policy.arn
-}
-
-# resource "aws_iam_policy" "CryptoAPI_KMS_GenerateDataKey_policy" {
-#   name        = "CryptoAPI_KMS_GenerateDataKey_policy"
-#   description = "Allows read-only access to Secret - CryptoAPI-env"
-#   policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "kms:Encrypt",
-#           "kms:Decrypt",
-#           "kms:GenerateDataKey"
-#         ],
-#         "Resource" : [
-#           "${var.crypto_api_encryption_kms_arn}",
-#           "${var.crypto_api_generator_kms_arn}"
-#         ]
-#       }
-#     ]
-#   })
-# }
-
-# resource "aws_iam_policy_attachment" "CryptoAPI_KMS_GenerateDataKey_attachment" {
-#   name       = "CryptoAPI_KMS_GenerateDataKey_policy"
-#   roles      = [aws_iam_role.crypto_api_task_role.name]
-#   policy_arn = aws_iam_policy.CryptoAPI_KMS_GenerateDataKey_policy.arn
-# }
-
-resource "aws_iam_policy" "profile_api_cloudwatch_putlog_policy" {
-  name        = "ProfileAPICloudWatchPutLogPolicy"
-  description = "Allows profile-api put log to log group /lookcard/profile-api"
+resource "aws_iam_policy" "cloudwatch_log_policy" {
+  name        = "CloudWatchLogPolicy"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -132,14 +74,40 @@ resource "aws_iam_policy" "profile_api_cloudwatch_putlog_policy" {
             "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.application_log_group_profile_api.arn}:*"
+            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
         ]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "profile_api_cloudwatch_putlog_attachment" {
-  role      = aws_iam_role.profile_api_task_role.name
-  policy_arn = aws_iam_policy.profile_api_cloudwatch_putlog_policy.arn
+resource "aws_iam_role_policy_attachment" "CloudWatchLogPolicy_attachment" {
+  role      = aws_iam_role.task_role.name
+  policy_arn = aws_iam_policy.cloudwatch_log_policy.arn
+}
+
+resource "aws_iam_policy" "profile_data_dynamodb_policy" {
+  name        = "ProfileDataDynamoDBPolicy"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Query",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem"
+        ],
+        "Resource" : [
+          aws_dynamodb_table.profile_data.arn,
+          "${aws_dynamodb_table.profile_data.arn}/index/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ProfileDataDynamoDBPolicy_attachement" {
+  role       = aws_iam_role.task_role.name
+  policy_arn = aws_iam_policy.profile_data_dynamodb_policy.arn
 }

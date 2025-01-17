@@ -1,11 +1,14 @@
-resource "aws_ecs_task_definition" "profile-api" {
-  family                   = local.application.name
+data "aws_ecr_repository" "repository"{
+  name = var.name
+}
+
+resource "aws_ecs_task_definition" "task_definition" {
+  family                   = var.name
   network_mode             = "awsvpc"
-  # requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  task_role_arn            = aws_iam_role.profile_api_task_role.arn
-  execution_role_arn       = aws_iam_role.profile_api_task_execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
+  execution_role_arn       = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -13,30 +16,30 @@ resource "aws_ecs_task_definition" "profile-api" {
 
   container_definitions = jsonencode([
     {
-      name  = local.application.name
-      image = "${local.application.image}:${local.application.image_tag}"
+      name  = var.name
+      image = "${aws_ecr_repository.repository_url}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${local.application.name}",
+          "awslogs-group"         = "/ecs/${var.name}",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
       }
-      secrets = local.ecs_task_secret_vars
-      environment = local.ecs_task_env_vars
+      environment = local.environment_variables
+      secrets = local.environment_secrets
       portMappings = [
         {
-          name          = "profile-api-8080-tcp",
+          name          = "8080-tcp",
           containerPort = local.application.port,
           hostPort      = local.application.port,
           protocol      = "tcp",
           appProtocol   = "http",
         },
       ]
-      readonlyRootFilesystem : true
-      
+      readonlyRootFilesystem = true
+
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost:${local.application.port}/healthcheckz || exit 1"]
         interval    = 30   # seconds between health checks

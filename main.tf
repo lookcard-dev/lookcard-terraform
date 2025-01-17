@@ -22,14 +22,6 @@ provider "aws" {
   }
 }
 
-# module "secret" {
-#   source = "./modules/secret"
-# }
-
-# module "kms" {
-#   source = "./modules/kms"
-# }
-
 module "network" {
   source  = "./modules/network"
   network = var.network
@@ -38,12 +30,12 @@ module "network" {
 }
 
 module "storage" {
-  source                  = "./modules/storage"
+  source = "./modules/storage"
 
-  aws_provider            = var.aws_provider
+  aws_provider        = var.aws_provider
   runtime_environment = var.runtime_environment
 
-  vpc_id                  = module.network.vpc_id
+  vpc_id = module.network.vpc_id
   subnet_ids = {
     datacache = module.network.database_subnet_ids
     datastore = module.network.database_subnet_ids
@@ -52,6 +44,17 @@ module "storage" {
     datacache = []
     datastore = []
   }
+
+  components = local.components
+}
+
+module "compute" {
+  source = "./modules/compute"
+
+  aws_provider        = local.aws_provider
+  runtime_environment = var.runtime_environment
+  vpc_id              = module.network.vpc_id
+  subnet_ids          = module.network.private_subnet_ids
 }
 
 # module "utils" {

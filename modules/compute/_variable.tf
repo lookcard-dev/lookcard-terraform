@@ -18,26 +18,5 @@ variable "vpc_id"{
 }
 
 variable "subnet_ids" {
-  type = object({
-    datacache = list(string)
-    datastore = list(string)
-  })  
-}
-
-variable "allow_from_security_group_ids" {
-  type = object({
-    datacache = list(string)
-    datastore = list(string)
-  })  
-}
-
-variable "components" {
-  type = map(object({
-    name = string
-    hostname = object({
-      internal = string
-      public = optional(string)
-    })
-    image_tag = string
-  }))
+  type = list(string)
 }

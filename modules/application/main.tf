@@ -1,31 +1,20 @@
-module "crypto-api" {
-  source           = "./crypto-api"
+resource "aws_secretsmanager_secret" "database_secret"
 
-  runtime_environment = var.env_tag
+module "profile-api" {
+  source           = "./profile-api"
 
-  cluster_arn          = aws_ecs_cluster.core_application.arn
+  runtime_environment = var.runtime_environment
 
-  namespace_id = aws_service_discovery_private_dns_namespace.lookcardlocal_namespace.id
+  name = "profile-api"
+  cluster_id         = var.cluster_id
+  namespace_id = var.namespace_id
 
-  image = {
-    url = aws_ecr_repository.look-card["crypto-api"].repository_url
-    tag = var.image_tag.crypto-api
-  }
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
+  network = var.network
 
-  database = {
-    writer_endpoint = var.rds_aurora_postgresql_writer_endpoint
-    reader_endpoint = var.rds_aurora_postgresql_reader_endpoint
-    credentials_secret_arn = var.secret_manager.secret_arns["DATABASE"]
-  }
+  image_tag = var.components["profile-api"].image_tag
 
-  cache = {
-    redis_endpoint = var.redis_host
-  }
+  datastore = var.datastore
+  datacache = var.datacache
 
   monitor = {
     sentry_secret_arn = var.secret_manager.secret_arns["SENTRY"]
@@ -360,33 +349,33 @@ module "crypto-api" {
 
 # # # ********************  Lambda functions  ***********************
 
-module "firebase-authorizer" {
-  source = "./firebase-authorizer"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["apigw-authorizer"].repository_url
-    tag = var.image_tag.apigw-authorizer
-  }
-  env_tag = var.env_tag
-}
+# module "firebase-authorizer" {
+#   source = "./firebase-authorizer"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["apigw-authorizer"].repository_url
+#     tag = var.image_tag.apigw-authorizer
+#   }
+#   env_tag = var.env_tag
+# }
 
-module "sumsub-webhook" {
-  source = "./sumsub-webhook"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-  }
-  image = {
-    url = aws_ecr_repository.look-card["sumsub-webhook"].repository_url
-    tag = var.image_tag.sumsub-webhook
-  }
-  env_tag = var.env_tag
-}
+# module "sumsub-webhook" {
+#   source = "./sumsub-webhook"
+#   network = {
+#     vpc            = var.network.vpc
+#     private_subnet = var.network.private_subnet
+#     public_subnet  = var.network.public_subnet
+#   }
+#   image = {
+#     url = aws_ecr_repository.look-card["sumsub-webhook"].repository_url
+#     tag = var.image_tag.sumsub-webhook
+#   }
+#   env_tag = var.env_tag
+# }
 
 # module "crypto-processor" {
 #   source = "./crypto-processor"
@@ -476,12 +465,12 @@ module "sumsub-webhook" {
 
 # # ********************  v2 Portal  ***********************
 
-module "reseller-portal" {
-  source                   = "./reseller-portal"
-  domain                   = var.domain
-  storage                  = var.storage
-  security                 = var.security
-  reseller_portal_hostname = var.reseller_portal_hostname
-  aws_provider             = var.aws_provider
-  s3_bucket                = var.s3_bucket
-}
+# module "reseller-portal" {
+#   source                   = "./reseller-portal"
+#   domain                   = var.domain
+#   storage                  = var.storage
+#   security                 = var.security
+#   reseller_portal_hostname = var.reseller_portal_hostname
+#   aws_provider             = var.aws_provider
+#   s3_bucket                = var.s3_bucket
+# }

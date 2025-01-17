@@ -1,6 +1,6 @@
 resource "aws_security_group" "security_group" {
   depends_on  = [var.network]
-  name        = "${var.application_name}-ecs-svc-sg"
+  name        = "${var.name}-ecs-svc-sg"
   vpc_id      = var.network.vpc
 
   egress {
