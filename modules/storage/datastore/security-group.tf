@@ -27,11 +27,15 @@ resource "aws_security_group" "proxy_security_group" {
   name        = "datastore-proxy-sg"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = var.allow_from_security_group_ids
+  dynamic "ingress" {
+    for_each = length(var.allow_from_security_group_ids) > 0 ? [1] : []
+    content {
+      from_port       = 5432
+      to_port         = 5432
+      protocol        = "tcp"
+      security_groups = var.allow_from_security_group_ids
+      self            = false
+    }
   }
 
   egress {

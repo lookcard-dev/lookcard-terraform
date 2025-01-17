@@ -39,8 +39,14 @@ resource "aws_ecs_cluster_capacity_providers" "core_application" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "listener" {
-  cluster_name       = aws_ecs_cluster.listener.name
+  cluster_name = aws_ecs_cluster.listener.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT", "LISTENER_EC2_ARM64", "LISTENER_EC2_AMD64"]
+  
+  depends_on = [
+    aws_ecs_capacity_provider.listener_arm64,
+    aws_ecs_capacity_provider.listener_amd64
+  ]
+
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
@@ -93,6 +99,9 @@ resource "aws_launch_template" "listener_arm64" {
   }
   tag_specifications {
     resource_type = "instance"
+    tags = {
+      Name = "ecs-listener-arm64"
+    }
   }
   user_data = base64encode(<<-EOT
     [settings.ecs]
@@ -114,6 +123,9 @@ resource "aws_launch_template" "listener_amd64" {
   }
   tag_specifications {
     resource_type = "instance"
+    tags = {
+      Name = "ecs-listener-amd64"
+    }
   }
   user_data = base64encode(<<-EOT
     [settings.ecs]
@@ -126,6 +138,7 @@ resource "aws_autoscaling_group" "listener_arm64" {
   min_size = 0
   max_size = 0
   name = "listener-arm64"
+  protect_from_scale_in = true
   launch_template {
     id = aws_launch_template.listener_arm64.id
     version = "$Latest"
@@ -142,6 +155,7 @@ resource "aws_autoscaling_group" "listener_amd64" {
   min_size = var.runtime_environment == "production" ? 3 : 1
   max_size = var.runtime_environment == "production" ? 9 : 3
   name = "listener-amd64"
+  protect_from_scale_in = true
   launch_template {
     id = aws_launch_template.listener_amd64.id
     version = "$Latest"

@@ -54,12 +54,12 @@ resource "aws_rds_cluster" "cluster" {
   # Production settings
   deletion_protection    = var.runtime_environment == "production"
   skip_final_snapshot    = var.runtime_environment != "production"
-  final_snapshot_identifier = var.runtime_environment == "production" ? "${var.runtime_environment}-final-snapshot" : null
+  final_snapshot_identifier = var.runtime_environment == "production" ? "final-snapshot" : null
 
   # Performance and scaling
   serverlessv2_scaling_configuration {
-    max_capacity = var.runtime_environment == "production" ? 4.0 : 2.0
-    min_capacity = var.runtime_environment == "production" ? 1.0 : 0.5
+    max_capacity = var.runtime_environment == "production" ? 8.0 : 2.0
+    min_capacity = 0.5
   }
 
   # Enable Performance Insights
@@ -75,12 +75,12 @@ resource "aws_rds_cluster_instance" "writer" {
   engine_version     = aws_rds_cluster.cluster.engine_version
   publicly_accessible = false
   performance_insights_enabled    = true
-  monitoring_interval            = 60
+  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60
   monitoring_role_arn           = aws_iam_role.rds_monitoring_role.arn
 }
 
 resource "aws_rds_cluster_instance" "reader" {
-  count              = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 2 : 1
+  count              = var.runtime_environment == "production"? 2 : 0
   identifier         = "reader-${count.index + 1}"
   cluster_identifier = aws_rds_cluster.cluster.id
   instance_class     = "db.serverless"
@@ -191,7 +191,6 @@ resource "aws_db_proxy_endpoint" "readonly" {
   vpc_subnet_ids         = var.subnet_ids
   vpc_security_group_ids = [aws_security_group.proxy_security_group.id]
   target_role            = "READ_ONLY"
-
   tags = {
     Environment = var.runtime_environment
     ManagedBy   = "Terraform"
@@ -202,7 +201,6 @@ resource "aws_db_proxy_endpoint" "readonly" {
 resource "aws_cloudwatch_log_group" "proxy_logs" {
   name              = "/aws/rds/proxy/rds-proxy"
   retention_in_days = var.runtime_environment == "production" ? 30 : 7
-
   tags = {
     Environment = var.runtime_environment
     ManagedBy   = "Terraform"
