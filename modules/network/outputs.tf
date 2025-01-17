@@ -1,7 +1,7 @@
 # # Output for Public Subnet IDs
 
-output "vpc" {
-  value = module.vpc.vpc
+output "vpc_id" {
+  value = module.vpc.vpc_id
 }
 
 output "public_subnet_ids" {
@@ -12,17 +12,21 @@ output "private_subnet_ids" {
   value = module.vpc.private_subnet_ids
 }
 
+output "isolated_subnet_ids" {
+  value = module.vpc.isolated_subnet_ids
+}
+
 output "database_subnet_ids" {
   value = module.vpc.database_subnet_ids
 }
 
-output "rt_private_id" {
-  value = module.vpc.rt_private_id
-}
+# output "rt_private_id" {
+#   value = module.vpc.rt_private_id
+# }
 
-output "public_subnet_cidr_lists" {
-  value = module.vpc.public_subnet_cidr_lists
-}
+# output "public_subnet_cidr_lists" {
+#   value = module.vpc.public_subnet_cidr_lists
+# }
 
 # output "Database_Sub_ids" {
 #   value = aws_subnet.look-card-Database-Sub[*].id

@@ -1,3 +1,96 @@
+resource "aws_s3_bucket_policy" "waf_log" {
+  bucket = aws_s3_bucket.waf_log.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AWSWAFLogDeliveryWrite"
+        Effect = "Allow"
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.waf_log.arn}/*"
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = var.aws_provider.account_id
+          }
+        }
+      },
+      {
+        Sid    = "AWSWAFLogDeliveryAclCheck"
+        Effect = "Allow"
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        }
+        Action   = "s3:GetBucketAcl"
+        Resource = aws_s3_bucket.waf_log.arn
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket_policy" "log" {
+  bucket = aws_s3_bucket.log.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AWSELBLogDeliveryWrite"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::114774131450:root"
+        }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.log.arn}/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl" = "bucket-owner-full-control"
+          }
+        }
+      },
+      {
+        Sid    = "AWSLogDeliveryWrite"
+        Effect = "Allow"
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.log.arn}/*"
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount": var.aws_provider.account_id,
+            "s3:x-amz-acl": "bucket-owner-full-control"
+          }
+          ArnLike = {
+            "aws:SourceArn": "arn:aws:logs:${var.aws_provider.region}:${var.aws_provider.account_id}:*"
+          }
+        }
+      },
+      {
+        Sid    = "AWSLogDeliveryAclCheck"
+        Effect = "Allow"
+        Principal = {
+          Service = "delivery.logs.amazonaws.com"
+        }
+        Action = [
+          "s3:Get*",
+          "s3:List*"
+        ]
+        Resource = aws_s3_bucket.log.arn
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount": var.aws_provider.account_id
+          }
+          ArnLike = {
+            "aws:SourceArn": "arn:aws:logs:${var.aws_provider.region}:${var.aws_provider.account_id}:*"
+          }
+        }
+      }
+    ]
+  })
+}
+
 # resource "aws_s3_bucket_policy" "alb_log" {
 #   bucket = aws_s3_bucket.alb_log.id
 #   policy = jsonencode({
@@ -97,26 +190,6 @@
 #   })
 # }
 
-resource "aws_s3_bucket_policy" "lookcard_log" {
-  bucket = aws_s3_bucket.lookcard_log.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "arn:aws:iam::114774131450:root"
-        },
-        "Action" : "s3:PutObject",
-        "Resource" : [
-          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/connection_logs/*",
-          "${aws_s3_bucket.lookcard_log.arn}/ELB/lookcard/access_logs/*"
-        ]
-      }
-    ]
-  })
-}
-
 # resource "aws_s3_bucket_policy" "reseller_portal" {
 #   bucket = aws_s3_bucket.reseller_portal.id
 #   policy = jsonencode({
@@ -142,25 +215,25 @@ resource "aws_s3_bucket_policy" "lookcard_log" {
 # }
 
 
-resource "aws_s3_bucket_policy" "lookcard_metadata" {
-  bucket = aws_s3_bucket.lookcard_metadata.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "AllowCloudFrontServicePrincipalReadOnly"
-        Effect    = "Allow"
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        }
-        Action   = "s3:GetObject"
-        Resource = "${aws_s3_bucket.lookcard_metadata.arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.lookcard_metadata_cdn.arn
-          }
-        }
-      }
-    ]
-  })
-}
+# resource "aws_s3_bucket_policy" "lookcard_metadata" {
+#   bucket = aws_s3_bucket.lookcard_metadata.id
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Sid       = "AllowCloudFrontServicePrincipalReadOnly"
+#         Effect    = "Allow"
+#         Principal = {
+#           Service = "cloudfront.amazonaws.com"
+#         }
+#         Action   = "s3:GetObject"
+#         Resource = "${aws_s3_bucket.lookcard_metadata.arn}/*"
+#         Condition = {
+#           StringEquals = {
+#             "AWS:SourceArn" = aws_cloudfront_distribution.lookcard_metadata_cdn.arn
+#           }
+#         }
+#       }
+#     ]
+#   })
+# }

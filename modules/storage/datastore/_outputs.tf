@@ -1,6 +1,5 @@
 # output "db_identifier" {
 #   value = aws_rds_cluster_instance.lookcard_instance[*].identifier
-
 # }
 
 # output "ddb_websocket" {
@@ -25,13 +24,13 @@
 #   value = aws_dynamodb_table.data_api_data.name
 # }
 
-output "rds_aurora_postgresql_writer_endpoint" {
-  value = aws_rds_cluster.lookcard_develop.endpoint
-}
+# output "rds_aurora_postgresql_writer_endpoint" {
+#   value = aws_rds_cluster.lookcard_develop.endpoint
+# }
 
-output "rds_aurora_postgresql_reader_endpoint" {
-  value = aws_rds_cluster.lookcard_develop.reader_endpoint
-}
+# output "rds_aurora_postgresql_reader_endpoint" {
+#   value = aws_rds_cluster.lookcard_develop.reader_endpoint
+# }
 
 # output "proxy_host" {
 #   value = aws_db_proxy.rds_proxy.endpoint
@@ -44,3 +43,15 @@ output "rds_aurora_postgresql_reader_endpoint" {
 # output "profile_api_ddb_table" {
 #   value = aws_dynamodb_table.profile_data.arn
 # }
+
+output "proxy_endpoint" {
+  value       = aws_db_proxy.this.endpoint
+}
+
+output "proxy_readonly_endpoint" {
+  value       = aws_db_proxy_endpoint.readonly.endpoint
+}
+
+output "proxy_arn" {
+  value       = aws_db_proxy.this.arn
+}

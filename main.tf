@@ -1,25 +1,25 @@
-# terraform {
-#   backend "s3" {
-#     bucket         = "${var.aws_provider.account_id}-lookcard-terraform"
-#     key            = "${var.runtime_environment}/state/terraform.tfstate"
-#     region         = var.aws_provider.region
-#     encrypt        = true
-#     dynamodb_table = "terraform"
-#   }
-# }
+locals {
+  is_github_actions = sensitive(try(tobool(coalesce(getenv("GITHUB_ACTIONS"), "false")), false))
+}
 
 terraform {
   backend "s3" {
-    bucket         = "lookcard-terraform-backend-development"
-    key            = "state/terraform.tfstate"
+    bucket         = "390844786071-lookcard-terraform"
     region         = "ap-southeast-1"
     encrypt        = true
-    dynamodb_table = "lookcard-tf-lockid"
+    dynamodb_table = "terraform"
   }
 }
 
 provider "aws" {
-  region = var.aws_provider.region
+  region  = local.aws_provider.region
+  profile = local.aws_provider.profile
+  dynamic "assume_role" {
+    for_each = local.is_github_actions ? [1] : []
+    content {
+      role_arn = "arn:aws:iam::${var.aws_provider.account_id}:role/github-actions-role"
+    }
+  }
 }
 
 # module "secret" {
@@ -34,22 +34,25 @@ module "network" {
   source  = "./modules/network"
   network = var.network
 
-  aws_provider = var.aws_provider
+  aws_provider = local.aws_provider
 }
 
-# module "storage" {
-#   source                  = "./modules/storage"
-#   s3_bucket               = var.s3_bucket
-#   environment             = var.general_config
-#   aws_provider            = var.aws_provider
-#   secret_manager          = module.secret
-#   network = {
-#     vpc                     = module.network.vpc
-#     private_subnet          = module.network.private_subnet_ids
-#     public_subnet           = module.network.public_subnet_ids
-#     database_subnet         = module.network.database_subnet_ids
-#   }
-# }
+module "storage" {
+  source                  = "./modules/storage"
+
+  aws_provider            = var.aws_provider
+  runtime_environment = var.runtime_environment
+
+  vpc_id                  = module.network.vpc_id
+  subnet_ids = {
+    datacache = module.network.database_subnet_ids
+    datastore = module.network.database_subnet_ids
+  }
+  allow_from_security_group_ids = {
+    datacache = []
+    datastore = []
+  }
+}
 
 # module "utils" {
 #   source = "./modules/utils"

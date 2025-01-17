@@ -14,6 +14,9 @@ help:
 	@echo "  terraform-apply-prod        - Apply Terraform changes to prod environment"
 	@echo "  terraform-apply-module      - Apply changes to specific module (set MODULE=<name>)"
 
+init:
+	
+
 terraform-backend-s3-init:
 	@echo "Initializing S3 backend..."
 	@aws s3api create-bucket \

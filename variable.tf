@@ -1,7 +1,8 @@
 variable "aws_provider" {
-  type = object({
-    region     = string
+  type        = object({
     account_id = string
+    region     = string
+    profile    = string
   })
 }
 
@@ -67,9 +68,9 @@ variable "image_tag" {
   })
 }
 
-variable "secret"{
+# variable "secret" {
 
-}
+# }
 
 locals {
   hostname = {
@@ -114,4 +115,7 @@ locals {
       reap_webhook       = "reap.webhook"
     }
   }
+
+  aws_provider = var.aws_provider
+
 }

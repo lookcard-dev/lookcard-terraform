@@ -42,3 +42,7 @@ Follow these steps to deploy the infrastructure:
 
 If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request. Contributions are welcome!
 
+
+```bash
+terraform init -backend-config="profile=lookcard-terraform" -backend-config="key=develop/terraform.tfstate"
+```

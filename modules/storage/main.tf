@@ -1,22 +1,21 @@
 module "s3" {
   source = "./s3"
-  s3_bucket = var.s3_bucket
-  environment = var.environment
+  runtime_environment = var.runtime_environment
   aws_provider = var.aws_provider
 }
 
-module "cache" {
-  source = "./cache"
-  network = {
-    vpc            = var.network.vpc
-    private_subnet = var.network.private_subnet
-    public_subnet  = var.network.public_subnet
-    database_subnet = var.network.database_subnet
-  }
+module "datacache" {
+  source = "./datacache"
+  aws_provider = var.aws_provider
+  runtime_environment = var.runtime_environment
+  vpc_id = var.vpc_id 
+  subnet_ids = var.subnet_ids.datacache
 }
 
-module "database" {
-  source = "./database"
-  network = var.network
-  secret_manager = var.secret_manager
+module "datastore" {
+  source = "./datastore"
+  aws_provider = var.aws_provider
+  runtime_environment = var.runtime_environment
+  vpc_id = var.vpc_id 
+  subnet_ids = var.subnet_ids.datastore
 }

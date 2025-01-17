@@ -12,3 +12,16 @@ variable "runtime_environment" {
     error_message = "runtime_environment must be one of: develop, testing, staging, production, or sandbox"
   }
 }
+
+variable "vpc_id" {
+  type = string
+}
+
+variable "subnet_ids" {
+  type = list(string)
+}
+
+variable "allow_from_security_group_ids" {
+  type = list(string)
+  default = []
+}
