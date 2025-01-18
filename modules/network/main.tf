@@ -9,6 +9,14 @@ module "cloudmap"{
   vpc_id = module.vpc.vpc_id
 }
 
+module "bastion_host"{
+  source = "./bastion-host"
+  vpc_id = module.vpc.vpc_id
+  runtime_environment = var.runtime_environment
+  subnet_ids = module.vpc.private_subnet_ids
+  aws_provider = var.aws_provider
+}
+
 # module "elb"{
 #   source = "./elb"
 #   aws_provider = var.aws_provider
