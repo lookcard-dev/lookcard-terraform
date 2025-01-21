@@ -1,22 +1,10 @@
-data "aws_ami" "amazon_linux_2023" {
-  most_recent = true
-  owners      = ["amazon"]
-  
-  filter {
-    name   = "name"
-    # values = ["al2023-ami-*-arm64"]
-    values = ["amzn2-ami-*-x86_64-gp2"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+data "aws_ssm_parameter" "amazon_linux_2023" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-arm64"
 }
 
 resource "aws_instance" "instance" {
-  ami                     = data.aws_ami.amazon_linux_2023.id
-  instance_type           = "t3a.nano"
+  ami                     = data.aws_ssm_parameter.amazon_linux_2023.value
+  instance_type           = "t4g.nano"
   subnet_id               = var.subnet_ids[0]
   vpc_security_group_ids  = [aws_security_group.bastion_host_security_group.id]
   iam_instance_profile    = aws_iam_instance_profile.bastion_host_instance_profile.name
