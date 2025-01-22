@@ -6,11 +6,14 @@ resource "aws_security_group" "cluster_security_group" {
   name        = "datastore-sg"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.proxy_security_group.id]
+  dynamic "ingress" {
+    for_each = var.runtime_environment == "production" ? [aws_security_group.proxy_security_group.id] : concat(var.allow_from_security_group_ids, [data.aws_security_group.bastion_host.id])
+    content {
+      from_port       = 5432
+      to_port         = 5432
+      protocol        = "tcp"
+      security_groups = [ingress.value]
+    }
   }
 
   egress {
