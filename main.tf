@@ -29,8 +29,8 @@ module "network" {
   runtime_environment = var.runtime_environment
 }
 
-module "secret" {
-  source = "./modules/secret"
+module "security" {
+  source = "./modules/security"
 }
 
 module "storage" {
@@ -43,11 +43,11 @@ module "storage" {
     datastore = module.network.database_subnet_ids
   }
   allow_from_security_group_ids = {
-    datacache = []
-    datastore = []
+    datacache = module.application.datacache_access_security_group_ids
+    datastore = module.application.datastore_access_security_group_ids
   }
   components = local.components
-  depends_on = [module.secret, module.network]
+  depends_on = [module.security.secret, module.network]
 }
 
 module "compute" {
@@ -57,6 +57,52 @@ module "compute" {
   vpc_id              = module.network.vpc_id
   subnet_ids          = module.network.private_subnet_ids
   depends_on          = [module.network]
+}
+
+module "application" {
+  source              = "./modules/application"
+  aws_provider        = local.aws_provider
+  runtime_environment = var.runtime_environment
+
+  network = {
+    vpc_id              = module.network.vpc_id
+    private_subnet_ids  = module.network.private_subnet_ids
+    public_subnet_ids   = module.network.public_subnet_ids
+    isolated_subnet_ids = module.network.isolated_subnet_ids
+  }
+
+  cluster_ids = {
+    listener              = module.compute.listener_cluster_id
+    composite_application = module.compute.composite_application_cluster_id
+    core_application      = module.compute.core_application_cluster_id
+    administrative        = module.compute.administrative_cluster_id
+  }
+
+  namespace_id = module.network.cloudmap_namespace_id
+
+  datastore = {
+    writer_endpoint = module.storage.datastore_writer_endpoint
+    reader_endpoint = module.storage.datastore_reader_endpoint
+  }
+
+  datacache = {
+    endpoint = module.storage.datacache_endpoint
+  }
+
+  components = local.components
+
+  kms_key_arns = {
+    data = {
+      generator  = module.security.data_generator_key_arn
+      encryption = module.security.data_encryption_key_arn
+    }
+    crypto = {
+      worker = {
+        alpha = module.security.crypto_worker_alpha_key_arn
+      }
+      liquidity = module.security.crypto_liquidity_key_arn
+    }
+  }
 }
 
 # module "utils" {

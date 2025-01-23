@@ -10,6 +10,7 @@ module "datacache" {
   runtime_environment = var.runtime_environment
   vpc_id = var.vpc_id 
   subnet_ids = var.subnet_ids.datacache
+  allow_from_security_group_ids = var.allow_from_security_group_ids.datacache
 }
 
 module "datastore" {
@@ -18,6 +19,7 @@ module "datastore" {
   runtime_environment = var.runtime_environment
   vpc_id = var.vpc_id 
   subnet_ids = var.subnet_ids.datastore
+  allow_from_security_group_ids = var.allow_from_security_group_ids.datastore 
 }
 
 module "ecr" {

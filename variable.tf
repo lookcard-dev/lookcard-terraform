@@ -57,7 +57,7 @@ variable "image_tag" {
     "referral-api"       = "latest"
     "notification-api"   = "latest"
     "reseller-api"       = "latest"
-    "edns-api"           = "latest"
+    "domain-api"         = "latest"
     "enrollment-api"     = "latest"
     "register-api"       = "latest"
     "crypto-api"         = "latest"
@@ -198,12 +198,12 @@ locals {
       }
       image_tag = var.image_tag["reap-proxy"]
     }
-    "edns-api" = {
-      name = "edns-api"
+    "domain-api" = {
+      name = "domain-api"
       hostname = {
-        internal = "edns.api"
+        internal = "domain.api"
       }
-      image_tag = var.image_tag["edns-api"]
+      image_tag = var.image_tag["domain-api"]
     }
   }
 

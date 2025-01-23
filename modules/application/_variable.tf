@@ -13,12 +13,13 @@ variable "runtime_environment" {
   }
 }
 
-variable "vpc_id"{
-  type = string
-}
-
-variable "cluster_id"{
-  type = string
+variable "cluster_ids"{
+  type = object({
+    listener = string
+    composite_application = string
+    core_application = string
+    administrative = string
+  })
 }
 
 variable "namespace_id"{
@@ -27,7 +28,7 @@ variable "namespace_id"{
 
 variable "network" {
   type = object({
-    vpc            = string
+    vpc_id            = string
     private_subnet_ids = list(string)
     public_subnet_ids  = list(string)
     isolated_subnet_ids = list(string)
@@ -56,4 +57,19 @@ variable "components" {
     })
     image_tag = string
   }))
+}
+
+variable "kms_key_arns" {
+  type = object({
+    data = object({
+      generator = string
+      encryption = string
+    })
+    crypto = object({
+      worker = object({
+        alpha = string
+      })
+      liquidity = string
+    })
+  })
 }

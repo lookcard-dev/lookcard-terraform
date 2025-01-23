@@ -1,9 +1,16 @@
-module "waf" {
-  source = "./waf"
-  waf_logging_s3_bucket = var.waf_logging_s3_bucket
-  # reseller_api_stage = var.reseller_api_stage
+# module "waf" {
+#   source = "./waf"
+#   waf_logging_s3_bucket = var.waf_logging_s3_bucket
+# }
+
+# module "certificate"{
+#   source = "certificate"
+# }
+
+module "kms" {
+  source = "./kms"
 }
 
-module "certificate"{
-  source = "certificate"
+module "secret" {
+  source = "./secret"
 }

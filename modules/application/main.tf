@@ -1,27 +1,178 @@
-resource "aws_secretsmanager_secret" "database_secret"
+# resource "aws_secretsmanager_secret" "database_secret"
+
+module "xray-daemon" {
+  source = "./00-xray-daemon"
+  aws_provider = var.aws_provider
+  name = "xray-daemon"
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = []
+}
 
 module "profile-api" {
-  source           = "./profile-api"
-
-  runtime_environment = var.runtime_environment
-
+  source = "./01-profile-api"
+  aws_provider = var.aws_provider
   name = "profile-api"
-  cluster_id         = var.cluster_id
-  namespace_id = var.namespace_id
-
-  network = var.network
-
   image_tag = var.components["profile-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+}
 
+module "data-api" {
+  source = "./02-data-api"
+  aws_provider = var.aws_provider
+  name = "data-api"
+  image_tag = var.components["data-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+  kms_key_arns = var.kms_key_arns
+}
+
+module "config-api" {
+  source = "./03-config-api"
+  aws_provider = var.aws_provider
+  name = "config-api"
+  image_tag = var.components["config-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+}
+
+module "user-api" {
+  source = "./04-user-api"
+  aws_provider = var.aws_provider
+  name = "user-api"
+  image_tag = var.components["user-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.profile-api.security_group_id,
+    module.data-api.security_group_id
+  ]
+  datacache = var.datacache
+  datastore = var.datastore
+}
+
+module "account-api" {
+  source = "./05-account-api"
+  aws_provider = var.aws_provider
+  name = "account-api"
+  image_tag = var.components["account-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.config-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.data-api.security_group_id
+  ]
+  datacache = var.datacache
+  datastore = var.datastore
+}
+
+module "crypto-api" {
+  source = "./06-crypto-api"
+  aws_provider = var.aws_provider
+  name = "crypto-api"
+  image_tag = var.components["crypto-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.config-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.data-api.security_group_id,
+    module.account-api.security_group_id
+  ]
+  datacache = var.datacache
+  datastore = var.datastore
+  kms_key_arns = var.kms_key_arns
+}
+
+module "authentication-api" {
+  source = "./09-authentication-api"
+  aws_provider = var.aws_provider
+  name = "authentication-api"
+  image_tag = var.components["authentication-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id
+  ]
+}
+
+module "verification-api" {
+  source = "./10-verification-api"
+  aws_provider = var.aws_provider
+  name = "verification-api"
+  image_tag = var.components["verification-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.data-api.security_group_id,
+  ]
+  datacache = var.datacache
+  datastore = var.datastore
+}
+
+module "notification-api" {
+  source = "./11-notification-api"
+  aws_provider = var.aws_provider
+  name = "notification-api"
+  image_tag = var.components["notification-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+}
+
+module "referral-api" {
+  source = "./12-referral-api"
+  aws_provider = var.aws_provider
+  name = "referral-api"
+  image_tag = var.components["referral-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   datastore = var.datastore
   datacache = var.datacache
+}
 
-  monitor = {
-    sentry_secret_arn = var.secret_manager.secret_arns["SENTRY"]
-  }
-
-  allow_to_security_group_ids = []
-
+module "domain-api" {
+  source = "./13-domain-api"
+  aws_provider = var.aws_provider
+  name = "domain-api"
+  image_tag = var.components["domain-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 # module "crypto-listener" {
