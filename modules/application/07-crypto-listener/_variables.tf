@@ -6,6 +6,27 @@ data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
 
+data "aws_secretsmanager_secret" "trongrid" {
+  name = "TRONGRID"
+}
+
+data "aws_secretsmanager_secret" "getblock" {
+  name = "GET_BLOCK"
+}
+
+data "aws_secretsmanager_secret" "drpc" {
+  name = "DRPC"
+}
+
+data "aws_secretsmanager_secret" "quicknode" {
+  name = "QUICKNODE"
+}
+
+data "aws_secretsmanager_secret" "infura" {
+  name = "INFURA"
+}
+
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -26,10 +47,6 @@ variable "name" {
 }
 
 variable "cluster_id" {
-  type = string
-}
-
-variable "namespace_id" {
   type = string
 }
 
@@ -66,24 +83,12 @@ variable "image_tag" {
 locals {
   environment_variables = [
     {
-      name  = "PORT"
-      value = "8080"
-    },
-    {
-      name  = "CORS_ORIGINS"
-      value = "*"
-    },
-    {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.runtime_environment
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
-    },
-    {
-      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.app_log_group.name
     },
     {
       name  = "REDIS_HOST"

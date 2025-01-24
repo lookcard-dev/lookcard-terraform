@@ -1,34 +1,23 @@
-resource "aws_service_discovery_service" "discovery_service" {
-  name = replace(var.name, "-", ".")
-  dns_config {
-    namespace_id = var.namespace_id
-    dns_records {
-      ttl  = 10
-      type = "A"
-    }
-  }
-  health_check_custom_config {
-    failure_threshold = 1
-  }
-}
-
-resource "aws_ecs_service" "ecs_service" {
-  name            = var.name
-  task_definition = aws_ecs_task_definition.task_definition.arn
+resource "aws_ecs_service" "tron_nile_trongrid_ecs_service" {
+  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "tron-nile_trongrid"
+  task_definition = aws_ecs_task_definition.tron_nile_trongrid_task_definition[0].arn
+  desired_count = var.image_tag == "latest" ? 0 : 1
+  cluster       = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+    capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
-  
-  desired_count = var.image_tag == "latest" ? 0 : (var.runtime_environment == "production" ? 2 : 1)
-  cluster       = var.cluster_id
-
-  network_configuration {
-    subnets         = var.network.private_subnet_ids
-    security_groups = [aws_security_group.security_group.id]
-  }
-
-  service_registries {
-    registry_arn = aws_service_discovery_service.discovery_service.arn
-  }
 }
+
+resource "aws_ecs_service" "tron_nile_getblock_ecs_service" {
+  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "tron-nile_getblock"
+  task_definition = aws_ecs_task_definition.tron_nile_getblock_task_definition[0].arn
+  desired_count = var.image_tag == "latest" ? 0 : 1
+  cluster       = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_AMD64"
+    weight            = 1
+  }
+} 

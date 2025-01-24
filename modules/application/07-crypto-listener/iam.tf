@@ -33,7 +33,15 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.database.arn, data.aws_secretsmanager_secret.sentry.arn]
+        "Resource" : [
+          data.aws_secretsmanager_secret.database.arn,
+          data.aws_secretsmanager_secret.sentry.arn,
+          data.aws_secretsmanager_secret.getblock.arn,
+          data.aws_secretsmanager_secret.trongrid.arn,
+          data.aws_secretsmanager_secret.quicknode.arn,
+          data.aws_secretsmanager_secret.infura.arn,
+          data.aws_secretsmanager_secret.drpc.arn
+        ]
       }
     ]
   })
@@ -71,7 +79,7 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
             "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+            "arn:aws:logs:${var.aws_provider.region}:${var.aws_provider.account_id}:log-group:/ecs/crypto-listener/*:*"
         ]
       }
     ]

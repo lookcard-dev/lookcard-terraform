@@ -106,6 +106,22 @@ module "crypto-api" {
   kms_key_arns = var.kms_key_arns
 }
 
+module "crypto-listener" {
+  source = "./07-crypto-listener"
+  aws_provider = var.aws_provider
+  name = "crypto-listener"
+  image_tag = var.components["crypto-listener"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.listener
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.crypto-api.security_group_id
+  ]
+  datastore = var.datastore
+  datacache = var.datacache
+}
+
 module "authentication-api" {
   source = "./09-authentication-api"
   aws_provider = var.aws_provider
