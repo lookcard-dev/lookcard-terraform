@@ -1,6 +1,6 @@
 resource "aws_security_group" "security_group" {
   depends_on  = [var.network]
-  name        = "${var.name}-ecs-svc-sg"
+  name        = "crypto-processor-lambda-func-sg"
   vpc_id      = var.network.vpc_id
 
   egress {
@@ -11,7 +11,7 @@ resource "aws_security_group" "security_group" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "target_ingress_rules" {
+resource "aws_vpc_security_group_ingress_rule" "sweep_processor_target_ingress_rules" {
   count = length(coalesce(var.allow_to_security_group_ids, []))
 
   security_group_id            = var.allow_to_security_group_ids[count.index]

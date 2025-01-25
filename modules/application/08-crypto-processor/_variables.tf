@@ -25,33 +25,12 @@ variable "name" {
   type = string
 }
 
-variable "cluster_id" {
-  type = string
-}
-
-variable "namespace_id" {
-  type = string
-}
-
 variable "network" {
   type = object({
     vpc_id            = string
     private_subnet_ids = list(string)
     public_subnet_ids  = list(string)
     isolated_subnet_ids = list(string)
-  })
-}
-
-variable "datastore" {
-  type = object({
-    writer_endpoint = string
-    reader_endpoint = string
-  })
-}
-
-variable "datacache" {
-  type = object({
-    endpoint = string
   })
 }
 
@@ -66,63 +45,13 @@ variable "image_tag" {
 locals {
   environment_variables = [
     {
-      name  = "PORT"
-      value = "8080"
-    },
-    {
-      name  = "CORS_ORIGINS"
-      value = "*"
-    },
-    {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.runtime_environment
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
-    },
-    {
-      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.app_log_group.name
-    },
-    {
-      name  = "REDIS_HOST"
-      value = var.datacache.endpoint
-    },
-    {
-      name  = "DATABASE_HOST"
-      value = var.datastore.writer_endpoint
-    },
-    {
-      name  = "DATABASE_READ_HOST"
-      value = var.datastore.reader_endpoint
-    },
-    {
-      name  = "DATABASE_PORT"
-      value = "5432"
-    },
-    {
-      name  = "DATABASE_SCHEMA"
-      value = replace(var.name, "-", "_")
     }
-  ]
-  environment_secrets = [
-    {
-      name      = "DATABASE_NAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:dbname::"
-    },
-    {
-      name      = "DATABASE_USERNAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:username::"
-    },
-    {
-      name      = "DATABASE_PASSWORD"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
-    },
-    {
-      name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
-    },
   ]
 }
 

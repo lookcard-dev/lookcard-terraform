@@ -13,7 +13,7 @@ terraform {
 
 provider "aws" {
   region  = local.aws_provider.region
-  profile = local.aws_provider.profile
+  profile = local.is_github_actions ? null : local.aws_provider.profile
   dynamic "assume_role" {
     for_each = local.is_github_actions ? [1] : []
     content {

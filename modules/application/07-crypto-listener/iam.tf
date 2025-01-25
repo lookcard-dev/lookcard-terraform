@@ -79,7 +79,7 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
             "logs:PutLogEvents"
         ],
         "Resource" : [
-            "arn:aws:logs:${var.aws_provider.region}:${var.aws_provider.account_id}:log-group:/ecs/crypto-listener/*:*"
+            "arn:aws:logs:${var.aws_provider.region}:${var.aws_provider.account_id}:log-group:/lookcard/crypto-listener/*:*"
         ]
       }
     ]

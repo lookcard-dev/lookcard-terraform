@@ -122,6 +122,22 @@ module "crypto-listener" {
   datacache = var.datacache
 }
 
+module "crypto-processor" {
+  source = "./08-crypto-processor"
+  aws_provider = var.aws_provider
+  name = "crypto-processor"
+  image_tag = var.components["crypto-processor"].image_tag
+  runtime_environment = var.runtime_environment
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.crypto-api.security_group_id,
+    module.account-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.config-api.security_group_id
+  ]
+}
+
 module "authentication-api" {
   source = "./09-authentication-api"
   aws_provider = var.aws_provider
