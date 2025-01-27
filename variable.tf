@@ -212,6 +212,41 @@ locals {
       }
       image_tag = var.image_tag["reseller-api"]
     }
+    "app-api" = {
+      name = "app-api"
+      hostname = {
+        internal = "app.api"
+      }
+      image_tag = var.image_tag["app-api"]
+    }
+    "enrollment-api" = {
+      name = "enrollment-api"
+      hostname = {
+        internal = "enrollment.api"
+      }
+      image_tag = var.image_tag["enrollment-api"]
+    }
+    "register-api" = {
+      name = "register-api"
+      hostname = {
+        internal = "register.api"
+      }
+      image_tag = var.image_tag["register-api"]
+    }
+    "firebase-webhook" = {
+      name = "firebase-webhook"
+      hostname = {
+        internal = "firebase.webhook"
+      }
+      image_tag = var.image_tag["firebase-webhook"]
+    }
+    "cronjob" = {
+      name = "cronjob"
+      hostname = {
+        internal = "cronjob"
+      }
+      image_tag = var.image_tag["cronjob"]
+    }
   }
 
   aws_provider = var.aws_provider
