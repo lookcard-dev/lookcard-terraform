@@ -205,6 +205,13 @@ locals {
       }
       image_tag = var.image_tag["domain-api"]
     }
+    "reseller-api" = {
+      name = "reseller-api"
+      hostname = {
+        internal = "reseller.api"
+      }
+      image_tag = var.image_tag["reseller-api"]
+    }
   }
 
   aws_provider = var.aws_provider
