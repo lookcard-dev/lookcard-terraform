@@ -5,7 +5,7 @@ output "datastore_access_security_group_ids" {
     module.crypto-api.security_group_id,
     module.referral-api.security_group_id,
     module.verification-api.security_group_id,
-    module.authentication-api.security_group_id
+    module.reseller-api.security_group_id,
   ]
 }
 
@@ -16,6 +16,6 @@ output "datacache_access_security_group_ids" {
     module.crypto-api.security_group_id,
     module.referral-api.security_group_id,
     module.verification-api.security_group_id,
-    module.authentication-api.security_group_id
+    module.reseller-api.security_group_id,
   ]
 }
