@@ -6,6 +6,10 @@ data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
 
+data "aws_secretsmanager_secret" "firebase" {
+  name = "FIREBASE"
+}
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -123,6 +127,10 @@ locals {
       name      = "SENTRY_DSN"
       valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
+    {
+      name = "FIREBASE_CREDENTIALS"
+      valueFrom = "${data.aws_secretsmanager_secret.firebase.arn}:${upper(replace(var.name, "-", "_"))}_CREDENTIALS::"
+    }
   ]
 }
 
