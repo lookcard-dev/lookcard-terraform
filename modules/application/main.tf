@@ -207,6 +207,20 @@ module "domain-api" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
+module "reseller-api" {
+  source = "./14-reseller-api"
+  aws_provider = var.aws_provider
+  name = "reseller-api"
+  image_tag = var.components["reseller-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+  datastore = var.datastore
+  datacache = var.datacache
+}
+
 # module "crypto-listener" {
 #   source = "./crypto-listener"
 #   network = {
