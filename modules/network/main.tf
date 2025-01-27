@@ -2,6 +2,7 @@ module "vpc" {
   source = "./vpc"
   network = var.network
   aws_provider = var.aws_provider
+  runtime_environment = var.runtime_environment
 }
 
 module "cloudmap"{

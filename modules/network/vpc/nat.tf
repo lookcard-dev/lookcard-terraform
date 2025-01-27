@@ -39,6 +39,7 @@ module "nat-instance" {
   eip_allocation_ids  = [aws_eip.nat_eip[count.index].id]
   use_default_security_group = false
   additional_security_group_ids = [aws_security_group.nat_security_group.id]
+  use_spot_instances = var.runtime_environment == "production" ? true : false
   use_cloudwatch_agent = true
   update_route_tables = true
   route_tables_ids = {

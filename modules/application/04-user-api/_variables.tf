@@ -129,7 +129,7 @@ locals {
     },
     {
       name = "FIREBASE_CREDENTIALS"
-      valueFrom = "${data.aws_secretsmanager_secret.firebase.arn}:${upper(replace(var.name, "-", "_"))}_CREDENTIALS::"
+      valueFrom = "${data.aws_secretsmanager_secret.firebase.arn}:CREDENTIALS::"
     }
   ]
 }
