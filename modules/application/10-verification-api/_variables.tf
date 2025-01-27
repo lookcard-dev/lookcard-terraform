@@ -128,20 +128,12 @@ locals {
       valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
     {
-      name      = "SUMSUB_BASE_URL"
-      valueFrom = "${data.aws_secretsmanager_secret.sumsub.arn}:BASE_URL::"
-    },
-    {
       name      = "SUMSUB_API_KEY"
       valueFrom = "${data.aws_secretsmanager_secret.sumsub.arn}:API_KEY::"
     },
     {
       name      = "SUMSUB_API_SECRET"
       valueFrom = "${data.aws_secretsmanager_secret.sumsub.arn}:API_SECRET::"
-    },
-    {
-      name      = "SUMSUB_WEBHOOK_SECRET"
-      valueFrom = "${data.aws_secretsmanager_secret.sumsub.arn}:WEBHOOK_SECRET::"
     }
   ]
 }

@@ -3,6 +3,12 @@ BUCKET_NAME=lookcard-terraform-backend-development
 TABLE_NAME=lookcard-tf-lockid
 REGION=ap-southeast-1
 
+plan:
+	@terraform plan -var-file="terraform.develop.tfvars.json"
+
+apply:
+	@terraform apply -var-file="terraform.develop.tfvars.json"
+
 .PHONY: help
 help:
 	@echo "Available commands:"
