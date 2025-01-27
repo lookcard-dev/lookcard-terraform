@@ -1,4 +1,7 @@
 resource "aws_appautoscaling_target" "ecs_target" {
+  depends_on = [
+    aws_ecs_service.service
+  ]
   max_capacity = var.image_tag == "latest" ? 0 : (
     var.runtime_environment == "production" ? 12 : 1
   )
@@ -11,6 +14,9 @@ resource "aws_appautoscaling_target" "ecs_target" {
 }
 
 resource "aws_appautoscaling_policy" "ecs_cpu_policy" {
+  depends_on = [
+    aws_appautoscaling_target.ecs_target
+  ]
   name               = "${var.name}-cpu-autoscaling"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.ecs_target.resource_id
@@ -28,6 +34,9 @@ resource "aws_appautoscaling_policy" "ecs_cpu_policy" {
 }
 
 resource "aws_appautoscaling_policy" "ecs_memory_policy" {
+  depends_on = [
+    aws_appautoscaling_target.ecs_target
+  ]
   name               = "${var.name}-memory-autoscaling"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.ecs_target.resource_id
