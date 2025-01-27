@@ -1,5 +1,10 @@
 locals {
-  is_github_actions = sensitive(try(tobool(coalesce(getenv("GITHUB_ACTIONS"), "false")), false))
+  is_github_actions = sensitive(try(tobool(coalesce(var.github_actions, "false")), false))
+}
+
+variable "github_actions" {
+  type    = string
+  default = "false"
 }
 
 terraform {
