@@ -124,10 +124,10 @@ locals {
       name      = "DATABASE_PASSWORD"
       valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
     },
-    {
-      name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
-    },
+    # {
+    #   name      = "SENTRY_DSN"
+    #   valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
+    # },
   ]
 }
 

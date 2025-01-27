@@ -1,6 +1,6 @@
 resource "aws_appautoscaling_target" "ecs_target" {
   depends_on = [
-    aws_ecs_service.service
+    aws_ecs_service.ecs_service
   ]
   max_capacity = var.image_tag == "latest" ? 0 : (
     var.runtime_environment == "production" ? 12 : 1
