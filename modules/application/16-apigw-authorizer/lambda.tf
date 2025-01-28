@@ -40,8 +40,9 @@ resource "aws_lambda_function" "firebase_authorizer" {
 }
 
 resource "aws_lambda_permission" "api_gateway" {
+  count = var.image_tag == "latest" ? 0 : 1
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  function_name = aws_lambda_function.firebase_authorizer.function_name
+  function_name = aws_lambda_function.firebase_authorizer[0].function_name
 }
