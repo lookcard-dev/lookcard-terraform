@@ -1,9 +1,9 @@
 resource "aws_cloudwatch_log_group" "sweep_processor_app_log_group" {
-  name = "/lookcard/${var.name}"
-  retention_in_days = 30
+  name = "/lookcard/crypto-processor/sweep-processor"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "sweep_processor_lambda_log_group" {
   name              = "/aws/lambda/Crypto_Processor-Sweep_Processor"
-  retention_in_days = 30
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }

@@ -213,7 +213,7 @@ module "reseller-api" {
   name = "reseller-api"
   image_tag = var.components["reseller-api"].image_tag
   runtime_environment = var.runtime_environment
-  cluster_id = var.cluster_ids.core_application
+  cluster_id = var.cluster_ids.composite_application
   namespace_id = var.namespace_id
   network = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]

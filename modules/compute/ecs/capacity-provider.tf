@@ -103,6 +103,25 @@ resource "aws_launch_template" "listener_arm64" {
       Name = "ecs-listener-arm64"
     }
   }
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = 2
+      volume_type = "gp3"
+      iops        = 3000
+      throughput  = 125
+    }
+  }
+  block_device_mappings {
+    device_name = "/dev/xvdb"
+    ebs {
+      volume_size = 20
+      volume_type = "gp3"
+      iops        = 3000
+      throughput  = 125
+    }
+  }
+
   user_data = base64encode(<<-EOT
     [settings.ecs]
     cluster = "${aws_ecs_cluster.listener.name}"
