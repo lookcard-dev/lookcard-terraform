@@ -56,24 +56,3 @@ resource "aws_iam_role" "task_role" {
     ]
   })
 }
-
-resource "aws_iam_role_policy" "cloudwatch_log" {
-  name = "CloudWatchLogPolicy"
-  role = aws_iam_role.task_role.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-            "logs:DescribeLogStreams",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
-        ],
-        "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
-        ]
-      }
-    ]
-  })
-}
