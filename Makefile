@@ -9,6 +9,10 @@ plan:
 apply:
 	@terraform apply -var-file="terraform.develop.tfvars.json"
 
+refresh:
+	@terraform refresh -var-file="terraform.develop.tfvars.json"
+
+
 .PHONY: help
 help:
 	@echo "Available commands:"

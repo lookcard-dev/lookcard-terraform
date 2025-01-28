@@ -233,6 +233,20 @@ module "reap-proxy" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
+module "firebase-authorizer" {
+  source = "./16-firebase-authorizer"
+  aws_provider = var.aws_provider
+  name = "firebase-authorizer"
+  image_tag = var.components["firebase-authorizer"].image_tag
+  runtime_environment = var.runtime_environment
+  network = var.network
+  allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
+    module.authentication-api.security_group_id,
+    module.profile-api.security_group_id
+  ]
+}
+
 # module "crypto-listener" {
 #   source = "./crypto-listener"
 #   network = {

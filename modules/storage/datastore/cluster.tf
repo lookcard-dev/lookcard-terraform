@@ -59,7 +59,7 @@ resource "aws_rds_cluster" "cluster" {
   # Performance and scaling
   serverlessv2_scaling_configuration {
     max_capacity = var.runtime_environment == "production" ? 8.0 : 1.0
-    min_capacity = var.runtime_environment == "production" ? 0.5 : 0.0
+    min_capacity = 0.5
   }
 
   # Enable Performance Insights

@@ -17,24 +17,42 @@ terraform {
 }
 
 provider "aws" {
-  region  = local.aws_provider.region
-  profile = local.is_github_actions ? null : local.aws_provider.profile
+  region  = local.aws_provider.application.region
+  profile = local.is_github_actions ? null : local.aws_provider.application.profile
+}
+
+provider "aws" {
+  alias = "us_east_1"
+  region  = "us-east-1"
+  profile = local.is_github_actions ? null : local.aws_provider.dns.profile
+}
+
+provider "aws"{
+  alias = "dns"
+  region  = "us-east-1"
+  profile = local.is_github_actions ? null : local.aws_provider.dns.profile
 }
 
 module "network" {
   source              = "./modules/network"
   network             = var.network
-  aws_provider        = local.aws_provider
+  aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
 }
 
 module "security" {
   source = "./modules/security"
+  general_domain = var.domain.general
+  admin_domain = var.domain.admin
+  
+  providers = {
+    aws.dns = aws.dns
+  }
 }
 
 module "storage" {
   source              = "./modules/storage"
-  aws_provider        = var.aws_provider
+  aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
   vpc_id              = module.network.vpc_id
   subnet_ids = {
@@ -44,6 +62,8 @@ module "storage" {
   allow_from_security_group_ids = {
     datacache = module.application.datacache_access_security_group_ids
     datastore = module.application.datastore_access_security_group_ids
+    # datacache = []
+    # datastore = []
   }
   components = local.components
   depends_on = [module.security.secret, module.network]
@@ -51,7 +71,7 @@ module "storage" {
 
 module "compute" {
   source              = "./modules/compute"
-  aws_provider        = local.aws_provider
+  aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
   vpc_id              = module.network.vpc_id
   subnet_ids          = module.network.private_subnet_ids
@@ -60,7 +80,7 @@ module "compute" {
 
 module "application" {
   source              = "./modules/application"
-  aws_provider        = local.aws_provider
+  aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
 
   network = {

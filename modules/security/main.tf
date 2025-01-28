@@ -1,11 +1,21 @@
-# module "waf" {
-#   source = "./waf"
-#   waf_logging_s3_bucket = var.waf_logging_s3_bucket
-# }
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      configuration_aliases = [aws.dns]
+    }
+  }
+}
 
-# module "certificate"{
-#   source = "certificate"
-# }
+module "certificate" {
+  source = "./certificate"
+  general_domain = var.general_domain
+  admin_domain = var.admin_domain
+  
+  providers = {
+    aws.dns = aws.dns
+  }
+}
 
 module "kms" {
   source = "./kms"

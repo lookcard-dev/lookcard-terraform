@@ -1,8 +1,15 @@
 variable "aws_provider" {
   type = object({
-    account_id = string
-    region     = string
-    profile    = string
+    application = object({
+      account_id = string
+      region     = string
+      profile    = string
+    })
+    dns = object({
+      account_id = string
+      region     = string
+      profile    = string
+    })
   })
 }
 
@@ -70,6 +77,18 @@ variable "image_tag" {
 }
 
 locals {
+  aws_provider = {
+    application = {
+      region  = var.aws_provider.application.region
+      account_id = var.aws_provider.application.account_id
+      profile = local.is_github_actions ? null : var.aws_provider.application.profile
+    }
+    dns = {
+      region  = var.aws_provider.dns.region
+      account_id = var.aws_provider.dns.account_id
+      profile = local.is_github_actions ? null : var.aws_provider.dns.profile
+    }
+  }
   components = {
     "card-api" = {
       name = "card-api"
@@ -248,6 +267,4 @@ locals {
       image_tag = var.image_tag["cronjob"]
     }
   }
-
-  aws_provider = var.aws_provider
 }
