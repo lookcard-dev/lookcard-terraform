@@ -221,6 +221,18 @@ module "reseller-api" {
   datacache = var.datacache
 }
 
+module "reap-proxy" {
+  source = "./15-reap-proxy"
+  aws_provider = var.aws_provider
+  name = "reap-proxy"
+  image_tag = var.components["reap-proxy"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id = var.cluster_ids.core_application
+  namespace_id = var.namespace_id
+  network = var.network
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+}
+
 # module "crypto-listener" {
 #   source = "./crypto-listener"
 #   network = {
