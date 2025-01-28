@@ -33,7 +33,7 @@ resource "aws_lambda_function" "firebase_authorizer" {
     variables = {
         RUNTIME_ENVIRONMENT = var.runtime_environment
         AWS_XRAY_DAEMON_ENDPOINT = "xray.daemon.lookcard.local:2337"
-        AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/sweep"
+        AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/apigw-authorizer/firebase"
         SENTRY_DSN = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["FIREBASE_AUTHORIZER_DSN"]
     }
   }

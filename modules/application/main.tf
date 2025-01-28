@@ -233,11 +233,11 @@ module "reap-proxy" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
-module "firebase-authorizer" {
-  source = "./16-firebase-authorizer"
+module "apigw-authorizer" {
+  source = "./16-apigw-authorizer"
   aws_provider = var.aws_provider
-  name = "firebase-authorizer"
-  image_tag = var.components["firebase-authorizer"].image_tag
+  name = "apigw-authorizer"
+  image_tag = var.components["apigw-authorizer"].image_tag
   runtime_environment = var.runtime_environment
   network = var.network
   allow_to_security_group_ids = [
