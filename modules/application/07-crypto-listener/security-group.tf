@@ -20,3 +20,15 @@ resource "aws_vpc_security_group_ingress_rule" "target_ingress_rules" {
   to_port                      = 8080
   ip_protocol                  = "tcp"
 }
+
+data "aws_security_group" "crypto_api" {
+  name = "crypto-api-ecs-svc-sg"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "crypto_api_ingress_rule" {
+  security_group_id            = data.aws_security_group.crypto_api.id
+  referenced_security_group_id = aws_security_group.security_group.id
+  from_port                    = 8080
+  to_port                      = 8080
+  ip_protocol                  = "tcp"
+}
