@@ -33,7 +33,3 @@ variable "network" {
     isolated_subnet_ids = list(string)
   })
 }
-
-variable "allow_to_security_group_ids"{
-  type = list(string)
-}
