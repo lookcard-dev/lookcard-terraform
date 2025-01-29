@@ -41,12 +41,12 @@ resource "aws_elasticache_replication_group" "cluster" {
   }
 }
 
-resource "aws_elasticache_serverless_cache" "this" {
-  name = "datacache"
-  engine = "valkey"
-  major_engine_version = "7.0"
+# resource "aws_elasticache_serverless_cache" "this" {
+#   name = "datacache"
+#   engine = "valkey"
+#   major_engine_version = "7.0"
   
-  tags = {
-    Environment = var.runtime_environment
-  }
-}
+#   tags = {
+#     Environment = var.runtime_environment
+#   }
+# }
