@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      configuration_aliases = [aws.dns]
+    }
+  }
+}
+
 module "vpc" {
   source = "./vpc"
   network = var.network
@@ -24,4 +33,11 @@ module "elb"{
   runtime_environment = var.runtime_environment
   vpc_id = module.vpc.vpc_id
   subnet_ids = module.vpc.isolated_subnet_ids
+}
+
+module "dns" {
+  source = "./dns"
+  providers = {
+    aws.dns = aws.dns
+  }
 }

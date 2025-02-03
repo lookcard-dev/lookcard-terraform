@@ -38,6 +38,9 @@ module "network" {
   network             = var.network
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
+  providers = {
+    aws.dns = aws.dns
+  }
 }
 
 module "security" {

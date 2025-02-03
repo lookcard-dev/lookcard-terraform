@@ -70,6 +70,7 @@ variable "image_tag" {
     "crypto-api"         = "latest"
     "crypto-listener"    = "latest"
     "crypto-processor"   = "latest"
+    "crypto-faucet"      = "latest"
     "cronjob"            = "latest"
     "reap-proxy"         = "latest"
     "apigw-authorizer"   = "latest"
@@ -138,6 +139,13 @@ locals {
         internal = "crypto.processor"
       }
       image_tag = var.image_tag["crypto-processor"]
+    }
+    "crypto-faucet" = {
+      name = "crypto-faucet"
+      hostname = {
+        internal = "crypto.faucet"
+      }
+      image_tag = var.image_tag["crypto-faucet"]
     }
     "profile-api" = {
       name = "profile-api"
@@ -265,6 +273,13 @@ locals {
         internal = "cronjob"
       }
       image_tag = var.image_tag["cronjob"]
+    }
+    "marketing-api" = {
+      name = "marketing-api"
+      hostname = {
+        internal = "marketing.api"
+      }
+      image_tag = var.image_tag["marketing-api"]
     }
   }
 }
