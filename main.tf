@@ -24,8 +24,6 @@ provider "aws" {
   token = var.APPLICATION__AWS_SESSION_TOKEN
 }
 
-
-
 provider "aws"{
   alias = "dns"
   region  = "us-east-1"
