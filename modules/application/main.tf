@@ -1,5 +1,11 @@
-# resource "aws_secretsmanager_secret" "database_secret"
-
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      configuration_aliases = [aws.dns]
+    }
+  }
+}
 module "xray-daemon" {
   source = "./00-xray-daemon"
   aws_provider = var.aws_provider
@@ -237,4 +243,18 @@ module "apigw-authorizer" {
     module.authentication-api.security_group_id,
     module.profile-api.security_group_id
   ]
+}
+
+module "crypto-faucet" {
+  source = "./17-crypto-faucet"
+  aws_provider = var.aws_provider
+  name = "crypto-faucet"
+  image_tag = var.components["crypto-faucet"].image_tag
+  runtime_environment = var.runtime_environment
+  network = var.network
+  allow_to_security_group_ids = []
+  datacache = var.datacache
+  providers = {
+    aws.dns = aws.dns
+  }
 }

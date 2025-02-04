@@ -20,6 +20,8 @@ variable "secrets" {
     "INFURA",
     "POSTMARK",
     "DATABASE",
+    "WALLET",
+    "MICROSOFT"
   ]
   nullable = true
 }

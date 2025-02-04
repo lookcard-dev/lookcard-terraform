@@ -123,6 +123,10 @@ module "application" {
       liquidity = module.security.crypto_liquidity_key_arn
     }
   }
+
+  providers = {
+    aws.dns = aws.dns
+  }
 }
 
 # module "utils" {

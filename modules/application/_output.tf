@@ -17,5 +17,6 @@ output "datacache_access_security_group_ids" {
     module.referral-api.security_group_id,
     module.verification-api.security_group_id,
     module.reseller-api.security_group_id,
+    module.crypto-faucet.security_group_id,
   ]
 }
