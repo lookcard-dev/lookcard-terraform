@@ -283,3 +283,34 @@ locals {
     }
   }
 }
+
+// AWS Credentials
+variable "APPLICATION__AWS_ACCESS_KEY_ID" {
+  type = string
+  nullable = true
+}
+
+variable "APPLICATION__AWS_SECRET_ACCESS_KEY" {
+  type = string
+  nullable = true
+}
+
+variable "APPLICATION__AWS_SESSION_TOKEN" {
+  type = string
+  nullable = true
+}
+
+variable "DNS__AWS_ACCESS_KEY_ID" {
+  type = string
+  nullable = true
+}
+
+variable "DNS__AWS_SECRET_ACCESS_KEY" {
+  type = string
+  nullable = true
+}
+
+variable "DNS__AWS_SESSION_TOKEN" {
+  type = string
+  nullable = true
+}

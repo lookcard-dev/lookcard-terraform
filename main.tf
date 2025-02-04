@@ -19,19 +19,22 @@ terraform {
 provider "aws" {
   region  = local.aws_provider.application.region
   profile = local.is_github_actions ? null : local.aws_provider.application.profile
+  access_key = var.APPLICATION__AWS_ACCESS_KEY_ID
+  secret_key = var.APPLICATION__AWS_SECRET_ACCESS_KEY
+  token = var.APPLICATION__AWS_SESSION_TOKEN
 }
 
-provider "aws" {
-  alias = "us_east_1"
-  region  = "us-east-1"
-  profile = local.is_github_actions ? null : local.aws_provider.dns.profile
-}
+
 
 provider "aws"{
   alias = "dns"
   region  = "us-east-1"
   profile = local.is_github_actions ? null : local.aws_provider.dns.profile
+  access_key = var.DNS__AWS_ACCESS_KEY_ID
+  secret_key = var.DNS__AWS_SECRET_ACCESS_KEY
+  token = var.DNS__AWS_SESSION_TOKEN
 }
+
 
 module "network" {
   source              = "./modules/network"

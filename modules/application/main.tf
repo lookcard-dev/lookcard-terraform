@@ -6,6 +6,7 @@ terraform {
     }
   }
 }
+
 module "xray-daemon" {
   source = "./00-xray-daemon"
   aws_provider = var.aws_provider
