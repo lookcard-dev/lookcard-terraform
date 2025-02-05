@@ -3,6 +3,11 @@ data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
 
+data "aws_kms_alias" "data_generator_key" {
+  name = "alias/lookcard/data-generator-key"
+}
+
+
 data "aws_s3_bucket" "data" {
   bucket = "${var.aws_provider.account_id}-data"
 }

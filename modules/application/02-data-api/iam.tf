@@ -103,6 +103,22 @@ resource "aws_iam_role_policy" "dynamodb_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "kms_policy" {
+  name = "KMSPolicy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : ["kms:GenerateDataKey"],
+        "Resource" : [data.aws_kms_alias.data_generator_key.arn]
+      }
+    ]
+  })
+}
+
+
 resource "aws_iam_role_policy" "s3_policy" {
   name = "S3Policy"
   role = aws_iam_role.task_role.id
