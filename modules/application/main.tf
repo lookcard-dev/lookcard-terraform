@@ -247,6 +247,7 @@ module "apigw-authorizer" {
 }
 
 module "crypto-faucet" {
+  count = var.runtime_environment == "development" ? 1 : 0
   source = "./17-crypto-faucet"
   aws_provider = var.aws_provider
   name = "crypto-faucet"
