@@ -54,6 +54,7 @@ resource "aws_apprunner_service" "service" {
           REDIS_URL = "rediss://${var.datacache.endpoint}:6379"
           HOSTNAME = "0.0.0.0"
           NEXTAUTH_SECRET = random_uuid.next_auth_secret.result
+          NEXTAUTH_URL = "https://faucet.lookcard.dev"
         }
         runtime_environment_secrets = {
             PRIVATE_KEY = "${data.aws_secretsmanager_secret.wallet.arn}:FAUCET::"
