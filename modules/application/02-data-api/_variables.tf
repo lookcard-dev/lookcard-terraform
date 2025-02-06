@@ -7,7 +7,10 @@ data "aws_kms_alias" "data_generator_key" {
   name = "alias/lookcard/data-generator-key"
 }
 
-
+data "aws_kms_alias" "data_encryption_key" {
+  name = "alias/lookcard/data-encryption-key"
+}
+  
 data "aws_s3_bucket" "data" {
   bucket = "${var.aws_provider.account_id}-data"
 }

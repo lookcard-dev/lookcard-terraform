@@ -112,7 +112,12 @@ resource "aws_iam_role_policy" "kms_policy" {
       {
         "Effect" : "Allow",
         "Action" : ["kms:GenerateDataKey"],
-        "Resource" : [data.aws_kms_alias.data_generator_key.arn]
+        "Resource" : [data.aws_kms_alias.data_generator_key.target_key_arn]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : ["kms:Encrypt"],
+        "Resource" : [data.aws_kms_alias.data_encryption_key.target_key_arn]
       }
     ]
   })
