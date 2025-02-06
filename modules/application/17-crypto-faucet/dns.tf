@@ -7,6 +7,8 @@ data "aws_apprunner_hosted_zone_id" "main" {}
 
 resource "aws_route53_record" "target" {
   provider = aws.dns
+  depends_on = [aws_apprunner_custom_domain_association.custom_domain]
+  
   zone_id = data.aws_route53_zone.zone.zone_id
   name    = "faucet.lookcard.dev"
   type    = "A"

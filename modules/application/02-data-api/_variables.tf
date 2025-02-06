@@ -113,6 +113,10 @@ locals {
     {
       name = "AWS_KMS_ENCRYPTION_KEY_ARN"
       value = var.kms_key_arns.data.encryption
+    },
+    {
+      name = "AWS_S3_DATA_BUCKET_NAME"
+      value = data.aws_s3_bucket.data.bucket
     }
   ]
   environment_secrets = [
