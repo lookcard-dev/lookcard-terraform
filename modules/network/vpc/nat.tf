@@ -40,7 +40,7 @@ module "nat-instance" {
   use_default_security_group = false
   additional_security_group_ids = [aws_security_group.nat_security_group.id]
   use_spot_instances = var.runtime_environment == "production" ? true : false
-  use_cloudwatch_agent = true
+  use_cloudwatch_agent = false
   update_route_tables = true
   route_tables_ids = {
     "private-route-table-${count.index + 1}" = aws_route_table.private_route_table[count.index].id
