@@ -21,7 +21,8 @@ variable "secrets" {
     "POSTMARK",
     "DATABASE",
     "WALLET",
-    "MICROSOFT"
+    "MICROSOFT",
+    "ITRX"
   ]
   nullable = true
 }
