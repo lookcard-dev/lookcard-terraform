@@ -15,6 +15,10 @@ resource "aws_service_discovery_service" "discovery_service" {
 resource "aws_ecs_service" "ecs_service" {
   name            = var.name
   task_definition = aws_ecs_task_definition.task_definition.arn
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
   capacity_provider_strategy {
     capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
     weight            = 1

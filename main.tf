@@ -22,6 +22,10 @@ provider "aws" {
   access_key = var.APPLICATION__AWS_ACCESS_KEY_ID
   secret_key = var.APPLICATION__AWS_SECRET_ACCESS_KEY
   token = var.APPLICATION__AWS_SESSION_TOKEN
+
+  skip_credentials_validation = true
+  skip_metadata_api_check = true
+  skip_requesting_account_id = true
 }
 
 provider "aws"{
@@ -31,6 +35,10 @@ provider "aws"{
   access_key = var.DNS__AWS_ACCESS_KEY_ID
   secret_key = var.DNS__AWS_SECRET_ACCESS_KEY
   token = var.DNS__AWS_SESSION_TOKEN
+
+  skip_credentials_validation = true
+  skip_metadata_api_check = true
+  skip_requesting_account_id = true
 }
 
 

@@ -23,7 +23,8 @@ variable "secrets" {
     "WALLET",
     "MICROSOFT",
     "ITRX",
-    "TRONENERGY"
+    "TRONENERGY",
+    "TRONSAVE"
   ]
   nullable = true
 }
