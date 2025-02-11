@@ -22,7 +22,8 @@ variable "secrets" {
     "DATABASE",
     "WALLET",
     "MICROSOFT",
-    "ITRX"
+    "ITRX",
+    "TRONENERGY"
   ]
   nullable = true
 }
