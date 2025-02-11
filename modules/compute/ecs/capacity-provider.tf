@@ -38,6 +38,16 @@ resource "aws_ecs_cluster_capacity_providers" "core_application" {
   }
 }
 
+resource "aws_ecs_cluster_capacity_providers" "cronjob" {
+  cluster_name       = aws_ecs_cluster.cronjob.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+  }
+}
+
 resource "aws_ecs_cluster_capacity_providers" "listener" {
   cluster_name = aws_ecs_cluster.listener.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT", "LISTENER_EC2_ARM64", "LISTENER_EC2_AMD64"]
