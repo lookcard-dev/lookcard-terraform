@@ -2,15 +2,6 @@ data "aws_ecr_repository" "repository" {
   name = var.name
 }
 
-# data "aws_ecr_image" "latest" {
-#   repository_name = data.aws_ecr_repository.repository.name
-#   most_recent     = true
-# }
-
-# locals {
-#   image_exists = try(data.aws_ecr_image.latest.id != "", false)
-#   container_image = local.image_exists ? "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.latest[0].id}" : "${data.aws_ecr_repository.repository.repository_url}:latest"
-# }
 
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.name

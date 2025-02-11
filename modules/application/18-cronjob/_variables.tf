@@ -25,20 +25,26 @@ variable "name" {
   type = string
 }
 
-variable "cluster_id" {
-  type = string
-}
-
-variable "namespace_id" {
-  type = string
-}
-
 variable "network" {
   type = object({
     vpc_id            = string
     private_subnet_ids = list(string)
     public_subnet_ids  = list(string)
     isolated_subnet_ids = list(string)
+  })
+}
+
+variable "allow_to_security_group_ids"{
+  type = list(string)
+}
+
+variable "image_tag" {
+  type = string
+}
+
+variable "api_image_tags"{
+  type = object({
+    account_api = string
   })
 }
 
@@ -53,14 +59,6 @@ variable "datacache" {
   type = object({
     endpoint = string
   })
-}
-
-variable "allow_to_security_group_ids"{
-  type = list(string)
-}
-
-variable "image_tag" {
-  type = string
 }
 
 locals {
@@ -80,10 +78,6 @@ locals {
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"
       value = "xray.daemon.lookcard.local:2337"
-    },
-    {
-      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
-      value = aws_cloudwatch_log_group.app_log_group.name
     },
     {
       name  = "REDIS_HOST"
@@ -118,10 +112,6 @@ locals {
     {
       name      = "DATABASE_PASSWORD"
       valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
-    },
-    {
-      name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
   ]
 }

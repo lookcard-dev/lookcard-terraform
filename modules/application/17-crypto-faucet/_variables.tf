@@ -10,7 +10,6 @@ data "aws_secretsmanager_secret" "microsoft" {
   name = "MICROSOFT"
 }
 
-
 variable "aws_provider" {
   type = object({
     region     = string

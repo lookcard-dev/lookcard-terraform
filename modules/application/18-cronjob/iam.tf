@@ -78,23 +78,37 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
   })
 }
 
-resource "aws_iam_role_policy" "dynamodb_policy" {
-  name = "DynamoDBPolicy"
-  role = aws_iam_role.task_role.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+resource "aws_iam_role" "event_role" {
+  name = "cronjob-ecs-event-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect" : "Allow",
-        "Action" : [
-          "dynamodb:UpdateItem",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem"
-        ],
-        "Resource" : [
-          aws_dynamodb_table.profile.arn,
-          "${aws_dynamodb_table.profile.arn}/index/*"
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ecs_event_policy" {
+  name   = "ecs-event-policy"
+  role   = aws_iam_role.event_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecs:RunTask",
+          "iam:PassRole"
         ]
+        Effect   = "Allow"
+        Resource = "*"
       }
     ]
   })
