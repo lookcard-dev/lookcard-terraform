@@ -19,6 +19,7 @@ variable "cluster_ids"{
     composite_application = string
     core_application = string
     administrative = string
+    cronjob = string
   })
 }
 

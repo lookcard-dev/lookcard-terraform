@@ -261,3 +261,19 @@ module "crypto-faucet" {
     aws.dns = aws.dns
   }
 }
+
+module "cronjob" {
+  source = "./18-cronjob"
+  aws_provider = var.aws_provider
+  name = "cronjob"
+  image_tag = var.components["cronjob"].image_tag
+  runtime_environment = var.runtime_environment
+  network = var.network
+  allow_to_security_group_ids = []
+  datacache = var.datacache
+  datastore = var.datastore
+  cluster_id = var.cluster_ids.cronjob
+  api_image_tags = {
+    account_api = var.components["account-api"].image_tag
+  }
+}

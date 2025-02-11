@@ -97,6 +97,7 @@ module "application" {
     composite_application = module.compute.composite_application_cluster_id
     core_application      = module.compute.core_application_cluster_id
     administrative        = module.compute.administrative_cluster_id
+    cronjob               = module.compute.cronjob_cluster_id
   }
 
   namespace_id = module.network.cloudmap_namespace_id

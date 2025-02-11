@@ -61,6 +61,10 @@ variable "datacache" {
   })
 }
 
+variable "cluster_id" {
+  type = string
+}
+
 locals {
   environment_variables = [
     {

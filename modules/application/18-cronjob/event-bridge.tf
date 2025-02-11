@@ -7,7 +7,7 @@ resource "aws_cloudwatch_event_rule" "monthly_batch_account_statement_generator"
 
 resource "aws_cloudwatch_event_target" "monthly_batch_account_statement_generator_ecs_target" {
   rule      = aws_cloudwatch_event_rule.monthly_batch_account_statement_generator.name
-  arn       = aws_ecs_cluster.cluster.arn
+  arn       = var.cluster_id
   role_arn  = aws_iam_role.event_role.arn
 
   ecs_target {
@@ -16,7 +16,7 @@ resource "aws_cloudwatch_event_target" "monthly_batch_account_statement_generato
     launch_type         = "FARGATE"
     network_configuration {
       subnets         = var.network.private_subnet_ids
-      security_groups = aws_security_group.security_group.id
+      security_groups = [aws_security_group.security_group.id, data.aws_security_group.account_api_security_group.id]
       assign_public_ip = false
     }
   }
