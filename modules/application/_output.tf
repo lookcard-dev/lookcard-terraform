@@ -6,6 +6,7 @@ output "datastore_access_security_group_ids" {
     module.referral-api.security_group_id,
     module.verification-api.security_group_id,
     module.reseller-api.security_group_id,
+    module.cronjob.security_group_id,
   ]
 }
 
@@ -18,5 +19,6 @@ output "datacache_access_security_group_ids" {
     module.verification-api.security_group_id,
     module.reseller-api.security_group_id,
     module.crypto-faucet[0].security_group_id,
+    module.cronjob.security_group_id,
   ]
 }

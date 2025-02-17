@@ -115,3 +115,24 @@ resource "aws_iam_role_policy" "ecs_event_policy" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "dynamodb_policy" {
+  name = "dynamodb-policy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_dynamodb_table.batch_account_statement_generator_history.arn,
+          aws_dynamodb_table.batch_account_snapshot_processor_history.arn
+        ]
+      }
+    ]
+  })
+}
