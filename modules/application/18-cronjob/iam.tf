@@ -68,11 +68,11 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
         "Action" : [
           "logs:DescribeLogStreams",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:CreateLogGroup"
+          "logs:PutLogEvents"
         ],
         "Resource" : [
-          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.batch_account_snapshot_processor_app_log_group.arn}:*",
+          "${aws_cloudwatch_log_group.batch_account_statement_generator_app_log_group.arn}:*"
         ]
       }
     ]
