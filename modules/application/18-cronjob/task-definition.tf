@@ -7,20 +7,21 @@ data "aws_ecr_repository" "account_api" {
 }
 
 resource "aws_ecs_task_definition" "batch_account_statement_generator_task_definition" {
-  family                   = "cronjob-batch_account_statement_generator"
-  network_mode             = "awsvpc"
-  cpu                      = "2048"
-  memory                   = "4096"
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  family             = "cronjob-batch_account_statement_generator"
+  network_mode       = "awsvpc"
+  cpu                = "2048"
+  memory             = "4096"
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }
   container_definitions = jsonencode([
     {
-      name  = "generator"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      name    = "generator"
+      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/00-batch-account-statement-generator/index.js", "index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -36,10 +37,14 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
           value = "/lookcard/cronjob/batch_account_statement_generator"
         },
+        {
+          name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
+          value = aws_dynamodb_table.batch_account_statement_generator_history.name
+        }
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
       }]
     },
     {
@@ -79,30 +84,31 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
       readonlyRootFilesystem = true
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost:8080/healthcheckz || exit 1"]
-        interval    = 30   # seconds between health checks
-        timeout     = 5    # health check timeout in seconds
-        retries     = 3    # number of retries before marking container unhealthy
-        startPeriod = 10   # time to wait before performing first health check
+        interval    = 30 # seconds between health checks
+        timeout     = 5  # health check timeout in seconds
+        retries     = 3  # number of retries before marking container unhealthy
+        startPeriod = 10 # time to wait before performing first health check
       }
     }
   ])
 }
 
 resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_definition" {
-  family                   = "cronjob-batch_account_snapshot_processor"
-  network_mode             = "awsvpc"
-  cpu                      = "1024"
-  memory                   = "2048"
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  family             = "cronjob-batch_account_snapshot_processor"
+  network_mode       = "awsvpc"
+  cpu                = "1024"
+  memory             = "2048"
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }
   container_definitions = jsonencode([
     {
-      name  = "processor"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      name    = "processor"
+      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/01-batch-account-snapshot-processor/index.js", "index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -118,10 +124,14 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
           value = "/lookcard/cronjob/batch_account_snapshot_processor"
         },
+        {
+          name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
+          value = aws_dynamodb_table.batch_account_snapshot_processor_history.name
+        }
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
       }]
     },
     {
@@ -161,10 +171,10 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
       readonlyRootFilesystem = true
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost:8080/healthcheckz || exit 1"]
-        interval    = 30   # seconds between health checks
-        timeout     = 5    # health check timeout in seconds
-        retries     = 3    # number of retries before marking container unhealthy
-        startPeriod = 10   # time to wait before performing first health check
+        interval    = 30 # seconds between health checks
+        timeout     = 5  # health check timeout in seconds
+        retries     = 3  # number of retries before marking container unhealthy
+        startPeriod = 10 # time to wait before performing first health check
       }
     }
   ])

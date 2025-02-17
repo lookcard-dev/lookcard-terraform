@@ -1,5 +1,6 @@
 resource "aws_cloudwatch_event_rule" "monthly_batch_account_statement_generator" {
-  state = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
+  # state = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
+  state = "DISABLED"
   name                = "Monthly_Batch_Account_Statement_Generator"
   description         = "Triggers the batch account statement generator task every month at 7 AM"
   schedule_expression = "cron(0 7 1 * ? *)"  # At 07:00 AM, on day 1 of every month

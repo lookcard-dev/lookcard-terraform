@@ -50,3 +50,15 @@ resource "aws_kms_alias" "crypto_liquidity_key_alias" {
   name          = "alias/lookcard/crypto/liquidity"
   target_key_id = aws_kms_key.crypto_liquidity_key.id
 }
+
+resource "aws_kms_key" "crypto_withdrawal_alpha_key" {
+  key_usage                = "SIGN_VERIFY"
+  customer_master_key_spec = "ECC_SECG_P256K1"
+  deletion_window_in_days  = 30
+  is_enabled               = true
+}
+
+resource "aws_kms_alias" "crypto_withdrawal_alpha_key_alias" {
+  name          = "alias/lookcard/crypto/withdrawal/alpha"
+  target_key_id = aws_kms_key.crypto_withdrawal_alpha_key.id
+}
