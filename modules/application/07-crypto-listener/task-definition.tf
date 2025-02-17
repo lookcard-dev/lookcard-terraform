@@ -1,14 +1,66 @@
-data "aws_ecr_repository" "repository"{
+data "aws_ecr_repository" "repository" {
   name = var.name
 }
 
+resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_ethereum-sepolia-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/sepolia/getblock",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-sepolia-getblock"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/ecs/crypto-listener/ethereum/sepolia/getblock"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
 resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_tron-nile-trongrid"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_tron-nile-trongrid"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -28,19 +80,19 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-nile-trongrid"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron-nile"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/nile/trongrid"
         }
       ])
@@ -55,12 +107,12 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_tron-nile-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_tron-nile-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -80,19 +132,19 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-nile-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron-nile"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/nile/getblock"
         }
       ])
@@ -108,12 +160,12 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
 
 
 resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_tron-trongrid"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_tron-trongrid"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -133,19 +185,19 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-trongrid"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/mainnet/trongrid"
         }
       ])
@@ -160,12 +212,12 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_tron-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_tron-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -185,19 +237,19 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/mainnet/getblock"
         }
       ])
@@ -212,12 +264,12 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_tron-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_tron-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -237,19 +289,19 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/mainnet/drpc"
         }
       ])
@@ -264,12 +316,12 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_tron-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_tron-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -289,19 +341,19 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "tron-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "tron"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "tron"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/tron/mainnet/quicknode"
         }
       ])
@@ -317,12 +369,12 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
 
 # BSC Testnet Task Definitions
 resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_bsc-testnet-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_bsc-testnet-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -342,19 +394,19 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-testnet-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc-testnet"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/testnet/infura"
         }
       ])
@@ -369,12 +421,12 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_bsc-testnet-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_bsc-testnet-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -394,19 +446,19 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-testnet-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc-testnet"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/testnet/getblock"
         }
       ])
@@ -422,12 +474,12 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
 
 # BSC Mainnet Task Definitions
 resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_bsc-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -447,19 +499,19 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/mainnet/infura"
         }
       ])
@@ -475,12 +527,12 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
 
 # BSC Mainnet GetBlock Task Definition
 resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_bsc-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -500,19 +552,19 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/mainnet/getblock"
         }
       ])
@@ -528,12 +580,12 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
 
 # BSC Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_bsc-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -553,19 +605,19 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/mainnet/drpc"
         }
       ])
@@ -581,12 +633,12 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
 
 # BSC Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_bsc-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -606,19 +658,19 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "bsc-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "bsc"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/bsc/mainnet/quicknode"
         }
       ])
@@ -633,12 +685,12 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_polygon-amoy-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_polygon-amoy-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -658,19 +710,19 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-amoy-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon-amoy"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/amoy/infura"
         }
       ])
@@ -685,12 +737,12 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_polygon-amoy-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_polygon-amoy-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -710,19 +762,19 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-amoy-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon-amoy"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/amoy/getblock"
         }
       ])
@@ -738,12 +790,12 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
 
 # Polygon Mainnet Task Definitions
 resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_polygon-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -763,19 +815,19 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/mainnet/infura"
         }
       ])
@@ -790,12 +842,12 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_polygon-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -815,19 +867,19 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/mainnet/getblock"
         }
       ])
@@ -843,12 +895,12 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
 
 # Polygon Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_polygon-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -868,19 +920,19 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/mainnet/drpc"
         }
       ])
@@ -896,12 +948,12 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
 
 # Polygon Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_polygon-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -921,19 +973,19 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "polygon-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "polygon"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/polygon/mainnet/quicknode"
         }
       ])
@@ -948,12 +1000,12 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_avalanche-fuji-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_avalanche-fuji-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -973,19 +1025,19 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-fuji-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche-fuji"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/fuji/infura"
         }
       ])
@@ -1000,12 +1052,12 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_avalanche-fuji-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_avalanche-fuji-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1025,19 +1077,19 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-fuji-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche-fuji"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/fuji/getblock"
         }
       ])
@@ -1053,12 +1105,12 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
 
 # Avalanche Mainnet Task Definitions
 resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_avalanche-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1078,19 +1130,19 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/mainnet/infura"
         }
       ])
@@ -1106,12 +1158,12 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
 
 # Avalanche Mainnet GetBlock Task Definition
 resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_avalanche-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1131,19 +1183,19 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/mainnet/getblock"
         }
       ])
@@ -1159,12 +1211,12 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
 
 # Avalanche Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_avalanche-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1184,19 +1236,19 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/mainnet/drpc"
         }
       ])
@@ -1212,12 +1264,12 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
 
 # Avalanche Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_avalanche-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1237,19 +1289,19 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "avalanche-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "avalanche"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/avalanche/mainnet/quicknode"
         }
       ])
@@ -1265,12 +1317,12 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
 
 # Arbitrum Sepolia (Testnet) Task Definitions
 resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_arbitrum-sepolia-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_arbitrum-sepolia-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1290,19 +1342,19 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "arbitrum-sepolia-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "arbitrum-sepolia"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/arbitrum/sepolia/infura"
         }
       ])
@@ -1318,12 +1370,12 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
 
 # Arbitrum Mainnet Task Definitions
 resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_arbitrum-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1343,19 +1395,19 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "arbitrum-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "arbitrum"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/arbitrum/mainnet/infura"
         }
       ])
@@ -1371,12 +1423,12 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
 
 # Arbitrum Mainnet GetBlock Task Definition
 resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_arbitrum-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1396,19 +1448,19 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "arbitrum-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "arbitrum"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/arbitrum/mainnet/getblock"
         }
       ])
@@ -1424,12 +1476,12 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
 
 # Arbitrum Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_arbitrum-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1449,19 +1501,19 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "arbitrum-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "arbitrum"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/arbitrum/mainnet/drpc"
         }
       ])
@@ -1477,12 +1529,12 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
 
 # Arbitrum Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_arbitrum-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1502,19 +1554,19 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "arbitrum-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "arbitrum"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/arbitrum/mainnet/quicknode"
         }
       ])
@@ -1530,12 +1582,12 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
 
 # Optimism Sepolia (Testnet) Task Definitions
 resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_optimism-sepolia-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_optimism-sepolia-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1555,19 +1607,19 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "optimism-sepolia-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "optimism-sepolia"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/optimism/sepolia/infura"
         }
       ])
@@ -1583,12 +1635,12 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
 
 # Optimism Mainnet Task Definitions
 resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_optimism-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1608,19 +1660,19 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "optimism-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "optimism"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/optimism/mainnet/infura"
         }
       ])
@@ -1636,12 +1688,12 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
 
 # Optimism Mainnet GetBlock Task Definition
 resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_optimism-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1661,19 +1713,19 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "optimism-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "optimism"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/optimism/mainnet/getblock"
         }
       ])
@@ -1689,12 +1741,12 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
 
 # Optimism Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_optimism-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1714,19 +1766,19 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "optimism-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "optimism"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/optimism/mainnet/drpc"
         }
       ])
@@ -1742,12 +1794,12 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
 
 # Optimism Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_optimism-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1767,19 +1819,19 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "optimism-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "optimism"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/optimism/mainnet/quicknode"
         }
       ])
@@ -1795,12 +1847,12 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
 
 # Base Sepolia (Testnet) Task Definitions
 resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family                   = "crypto-listener_base-sepolia-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_base-sepolia-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1820,19 +1872,19 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "base-sepolia-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "base-sepolia"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/base/sepolia/infura"
         }
       ])
@@ -1848,12 +1900,12 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
 
 # Base Mainnet Task Definitions
 resource "aws_ecs_task_definition" "base_infura_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_base-infura"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1873,19 +1925,19 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "base-infura"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "base"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/base/mainnet/infura"
         }
       ])
@@ -1901,12 +1953,12 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
 
 # Base Mainnet GetBlock Task Definition
 resource "aws_ecs_task_definition" "base_getblock_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_base-getblock"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1926,19 +1978,19 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "base-getblock"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "base"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/base/mainnet/getblock"
         }
       ])
@@ -1954,12 +2006,12 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
 
 # Base Mainnet DRPC Task Definition
 resource "aws_ecs_task_definition" "base_drpc_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_base-drpc"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -1979,19 +2031,19 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "base-drpc"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "base"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/base/mainnet/drpc"
         }
       ])
@@ -2007,12 +2059,12 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
 
 # Base Mainnet QuickNode Task Definition
 resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
-  count = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
-  family                   = "crypto-listener_base-quicknode"
-  network_mode             = "bridge"
-  memory                   = 256
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-quicknode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -2032,19 +2084,19 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
       }
       environment = concat(local.environment_variables, [
         {
-          name = "NODE_ID",
+          name  = "NODE_ID",
           value = "base-quicknode"
         },
         {
-          name = "NODE_ECO",
+          name  = "NODE_ECO",
           value = "ethereum"
         },
         {
-          name = "NODE_BLOCKCHAIN_ID",
+          name  = "NODE_BLOCKCHAIN_ID",
           value = "base"
         },
         {
-          name = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
           value = "/ecs/crypto-listener/base/mainnet/quicknode"
         }
       ])

@@ -66,12 +66,13 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
       {
         "Effect" : "Allow",
         "Action" : [
-            "logs:DescribeLogStreams",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
+          "logs:DescribeLogStreams",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
         ]
       }
     ]
@@ -96,8 +97,8 @@ resource "aws_iam_role" "event_role" {
 }
 
 resource "aws_iam_role_policy" "ecs_event_policy" {
-  name   = "ecs-event-policy"
-  role   = aws_iam_role.event_role.id
+  name = "ecs-event-policy"
+  role = aws_iam_role.event_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"

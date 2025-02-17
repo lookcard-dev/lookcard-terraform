@@ -66,12 +66,12 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
       {
         "Effect" : "Allow",
         "Action" : [
-            "logs:DescribeLogStreams",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
+          "logs:DescribeLogStreams",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
         ]
       }
     ]
@@ -88,6 +88,21 @@ resource "aws_iam_role_policy" "signer_key_access" {
         "Effect" : "Allow",
         "Action" : ["kms:Sign", "kms:Verify", "kms:GetPublicKey"],
         "Resource" : [var.kms_key_arns.crypto.worker.alpha, var.kms_key_arns.crypto.liquidity]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "sqs_access" {
+  name = "SQSAccessPolicy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : ["sqs:SendMessage", "sqs:SendMessageBatch"],
+        "Resource" : [data.aws_sqs_queue.sweep_processor.arn, data.aws_sqs_queue.withdrawal_processor.arn]
       }
     ]
   })

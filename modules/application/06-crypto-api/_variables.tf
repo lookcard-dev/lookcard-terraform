@@ -10,6 +10,14 @@ data "aws_secretsmanager_secret" "tron_save" {
   name = "TRONSAVE"
 }
 
+data "aws_sqs_queue" "sweep_processor" {
+  name = "Crypto_Processor-Sweep_Processor.fifo"
+}
+
+data "aws_sqs_queue" "withdrawal_processor" {
+  name = "Crypto_Processor-Withdrawal_Processor.fifo"
+}
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -39,9 +47,9 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
@@ -59,7 +67,7 @@ variable "datacache" {
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -119,6 +127,14 @@ locals {
     {
       name  = "DATABASE_SCHEMA"
       value = replace(var.name, "-", "_")
+    },
+    {
+      name  = "AWS_SQS_SWEEP_PROCESSOR_QUEUE_URL",
+      value = data.aws_sqs_queue.sweep_processor.url
+    },
+    {
+      name  = "AWS_SQS_WITHDRAWAL_PROCESSOR_QUEUE_URL",
+      value = data.aws_sqs_queue.withdrawal_processor.url
     }
   ]
   environment_secrets = [
