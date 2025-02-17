@@ -72,7 +72,8 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
         ],
         "Resource" : [
           "${aws_cloudwatch_log_group.batch_account_snapshot_processor_app_log_group.arn}:*",
-          "${aws_cloudwatch_log_group.batch_account_statement_generator_app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.batch_account_statement_generator_app_log_group.arn}:*",
+          "${aws_cloudwatch_log_group.account_api_app_log_group.arn}:*"
         ]
       }
     ]

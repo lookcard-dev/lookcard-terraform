@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "sweep_processor_app_log_group" {
-  name = "/lookcard/crypto-processor/sweep-processor"
+  name              = "lookcard/crypto-processor/sweep"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 

@@ -18,3 +18,12 @@ resource "aws_cloudwatch_log_group" "batch_account_statement_generator_ecs_log_g
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
+resource "aws_cloudwatch_log_group" "account_api_ecs_log_group" {
+  name              = "/ecs/cronjob/account-api"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "account_api_app_log_group" {
+  name              = "/lookcard/cronjob/account-api"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
