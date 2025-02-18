@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/cronjob/batch_account_generator",
+          "awslogs-group"         = "/ecs/cronjob/batch_account_statement_generator",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
