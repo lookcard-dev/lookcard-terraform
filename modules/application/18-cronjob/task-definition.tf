@@ -40,6 +40,10 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
         {
           name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
           value = aws_dynamodb_table.batch_account_statement_generator_history.name
+        },
+        {
+          name  = "AWS_XRAY_DAEMON_ENDPOINT"
+          value = "xray.daemon.lookcard.local:2337"
         }
       ]
       secrets = [{
@@ -65,6 +69,10 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
           value = "/lookcard/cronjob/account-api"
         },
+        {
+          name  = "DATABASE_SCHEMA"
+          value = "account_api"
+        }
       ])
       secrets = concat(local.environment_secrets, [
         {
@@ -127,6 +135,10 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
         {
           name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
           value = aws_dynamodb_table.batch_account_snapshot_processor_history.name
+        },
+        {
+          name  = "AWS_XRAY_DAEMON_ENDPOINT"
+          value = "xray.daemon.lookcard.local:2337"
         }
       ]
       secrets = [{
@@ -152,6 +164,10 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
           value = "/lookcard/cronjob/account-api"
         },
+        {
+          name  = "DATABASE_SCHEMA"
+          value = "account_api"
+        }
       ])
       secrets = concat(local.environment_secrets, [
         {

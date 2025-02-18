@@ -99,10 +99,10 @@ locals {
       name  = "DATABASE_PORT"
       value = "5432"
     },
-    {
-      name  = "DATABASE_SCHEMA"
-      value = replace(var.name, "-", "_")
-    }
+    # {
+    #   name  = "DATABASE_SCHEMA"
+    #   value = replace(var.name, "-", "_")
+    # }
   ]
   environment_secrets = [
     {
