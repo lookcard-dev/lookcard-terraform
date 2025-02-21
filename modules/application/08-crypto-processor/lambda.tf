@@ -39,6 +39,7 @@ resource "aws_lambda_event_source_mapping" "sweep_processor_queue_event" {
 }
 
 resource "aws_lambda_function" "withdrawal_processor" {
+  count = var.image_tag == "latest" ? 0 : 1
   function_name = "Crypto_Processor-Withdrawal_Processor"
   role          = aws_iam_role.lambda_function_role.arn
   architectures = ["x86_64"]
