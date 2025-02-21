@@ -41,7 +41,9 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
         ],
         "Resource" : [
           "${aws_cloudwatch_log_group.sweep_processor_app_log_group.arn}:*",
-          "${aws_cloudwatch_log_group.sweep_processor_lambda_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.sweep_processor_lambda_log_group.arn}:*",
+          "${aws_cloudwatch_log_group.withdrawal_processor_app_log_group.arn}:*",
+          "${aws_cloudwatch_log_group.withdrawal_processor_lambda_log_group.arn}:*"
         ]
       }
     ]
