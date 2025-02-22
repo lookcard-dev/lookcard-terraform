@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
     {
       name    = "generator"
       image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
-      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/00-batch-account-statement-generator/index.js"]
+      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/01-batch-account-statement-generator/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -116,7 +116,7 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
     {
       name    = "processor"
       image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
-      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/01-batch-account-snapshot-processor/index.js"]
+      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/02-batch-account-snapshot-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
