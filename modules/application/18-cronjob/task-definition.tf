@@ -38,8 +38,8 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
           value = "/lookcard/cronjob/batch_account_statement_generator"
         },
         {
-          name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
-          value = aws_dynamodb_table.batch_account_statement_generator_history.name
+          name  = "AWS_DYNAMODB_UNPROCESSED_ACCOUNT_STATEMENT_TABLE_NAME"
+          value = aws_dynamodb_table.batch_account_statement_generator_unprocessed.name
         },
         {
           name  = "AWS_XRAY_DAEMON_ENDPOINT"
@@ -133,8 +133,8 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
           value = "/lookcard/cronjob/batch_account_snapshot_processor"
         },
         {
-          name  = "AWS_DYNAMODB_ACCOUNT_HISTORY_TABLE_NAME"
-          value = aws_dynamodb_table.batch_account_snapshot_processor_history.name
+          name  = "AWS_DYNAMODB_UNPROCESSED_ACCOUNT_SNAPSHOT_TABLE_NAME"
+          value = aws_dynamodb_table.batch_account_snapshot_processor_unprocessed.name
         },
         {
           name  = "AWS_XRAY_DAEMON_ENDPOINT"

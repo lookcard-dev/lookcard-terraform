@@ -125,12 +125,15 @@ resource "aws_iam_role_policy" "dynamodb_policy" {
       {
         Action = [
           "dynamodb:GetItem",
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
         ]
         Effect = "Allow"
         Resource = [
-          aws_dynamodb_table.batch_account_statement_generator_history.arn,
-          aws_dynamodb_table.batch_account_snapshot_processor_history.arn
+          aws_dynamodb_table.batch_account_statement_generator_unprocessed.arn,
+          aws_dynamodb_table.batch_account_snapshot_processor_unprocessed.arn
         ]
       }
     ]
