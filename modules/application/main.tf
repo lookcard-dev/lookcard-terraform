@@ -137,7 +137,9 @@ module "crypto-processor" {
     module.crypto-api.security_group_id,
     module.account-api.security_group_id,
     module.profile-api.security_group_id,
-    module.config-api.security_group_id
+    module.config-api.security_group_id,
+    module.notification-api.security_group_id,
+    module.user-api.security_group_id
   ]
 }
 
