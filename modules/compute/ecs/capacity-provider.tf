@@ -49,9 +49,9 @@ resource "aws_ecs_cluster_capacity_providers" "cronjob" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "listener" {
-  cluster_name = aws_ecs_cluster.listener.name
+  cluster_name       = aws_ecs_cluster.listener.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT", "LISTENER_EC2_ARM64", "LISTENER_EC2_AMD64"]
-  
+
   depends_on = [
     aws_ecs_capacity_provider.listener_arm64,
     aws_ecs_capacity_provider.listener_amd64
@@ -67,11 +67,11 @@ resource "aws_ecs_cluster_capacity_providers" "listener" {
 resource "aws_ecs_capacity_provider" "listener_arm64" {
   name = "LISTENER_EC2_ARM64"
   auto_scaling_group_provider {
-    auto_scaling_group_arn = aws_autoscaling_group.listener_arm64.arn
+    auto_scaling_group_arn         = aws_autoscaling_group.listener_arm64.arn
     managed_termination_protection = "ENABLED"
-    managed_draining = "ENABLED"
-    managed_scaling{
-        status = "ENABLED"
+    managed_draining               = "ENABLED"
+    managed_scaling {
+      status = "ENABLED"
     }
   }
 }
@@ -79,11 +79,11 @@ resource "aws_ecs_capacity_provider" "listener_arm64" {
 resource "aws_ecs_capacity_provider" "listener_amd64" {
   name = "LISTENER_EC2_AMD64"
   auto_scaling_group_provider {
-    auto_scaling_group_arn = aws_autoscaling_group.listener_amd64.arn
+    auto_scaling_group_arn         = aws_autoscaling_group.listener_amd64.arn
     managed_termination_protection = "ENABLED"
-    managed_draining = "ENABLED"
-    managed_scaling{
-        status = "ENABLED"
+    managed_draining               = "ENABLED"
+    managed_scaling {
+      status = "ENABLED"
     }
   }
 }
@@ -98,7 +98,7 @@ data "aws_ssm_parameter" "ecs_optimized_bottlerocket_amd64_ami" {
 
 resource "aws_launch_template" "listener_arm64" {
   name                   = "arm64"
-  instance_type          = "t4g.medium"
+  instance_type          = "t4g.small"
   image_id               = data.aws_ssm_parameter.ecs_optimized_bottlerocket_arm64_ami.value
   vpc_security_group_ids = [aws_security_group.ec2_cluster_security_group.id]
   iam_instance_profile {
@@ -136,12 +136,12 @@ resource "aws_launch_template" "listener_arm64" {
     [settings.ecs]
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
-    )
+  )
 }
 
 resource "aws_launch_template" "listener_amd64" {
   name                   = "amd64"
-  instance_type          = "t3.medium"
+  instance_type          = "t3.small"
   image_id               = data.aws_ssm_parameter.ecs_optimized_bottlerocket_amd64_ami.value
   vpc_security_group_ids = [aws_security_group.ec2_cluster_security_group.id]
   iam_instance_profile {
@@ -160,16 +160,16 @@ resource "aws_launch_template" "listener_amd64" {
     [settings.ecs]
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
-    )
+  )
 }
 
 resource "aws_autoscaling_group" "listener_arm64" {
-  min_size = 0
-  max_size = 0
-  name = "listener-arm64"
+  min_size              = 0
+  max_size              = 0
+  name                  = "listener-arm64"
   protect_from_scale_in = true
   launch_template {
-    id = aws_launch_template.listener_arm64.id
+    id      = aws_launch_template.listener_arm64.id
     version = "$Latest"
   }
   vpc_zone_identifier = var.subnet_ids
@@ -181,12 +181,13 @@ resource "aws_autoscaling_group" "listener_arm64" {
 }
 
 resource "aws_autoscaling_group" "listener_amd64" {
-  min_size = var.runtime_environment == "production" ? 3 : 1
-  max_size = var.runtime_environment == "production" ? 9 : 3
-  name = "listener-amd64"
+  min_size              = var.runtime_environment == "production" ? 4 : 2
+  max_size              = var.runtime_environment == "production" ? 12 : 6
+  desired_capacity      = var.runtime_environment == "production" ? 4 : 4
+  name                  = "listener-amd64"
   protect_from_scale_in = true
   launch_template {
-    id = aws_launch_template.listener_amd64.id
+    id      = aws_launch_template.listener_amd64.id
     version = "$Latest"
   }
   vpc_zone_identifier = var.subnet_ids
