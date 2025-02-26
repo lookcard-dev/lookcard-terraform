@@ -8,6 +8,10 @@ resource "aws_ecs_service" "tron_nile_trongrid_ecs_service" {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
 
 resource "aws_ecs_service" "tron_nile_getblock_ecs_service" {
@@ -19,6 +23,10 @@ resource "aws_ecs_service" "tron_nile_getblock_ecs_service" {
   capacity_provider_strategy {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
 }
 
@@ -44,6 +52,10 @@ resource "aws_ecs_service" "ethereum_sepolia_drpc_ecs_service" {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
 
 resource "aws_ecs_service" "ethereum_sepolia_infura_ecs_service" {
@@ -55,6 +67,10 @@ resource "aws_ecs_service" "ethereum_sepolia_infura_ecs_service" {
   capacity_provider_strategy {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
 }
 
@@ -68,6 +84,10 @@ resource "aws_ecs_service" "bsc_testnet_getblock_ecs_service" {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
 
 resource "aws_ecs_service" "bsc_testnet_drpc_ecs_service" {
@@ -79,6 +99,10 @@ resource "aws_ecs_service" "bsc_testnet_drpc_ecs_service" {
   capacity_provider_strategy {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
 }
 
@@ -92,6 +116,10 @@ resource "aws_ecs_service" "arbitrum_sepolia_infura_ecs_service" {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
 
 resource "aws_ecs_service" "arbitrum_sepolia_drpc_ecs_service" {
@@ -103,5 +131,9 @@ resource "aws_ecs_service" "arbitrum_sepolia_drpc_ecs_service" {
   capacity_provider_strategy {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
 }
