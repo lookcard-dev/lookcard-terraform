@@ -99,7 +99,7 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:NILE_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -413,7 +413,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_TESTNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -465,7 +465,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_TESTNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -518,7 +518,7 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -571,7 +571,7 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -624,7 +624,7 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BSC_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -677,7 +677,7 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BSC_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -729,7 +729,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_AMOY_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -781,7 +781,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_AMOY_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -834,7 +834,7 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -886,7 +886,7 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -939,7 +939,7 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:POLYGON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -992,7 +992,7 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:POLYGON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1044,7 +1044,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_FUJI_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1096,7 +1096,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_FUJI_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1149,7 +1149,7 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1202,7 +1202,7 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1255,7 +1255,7 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:AVALANCHE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1308,7 +1308,7 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:AVALANCHE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1361,7 +1361,59 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_SEPOLIA_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_arbitrum-sepolia-getblock"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/sepolia/getblock",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-sepolia-getblock"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum/sepolia/getblock"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1414,7 +1466,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1467,7 +1519,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ARBITRUM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1520,7 +1572,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ARBITRUM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1573,7 +1625,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:ARBITRUM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1626,7 +1678,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_SEPOLIA_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1679,7 +1731,7 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1732,7 +1784,7 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:OPTIMISM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1785,7 +1837,7 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:OPTIMISM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1838,7 +1890,7 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:OPTIMISM_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1891,7 +1943,7 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_SEPOLIA_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1944,7 +1996,7 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1997,7 +2049,7 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BASE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2050,7 +2102,7 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BASE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2103,7 +2155,7 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BASE_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
