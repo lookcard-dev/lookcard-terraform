@@ -54,6 +54,59 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
   ])
 }
 
+resource "aws_ecs_task_definition" "ethereum_sepolia_infura_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_ethereum-sepolia-infura"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/sepolia/infura",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-sepolia-infura"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/ethereum/sepolia/infura"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+
 resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_tron-nile-trongrid"
@@ -403,7 +456,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc-testnet"
+          value = "bnb-smart-chain-testnet"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -455,7 +508,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc-testnet"
+          value = "bnb-smart-chain-testnet"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -2156,6 +2209,377 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
         {
           name      = "RPC_ENDPOINT"
           valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Ethereum Sepolia DRPC Task Definition
+resource "aws_ecs_task_definition" "ethereum_sepolia_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_ethereum-sepolia-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/sepolia/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-sepolia-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/ethereum/sepolia/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# BSC Testnet DRPC Task Definition
+resource "aws_ecs_task_definition" "bsc_testnet_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_bsc-testnet-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/bsc/testnet/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "bsc-testnet-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "bnb-smart-chain-testnet"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/bsc/testnet/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Polygon Amoy DRPC Task Definition
+resource "aws_ecs_task_definition" "polygon_amoy_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_polygon-amoy-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/polygon/amoy/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "polygon-amoy-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "polygon-amoy"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/polygon/amoy/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Avalanche Fuji DRPC Task Definition
+resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_avalanche-fuji-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/avalanche/fuji/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "avalanche-fuji-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "avalanche-fuji"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/avalanche/fuji/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Arbitrum Sepolia DRPC Task Definition
+resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_arbitrum-sepolia-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/sepolia/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-sepolia-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum/sepolia/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Optimism Sepolia DRPC Task Definition
+resource "aws_ecs_task_definition" "optimism_sepolia_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_optimism-sepolia-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/optimism/sepolia/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "optimism-sepolia-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "optimism-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/optimism/sepolia/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Base Sepolia DRPC Task Definition
+resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_base-sepolia-drpc"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/sepolia/drpc",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-sepolia-drpc"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/sepolia/drpc"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }

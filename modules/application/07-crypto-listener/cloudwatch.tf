@@ -10,6 +10,18 @@ resource "aws_cloudwatch_log_group" "ethereum_sepolia_getblock_ecs_log_group" {
   name              = "/ecs/crypto-listener/ethereum/sepolia/getblock"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "ethereum_sepolia_infura_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/ethereum/sepolia/infura"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "ethereum_sepolia_infura_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/ethereum/sepolia/infura"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
 ##### End of ETHEREUM SEPOLIA #####
 
 ##### Start of TRON NILE #####

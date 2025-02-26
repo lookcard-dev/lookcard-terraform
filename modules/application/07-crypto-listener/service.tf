@@ -34,6 +34,30 @@ resource "aws_ecs_service" "ethereum_sepolia_getblock_ecs_service" {
   }
 }
 
+resource "aws_ecs_service" "ethereum_sepolia_drpc_ecs_service" {
+  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "ethereum-sepolia_drpc"
+  task_definition = aws_ecs_task_definition.ethereum_sepolia_drpc_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_AMD64"
+    weight            = 1
+  }
+}
+
+resource "aws_ecs_service" "ethereum_sepolia_infura_ecs_service" {
+  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "ethereum-sepolia_infura"
+  task_definition = aws_ecs_task_definition.ethereum_sepolia_infura_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_AMD64"
+    weight            = 1
+  }
+}
+
 resource "aws_ecs_service" "bsc_testnet_getblock_ecs_service" {
   count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   name            = "bsc-testnet_getblock"
@@ -46,10 +70,34 @@ resource "aws_ecs_service" "bsc_testnet_getblock_ecs_service" {
   }
 }
 
-resource "aws_ecs_service" "arbitrum_sepolia_getblock_ecs_service" {
+resource "aws_ecs_service" "bsc_testnet_drpc_ecs_service" {
   count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  name            = "arbitrum-sepolia_getblock"
-  task_definition = aws_ecs_task_definition.arbitrum_sepolia_getblock_task_definition[0].arn
+  name            = "bsc-testnet_drpc"
+  task_definition = aws_ecs_task_definition.bsc_testnet_drpc_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_AMD64"
+    weight            = 1
+  }
+}
+
+resource "aws_ecs_service" "arbitrum_sepolia_infura_ecs_service" {
+  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "arbitrum-sepolia_infura"
+  task_definition = aws_ecs_task_definition.arbitrum_sepolia_infura_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_AMD64"
+    weight            = 1
+  }
+}
+
+resource "aws_ecs_service" "arbitrum_sepolia_drpc_ecs_service" {
+  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  name            = "arbitrum-sepolia_drpc"
+  task_definition = aws_ecs_task_definition.arbitrum_sepolia_drpc_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
