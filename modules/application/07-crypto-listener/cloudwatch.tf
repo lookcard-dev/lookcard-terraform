@@ -690,3 +690,17 @@ resource "aws_cloudwatch_log_group" "base_quicknode_ecs_log_group" {
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 ##### End of Base #####
+
+##### Start of Base Sepolia (Additions) #####
+resource "aws_cloudwatch_log_group" "base_sepolia_infura_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/base/sepolia/infura"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "base_sepolia_infura_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/base/sepolia/infura"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+##### End of Base Sepolia (Additions) #####

@@ -2586,3 +2586,56 @@ resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
   ])
 }
 
+# Base Sepolia GetBlock Task Definition
+resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_base-sepolia-getblock"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/sepolia/getblock",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-sepolia-getblock"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/sepolia/getblock"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
