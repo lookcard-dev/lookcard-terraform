@@ -518,49 +518,49 @@ resource "aws_cloudwatch_log_group" "optimism_quicknode_ecs_log_group" {
 ##### Start of Arbitrum Sepolia #####
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_infura_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/lookcard/crypto-listener/arbitrum/sepolia/infura"
+  name              = "/lookcard/crypto-listener/arbitrum-one/sepolia/infura"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_infura_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/ecs/crypto-listener/arbitrum/sepolia/infura"
+  name              = "/ecs/crypto-listener/arbitrum-one/sepolia/infura"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_getblock_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/lookcard/crypto-listener/arbitrum/sepolia/getblock"
+  name              = "/lookcard/crypto-listener/arbitrum-one/sepolia/getblock"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_getblock_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/ecs/crypto-listener/arbitrum/sepolia/getblock"
+  name              = "/ecs/crypto-listener/arbitrum-one/sepolia/getblock"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_drpc_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/lookcard/crypto-listener/arbitrum/sepolia/drpc"
+  name              = "/lookcard/crypto-listener/arbitrum-one/sepolia/drpc"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_drpc_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/ecs/crypto-listener/arbitrum/sepolia/drpc"
+  name              = "/ecs/crypto-listener/arbitrum-one/sepolia/drpc"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_quicknode_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/lookcard/crypto-listener/arbitrum/sepolia/quicknode"
+  name              = "/lookcard/crypto-listener/arbitrum-one/sepolia/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_sepolia_quicknode_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/ecs/crypto-listener/arbitrum/sepolia/quicknode"
+  name              = "/ecs/crypto-listener/arbitrum-one/sepolia/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 ##### End of Arbitrum Sepolia ##### 
@@ -568,49 +568,49 @@ resource "aws_cloudwatch_log_group" "arbitrum_sepolia_quicknode_ecs_log_group" {
 ##### Start of Arbitrum #####
 resource "aws_cloudwatch_log_group" "arbitrum_infura_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/lookcard/crypto-listener/arbitrum/mainnet/infura"
+  name              = "/lookcard/crypto-listener/arbitrum-one/mainnet/infura"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_infura_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/ecs/crypto-listener/arbitrum/mainnet/infura"
+  name              = "/ecs/crypto-listener/arbitrum-one/mainnet/infura"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_getblock_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/lookcard/crypto-listener/arbitrum/mainnet/getblock"
+  name              = "/lookcard/crypto-listener/arbitrum-one/mainnet/getblock"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_getblock_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/ecs/crypto-listener/arbitrum/mainnet/getblock"
+  name              = "/ecs/crypto-listener/arbitrum-one/mainnet/getblock"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_drpc_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/lookcard/crypto-listener/arbitrum/mainnet/drpc"
+  name              = "/lookcard/crypto-listener/arbitrum-one/mainnet/drpc"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_drpc_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/ecs/crypto-listener/arbitrum/mainnet/drpc"
+  name              = "/ecs/crypto-listener/arbitrum-one/mainnet/drpc"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_quicknode_app_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/lookcard/crypto-listener/arbitrum/mainnet/quicknode"
+  name              = "/lookcard/crypto-listener/arbitrum-one/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
 resource "aws_cloudwatch_log_group" "arbitrum_quicknode_ecs_log_group" {
   count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
-  name              = "/ecs/crypto-listener/arbitrum/mainnet/quicknode"
+  name              = "/ecs/crypto-listener/arbitrum-one/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 ##### End of Arbitrum ##### 

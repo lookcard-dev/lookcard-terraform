@@ -1371,7 +1371,7 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
 # Arbitrum Sepolia (Testnet) Task Definitions
 resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family             = "crypto-listener_arbitrum-sepolia-infura"
+  family             = "crypto-listener_arbitrum-one-sepolia-infura"
   network_mode       = "bridge"
   memory             = 512
   task_role_arn      = aws_iam_role.task_role.arn
@@ -1388,7 +1388,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/sepolia/infura",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-one/sepolia/infura",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1396,7 +1396,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
       environment = concat(local.environment_variables, [
         {
           name  = "NODE_ID",
-          value = "arbitrum-sepolia-infura"
+          value = "arbitrum-one-sepolia-infura"
         },
         {
           name  = "NODE_ECO",
@@ -1404,11 +1404,11 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum-sepolia"
+          value = "arbitrum-one-sepolia"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/sepolia/infura"
+          value = "/lookcard/crypto-listener/arbitrum-one/sepolia/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1423,7 +1423,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
 
 resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family             = "crypto-listener_arbitrum-sepolia-getblock"
+  family             = "crypto-listener_arbitrum-one-sepolia-getblock"
   network_mode       = "bridge"
   memory             = 512
   task_role_arn      = aws_iam_role.task_role.arn
@@ -1440,7 +1440,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/sepolia/getblock",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-one/sepolia/getblock",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1448,7 +1448,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
       environment = concat(local.environment_variables, [
         {
           name  = "NODE_ID",
-          value = "arbitrum-sepolia-getblock"
+          value = "arbitrum-one-sepolia-getblock"
         },
         {
           name  = "NODE_ECO",
@@ -1456,11 +1456,11 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum-sepolia"
+          value = "arbitrum-one-sepolia"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/sepolia/getblock"
+          value = "/lookcard/crypto-listener/arbitrum-one/sepolia/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1493,7 +1493,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/mainnet/infura",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/infura",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1513,7 +1513,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/mainnet/infura"
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1546,7 +1546,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/mainnet/getblock",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/getblock",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1566,7 +1566,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/mainnet/getblock"
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1599,7 +1599,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/mainnet/drpc",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/drpc",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1619,7 +1619,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/mainnet/drpc"
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1652,7 +1652,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/mainnet/quicknode",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/quicknode",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -1672,7 +1672,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -2430,7 +2430,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
 # Arbitrum Sepolia DRPC Task Definition
 resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
-  family             = "crypto-listener_arbitrum-sepolia-drpc"
+  family             = "crypto-listener_arbitrum-one-sepolia-drpc"
   network_mode       = "bridge"
   memory             = 512
   task_role_arn      = aws_iam_role.task_role.arn
@@ -2447,7 +2447,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/crypto-listener/arbitrum/sepolia/drpc",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-one/sepolia/drpc",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
         }
@@ -2455,7 +2455,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
       environment = concat(local.environment_variables, [
         {
           name  = "NODE_ID",
-          value = "arbitrum-sepolia-drpc"
+          value = "arbitrum-one-sepolia-drpc"
         },
         {
           name  = "NODE_ECO",
@@ -2463,11 +2463,11 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum-sepolia"
+          value = "arbitrum-one-sepolia"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/lookcard/crypto-listener/arbitrum/sepolia/drpc"
+          value = "/lookcard/crypto-listener/arbitrum-one/sepolia/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
