@@ -40,6 +40,10 @@ resource "aws_ecs_service" "ethereum_sepolia_getblock_ecs_service" {
     capacity_provider = "LISTENER_EC2_AMD64"
     weight            = 1
   }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
 
 resource "aws_ecs_service" "ethereum_sepolia_drpc_ecs_service" {
