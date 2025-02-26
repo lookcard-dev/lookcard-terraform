@@ -99,7 +99,7 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:NILE_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
