@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/ethereum/sepolia/getblock"
+          value = "/lookcard/crypto-listener/ethereum/sepolia/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/nile/trongrid"
+          value = "/lookcard/crypto-listener/tron/nile/trongrid"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -145,7 +145,7 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/nile/getblock"
+          value = "/lookcard/crypto-listener/tron/nile/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -198,7 +198,7 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/mainnet/trongrid"
+          value = "/lookcard/crypto-listener/tron/mainnet/trongrid"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -250,7 +250,7 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/mainnet/getblock"
+          value = "/lookcard/crypto-listener/tron/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -302,7 +302,7 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/mainnet/drpc"
+          value = "/lookcard/crypto-listener/tron/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -354,7 +354,7 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/tron/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/tron/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -407,7 +407,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/testnet/infura"
+          value = "/lookcard/crypto-listener/bsc/testnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -459,7 +459,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/testnet/getblock"
+          value = "/lookcard/crypto-listener/bsc/testnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -512,7 +512,7 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/mainnet/infura"
+          value = "/lookcard/crypto-listener/bsc/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -565,7 +565,7 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/mainnet/getblock"
+          value = "/lookcard/crypto-listener/bsc/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -618,7 +618,7 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/mainnet/drpc"
+          value = "/lookcard/crypto-listener/bsc/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -671,7 +671,7 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/bsc/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/bsc/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -723,7 +723,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/amoy/infura"
+          value = "/lookcard/crypto-listener/polygon/amoy/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -775,7 +775,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/amoy/getblock"
+          value = "/lookcard/crypto-listener/polygon/amoy/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -828,7 +828,7 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/mainnet/infura"
+          value = "/lookcard/crypto-listener/polygon/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -880,7 +880,7 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/mainnet/getblock"
+          value = "/lookcard/crypto-listener/polygon/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -933,7 +933,7 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/mainnet/drpc"
+          value = "/lookcard/crypto-listener/polygon/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -986,7 +986,7 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/polygon/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/polygon/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1038,7 +1038,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/fuji/infura"
+          value = "/lookcard/crypto-listener/avalanche/fuji/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1090,7 +1090,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/fuji/getblock"
+          value = "/lookcard/crypto-listener/avalanche/fuji/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1143,7 +1143,7 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/mainnet/infura"
+          value = "/lookcard/crypto-listener/avalanche/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1196,7 +1196,7 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/mainnet/getblock"
+          value = "/lookcard/crypto-listener/avalanche/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1249,7 +1249,7 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/mainnet/drpc"
+          value = "/lookcard/crypto-listener/avalanche/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1302,7 +1302,7 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/avalanche/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/avalanche/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1355,7 +1355,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/arbitrum/sepolia/infura"
+          value = "/lookcard/crypto-listener/arbitrum/sepolia/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1408,7 +1408,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/arbitrum/mainnet/infura"
+          value = "/lookcard/crypto-listener/arbitrum/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1461,7 +1461,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/arbitrum/mainnet/getblock"
+          value = "/lookcard/crypto-listener/arbitrum/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1514,7 +1514,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/arbitrum/mainnet/drpc"
+          value = "/lookcard/crypto-listener/arbitrum/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1567,7 +1567,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/arbitrum/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/arbitrum/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1620,7 +1620,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/optimism/sepolia/infura"
+          value = "/lookcard/crypto-listener/optimism/sepolia/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1673,7 +1673,7 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/optimism/mainnet/infura"
+          value = "/lookcard/crypto-listener/optimism/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1726,7 +1726,7 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/optimism/mainnet/getblock"
+          value = "/lookcard/crypto-listener/optimism/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1779,7 +1779,7 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/optimism/mainnet/drpc"
+          value = "/lookcard/crypto-listener/optimism/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1832,7 +1832,7 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/optimism/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/optimism/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1885,7 +1885,7 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/base/sepolia/infura"
+          value = "/lookcard/crypto-listener/base/sepolia/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1938,7 +1938,7 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/base/mainnet/infura"
+          value = "/lookcard/crypto-listener/base/mainnet/infura"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -1991,7 +1991,7 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/base/mainnet/getblock"
+          value = "/lookcard/crypto-listener/base/mainnet/getblock"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -2044,7 +2044,7 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/base/mainnet/drpc"
+          value = "/lookcard/crypto-listener/base/mainnet/drpc"
         }
       ])
       secrets = concat(local.environment_secrets, [
@@ -2097,7 +2097,7 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
-          value = "/ecs/crypto-listener/base/mainnet/quicknode"
+          value = "/lookcard/crypto-listener/base/mainnet/quicknode"
         }
       ])
       secrets = concat(local.environment_secrets, [
