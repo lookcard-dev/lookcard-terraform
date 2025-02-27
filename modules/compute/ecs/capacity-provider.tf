@@ -183,7 +183,6 @@ resource "aws_autoscaling_group" "listener_arm64" {
 resource "aws_autoscaling_group" "listener_amd64" {
   min_size              = var.runtime_environment == "production" ? 4 : 2
   max_size              = var.runtime_environment == "production" ? 12 : 6
-  desired_capacity      = var.runtime_environment == "production" ? 4 : 4
   name                  = "listener-amd64"
   protect_from_scale_in = true
   launch_template {
