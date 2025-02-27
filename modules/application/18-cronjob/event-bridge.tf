@@ -69,3 +69,27 @@ resource "aws_cloudwatch_event_target" "hourly_batch_retry_wallet_deposit_proces
     }
   }
 }
+
+resource "aws_cloudwatch_event_rule" "hourly_batch_retry_wallet_withdrawal_processor" {
+  state               = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
+  name                = "Hourly_Batch_Retry_Wallet_Withdrawal_Processor"
+  description         = "Triggers the hourly batch retry wallet withdrawal processor task every hour"
+  schedule_expression = "cron(0 * * * ? *)" # At minute 0, every hour, every day
+}
+
+resource "aws_cloudwatch_event_target" "hourly_batch_retry_wallet_withdrawal_processor_ecs_target" {
+  rule     = aws_cloudwatch_event_rule.hourly_batch_retry_wallet_withdrawal_processor.name
+  arn      = var.cluster_id
+  role_arn = aws_iam_role.event_role.arn
+
+  ecs_target {
+    task_count          = 1
+    task_definition_arn = aws_ecs_task_definition.batch_retry_wallet_withdrawal_processor_task_definition.arn
+    launch_type         = "FARGATE"
+    network_configuration {
+      subnets          = var.network.private_subnet_ids
+      security_groups  = [aws_security_group.security_group.id, data.aws_security_group.crypto_api_security_group.id]
+      assign_public_ip = false
+    }
+  }
+}
