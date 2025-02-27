@@ -278,5 +278,6 @@ module "cronjob" {
   cluster_id                  = var.cluster_ids.cronjob
   api_image_tags = {
     account_api = var.components["account-api"].image_tag
+    crypto_api  = var.components["crypto-api"].image_tag
   }
 }

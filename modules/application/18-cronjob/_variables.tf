@@ -45,6 +45,7 @@ variable "image_tag" {
 variable "api_image_tags"{
   type = object({
     account_api = string
+    crypto_api = string
   })
 }
 

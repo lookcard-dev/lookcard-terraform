@@ -2,6 +2,10 @@ data "aws_security_group" "account_api_security_group" {
   name = "account-api-ecs-svc-sg"
 }
 
+data "aws_security_group" "crypto_api_security_group" {
+  name = "crypto-api-ecs-svc-sg"
+}
+
 resource "aws_security_group" "security_group" {
   depends_on  = [var.network]
   name        = "${var.name}-ecs-svc-sg"
