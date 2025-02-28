@@ -2639,3 +2639,745 @@ resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
   ])
 }
 
+# Ethereum Sepolia Blast Task Definition
+resource "aws_ecs_task_definition" "ethereum_sepolia_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_ethereum-sepolia-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/sepolia/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-sepolia-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/ethereum/sepolia/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Ethereum Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "ethereum_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_ethereum-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/ethereum/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ETHEREUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# BSC Testnet Blast Task Definition
+resource "aws_ecs_task_definition" "bsc_testnet_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_bsc-testnet-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/bsc/testnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "bsc-testnet-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "bnb-smart-chain-testnet"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/bsc/testnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# BSC Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/bsc/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "bsc-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "bsc"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/bsc/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Polygon Amoy Blast Task Definition
+resource "aws_ecs_task_definition" "polygon_amoy_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_polygon-amoy-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/polygon/amoy/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "polygon-amoy-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "polygon-amoy"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/polygon/amoy/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Polygon Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "polygon_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/polygon/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "polygon-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "polygon"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/polygon/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Avalanche Fuji Blast Task Definition
+resource "aws_ecs_task_definition" "avalanche_fuji_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_avalanche-fuji-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/avalanche/fuji/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "avalanche-fuji-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "avalanche-fuji"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/avalanche/fuji/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Avalanche Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "avalanche_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/avalanche/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "avalanche-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "avalanche"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/avalanche/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Arbitrum Sepolia Blast Task Definition
+resource "aws_ecs_task_definition" "arbitrum_sepolia_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_arbitrum-one-sepolia-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-one/sepolia/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-one-sepolia-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum-one-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum-one/sepolia/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Arbitrum Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Optimism Sepolia Blast Task Definition
+resource "aws_ecs_task_definition" "optimism_sepolia_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_optimism-sepolia-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/optimism/sepolia/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "optimism-sepolia-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "optimism-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/optimism/sepolia/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Optimism Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "optimism_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/optimism/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "optimism-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "optimism"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/optimism/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Base Sepolia Blast Task Definition
+resource "aws_ecs_task_definition" "base_sepolia_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_base-sepolia-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/sepolia/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-sepolia-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/sepolia/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Base Mainnet Blast Task Definition
+resource "aws_ecs_task_definition" "base_blast_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-blast"
+  network_mode       = "bridge"
+  memory             = 512
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/mainnet/blast",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-blast"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/mainnet/blast"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+

@@ -26,6 +26,10 @@ data "aws_secretsmanager_secret" "infura" {
   name = "INFURA"
 }
 
+data "aws_secretsmanager_secret" "blast" {
+  name = "BLAST"
+}
+
 
 variable "aws_provider" {
   type = object({

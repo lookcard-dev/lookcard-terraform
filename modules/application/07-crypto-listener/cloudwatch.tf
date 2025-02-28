@@ -34,6 +34,18 @@ resource "aws_cloudwatch_log_group" "ethereum_sepolia_drpc_ecs_log_group" {
   name              = "/ecs/crypto-listener/ethereum/sepolia/drpc"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "ethereum_sepolia_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/ethereum/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "ethereum_sepolia_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/ethereum/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
 ##### End of ETHEREUM SEPOLIA #####
 
 ##### Start of TRON NILE #####
@@ -163,6 +175,18 @@ resource "aws_cloudwatch_log_group" "bsc_testnet_quicknode_ecs_log_group" {
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
 
+resource "aws_cloudwatch_log_group" "bsc_testnet_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/bsc/testnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "bsc_testnet_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/bsc/testnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of BSC Testnet #####
 
 ##### Start of BSC #####
@@ -213,6 +237,19 @@ resource "aws_cloudwatch_log_group" "bsc_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/bsc/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "bsc_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/bsc/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "bsc_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/bsc/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of BSC #####
 
 ##### Start of Polygon Amoy #####
@@ -263,6 +300,19 @@ resource "aws_cloudwatch_log_group" "polygon_amoy_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/polygon/amoy/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "polygon_amoy_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/polygon/amoy/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "polygon_amoy_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/polygon/amoy/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Polygon Amoy#####
 
 ##### Start of Polygon #####
@@ -313,6 +363,19 @@ resource "aws_cloudwatch_log_group" "polygon_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/polygon/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "polygon_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/polygon/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "polygon_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/polygon/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Polygon #####
 
 ##### Start of Avalanche Fuji #####
@@ -363,6 +426,19 @@ resource "aws_cloudwatch_log_group" "avalanche_fuji_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/avalanche/fuji/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "avalanche_fuji_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/avalanche/fuji/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "avalanche_fuji_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/avalanche/fuji/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Avalanche Fuji#####
 
 ##### Start of Avalanche #####
@@ -413,6 +489,19 @@ resource "aws_cloudwatch_log_group" "avalanche_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/avalanche/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "avalanche_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/avalanche/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "avalanche_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/avalanche/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Avalanche #####
 
 ##### Start of Optimism Sepolia #####
@@ -463,6 +552,19 @@ resource "aws_cloudwatch_log_group" "optimism_sepolia_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/optimism/sepolia/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "optimism_sepolia_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/optimism/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "optimism_sepolia_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/optimism/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Optimism Sepolia ##### 
 
 ##### Start of Optimism #####
@@ -513,6 +615,19 @@ resource "aws_cloudwatch_log_group" "optimism_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/optimism/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "optimism_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/optimism/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "optimism_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/optimism/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Optimism ##### 
 
 ##### Start of Arbitrum Sepolia #####
@@ -563,6 +678,19 @@ resource "aws_cloudwatch_log_group" "arbitrum_sepolia_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/arbitrum-one/sepolia/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "arbitrum_sepolia_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/arbitrum-one/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "arbitrum_sepolia_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/arbitrum-one/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Arbitrum Sepolia ##### 
 
 ##### Start of Arbitrum #####
@@ -613,6 +741,19 @@ resource "aws_cloudwatch_log_group" "arbitrum_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/arbitrum-one/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "arbitrum_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/arbitrum-one/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "arbitrum_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/arbitrum-one/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Arbitrum ##### 
 
 ##### Start of Base Sepolia #####
@@ -651,6 +792,19 @@ resource "aws_cloudwatch_log_group" "base_sepolia_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/base/sepolia/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "base_sepolia_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/base/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "base_sepolia_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/base/sepolia/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Base Sepolia #####
 
 ##### Start of Base #####
@@ -689,18 +843,17 @@ resource "aws_cloudwatch_log_group" "base_quicknode_ecs_log_group" {
   name              = "/ecs/crypto-listener/base/mainnet/quicknode"
   retention_in_days = var.runtime_environment == "production" ? 30 : 3
 }
+
+resource "aws_cloudwatch_log_group" "base_blast_app_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/lookcard/crypto-listener/base/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "base_blast_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name              = "/ecs/crypto-listener/base/mainnet/blast"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
 ##### End of Base #####
-
-##### Start of Base Sepolia (Additions) #####
-resource "aws_cloudwatch_log_group" "base_sepolia_infura_app_log_group" {
-  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/lookcard/crypto-listener/base/sepolia/infura"
-  retention_in_days = var.runtime_environment == "production" ? 30 : 3
-}
-
-resource "aws_cloudwatch_log_group" "base_sepolia_infura_ecs_log_group" {
-  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
-  name              = "/ecs/crypto-listener/base/sepolia/infura"
-  retention_in_days = var.runtime_environment == "production" ? 30 : 3
-}
-##### End of Base Sepolia (Additions) #####

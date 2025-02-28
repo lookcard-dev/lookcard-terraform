@@ -40,7 +40,8 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           data.aws_secretsmanager_secret.trongrid.arn,
           data.aws_secretsmanager_secret.quicknode.arn,
           data.aws_secretsmanager_secret.infura.arn,
-          data.aws_secretsmanager_secret.drpc.arn
+          data.aws_secretsmanager_secret.drpc.arn,
+          data.aws_secretsmanager_secret.blast.arn
         ]
       }
     ]
