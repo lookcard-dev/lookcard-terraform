@@ -17,28 +17,28 @@ terraform {
 }
 
 provider "aws" {
-  region  = local.aws_provider.application.region
-  profile = local.is_github_actions ? null : local.aws_provider.application.profile
+  region     = local.aws_provider.application.region
+  profile    = local.is_github_actions ? null : local.aws_provider.application.profile
   access_key = var.APPLICATION__AWS_ACCESS_KEY_ID
   secret_key = var.APPLICATION__AWS_SECRET_ACCESS_KEY
-  token = var.APPLICATION__AWS_SESSION_TOKEN
+  token      = var.APPLICATION__AWS_SESSION_TOKEN
 
   skip_credentials_validation = true
-  skip_metadata_api_check = true
-  skip_requesting_account_id = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
 }
 
-provider "aws"{
-  alias = "dns"
-  region  = "us-east-1"
-  profile = local.is_github_actions ? null : local.aws_provider.dns.profile
+provider "aws" {
+  alias      = "dns"
+  region     = "us-east-1"
+  profile    = local.is_github_actions ? null : local.aws_provider.dns.profile
   access_key = var.DNS__AWS_ACCESS_KEY_ID
   secret_key = var.DNS__AWS_SECRET_ACCESS_KEY
-  token = var.DNS__AWS_SESSION_TOKEN
+  token      = var.DNS__AWS_SESSION_TOKEN
 
   skip_credentials_validation = true
-  skip_metadata_api_check = true
-  skip_requesting_account_id = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
 }
 
 
@@ -53,10 +53,10 @@ module "network" {
 }
 
 module "security" {
-  source = "./modules/security"
+  source         = "./modules/security"
   general_domain = var.domain.general
-  admin_domain = var.domain.admin
-  
+  admin_domain   = var.domain.admin
+
   providers = {
     aws.dns = aws.dns
   }
@@ -73,7 +73,7 @@ module "storage" {
   }
   allow_from_security_group_ids = {
     datacache = concat(module.application.datacache_access_security_group_ids, [module.compute.listener_security_group_id])
-    datastore = concat(module.application.datastore_access_security_group_ids, [module.compute.listener_security_group_id]) 
+    datastore = concat(module.application.datastore_access_security_group_ids, [module.compute.listener_security_group_id])
   }
   components = local.components
   depends_on = [module.security.secret, module.network]
@@ -137,6 +137,13 @@ module "application" {
   providers = {
     aws.dns = aws.dns
   }
+}
+
+module "monitor" {
+  source = "./modules/monitor"
+
+  aws_provider        = local.aws_provider.application
+  runtime_environment = var.runtime_environment
 }
 
 # module "utils" {
