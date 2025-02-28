@@ -191,7 +191,7 @@ resource "aws_cloudwatch_dashboard" "services_dashboard" {
   dashboard_name = "LookCard-Services-Detail-Dashboard-${upper(var.runtime_environment)}"
 
   dashboard_body = jsonencode({
-    widgets = [
+    widgets = concat(
       [
         {
           type   = "text"
@@ -204,7 +204,7 @@ resource "aws_cloudwatch_dashboard" "services_dashboard" {
           }
         }
       ],
-      [
+      flatten([
         for i, service in var.services : [
           {
             type   = "metric"
@@ -241,8 +241,8 @@ resource "aws_cloudwatch_dashboard" "services_dashboard" {
             }
           }
         ]
-      ]
-    ]
+      ])
+    )
   })
 }
 
@@ -271,9 +271,8 @@ resource "aws_cloudwatch_dashboard" "crypto_listener_dashboard" {
           view    = "timeSeries"
           stacked = false
           metrics = [
-            ["AWS/ECS", "CPUUtilization", "ServiceName", "crypto-listener-tron-mainnet-infura", "ClusterName", "listener", { "stat" = "Average" }],
+            ["AWS/ECS", "CPUUtilization", "ServiceName", "crypto-listener-tron-mainnet-trongrid", "ClusterName", "listener", { "stat" = "Average" }],
             ["AWS/ECS", "CPUUtilization", "ServiceName", "crypto-listener-tron-mainnet-getblock", "ClusterName", "listener", { "stat" = "Average" }],
-            ["AWS/ECS", "CPUUtilization", "ServiceName", "crypto-listener-tron-mainnet-blast", "ClusterName", "listener", { "stat" = "Average" }]
           ]
           region = var.aws_provider.region
           title  = "Tron Listener CPU Utilization"
@@ -290,9 +289,8 @@ resource "aws_cloudwatch_dashboard" "crypto_listener_dashboard" {
           view    = "timeSeries"
           stacked = false
           metrics = [
-            ["AWS/ECS", "MemoryUtilization", "ServiceName", "crypto-listener-tron-mainnet-infura", "ClusterName", "listener", { "stat" = "Average" }],
+            ["AWS/ECS", "MemoryUtilization", "ServiceName", "crypto-listener-tron-mainnet-trongrid", "ClusterName", "listener", { "stat" = "Average" }],
             ["AWS/ECS", "MemoryUtilization", "ServiceName", "crypto-listener-tron-mainnet-getblock", "ClusterName", "listener", { "stat" = "Average" }],
-            ["AWS/ECS", "MemoryUtilization", "ServiceName", "crypto-listener-tron-mainnet-blast", "ClusterName", "listener", { "stat" = "Average" }]
           ]
           region = var.aws_provider.region
           title  = "Tron Listener Memory Utilization"
@@ -306,9 +304,9 @@ resource "aws_cloudwatch_dashboard" "crypto_listener_dashboard" {
         width  = 24
         height = 8
         properties = {
-          query  = "SOURCE '/lookcard/crypto-listener/tron/mainnet/infura' | fields @timestamp, @message | filter @message like 'ERROR' | sort @timestamp desc | limit 20"
+          query  = "SOURCE '/lookcard/crypto-listener/tron/mainnet/trongrid' | fields @timestamp, @message | filter @message like 'ERROR' | sort @timestamp desc | limit 20"
           region = var.aws_provider.region
-          title  = "Tron Infura Listener Error Logs"
+          title  = "Tron Trongrid Listener Error Logs"
           view   = "table"
         }
       }

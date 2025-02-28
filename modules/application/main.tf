@@ -281,3 +281,15 @@ module "cronjob" {
     crypto_api  = var.components["crypto-api"].image_tag
   }
 }
+
+module "sumsub-webhook" {
+  source              = "./19-sumsub-webhook"
+  aws_provider        = var.aws_provider
+  name                = "sumsub-webhook"
+  image_tag           = var.components["sumsub-webhook"].image_tag
+  runtime_environment = var.runtime_environment
+  network             = var.network
+  allow_to_security_group_ids = [
+    module.verification-api.security_group_id,
+  ]
+}
