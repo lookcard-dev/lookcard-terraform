@@ -6,7 +6,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_ethereum-sepolia-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_ethereum-sepolia-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -111,7 +111,7 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_tron-nile-trongrid"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -163,7 +163,7 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_tron-nile-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -216,7 +216,7 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_tron-trongrid"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -268,7 +268,7 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_tron-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -320,7 +320,7 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_tron-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -372,7 +372,7 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_tron-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -425,7 +425,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_bsc-testnet-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -477,7 +477,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_bsc-testnet-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -530,7 +530,7 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_bsc-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -583,7 +583,7 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_bsc-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -636,7 +636,7 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_bsc-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -689,7 +689,7 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_bsc-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -741,7 +741,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_polygon-amoy-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -793,7 +793,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_polygon-amoy-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -846,7 +846,7 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_polygon-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -898,7 +898,7 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_polygon-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -951,7 +951,7 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_polygon-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1004,7 +1004,7 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_polygon-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1056,7 +1056,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_avalanche-fuji-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1108,7 +1108,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_avalanche-fuji-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1161,7 +1161,7 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_avalanche-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1214,7 +1214,7 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_avalanche-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1267,7 +1267,7 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_avalanche-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1320,7 +1320,7 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_avalanche-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1373,7 +1373,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_arbitrum-one-sepolia-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1425,7 +1425,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_arbitrum-one-sepolia-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1478,7 +1478,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_arbitrum-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1531,7 +1531,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_arbitrum-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1584,7 +1584,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_arbitrum-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1637,7 +1637,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_arbitrum-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1690,7 +1690,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_optimism-sepolia-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1743,7 +1743,7 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_optimism-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1796,7 +1796,7 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_optimism-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1849,7 +1849,7 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_optimism-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1902,7 +1902,7 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_optimism-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -1955,7 +1955,7 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_base-sepolia-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2008,7 +2008,7 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_base-infura"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2061,7 +2061,7 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_base-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2114,7 +2114,7 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_base-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2167,7 +2167,7 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_base-quicknode"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2220,7 +2220,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_ethereum-sepolia-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2273,7 +2273,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_bsc-testnet-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2326,7 +2326,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_polygon-amoy-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2379,7 +2379,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_avalanche-fuji-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2432,7 +2432,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_arbitrum-one-sepolia-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2485,7 +2485,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_optimism-sepolia-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2538,7 +2538,7 @@ resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_base-sepolia-drpc"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2591,7 +2591,7 @@ resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_base-sepolia-getblock"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2644,7 +2644,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_ethereum-sepolia-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2697,7 +2697,7 @@ resource "aws_ecs_task_definition" "ethereum_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_ethereum-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2750,7 +2750,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_bsc-testnet-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2803,7 +2803,7 @@ resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_bsc-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2856,7 +2856,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_polygon-amoy-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2909,7 +2909,7 @@ resource "aws_ecs_task_definition" "polygon_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_polygon-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -2962,7 +2962,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_avalanche-fuji-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3015,7 +3015,7 @@ resource "aws_ecs_task_definition" "avalanche_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_avalanche-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3068,7 +3068,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_arbitrum-one-sepolia-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3121,7 +3121,7 @@ resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_arbitrum-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3174,7 +3174,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_optimism-sepolia-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3227,7 +3227,7 @@ resource "aws_ecs_task_definition" "optimism_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_optimism-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3280,7 +3280,7 @@ resource "aws_ecs_task_definition" "base_sepolia_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_base-sepolia-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -3333,7 +3333,7 @@ resource "aws_ecs_task_definition" "base_blast_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
   family             = "crypto-listener_base-blast"
   network_mode       = "bridge"
-  memory             = 512
+  memory             = 256
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
