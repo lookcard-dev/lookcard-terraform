@@ -13,25 +13,25 @@ variable "runtime_environment" {
   }
 }
 
-variable "cluster_ids"{
+variable "cluster_ids" {
   type = object({
-    listener = string
+    listener              = string
     composite_application = string
-    core_application = string
-    administrative = string
-    cronjob = string
+    core_application      = string
+    administrative        = string
+    cronjob               = string
   })
 }
 
-variable "namespace_id"{
+variable "namespace_id" {
   type = string
 }
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
@@ -54,7 +54,7 @@ variable "components" {
     name = string
     hostname = object({
       internal = string
-      public = optional(string)
+      public   = optional(string)
     })
     image_tag = string
   }))
@@ -63,7 +63,7 @@ variable "components" {
 variable "kms_key_arns" {
   type = object({
     data = object({
-      generator = string
+      generator  = string
       encryption = string
     })
     crypto = object({
@@ -72,6 +72,23 @@ variable "kms_key_arns" {
       })
       liquidity = string
     })
+  })
+}
+
+variable "elb" {
+  type = object({
+    application_load_balancer_arn = string
+    application_load_balancer_dns_name = string
+    network_load_balancer_arn     = string
+    network_load_balancer_dns_name = string
+    application_load_balancer_http_listener_arn = string
+  })
+}
+
+variable "api_gateway" {
+  type = object({
+    vpc_link_arn = string
+    vpc_link_id  = string
   })
 }
 

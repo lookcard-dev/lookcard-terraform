@@ -7,60 +7,102 @@ resource "aws_api_gateway_rest_api" "webhook_api" {
   }
 }
 
-# Handle the root path as well
-resource "aws_api_gateway_method" "proxy_root" {
+# Create resources for each specific path
+resource "aws_api_gateway_resource" "sumsub_path" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  parent_id   = aws_api_gateway_rest_api.webhook_api.root_resource_id
+  path_part   = "sumsub"
+}
+
+resource "aws_api_gateway_resource" "reap_path" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  parent_id   = aws_api_gateway_rest_api.webhook_api.root_resource_id
+  path_part   = "reap"
+}
+
+resource "aws_api_gateway_resource" "firebase_path" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  parent_id   = aws_api_gateway_rest_api.webhook_api.root_resource_id
+  path_part   = "firebase"
+}
+
+# Set up POST method for /sumsub
+resource "aws_api_gateway_method" "sumsub_post" {
   rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
-  resource_id   = aws_api_gateway_rest_api.webhook_api.root_resource_id
-  http_method   = "ANY"
+  resource_id   = aws_api_gateway_resource.sumsub_path.id
+  http_method   = "POST"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "proxy_root_integration" {
-  rest_api_id          = aws_api_gateway_rest_api.webhook_api.id
-  resource_id          = aws_api_gateway_rest_api.webhook_api.root_resource_id
-  http_method          = aws_api_gateway_method.proxy_root.http_method
-  type                 = "MOCK"
-  passthrough_behavior = "WHEN_NO_MATCH"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 200,
-      message    = "Welcome to the webhook API"
-    })
-  }
+resource "aws_api_gateway_integration" "sumsub_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.webhook_api.id
+  resource_id             = aws_api_gateway_resource.sumsub_path.id
+  http_method             = aws_api_gateway_method.sumsub_post.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://${var.elb.network_load_balancer_dns_name}/sumsub"
 }
 
-# Create a proper method response for the ANY method
-resource "aws_api_gateway_method_response" "proxy_root_response" {
-  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
-  resource_id = aws_api_gateway_rest_api.webhook_api.root_resource_id
-  http_method = aws_api_gateway_method.proxy_root.http_method
-  status_code = "200"
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
+# Set up POST method for /reap
+resource "aws_api_gateway_method" "reap_post" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.reap_path.id
+  http_method   = "POST"
+  authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration_response" "proxy_root_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
-  resource_id = aws_api_gateway_rest_api.webhook_api.root_resource_id
-  http_method = aws_api_gateway_method.proxy_root.http_method
-  status_code = aws_api_gateway_method_response.proxy_root_response.status_code
+resource "aws_api_gateway_integration" "reap_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.webhook_api.id
+  resource_id             = aws_api_gateway_resource.reap_path.id
+  http_method             = aws_api_gateway_method.reap_post.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://${var.elb.network_load_balancer_dns_name}/reap"
+}
 
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
+# Set up POST method for /firebase
+resource "aws_api_gateway_method" "firebase_post" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.firebase_path.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
 
-  response_templates = {
-    "application/json" = jsonencode({
-      message = "Welcome to the webhook API"
-    })
-  }
+resource "aws_api_gateway_integration" "firebase_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.webhook_api.id
+  resource_id             = aws_api_gateway_resource.firebase_path.id
+  http_method             = aws_api_gateway_method.firebase_post.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://${var.elb.network_load_balancer_dns_name}/firebase"
+}
+
+# Add OPTIONS method for CORS support on each path
+resource "aws_api_gateway_method" "sumsub_options" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.sumsub_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "reap_options" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.reap_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "firebase_options" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.firebase_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
 }
 
 # Deploy the API Gateway
@@ -68,7 +110,9 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.webhook_api.id
 
   depends_on = [
-    aws_api_gateway_integration.proxy_root_integration
+    aws_api_gateway_integration.sumsub_integration,
+    aws_api_gateway_integration.reap_integration,
+    aws_api_gateway_integration.firebase_integration
   ]
 
   lifecycle {

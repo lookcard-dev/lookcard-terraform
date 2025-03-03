@@ -155,6 +155,19 @@ module "application" {
     admin   = var.domain.admin
   }
 
+  elb = {
+    application_load_balancer_arn               = module.network.application_load_balancer_arn
+    network_load_balancer_arn                   = module.network.network_load_balancer_arn
+    application_load_balancer_dns_name          = module.network.application_load_balancer_dns_name
+    network_load_balancer_dns_name              = module.network.network_load_balancer_dns_name
+    application_load_balancer_http_listener_arn = module.network.application_load_balancer_http_listener_arn
+  }
+
+  api_gateway = {
+    vpc_link_arn = module.network.api_gateway_vpc_link_arn
+    vpc_link_id  = module.network.api_gateway_vpc_link_id
+  }
+
   providers = {
     aws.dns       = aws.dns
     aws.us_east_1 = aws.us_east_1

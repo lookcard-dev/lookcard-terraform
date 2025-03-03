@@ -1,5 +1,3 @@
-# # Output for Public Subnet IDs
-
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
@@ -20,44 +18,34 @@ output "database_subnet_ids" {
   value = module.vpc.database_subnet_ids
 }
 
-output "cloudmap_namespace_id"{
+output "cloudmap_namespace_id" {
   value = module.cloudmap.namespace_id
 }
 
-# output "rt_private_id" {
-#   value = module.vpc.rt_private_id
-# }
+output "application_load_balancer_arn" {
+  value = module.elb.application_load_balancer_arn
+}
 
-# output "public_subnet_cidr_lists" {
-#   value = module.vpc.public_subnet_cidr_lists
-# }
+output "network_load_balancer_arn" {
+  value = module.elb.network_load_balancer_arn
+}
 
-# output "Database_Sub_ids" {
-#   value = aws_subnet.look-card-Database-Sub[*].id
+output "application_load_balancer_dns_name" {
+  value = module.elb.application_load_balancer_dns_name
+}
 
-# }
+output "network_load_balancer_dns_name" {
+  value = module.elb.network_load_balancer_dns_name
+}
 
-# # Output for Private Subnet IDs
+output "application_load_balancer_http_listener_arn" {
+  value = module.elb.application_load_balancer_http_listener_arn
+}
 
-# # Output for Internet Gateway ID
-# output "internet_gateway_id" {
-#   value = aws_internet_gateway.IGW.id
-# }
+output "api_gateway_vpc_link_arn" {
+  value = module.api_gateway.vpc_link_arn
+}
 
-# # Output for Elastic IP Allocation ID
-# output "nat_eip_allocation_id" {
-#   value = aws_eip.Nat-EIP[*].id
-# }
-
-# # Output for NAT Gateway ID
-# output "nat_gateway_id" {
-#   value = aws_nat_gateway.NGW_Private_Sub[*].id
-# }
-
-# output "isolated" {
-#   value = aws_subnet.look-card-isolated-Sub[*].id
-
-# }
-
-
-
+output "api_gateway_vpc_link_id" {
+  value = module.api_gateway.vpc_link_id
+}

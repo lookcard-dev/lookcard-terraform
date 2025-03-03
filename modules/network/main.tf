@@ -41,3 +41,8 @@ module "dns" {
     aws.dns = aws.dns
   }
 }
+
+module "api_gateway"{
+  source = "./api-gateway"
+  network_load_balancer_arn = module.elb.network_load_balancer_arn
+}

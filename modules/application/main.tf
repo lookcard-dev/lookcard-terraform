@@ -295,6 +295,8 @@ module "webhook-api" {
     module.verification-api.security_group_id,
     module.user-api.security_group_id,
   ]
+  api_gateway = var.api_gateway
+  elb = var.elb
   general_domain = var.domain.general
   providers = {
     aws.dns       = aws.dns
