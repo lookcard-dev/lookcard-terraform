@@ -53,9 +53,11 @@ module "network" {
 }
 
 module "security" {
-  source         = "./modules/security"
-  general_domain = var.domain.general
-  admin_domain   = var.domain.admin
+  source              = "./modules/security"
+  general_domain      = var.domain.general
+  admin_domain        = var.domain.admin
+  aws_provider        = local.aws_provider.application
+  runtime_environment = var.runtime_environment
 
   providers = {
     aws.dns = aws.dns
@@ -132,6 +134,8 @@ module "application" {
       }
       liquidity = module.security.crypto_liquidity_key_arn
     }
+
+    depends_on = [module.network, module.security]
   }
 
   providers = {

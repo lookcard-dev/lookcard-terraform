@@ -30,6 +30,10 @@ data "aws_secretsmanager_secret" "blast" {
   name = "BLAST"
 }
 
+data "aws_secretsmanager_secret" "publicnode" {
+  name = "PUBLIC_NODE"
+}
+
 
 variable "aws_provider" {
   type = object({

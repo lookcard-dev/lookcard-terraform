@@ -69,3 +69,53 @@ resource "aws_api_gateway_deployment" "deployment" {
     create_before_destroy = true
   }
 }
+
+# Create a stage for the deployment
+resource "aws_api_gateway_stage" "stage" {
+  count                = var.image_tag == "latest" ? 0 : 1
+  deployment_id        = aws_api_gateway_deployment.deployment[0].id
+  rest_api_id          = aws_api_gateway_rest_api.sumsub_webhook_api[0].id
+  stage_name           = var.runtime_environment
+  xray_tracing_enabled = true
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.sumsub_webhook_api_access_log.arn
+    format = jsonencode({
+      requestId       = "$context.requestId"
+      userSub         = "$context.authorizer.claims.sub"
+      ip              = "$context.identity.sourceIp"
+      method          = "$context.httpMethod"
+      path            = "$context.path"
+      status          = "$context.status"
+      responseLength  = "$context.responseLength"
+      responseLatency = "$context.responseLatency"
+    })
+  }
+  depends_on = [
+    aws_api_gateway_deployment.deployment[0],
+    aws_cloudwatch_log_group.sumsub_webhook_api_access_log,
+  ]
+}
+
+resource "aws_api_gateway_method_settings" "sumsub_webhook_api" {
+  rest_api_id = aws_api_gateway_rest_api.sumsub_webhook_api[0].id
+  stage_name  = aws_api_gateway_stage.stage[0].stage_name
+  method_path = "*/*"
+  settings {
+    metrics_enabled = true
+    logging_level   = "INFO"
+  }
+}
+
+resource "aws_api_gateway_method_response" "options_200" {
+  count       = var.image_tag == "latest" ? 0 : 1
+  rest_api_id = aws_api_gateway_rest_api.sumsub_webhook_api[0].id
+  resource_id = aws_api_gateway_resource.proxy[0].id
+  http_method = aws_api_gateway_method.proxy[0].http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}

@@ -1509,7 +1509,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum"
+          value = "arbitrum-one"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -1562,7 +1562,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum"
+          value = "arbitrum-one"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -1615,7 +1615,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum"
+          value = "arbitrum-one"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -1668,7 +1668,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum"
+          value = "arbitrum-one"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -3152,7 +3152,7 @@ resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "arbitrum"
+          value = "arbitrum-one"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -3381,3 +3381,691 @@ resource "aws_ecs_task_definition" "base_blast_task_definition" {
   ])
 }
 
+# Ethereum Sepolia PublicNode Task Definition
+resource "aws_ecs_task_definition" "ethereum_sepolia_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_ethereum-sepolia-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/ethereum/sepolia/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "ethereum-sepolia-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "ethereum-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/ethereum/sepolia/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# BSC Testnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "bsc_testnet_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_bsc-testnet-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/bsc/testnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "bsc-testnet-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "bnb-smart-chain-testnet"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/bsc/testnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Polygon Amoy PublicNode Task Definition
+resource "aws_ecs_task_definition" "polygon_amoy_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_polygon-amoy-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/polygon/amoy/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "polygon-amoy-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "polygon-amoy"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/polygon/amoy/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Avalanche Fuji PublicNode Task Definition
+resource "aws_ecs_task_definition" "avalanche_fuji_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_avalanche-fuji-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/avalanche/fuji/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "avalanche-fuji-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "avalanche-fuji"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/avalanche/fuji/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Arbitrum Sepolia PublicNode Task Definition
+resource "aws_ecs_task_definition" "arbitrum_sepolia_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_arbitrum-one-sepolia-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-one/sepolia/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-one-sepolia-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum-one-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum-one/sepolia/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Optimism Sepolia PublicNode Task Definition
+resource "aws_ecs_task_definition" "optimism_sepolia_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_optimism-sepolia-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/optimism/sepolia/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "optimism-sepolia-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "optimism-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/optimism/sepolia/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Base Sepolia PublicNode Task Definition
+resource "aws_ecs_task_definition" "base_sepolia_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_base-sepolia-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/sepolia/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-sepolia-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base-sepolia"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/sepolia/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# BSC Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "bsc_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_bsc-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/bsc/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "bsc-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "bsc"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/bsc/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Polygon Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "polygon_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_polygon-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/polygon/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "polygon-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "polygon"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/polygon/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Avalanche Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "avalanche_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_avalanche-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/avalanche/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "avalanche-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "avalanche"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/avalanche/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Arbitrum Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "arbitrum_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_arbitrum-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/arbitrum-onemainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "arbitrum-one-mainnet"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "arbitrum-one"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/arbitrum-onemainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Optimism Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "optimism_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_optimism-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/optimism/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "optimism-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "optimism"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/optimism/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
+# Base Mainnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "base_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_base-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name  = "listener"
+      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/base/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "base-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "ethereum"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "base"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/base/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}

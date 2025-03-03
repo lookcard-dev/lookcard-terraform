@@ -1,3 +1,19 @@
+data "aws_secretsmanager_secret" "sentry" {
+  name = "SENTRY"
+}
+
+data "aws_secretsmanager_secret" "sumsub" {
+  name = "SUMSUB"
+}
+data "aws_secretsmanager_secret_version" "sentry" {
+  secret_id = data.aws_secretsmanager_secret.sentry.id
+}
+
+
+data "aws_secretsmanager_secret_version" "sumsub" {
+  secret_id = data.aws_secretsmanager_secret.sumsub.id
+}
+
 variable "aws_provider" {
   type = object({
     region     = string

@@ -25,7 +25,8 @@ variable "secrets" {
     "ITRX",
     "TRONENERGY",
     "TRONSAVE",
-    "BLAST"
+    "BLAST",
+    "PUBLIC_NODE"
   ]
   nullable = true
 }

@@ -1,11 +1,3 @@
-variable "general_domain" {
-  type = string
-}
-
-variable "admin_domain" {
-  type = string
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
