@@ -3,13 +3,6 @@ resource "aws_security_group" "application_load_balancer_security_group" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    security_groups = [aws_security_group.network_load_balancer_security_group.id]
-  }
-
-  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -31,13 +24,6 @@ resource "aws_security_group" "application_load_balancer_security_group" {
 resource "aws_security_group" "network_load_balancer_security_group" {
   name        = "nlb-sg"
   vpc_id      = var.vpc_id
-
-  # ingress {
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   security_groups = [aws_security_group.application_load_balancer_security_group.id]
-  # }
 
   egress {
     from_port   = 0
