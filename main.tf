@@ -29,6 +29,19 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias      = "us_east_1"
+  region     = "us-east-1"
+  profile    = local.is_github_actions ? null : local.aws_provider.application.profile
+  access_key = var.APPLICATION__AWS_ACCESS_KEY_ID
+  secret_key = var.APPLICATION__AWS_SECRET_ACCESS_KEY
+  token      = var.APPLICATION__AWS_SESSION_TOKEN
+
+  skip_credentials_validation = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
+}
+
+provider "aws" {
   alias      = "dns"
   region     = "us-east-1"
   profile    = local.is_github_actions ? null : local.aws_provider.dns.profile
@@ -40,7 +53,6 @@ provider "aws" {
   skip_metadata_api_check     = true
   skip_requesting_account_id  = true
 }
-
 
 module "network" {
   source              = "./modules/network"
@@ -138,8 +150,14 @@ module "application" {
     depends_on = [module.network, module.security]
   }
 
+  domain = {
+    general = var.domain.general
+    admin   = var.domain.admin
+  }
+
   providers = {
-    aws.dns = aws.dns
+    aws.dns       = aws.dns
+    aws.us_east_1 = aws.us_east_1
   }
 }
 

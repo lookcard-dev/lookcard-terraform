@@ -74,3 +74,14 @@ variable "kms_key_arns" {
     })
   })
 }
+
+variable "domain" {
+  type = object({
+    general = string
+    admin   = string
+  })
+  default = {
+    general = "develop.not-lookcard.com"
+    admin   = "develop.not-lookcard.com"
+  }
+}

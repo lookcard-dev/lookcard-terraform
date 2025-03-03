@@ -2,21 +2,13 @@ terraform {
   required_providers {
     aws = {
       source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
+      configuration_aliases = [aws.dns, aws.us_east_1]
     }
   }
 }
 
-data "aws_secretsmanager_secret" "wallet" {
-  name = "WALLET"
-}
-
 data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
-}
-
-data "aws_secretsmanager_secret" "microsoft" {
-  name = "MICROSOFT"
 }
 
 variable "aws_provider" {
@@ -38,6 +30,15 @@ variable "name" {
   type = string
 }
 
+variable "cluster_id" {
+  type = string
+}
+
+variable "namespace_id" {
+  type = string
+}
+
+
 variable "network" {
   type = object({
     vpc_id              = string
@@ -47,11 +48,6 @@ variable "network" {
   })
 }
 
-variable "datacache" {
-  type = object({
-    endpoint = string
-  })
-}
 
 variable "allow_to_security_group_ids" {
   type = list(string)
@@ -59,4 +55,40 @@ variable "allow_to_security_group_ids" {
 
 variable "image_tag" {
   type = string
+}
+
+
+variable "general_domain" {
+  type = string
+}
+
+locals {
+  environment_variables = [
+    {
+      name  = "PORT"
+      value = "8080"
+    },
+    {
+      name  = "CORS_ORIGINS"
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.runtime_environment
+    },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
+    {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.app_log_group.name
+    },
+  ]
+  environment_secrets = [
+    {
+      name      = "SENTRY_DSN"
+      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
+    },
+  ]
 }

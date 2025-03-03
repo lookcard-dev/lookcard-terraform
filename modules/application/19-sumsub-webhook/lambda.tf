@@ -41,6 +41,5 @@ resource "aws_lambda_permission" "api_gateway" {
 
   depends_on = [
     aws_lambda_function.sumsub_webhook,
-    aws_api_gateway_rest_api.sumsub_webhook_api
   ]
 }

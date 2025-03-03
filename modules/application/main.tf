@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
+      configuration_aliases = [aws.dns, aws.us_east_1]
     }
   }
 }
@@ -282,14 +282,22 @@ module "cronjob" {
   }
 }
 
-module "sumsub-webhook" {
-  source              = "./19-sumsub-webhook"
+module "webhook-api" {
+  source              = "./19-webhook-api"
   aws_provider        = var.aws_provider
-  name                = "sumsub-webhook"
-  image_tag           = var.components["sumsub-webhook"].image_tag
   runtime_environment = var.runtime_environment
+  name                = "webhook-api"
+  image_tag           = var.components["webhook-api"].image_tag
+  cluster_id          = var.cluster_ids.composite_application
+  namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
     module.verification-api.security_group_id,
+    module.user-api.security_group_id,
   ]
+  general_domain = var.domain.general
+  providers = {
+    aws.dns       = aws.dns
+    aws.us_east_1 = aws.us_east_1
+  }
 }

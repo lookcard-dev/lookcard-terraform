@@ -74,20 +74,21 @@ variable "image_tag" {
     "cronjob"            = "latest"
     "reap-proxy"         = "latest"
     "apigw-authorizer"   = "latest"
+    "webhook-api"        = "latest"
   }
 }
 
 locals {
   aws_provider = {
     application = {
-      region  = var.aws_provider.application.region
+      region     = var.aws_provider.application.region
       account_id = var.aws_provider.application.account_id
-      profile = local.is_github_actions ? null : var.aws_provider.application.profile
+      profile    = local.is_github_actions ? null : var.aws_provider.application.profile
     }
     dns = {
-      region  = var.aws_provider.dns.region
+      region     = var.aws_provider.dns.region
       account_id = var.aws_provider.dns.account_id
-      profile = local.is_github_actions ? null : var.aws_provider.dns.profile
+      profile    = local.is_github_actions ? null : var.aws_provider.dns.profile
     }
   }
   components = {
@@ -281,48 +282,55 @@ locals {
       }
       image_tag = var.image_tag["marketing-api"]
     }
+    "webhook-api" = {
+      name = "webhook-api"
+      hostname = {
+        internal = "webhook.api"
+      }
+      image_tag = var.image_tag["webhook-api"]
+    }
   }
 }
 
 // AWS Credentials
 variable "APPLICATION__AWS_ACCESS_KEY_ID" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "APPLICATION__AWS_SECRET_ACCESS_KEY" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "APPLICATION__AWS_SESSION_TOKEN" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "DNS__AWS_ACCESS_KEY_ID" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "DNS__AWS_SECRET_ACCESS_KEY" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "DNS__AWS_SESSION_TOKEN" {
-  type = string
-  nullable = true
+  type      = string
+  nullable  = true
   sensitive = true
-  default = null
+  default   = null
 }

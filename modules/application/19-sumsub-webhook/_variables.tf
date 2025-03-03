@@ -49,3 +49,11 @@ variable "allow_to_security_group_ids" {
 variable "image_tag" {
   type = string
 }
+
+variable "api_gateway_id" {
+  type = string
+}
+
+variable "api_gateway_resource_id" {
+  type = string
+}
