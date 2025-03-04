@@ -26,16 +26,11 @@ resource "aws_api_gateway_resource" "firebase_path" {
   path_part   = "firebase"
 }
 
-# Set up POST method for /sumsub
 resource "aws_api_gateway_method" "sumsub_post" {
   rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
   resource_id   = aws_api_gateway_resource.sumsub_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "sumsub_integration" {
@@ -48,7 +43,7 @@ resource "aws_api_gateway_integration" "sumsub_integration" {
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://${var.elb.application_load_balancer_dns_name}/sumsub"
   request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+    "integration.request.header.X-Forwarded-Host" = "'webhook.${var.general_domain}'"
   }
 }
 
@@ -58,10 +53,6 @@ resource "aws_api_gateway_method" "reap_post" {
   resource_id   = aws_api_gateway_resource.reap_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "reap_integration" {
@@ -72,10 +63,10 @@ resource "aws_api_gateway_integration" "reap_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://${var.elb.network_load_balancer_dns_name}/reap"
+  uri                     = "http://${var.elb.application_load_balancer_dns_name}/reap"
 
   request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+    "integration.request.header.X-Forwarded-Host" = "'webhook.${var.general_domain}'"
   }
 }
 
@@ -85,10 +76,6 @@ resource "aws_api_gateway_method" "firebase_post" {
   resource_id   = aws_api_gateway_resource.firebase_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "firebase_integration" {
@@ -99,10 +86,10 @@ resource "aws_api_gateway_integration" "firebase_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://${var.elb.network_load_balancer_dns_name}/firebase"
+  uri                     = "http://${var.elb.application_load_balancer_dns_name}/firebase"
 
   request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+    "integration.request.header.X-Forwarded-Host" = "'webhook.${var.general_domain}'"
   }
 }
 

@@ -13,7 +13,7 @@ resource "aws_lb" "application_load_balancer" {
 
   enable_deletion_protection = var.runtime_environment == "production" ? true : false
   preserve_host_header       = true
-  drop_invalid_header_fields = false
+  drop_invalid_header_fields = true
 
   access_logs {
     enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
@@ -35,7 +35,7 @@ resource "aws_lb_listener" "application_load_balancer_http_listener" {
     type = "fixed-response"
     fixed_response {
       content_type = "text/plain"
-      message_body = "Not Found"
+      message_body = "Not Found - The requested URL was not found on this server."
       status_code  = "404"
     }
   }
