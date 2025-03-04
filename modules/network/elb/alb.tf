@@ -13,17 +13,17 @@ resource "aws_lb" "application_load_balancer" {
 
   enable_deletion_protection = var.runtime_environment == "production" ? true : false
   preserve_host_header       = true
-  drop_invalid_header_fields = true
+  drop_invalid_header_fields = false
 
   access_logs {
     enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
     bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/access_logs"
+    prefix  = "ELB/application/access_logs"
   }
   connection_logs {
     enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
     bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/connection_logs"
+    prefix  = "ELB/application/connection_logs"
   }
 }
 

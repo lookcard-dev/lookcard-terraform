@@ -1,8 +1,9 @@
 resource "aws_lb_target_group" "webhook_api" {
-  name     = "webhook-api-tg"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = var.network.vpc_id
+  name        = "webhook-api-tg"
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = var.network.vpc_id
+  target_type = "ip"
 
   health_check {
     path                = "/healthcheckz"
@@ -25,7 +26,8 @@ resource "aws_lb_listener_rule" "webhook_api" {
   }
 
   condition {
-    host_header {
+    http_header {
+      http_header_name = "X-Forwarded-Host"
       values = ["webhook.${var.general_domain}"]
     }
   }

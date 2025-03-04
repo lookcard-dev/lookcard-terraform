@@ -32,6 +32,10 @@ resource "aws_api_gateway_method" "sumsub_post" {
   resource_id   = aws_api_gateway_resource.sumsub_path.id
   http_method   = "POST"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.host" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "sumsub_integration" {
@@ -42,7 +46,10 @@ resource "aws_api_gateway_integration" "sumsub_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://${var.elb.network_load_balancer_dns_name}/sumsub"
+  uri                     = "http://${var.elb.application_load_balancer_dns_name}/sumsub"
+  request_parameters = {
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+  }
 }
 
 # Set up POST method for /reap
@@ -51,6 +58,10 @@ resource "aws_api_gateway_method" "reap_post" {
   resource_id   = aws_api_gateway_resource.reap_path.id
   http_method   = "POST"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.host" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "reap_integration" {
@@ -62,6 +73,10 @@ resource "aws_api_gateway_integration" "reap_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://${var.elb.network_load_balancer_dns_name}/reap"
+
+  request_parameters = {
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+  }
 }
 
 # Set up POST method for /firebase
@@ -70,6 +85,10 @@ resource "aws_api_gateway_method" "firebase_post" {
   resource_id   = aws_api_gateway_resource.firebase_path.id
   http_method   = "POST"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.host" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "firebase_integration" {
@@ -81,6 +100,10 @@ resource "aws_api_gateway_integration" "firebase_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://${var.elb.network_load_balancer_dns_name}/firebase"
+
+  request_parameters = {
+    "integration.request.header.X-Forwarded-Host" = "method.request.header.host"
+  }
 }
 
 # Add OPTIONS method for CORS support on each path
@@ -105,18 +128,174 @@ resource "aws_api_gateway_method" "firebase_options" {
   authorization = "NONE"
 }
 
-# Deploy the API Gateway
+# First, let's add method responses before integration responses
+resource "aws_api_gateway_method_response" "sumsub_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_path.id
+  http_method = aws_api_gateway_method.sumsub_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+# Fix the integration for OPTIONS method
+resource "aws_api_gateway_integration" "sumsub_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_path.id
+  http_method = aws_api_gateway_method.sumsub_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# Now add the integration response with proper dependency
+resource "aws_api_gateway_integration_response" "sumsub_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_path.id
+  http_method = aws_api_gateway_method.sumsub_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.sumsub_options_response,
+    aws_api_gateway_integration.sumsub_options_integration
+  ]
+}
+
+# Same pattern for reap and firebase
+resource "aws_api_gateway_method_response" "reap_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.reap_path.id
+  http_method = aws_api_gateway_method.reap_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "reap_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.reap_path.id
+  http_method = aws_api_gateway_method.reap_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration_response" "reap_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.reap_path.id
+  http_method = aws_api_gateway_method.reap_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.reap_options_response,
+    aws_api_gateway_integration.reap_options_integration
+  ]
+}
+
+resource "aws_api_gateway_method_response" "firebase_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.firebase_path.id
+  http_method = aws_api_gateway_method.firebase_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "firebase_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.firebase_path.id
+  http_method = aws_api_gateway_method.firebase_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration_response" "firebase_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.firebase_path.id
+  http_method = aws_api_gateway_method.firebase_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.firebase_options_response,
+    aws_api_gateway_integration.firebase_options_integration
+  ]
+}
+
+# Update the deployment to depend on all integrations
 resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.webhook_api.id
 
   depends_on = [
     aws_api_gateway_integration.sumsub_integration,
     aws_api_gateway_integration.reap_integration,
-    aws_api_gateway_integration.firebase_integration
+    aws_api_gateway_integration.firebase_integration,
+    aws_api_gateway_integration.sumsub_options_integration,
+    aws_api_gateway_integration.reap_options_integration,
+    aws_api_gateway_integration.firebase_options_integration,
+    aws_api_gateway_integration_response.sumsub_options_integration_response,
+    aws_api_gateway_integration_response.reap_options_integration_response,
+    aws_api_gateway_integration_response.firebase_options_integration_response
   ]
 
   lifecycle {
     create_before_destroy = true
+  }
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_resource.sumsub_path.id,
+      aws_api_gateway_resource.reap_path.id,
+      aws_api_gateway_resource.firebase_path.id,
+      aws_api_gateway_method.sumsub_post.id,
+      aws_api_gateway_method.reap_post.id,
+      aws_api_gateway_method.firebase_post.id,
+      aws_api_gateway_method.sumsub_options.id,
+      aws_api_gateway_method.reap_options.id,
+      aws_api_gateway_method.firebase_options.id,
+    ]))
   }
 }
 

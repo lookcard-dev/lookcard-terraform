@@ -1,9 +1,16 @@
 resource "aws_lb" "network_load_balancer" {
-  name               = "nlb"
-  internal           = true
-  load_balancer_type = "network"
-  subnets            = var.subnet_ids
-  security_groups    = [aws_security_group.network_load_balancer_security_group.id]
+  name                                                         = "nlb"
+  internal                                                     = true
+  load_balancer_type                                           = "network"
+  subnets                                                      = var.subnet_ids
+  security_groups                                              = [aws_security_group.network_load_balancer_security_group.id]
+  enforce_security_group_inbound_rules_on_private_link_traffic = "off"
+  
+  access_logs {
+    enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
+    bucket  = "${var.aws_provider.account_id}-log"
+    prefix  = "ELB/network/access_logs"
+  }
 }
 
 resource "aws_lb_target_group" "network_load_balancer_http_target_group" {
