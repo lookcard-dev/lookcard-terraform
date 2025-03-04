@@ -26,9 +26,8 @@ resource "aws_lb_listener_rule" "webhook_api" {
   }
 
   condition {
-    http_header {
-      http_header_name = "Host"
-      values           = ["webhook.${var.general_domain}"]
+    host_header {
+      values = ["webhook.${var.general_domain}"]
     }
   }
 }
