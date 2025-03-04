@@ -31,10 +31,6 @@ resource "aws_api_gateway_method" "sumsub_post" {
   resource_id   = aws_api_gateway_resource.sumsub_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "sumsub_integration" {
@@ -46,10 +42,6 @@ resource "aws_api_gateway_integration" "sumsub_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://webhook.${var.general_domain}/sumsub"
-  request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host",
-    "integration.request.header.Host"             = "method.request.header.host"
-  }
 }
 
 # Set up POST method for /reap
@@ -58,10 +50,6 @@ resource "aws_api_gateway_method" "reap_post" {
   resource_id   = aws_api_gateway_resource.reap_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "reap_integration" {
@@ -73,10 +61,6 @@ resource "aws_api_gateway_integration" "reap_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://webhook.${var.general_domain}/reap"
-  request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host",
-    "integration.request.header.Host"             = "method.request.header.host"
-  }
 }
 
 # Set up POST method for /firebase
@@ -85,10 +69,6 @@ resource "aws_api_gateway_method" "firebase_post" {
   resource_id   = aws_api_gateway_resource.firebase_path.id
   http_method   = "POST"
   authorization = "NONE"
-
-  request_parameters = {
-    "method.request.header.host" = true
-  }
 }
 
 resource "aws_api_gateway_integration" "firebase_integration" {
@@ -100,10 +80,6 @@ resource "aws_api_gateway_integration" "firebase_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://webhook.${var.general_domain}/firebase"
-  request_parameters = {
-    "integration.request.header.X-Forwarded-Host" = "method.request.header.host",
-    "integration.request.header.Host"             = "method.request.header.host"
-  }
 }
 
 # Add OPTIONS method for CORS support on each path
