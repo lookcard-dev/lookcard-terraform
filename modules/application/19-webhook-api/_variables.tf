@@ -11,6 +11,14 @@ data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
 
+data "aws_secretsmanager_secret" "sumsub" {
+  name = "SUMSUB"
+}
+
+data "aws_s3_bucket" "log_bucket" {
+  bucket = "${var.aws_provider.account_id}-log"
+}
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -35,10 +43,10 @@ variable "api_gateway" {
 
 variable "elb" {
   type = object({
-    network_load_balancer_arn          = string
-    network_load_balancer_dns_name     = string
-    application_load_balancer_arn      = string
-    application_load_balancer_dns_name = string
+    network_load_balancer_arn                   = string
+    network_load_balancer_dns_name              = string
+    application_load_balancer_arn               = string
+    application_load_balancer_dns_name          = string
     application_load_balancer_http_listener_arn = string
   })
 }
@@ -99,11 +107,27 @@ locals {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
       value = aws_cloudwatch_log_group.app_log_group.name
     },
+    {
+      name  = "AWS_FIREHOSE_SUMSUB_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.sumsub_webhook.name
+    },
+    {
+      name  = "AWS_FIREHOSE_REAP_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.reap_webhook.name
+    },
+    {
+      name  = "AWS_FIREHOSE_FIREBASE_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.firebase_webhook.name
+    }
   ]
   environment_secrets = [
     {
       name      = "SENTRY_DSN"
       valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
+    {
+      name      = "SUMSUB_WEBHOOK_SECRET"
+      valueFrom = "${data.aws_secretsmanager_secret.sumsub.arn}:WEBHOOK_SECRET::"
+    }
   ]
 }

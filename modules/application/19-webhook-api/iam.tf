@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.sentry.arn]
+        "Resource" : [data.aws_secretsmanager_secret.sentry.arn, data.aws_secretsmanager_secret.sumsub.arn]
       }
     ]
   })
@@ -66,14 +66,105 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
       {
         "Effect" : "Allow",
         "Action" : [
-            "logs:DescribeLogStreams",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
+          "logs:DescribeLogStreams",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
         ]
       }
     ]
   })
 }
+
+resource "aws_iam_role_policy" "firehose_policy" {
+  name = "FirehosePolicy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "firehose:PutRecord",
+          "firehose:PutRecordBatch"
+        ],
+        "Resource" : [
+          "${aws_kinesis_firehose_delivery_stream.sumsub_webhook.arn}",
+          "${aws_kinesis_firehose_delivery_stream.reap_webhook.arn}",
+          "${aws_kinesis_firehose_delivery_stream.firebase_webhook.arn}"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "firehose_role" {
+  name = "webhook-api-firehose-delivery-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "firehose.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_s3_access_policy" {
+  name = "firehose-s3-access-policy"
+  role = aws_iam_role.firehose_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:AbortMultipartUpload",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:ListBucketMultipartUploads",
+          "s3:PutObject"
+        ]
+        Resource = [
+          data.aws_s3_bucket.log_bucket.arn,
+          "${data.aws_s3_bucket.log_bucket.arn}/*"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "logs:PutLogEvents"
+        Resource = "arn:aws:logs:*:*:log-group:/aws/kinesisfirehose/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_cloudwatch_policy" {
+  name = "firehose-cloudwatch-policy"
+  role = aws_iam_role.firehose_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:log-group:/aws/kinesisfirehose/*"
+      }
+    ]
+  })
+}
+
