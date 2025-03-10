@@ -122,8 +122,6 @@ module "crypto-listener" {
   allow_to_security_group_ids = [
     module.crypto-api.security_group_id
   ]
-  datastore = var.datastore
-  datacache = var.datacache
 }
 
 module "crypto-processor" {

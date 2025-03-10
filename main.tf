@@ -86,8 +86,8 @@ module "storage" {
     datastore = module.network.database_subnet_ids
   }
   allow_from_security_group_ids = {
-    datacache = concat(module.application.datacache_access_security_group_ids, [module.compute.listener_security_group_id])
-    datastore = concat(module.application.datastore_access_security_group_ids, [module.compute.listener_security_group_id])
+    datacache = module.application.datacache_access_security_group_ids
+    datastore = module.application.datastore_access_security_group_ids
   }
   components = local.components
   depends_on = [module.security.secret, module.network]

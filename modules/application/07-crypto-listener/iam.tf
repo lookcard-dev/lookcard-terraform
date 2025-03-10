@@ -34,7 +34,6 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          data.aws_secretsmanager_secret.database.arn,
           data.aws_secretsmanager_secret.sentry.arn,
           data.aws_secretsmanager_secret.getblock.arn,
           data.aws_secretsmanager_secret.trongrid.arn,

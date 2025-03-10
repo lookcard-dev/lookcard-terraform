@@ -1,7 +1,3 @@
-data "aws_secretsmanager_secret" "database" {
-  name = "DATABASE"
-}
-
 data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
@@ -67,19 +63,6 @@ variable "network" {
   })
 }
 
-variable "datastore" {
-  type = object({
-    writer_endpoint = string
-    reader_endpoint = string
-  })
-}
-
-variable "datacache" {
-  type = object({
-    endpoint = string
-  })
-}
-
 variable "allow_to_security_group_ids"{
   type = list(string)
 }
@@ -99,26 +82,6 @@ locals {
       value = "xray.daemon.lookcard.local:2337"
     },
     {
-      name  = "REDIS_HOST"
-      value = var.datacache.endpoint
-    },
-    {
-      name  = "DATABASE_HOST"
-      value = var.datastore.writer_endpoint
-    },
-    {
-      name  = "DATABASE_READ_HOST"
-      value = var.datastore.reader_endpoint
-    },
-    {
-      name  = "DATABASE_PORT"
-      value = "5432"
-    },
-    {
-      name  = "DATABASE_SCHEMA"
-      value = replace(var.name, "-", "_")
-    },
-    {
       name  = "AWS_DYNAMODB_BLOCK_RECORDER_TABLE_NAME"
       value = aws_dynamodb_table.block_recorder.name
     },
@@ -127,23 +90,6 @@ locals {
       value = aws_dynamodb_table.guard_recorder.name
     } 
   ]
-  environment_secrets = [
-    {
-      name      = "DATABASE_NAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:dbname::"
-    },
-    {
-      name      = "DATABASE_USERNAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:username::"
-    },
-    {
-      name      = "DATABASE_PASSWORD"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
-    },
-    # {
-    #   name      = "SENTRY_DSN"
-    #   valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
-    # },
-  ]
+  environment_secrets = []
 }
 
