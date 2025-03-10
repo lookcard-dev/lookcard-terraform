@@ -77,10 +77,10 @@ locals {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.runtime_environment
     },
-    {
-      name  = "AWS_XRAY_DAEMON_ENDPOINT"
-      value = "xray.daemon.lookcard.local:2337"
-    },
+    # {
+    #   name  = "AWS_XRAY_DAEMON_ENDPOINT"
+    #   value = "xray.daemon.lookcard.local:2337"
+    # },
     {
       name  = "AWS_DYNAMODB_BLOCK_RECORDER_TABLE_NAME"
       value = aws_dynamodb_table.block_recorder.name
