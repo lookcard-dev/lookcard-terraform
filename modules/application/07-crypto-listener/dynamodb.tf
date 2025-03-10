@@ -1,8 +1,8 @@
 resource "aws_dynamodb_table" "block_recorder" {
   name         = "Crypto_Listener-Block_Recorder"
   billing_mode = "PROVISIONED"
-  read_capacity  = 10
-  write_capacity = 10
+  read_capacity  = 20
+  write_capacity = 20
   hash_key     = "node"
   range_key    = "number"
 
@@ -14,6 +14,13 @@ resource "aws_dynamodb_table" "block_recorder" {
   attribute {
     name = "number"
     type = "N"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      read_capacity,
+      write_capacity,
+    ]
   }
 }
 
