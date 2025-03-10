@@ -20,7 +20,7 @@ resource "aws_dynamodb_table" "block_recorder" {
 resource "aws_dynamodb_table" "guard_recorder" {
   name         = "Crypto_Listener-Guard_Recorder"
   billing_mode = "PROVISIONED"
-  read_capacity  = 2
+  read_capacity  = 1
   write_capacity = 2
   hash_key     = "node"
 

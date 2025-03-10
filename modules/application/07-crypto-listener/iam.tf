@@ -67,6 +67,28 @@ resource "aws_iam_role" "task_role" {
   })
 }
 
+resource "aws_iam_role_policy" "dynamodb_access" {
+  name = "DynamoDBAccessPolicy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query"
+        ],
+        "Resource" : [
+          aws_dynamodb_table.block_recorder.arn,
+          aws_dynamodb_table.guard_recorder.arn
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "cloudwatch_log" {
   name = "CloudWatchLogPolicy"
   role = aws_iam_role.task_role.id
