@@ -65,6 +65,10 @@ resource "aws_rds_cluster" "cluster" {
   # Enable Performance Insights
   performance_insights_enabled    = true
   performance_insights_retention_period = var.runtime_environment == "production" ? 180 : 7
+
+  # Enable Data API
+  enable_http_endpoint = true
+  
 }
 
 resource "aws_rds_cluster_instance" "writer" {
@@ -75,7 +79,9 @@ resource "aws_rds_cluster_instance" "writer" {
   engine_version     = aws_rds_cluster.cluster.engine_version
   publicly_accessible = false
   performance_insights_enabled    = true
-  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60
+  
+  # Enhanced monitoring configuration
+  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60  # Seconds between points when metrics are collected
   monitoring_role_arn           = aws_iam_role.rds_monitoring_role.arn
 }
 
@@ -88,7 +94,9 @@ resource "aws_rds_cluster_instance" "reader" {
   engine_version     = aws_rds_cluster.cluster.engine_version
   publicly_accessible = false
   performance_insights_enabled    = true
-  monitoring_interval            = 60
+  
+  # Enhanced monitoring configuration
+  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60  # Align with writer instance
   monitoring_role_arn           = aws_iam_role.rds_monitoring_role.arn
 }
 
