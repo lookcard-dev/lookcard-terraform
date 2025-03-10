@@ -117,7 +117,15 @@ locals {
     {
       name  = "DATABASE_SCHEMA"
       value = replace(var.name, "-", "_")
-    }
+    },
+    {
+      name  = "AWS_DYNAMODB_BLOCK_RECORDER_TABLE_NAME"
+      value = aws_dynamodb_table.block_recorder.name
+    },
+    {
+      name  = "AWS_DYNAMODB_GUARD_RECORDER_TABLE_NAME"
+      value = aws_dynamodb_table.guard_recorder.name
+    } 
   ]
   environment_secrets = [
     {
