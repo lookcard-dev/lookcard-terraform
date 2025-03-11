@@ -56,14 +56,14 @@ variable "cluster_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -77,10 +77,10 @@ locals {
       name  = "RUNTIME_ENVIRONMENT"
       value = var.runtime_environment
     },
-    # {
-    #   name  = "AWS_XRAY_DAEMON_ENDPOINT"
-    #   value = "xray.daemon.lookcard.local:2337"
-    # },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
     {
       name  = "AWS_DYNAMODB_BLOCK_RECORDER_TABLE_NAME"
       value = aws_dynamodb_table.block_recorder.name
@@ -88,7 +88,7 @@ locals {
     {
       name  = "AWS_DYNAMODB_GUARD_RECORDER_TABLE_NAME"
       value = aws_dynamodb_table.guard_recorder.name
-    } 
+    }
   ]
   environment_secrets = []
 }
