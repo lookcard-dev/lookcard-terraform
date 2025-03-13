@@ -39,36 +39,30 @@ resource "aws_rds_cluster" "cluster" {
   db_subnet_group_name   = aws_db_subnet_group.subnet_group.name
   vpc_security_group_ids = [aws_security_group.cluster_security_group.id]
   
-  # Backup configuration
   backup_retention_period = var.runtime_environment == "production" ? 30 : 7
   preferred_backup_window = "03:00-04:00"
   copy_tags_to_snapshot  = true
   
-  # Maintenance and updates
   preferred_maintenance_window = "Mon:04:00-Mon:05:00"
   
-  # Security
   storage_encrypted      = true
   iam_database_authentication_enabled = true
   
-  # Production settings
   deletion_protection    = var.runtime_environment == "production"
   skip_final_snapshot    = var.runtime_environment != "production"
   final_snapshot_identifier = var.runtime_environment == "production" ? "final-snapshot" : null
 
-  # Performance and scaling
+  allow_major_version_upgrade = false
+
   serverlessv2_scaling_configuration {
     max_capacity = var.runtime_environment == "production" ? 8.0 : 1.0
     min_capacity = 0.5
   }
 
-  # Enable Performance Insights
   performance_insights_enabled    = true
   performance_insights_retention_period = var.runtime_environment == "production" ? 180 : 7
 
-  # Enable Data API
   enable_http_endpoint = true
-  
 }
 
 resource "aws_rds_cluster_instance" "writer" {
@@ -80,9 +74,8 @@ resource "aws_rds_cluster_instance" "writer" {
   publicly_accessible = false
   performance_insights_enabled    = true
   
-  # Enhanced monitoring configuration
-  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60  # Seconds between points when metrics are collected
-  monitoring_role_arn           = aws_iam_role.rds_monitoring_role.arn
+  monitoring_interval            = var.runtime_environment == "production" ? 10 : 0  # Only enable monitoring in production
+  monitoring_role_arn           = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
 }
 
 resource "aws_rds_cluster_instance" "reader" {
@@ -95,12 +88,10 @@ resource "aws_rds_cluster_instance" "reader" {
   publicly_accessible = false
   performance_insights_enabled    = true
   
-  # Enhanced monitoring configuration
-  monitoring_interval            = var.runtime_environment == "production" ? 10 : 60  # Align with writer instance
-  monitoring_role_arn           = aws_iam_role.rds_monitoring_role.arn
+  monitoring_interval            = var.runtime_environment == "production" ? 10 : 0  # Only enable monitoring in production
+  monitoring_role_arn           = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
 }
 
-# IAM role and policy attachment for monitoring
 resource "aws_iam_role" "rds_monitoring_role" {
   name = "rds-monitoring-role"
 
