@@ -5,6 +5,11 @@ resource "aws_dynamodb_table" "block_recorder" {
   write_capacity = 20
   hash_key     = "node"
   range_key    = "number"
+  
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
+  }
 
   attribute {
     name = "node"
@@ -77,6 +82,11 @@ resource "aws_dynamodb_table" "guard_recorder" {
   read_capacity  = 2
   write_capacity = 2
   hash_key     = "node"
+
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
+  }
 
   attribute {
     name = "node"
