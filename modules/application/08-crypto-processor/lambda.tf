@@ -12,7 +12,7 @@ resource "aws_lambda_function" "sweep_processor" {
   image_config {
     command = ["workflows/sweep/index.handler"]
   }
-  timeout     = 180
+  timeout     = 900
   memory_size = 256
   tracing_config {
     mode = "Active"
@@ -48,7 +48,7 @@ resource "aws_lambda_function" "withdrawal_processor" {
   image_config {
     command = ["workflows/withdrawal/index.handler"]
   }
-  timeout     = 180
+  timeout     = 900
   memory_size = 256
   tracing_config {
     mode = "Active"
