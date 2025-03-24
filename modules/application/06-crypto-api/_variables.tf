@@ -86,6 +86,20 @@ variable "kms_key_arns" {
   })
 }
 
+variable "sqs_queue_urls" {
+  type = object({
+    sweep_processor      = string
+    withdrawal_processor = string
+  })
+}
+
+variable "sqs_queue_arns" {
+  type = object({
+    sweep_processor      = string
+    withdrawal_processor = string
+  })
+}
+
 locals {
   environment_variables = [
     {

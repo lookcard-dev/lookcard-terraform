@@ -102,7 +102,7 @@ resource "aws_iam_role_policy" "sqs_access" {
       {
         "Effect" : "Allow",
         "Action" : ["sqs:SendMessage", "sqs:SendMessageBatch"],
-        "Resource" : [data.aws_sqs_queue.sweep_processor.arn, data.aws_sqs_queue.withdrawal_processor.arn]
+        "Resource" : [var.sqs_queue_arns.sweep_processor, var.sqs_queue_arns.withdrawal_processor]
       }
     ]
   })

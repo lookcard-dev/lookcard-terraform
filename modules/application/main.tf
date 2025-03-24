@@ -26,7 +26,7 @@ module "profile-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 module "data-api" {
@@ -38,7 +38,7 @@ module "data-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   kms_key_arns                = var.kms_key_arns
 }
 
@@ -51,7 +51,7 @@ module "config-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 module "user-api" {
@@ -64,6 +64,7 @@ module "user-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.profile-api.security_group_id,
     module.data-api.security_group_id
   ]
@@ -81,6 +82,7 @@ module "account-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.config-api.security_group_id,
     module.profile-api.security_group_id,
     module.data-api.security_group_id,
@@ -101,6 +103,7 @@ module "crypto-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.config-api.security_group_id,
     module.profile-api.security_group_id,
     module.data-api.security_group_id,
@@ -109,6 +112,14 @@ module "crypto-api" {
   datacache    = var.datacache
   datastore    = var.datastore
   kms_key_arns = var.kms_key_arns
+  sqs_queue_urls = {
+    sweep_processor      = module.crypto-processor.sweep_processor_queue_url
+    withdrawal_processor = module.crypto-processor.withdrawal_processor_queue_url
+  }
+  sqs_queue_arns = {
+    sweep_processor      = module.crypto-processor.sweep_processor_queue_arn
+    withdrawal_processor = module.crypto-processor.withdrawal_processor_queue_arn
+  }
 }
 
 module "crypto-listener" {
@@ -120,6 +131,7 @@ module "crypto-listener" {
   cluster_id          = var.cluster_ids.listener
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.crypto-api.security_group_id
   ]
 }
@@ -132,6 +144,7 @@ module "crypto-processor" {
   runtime_environment = var.runtime_environment
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.crypto-api.security_group_id,
     module.account-api.security_group_id,
     module.profile-api.security_group_id,
@@ -151,6 +164,7 @@ module "authentication-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.profile-api.security_group_id
   ]
 }
@@ -165,6 +179,7 @@ module "verification-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.data-api.security_group_id,
   ]
   datacache = var.datacache
@@ -180,7 +195,7 @@ module "notification-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 module "referral-api" {
@@ -192,7 +207,7 @@ module "referral-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   datastore                   = var.datastore
   datacache                   = var.datacache
 }
@@ -206,7 +221,7 @@ module "domain-api" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 module "reseller-api" {
@@ -218,7 +233,7 @@ module "reseller-api" {
   cluster_id                  = var.cluster_ids.composite_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   datastore                   = var.datastore
   datacache                   = var.datacache
 }
@@ -232,7 +247,7 @@ module "reap-proxy" {
   cluster_id                  = var.cluster_ids.core_application
   namespace_id                = var.namespace_id
   network                     = var.network
-  allow_to_security_group_ids = []
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
 }
 
 module "apigw-authorizer" {
@@ -243,6 +258,7 @@ module "apigw-authorizer" {
   runtime_environment = var.runtime_environment
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.authentication-api.security_group_id,
     module.profile-api.security_group_id
   ]
@@ -270,10 +286,14 @@ module "cronjob" {
   image_tag                   = var.components["cronjob"].image_tag
   runtime_environment         = var.runtime_environment
   network                     = var.network
-  allow_to_security_group_ids = []
-  datacache                   = var.datacache
-  datastore                   = var.datastore
-  cluster_id                  = var.cluster_ids.cronjob
+  allow_to_security_group_ids = [module.xray-daemon.security_group_id]
+  external_security_group_ids = {
+    account_api = module.account-api.security_group_id
+    crypto_api  = module.crypto-api.security_group_id
+  }
+  datacache  = var.datacache
+  datastore  = var.datastore
+  cluster_id = var.cluster_ids.cronjob
   api_image_tags = {
     account_api = var.components["account-api"].image_tag
     crypto_api  = var.components["crypto-api"].image_tag
@@ -290,6 +310,7 @@ module "webhook-api" {
   namespace_id        = var.namespace_id
   network             = var.network
   allow_to_security_group_ids = [
+    module.xray-daemon.security_group_id,
     module.verification-api.security_group_id,
     module.user-api.security_group_id,
   ]

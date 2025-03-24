@@ -24,13 +24,6 @@ variable "subnet_ids" {
   })  
 }
 
-variable "allow_from_security_group_ids" {
-  type = object({
-    datacache = list(string)
-    datastore = list(string)
-  })  
-}
-
 variable "components" {
   type = map(object({
     name = string

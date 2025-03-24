@@ -8,16 +8,6 @@ resource "aws_ecs_cluster_capacity_providers" "administrative" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "webhook" {
-  cluster_name       = aws_ecs_cluster.webhook.name
-  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
-  default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
-  }
-}
-
 resource "aws_ecs_cluster_capacity_providers" "composite_application" {
   cluster_name       = aws_ecs_cluster.composite_application.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]

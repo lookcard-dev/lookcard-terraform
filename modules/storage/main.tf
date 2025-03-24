@@ -1,28 +1,26 @@
 module "s3" {
-  source = "./s3"
+  source              = "./s3"
   runtime_environment = var.runtime_environment
-  aws_provider = var.aws_provider
+  aws_provider        = var.aws_provider
 }
 
 module "datacache" {
-  source = "./datacache"
-  aws_provider = var.aws_provider
+  source              = "./datacache"
+  aws_provider        = var.aws_provider
   runtime_environment = var.runtime_environment
-  vpc_id = var.vpc_id 
-  subnet_ids = var.subnet_ids.datacache
-  allow_from_security_group_ids = var.allow_from_security_group_ids.datacache
+  vpc_id              = var.vpc_id
+  subnet_ids          = var.subnet_ids.datacache
 }
 
 module "datastore" {
-  source = "./datastore"
-  aws_provider = var.aws_provider
+  source              = "./datastore"
+  aws_provider        = var.aws_provider
   runtime_environment = var.runtime_environment
-  vpc_id = var.vpc_id 
-  subnet_ids = var.subnet_ids.datastore
-  allow_from_security_group_ids = var.allow_from_security_group_ids.datastore 
+  vpc_id              = var.vpc_id
+  subnet_ids          = var.subnet_ids.datastore
 }
 
 module "ecr" {
-  source = "./ecr"
+  source     = "./ecr"
   components = var.components
 }

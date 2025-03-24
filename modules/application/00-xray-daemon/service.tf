@@ -8,9 +8,6 @@ resource "aws_service_discovery_service" "discovery_service" {
       type = "A"
     }
   }
-  health_check_custom_config {
-    failure_threshold = 1
-  }
 }
 
 resource "aws_ecs_service" "ecs_service" {

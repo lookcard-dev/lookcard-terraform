@@ -27,25 +27,32 @@ variable "name" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    account_api = string
+    crypto_api  = string
+  })
 }
 
 variable "image_tag" {
   type = string
 }
 
-variable "api_image_tags"{
+variable "api_image_tags" {
   type = object({
     account_api = string
-    crypto_api = string
+    crypto_api  = string
   })
 }
 

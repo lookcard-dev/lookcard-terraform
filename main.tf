@@ -85,12 +85,8 @@ module "storage" {
     datacache = module.network.database_subnet_ids
     datastore = module.network.database_subnet_ids
   }
-  allow_from_security_group_ids = {
-    datacache = module.application.datacache_access_security_group_ids
-    datastore = module.application.datastore_access_security_group_ids
-  }
   components = local.components
-  depends_on = [module.security.secret, module.network]
+  depends_on = [module.security, module.network]
 }
 
 module "compute" {
@@ -106,6 +102,7 @@ module "application" {
   source              = "./modules/application"
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
+  depends_on          = [module.network, module.storage, module.compute, module.security]
 
   network = {
     vpc_id              = module.network.vpc_id

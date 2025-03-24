@@ -7,9 +7,6 @@ resource "aws_service_discovery_service" "discovery_service" {
       type = "A"
     }
   }
-  health_check_custom_config {
-    failure_threshold = 1
-  }
 }
 
 resource "aws_ecs_service" "ecs_service" {
@@ -23,11 +20,11 @@ resource "aws_ecs_service" "ecs_service" {
     capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
     weight            = 1
   }
-  
+
   desired_count = var.image_tag == "latest" ? 0 : (
     var.runtime_environment == "production" ? 2 : 1
   )
-  cluster       = var.cluster_id
+  cluster = var.cluster_id
 
   network_configuration {
     subnets         = var.network.private_subnet_ids

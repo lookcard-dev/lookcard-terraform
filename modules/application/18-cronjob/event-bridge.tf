@@ -16,7 +16,7 @@ resource "aws_cloudwatch_event_target" "monthly_batch_account_statement_generato
     launch_type         = "FARGATE"
     network_configuration {
       subnets          = var.network.private_subnet_ids
-      security_groups  = [aws_security_group.security_group.id, data.aws_security_group.account_api_security_group.id]
+      security_groups  = [aws_security_group.security_group.id, var.external_security_group_ids.account_api]
       assign_public_ip = false
     }
   }
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_event_target" "daily_batch_account_snapshot_processor_e
     launch_type         = "FARGATE"
     network_configuration {
       subnets          = var.network.private_subnet_ids
-      security_groups  = [aws_security_group.security_group.id, data.aws_security_group.account_api_security_group.id]
+      security_groups  = [aws_security_group.security_group.id, var.external_security_group_ids.account_api]
       assign_public_ip = false
     }
   }
@@ -64,7 +64,7 @@ resource "aws_cloudwatch_event_target" "hourly_batch_retry_wallet_deposit_proces
     launch_type         = "FARGATE"
     network_configuration {
       subnets          = var.network.private_subnet_ids
-      security_groups  = [aws_security_group.security_group.id, data.aws_security_group.crypto_api_security_group.id]
+      security_groups  = [aws_security_group.security_group.id, var.external_security_group_ids.crypto_api]
       assign_public_ip = false
     }
   }
@@ -88,7 +88,7 @@ resource "aws_cloudwatch_event_target" "hourly_batch_retry_wallet_withdrawal_pro
     launch_type         = "FARGATE"
     network_configuration {
       subnets          = var.network.private_subnet_ids
-      security_groups  = [aws_security_group.security_group.id, data.aws_security_group.crypto_api_security_group.id]
+      security_groups  = [aws_security_group.security_group.id, var.external_security_group_ids.crypto_api]
       assign_public_ip = false
     }
   }
