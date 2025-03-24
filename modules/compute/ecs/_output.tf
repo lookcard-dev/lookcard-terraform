@@ -18,10 +18,6 @@ output "administrative_cluster_id"{
     value = aws_ecs_cluster.administrative.id
 }
 
-output "webhook_cluster_id"{
-    value = aws_ecs_cluster.webhook.id
-}
-
 output "cronjob_cluster_id"{
     value = aws_ecs_cluster.cronjob.id
 }

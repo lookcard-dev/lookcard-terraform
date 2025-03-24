@@ -85,10 +85,6 @@ module "storage" {
     datacache = module.network.database_subnet_ids
     datastore = module.network.database_subnet_ids
   }
-  allow_from_security_group_ids = {
-    datacache = module.application.datacache_access_security_group_ids
-    datastore = module.application.datastore_access_security_group_ids
-  }
   components = local.components
   depends_on = [module.security.secret, module.network]
 }
@@ -99,13 +95,15 @@ module "compute" {
   runtime_environment = var.runtime_environment
   vpc_id              = module.network.vpc_id
   subnet_ids          = module.network.private_subnet_ids
-  depends_on          = [module.network]
+  depends_on          = [module.network, module.storage]
 }
 
 module "application" {
   source              = "./modules/application"
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
+
+  depends_on = [module.network, module.storage, module.compute]
 
   network = {
     vpc_id              = module.network.vpc_id
@@ -156,17 +154,24 @@ module "application" {
   }
 
   elb = {
-    application_load_balancer_arn               = module.network.application_load_balancer_arn
-    network_load_balancer_arn                   = module.network.network_load_balancer_arn
-    application_load_balancer_dns_name          = module.network.application_load_balancer_dns_name
-    network_load_balancer_dns_name              = module.network.network_load_balancer_dns_name
-    application_load_balancer_http_listener_arn = module.network.application_load_balancer_http_listener_arn
+    core_application_load_balancer_arn                    = module.network.core_application_load_balancer_arn
+    core_application_load_balancer_dns_name               = module.network.core_application_load_balancer_dns_name
+    core_application_load_balancer_http_listener_arn      = module.network.core_application_load_balancer_http_listener_arn
+    core_application_load_balancer_security_group_id      = module.network.core_application_load_balancer_security_group_id
+    composite_application_load_balancer_arn               = module.network.composite_application_load_balancer_arn
+    composite_application_load_balancer_dns_name          = module.network.composite_application_load_balancer_dns_name
+    composite_application_load_balancer_http_listener_arn = module.network.composite_application_load_balancer_http_listener_arn
+    composite_application_load_balancer_security_group_id = module.network.composite_application_load_balancer_security_group_id
+    composite_network_load_balancer_arn                   = module.network.composite_network_load_balancer_arn
+    composite_network_load_balancer_dns_name              = module.network.composite_network_load_balancer_dns_name
+    composite_network_load_balancer_http_listener_arn     = module.network.composite_network_load_balancer_http_listener_arn
+    composite_network_load_balancer_security_group_id     = module.network.composite_network_load_balancer_security_group_id
   }
 
-  api_gateway = {
-    vpc_link_arn = module.network.api_gateway_vpc_link_arn
-    vpc_link_id  = module.network.api_gateway_vpc_link_id
-  }
+  # api_gateway = {
+  #   vpc_link_arn = module.network.api_gateway_vpc_link_arn
+  #   vpc_link_id  = module.network.api_gateway_vpc_link_id
+  # }
 
   providers = {
     aws.dns       = aws.dns
@@ -174,12 +179,12 @@ module "application" {
   }
 }
 
-module "monitor" {
-  source = "./modules/monitor"
+# module "monitor" {
+#   source = "./modules/monitor"
 
-  aws_provider        = local.aws_provider.application
-  runtime_environment = var.runtime_environment
-}
+#   aws_provider        = local.aws_provider.application
+#   runtime_environment = var.runtime_environment
+# }
 
 # module "utils" {
 #   source = "./modules/utils"

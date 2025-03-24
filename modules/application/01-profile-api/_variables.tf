@@ -31,15 +31,28 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
-  type = list(string)
+variable "elb" {
+  type = object({
+    core_application_load_balancer_security_group_id      = string
+    core_application_load_balancer_arn                    = string
+    core_application_load_balancer_dns_name               = string
+    core_application_load_balancer_http_listener_arn      = string
+    composite_application_load_balancer_security_group_id = string
+    composite_application_load_balancer_arn               = string
+    composite_application_load_balancer_dns_name          = string
+    composite_application_load_balancer_http_listener_arn = string
+    composite_network_load_balancer_security_group_id     = string
+    composite_network_load_balancer_arn                   = string
+    composite_network_load_balancer_dns_name              = string
+    composite_network_load_balancer_http_listener_arn     = string
+  })
 }
 
 variable "image_tag" {
@@ -68,8 +81,8 @@ locals {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
       value = aws_cloudwatch_log_group.app_log_group.name
     },
-    { 
-      name = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME",
+    {
+      name  = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME",
       value = aws_dynamodb_table.profile.name
     }
   ]

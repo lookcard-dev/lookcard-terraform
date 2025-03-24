@@ -20,8 +20,3 @@ variable "vpc_id"{
 variable "subnet_ids" {
   type = list(string)
 }
-
-variable "certificate_arns" {
-  type = list(string)
-  default = []
-}

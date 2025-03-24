@@ -51,9 +51,23 @@ variable "network" {
   })
 }
 
-variable "allow_to_security_group_ids"{
-  type = list(string)
+variable "elb" {
+  type = object({
+    core_application_load_balancer_security_group_id      = string
+    core_application_load_balancer_arn                    = string
+    core_application_load_balancer_dns_name               = string
+    core_application_load_balancer_http_listener_arn      = string
+    composite_application_load_balancer_security_group_id = string
+    composite_application_load_balancer_arn               = string
+    composite_application_load_balancer_dns_name          = string
+    composite_application_load_balancer_http_listener_arn = string
+    composite_network_load_balancer_security_group_id     = string
+    composite_network_load_balancer_arn                   = string
+    composite_network_load_balancer_dns_name              = string
+    composite_network_load_balancer_http_listener_arn     = string
+  })
 }
+
 
 variable "image_tag" {
   type = string

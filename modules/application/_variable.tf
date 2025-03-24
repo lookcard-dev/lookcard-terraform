@@ -77,20 +77,27 @@ variable "kms_key_arns" {
 
 variable "elb" {
   type = object({
-    application_load_balancer_arn = string
-    application_load_balancer_dns_name = string
-    network_load_balancer_arn     = string
-    network_load_balancer_dns_name = string
-    application_load_balancer_http_listener_arn = string
+    core_application_load_balancer_security_group_id      = string
+    core_application_load_balancer_arn                    = string
+    core_application_load_balancer_dns_name               = string
+    core_application_load_balancer_http_listener_arn      = string
+    composite_application_load_balancer_security_group_id = string
+    composite_application_load_balancer_arn               = string
+    composite_application_load_balancer_dns_name          = string
+    composite_application_load_balancer_http_listener_arn = string
+    composite_network_load_balancer_security_group_id     = string
+    composite_network_load_balancer_arn                   = string
+    composite_network_load_balancer_dns_name              = string
+    composite_network_load_balancer_http_listener_arn     = string
   })
 }
 
-variable "api_gateway" {
-  type = object({
-    vpc_link_arn = string
-    vpc_link_id  = string
-  })
-}
+# variable "api_gateway" {
+#   type = object({
+#     vpc_link_arn = string
+#     vpc_link_id  = string
+#   })
+# }
 
 variable "domain" {
   type = object({
@@ -101,4 +108,26 @@ variable "domain" {
     general = "develop.not-lookcard.com"
     admin   = "develop.not-lookcard.com"
   }
+}
+
+locals {
+  allow_to_datastore_security_group_ids = [
+    # module.user-api.security_group_id,
+    # module.account-api.security_group_id,
+    # module.crypto-api.security_group_id,
+    # module.referral-api.security_group_id,
+    # module.verification-api.security_group_id,
+    # module.reseller-api.security_group_id,
+    # module.cronjob.security_group_id,
+  ]
+  allow_to_datacache_security_group_ids = [
+    # module.user-api.security_group_id,
+    # module.account-api.security_group_id,
+    # module.crypto-api.security_group_id,
+    # module.referral-api.security_group_id,
+    # module.verification-api.security_group_id,
+    # module.reseller-api.security_group_id,
+    module.crypto-faucet[0].security_group_id,
+    # module.cronjob.security_group_id,
+  ]
 }

@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "webhook_api" {
 }
 
 resource "aws_lb_listener_rule" "webhook_api" {
-  listener_arn = var.elb.application_load_balancer_http_listener_arn
+  listener_arn = var.elb.core_application_load_balancer_http_listener_arn
   priority     = 10
 
   action {

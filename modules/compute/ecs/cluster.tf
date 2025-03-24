@@ -14,14 +14,6 @@ resource "aws_ecs_cluster" "administrative" {
   }
 }
 
-resource "aws_ecs_cluster" "webhook" {
-  name = "webhook"
-  setting {
-    name  = "containerInsights"
-    value = var.runtime_environment == "production" ? "enabled" : "disabled"
-  }
-}
-
 resource "aws_ecs_cluster" "composite_application" {
   name = "composite-application"
   setting {

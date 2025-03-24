@@ -18,10 +18,6 @@ output "administrative_cluster_id"{
     value = module.ecs.administrative_cluster_id
 }
 
-output "webhook_cluster_id"{
-    value = module.ecs.webhook_cluster_id
-}
-
 output "cronjob_cluster_id"{
     value = module.ecs.cronjob_cluster_id
 }

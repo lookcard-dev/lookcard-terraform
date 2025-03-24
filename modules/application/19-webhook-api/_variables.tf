@@ -43,11 +43,15 @@ variable "api_gateway" {
 
 variable "elb" {
   type = object({
-    network_load_balancer_arn                   = string
-    network_load_balancer_dns_name              = string
-    application_load_balancer_arn               = string
-    application_load_balancer_dns_name          = string
-    application_load_balancer_http_listener_arn = string
+    core_application_load_balancer_arn                    = string
+    core_application_load_balancer_dns_name               = string
+    core_application_load_balancer_http_listener_arn      = string
+    composite_application_load_balancer_arn               = string
+    composite_application_load_balancer_dns_name          = string
+    composite_application_load_balancer_http_listener_arn = string
+    composite_network_load_balancer_arn                   = string
+    composite_network_load_balancer_dns_name              = string
+    composite_network_load_balancer_http_listener_arn     = string
   })
 }
 

@@ -1,15 +1,11 @@
-data "aws_s3_bucket" "logs_bucket" {
-  count  = 1
-  bucket = "${var.aws_provider.account_id}-log"
-}
 
-resource "aws_lb" "application_load_balancer" {
-  name               = "alb"
+resource "aws_lb" "composite_application_load_balancer" {
+  name               = "composite-alb"
   internal           = true
   load_balancer_type = "application"
   subnets            = var.subnet_ids
 
-  security_groups = [aws_security_group.application_load_balancer_security_group.id]
+  security_groups = [aws_security_group.composite_application_load_balancer_security_group.id]
 
   enable_deletion_protection = var.runtime_environment == "production" ? true : false
   preserve_host_header       = true
@@ -18,17 +14,17 @@ resource "aws_lb" "application_load_balancer" {
   access_logs {
     enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
     bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/application/access_logs"
+    prefix  = "ELB/composite-application/access_logs"
   }
   connection_logs {
     enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
     bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/application/connection_logs"
+    prefix  = "ELB/composite-application/connection_logs"
   }
 }
 
-resource "aws_lb_listener" "application_load_balancer_http_listener" {
-  load_balancer_arn = aws_lb.application_load_balancer.arn
+resource "aws_lb_listener" "composite_application_load_balancer_http_listener" {
+  load_balancer_arn = aws_lb.composite_application_load_balancer.arn
   port              = 80
   protocol          = "HTTP"
   default_action {
@@ -41,9 +37,9 @@ resource "aws_lb_listener" "application_load_balancer_http_listener" {
   }
 }
 
-resource "aws_lb_listener_rule" "http_healthcheck" {
-  listener_arn = aws_lb_listener.application_load_balancer_http_listener.arn
-  priority     = 1 # Highest priority
+resource "aws_lb_listener_rule" "composite_http_healthcheck" {
+  listener_arn = aws_lb_listener.composite_application_load_balancer_http_listener.arn
+  priority     = 1
 
   action {
     type = "fixed-response"
