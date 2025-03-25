@@ -6,6 +6,10 @@ data "aws_secretsmanager_secret" "sentry" {
   name = "SENTRY"
 }
 
+data "aws_secretsmanager_secret" "elliptic" {
+  name = "ELLIPTIC"
+}
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -27,14 +31,14 @@ variable "name" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 

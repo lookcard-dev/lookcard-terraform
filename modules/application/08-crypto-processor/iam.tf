@@ -49,3 +49,23 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "secrets_read_only" {
+  name = "SecretsReadOnlyPolicy"
+  role = aws_iam_role.lambda_function_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        "Resource" : [
+          data.aws_secretsmanager_secret.elliptic.arn
+        ]
+      }
+    ]
+  })
+}

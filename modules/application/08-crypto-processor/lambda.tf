@@ -2,6 +2,10 @@ data "aws_ecr_repository" "repository"{
   name = var.name
 }
 
+data "aws_secretsmanager_secret_version" "sentry" {
+  secret_id = data.aws_secretsmanager_secret.sentry.id
+}
+
 resource "aws_lambda_function" "sweep_processor" {
   count = var.image_tag == "latest" ? 0 : 1
   function_name = "Crypto_Processor-Sweep_Processor"
@@ -26,6 +30,9 @@ resource "aws_lambda_function" "sweep_processor" {
         RUNTIME_ENVIRONMENT = var.runtime_environment
         AWS_XRAY_DAEMON_ENDPOINT = "xray.daemon.lookcard.local:2337"
         AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/sweep"
+        NODE_OPTIONS="-import ./src/utils/sentry-instrument.js"
+        SENTRY_DSN = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
+        ELLIPTIC_SECRET_ARN = data.aws_secretsmanager_secret.elliptic.arn
     }
   }
 }
@@ -62,6 +69,9 @@ resource "aws_lambda_function" "withdrawal_processor" {
         RUNTIME_ENVIRONMENT = var.runtime_environment
         AWS_XRAY_DAEMON_ENDPOINT = "xray.daemon.lookcard.local:2337"
         AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/withdrawal"
+        NODE_OPTIONS="-import ./src/utils/sentry-instrument.js"
+        SENTRY_DSN = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
+        ELLIPTIC_SECRET_ARN = data.aws_secretsmanager_secret.elliptic.arn
     }
   }
 } 
