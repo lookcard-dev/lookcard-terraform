@@ -2,3 +2,4 @@
 .terraform.tfstate.lock.info
 terraform.tfvars.*.json
 .DS_Store
+.infracost
