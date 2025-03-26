@@ -3,3 +3,5 @@
 terraform.tfvars.*.json
 .DS_Store
 .infracost
+plan.json
+plan.out

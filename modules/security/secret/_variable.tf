@@ -26,7 +26,8 @@ variable "secrets" {
     "TRONENERGY",
     "TRONSAVE",
     "BLAST",
-    "PUBLIC_NODE"
+    "PUBLIC_NODE",
+    "TELEGRAM"
   ]
   nullable = true
 }
