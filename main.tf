@@ -66,8 +66,7 @@ module "network" {
 
 module "security" {
   source              = "./modules/security"
-  general_domain      = var.domain.general
-  admin_domain        = var.domain.admin
+  domain              = var.domain
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
 
@@ -147,10 +146,7 @@ module "application" {
     depends_on = [module.network, module.security]
   }
 
-  domain = {
-    general = var.domain.general
-    admin   = var.domain.admin
-  }
+  domain = var.domain
 
   elb = {
     application_load_balancer_arn               = module.network.application_load_balancer_arn

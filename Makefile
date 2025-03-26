@@ -20,6 +20,4 @@ compose:
 	@docker compose up -d
 
 visualize:
-	@terraform plan -out plan.out -var-file="terraform.$(BRANCH_NAME).tfvars.json"
-	@terraform show -json plan.out > plan.json
-	@docker run --rm -it -p 9000:9000 -v $(pwd)/plan.json:/src/plan.json im2nguyen/rover:latest -planJSONPath=plan.json
+	docker run --rm -it -p 9000:9000 -v $(CURDIR):/src im2nguyen/rover:latest -tfVarsFile "terraform.$(BRANCH_NAME).tfvars.json"

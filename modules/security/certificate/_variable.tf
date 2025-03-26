@@ -7,20 +7,27 @@ terraform {
   }
 }
 
-variable "general_domain" {
-    type = string
-}
-
-variable "admin_domain" {
-    type = string
+variable "domain" {
+  type = object({
+    general = object({
+      name = string
+      zone_id = string
+    })
+    admin = object({
+      name = string
+      zone_id = string
+    })
+  })
 }
 
 data "aws_route53_zone" "general_hosted_zone" {
   provider = aws.dns
-  name = var.general_domain
+  name = var.domain.general.name
+  zone_id = var.domain.general.zone_id
 }
 
 data "aws_route53_zone" "admin_hosted_zone" {
   provider = aws.dns
-  name = var.admin_domain
+  name = var.domain.admin.name
+  zone_id = var.domain.admin.zone_id  
 }

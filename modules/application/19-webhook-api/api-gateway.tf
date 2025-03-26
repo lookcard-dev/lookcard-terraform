@@ -41,7 +41,7 @@ resource "aws_api_gateway_integration" "sumsub_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://webhook.${var.general_domain}/sumsub"
+  uri                     = "http://webhook.${var.domain.general.name}/sumsub"
 }
 
 # Set up POST method for /reap
@@ -60,7 +60,7 @@ resource "aws_api_gateway_integration" "reap_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://webhook.${var.general_domain}/reap"
+  uri                     = "http://webhook.${var.domain.general.name}/reap"
 }
 
 # Set up POST method for /firebase
@@ -79,7 +79,7 @@ resource "aws_api_gateway_integration" "firebase_integration" {
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://webhook.${var.general_domain}/firebase"
+  uri                     = "http://webhook.${var.domain.general.name}/firebase"
 }
 
 # Add OPTIONS method for CORS support on each path
@@ -280,7 +280,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 
 # Create a custom domain name for API Gateway
 resource "aws_api_gateway_domain_name" "webhook_domain" {
-  domain_name     = "webhook.${var.general_domain}"
+  domain_name     = "webhook.${var.domain.general.name}"
   certificate_arn = aws_acm_certificate.certificate.arn
 
   depends_on = [

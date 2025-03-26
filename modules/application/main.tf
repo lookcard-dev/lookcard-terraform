@@ -316,7 +316,7 @@ module "webhook-api" {
   ]
   api_gateway    = var.api_gateway
   elb            = var.elb
-  general_domain = var.domain.general
+  domain         = var.domain
   providers = {
     aws.dns       = aws.dns
     aws.us_east_1 = aws.us_east_1

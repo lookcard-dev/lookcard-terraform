@@ -9,8 +9,7 @@ terraform {
 
 module "certificate" {
   source = "./certificate"
-  general_domain = var.general_domain
-  admin_domain = var.admin_domain
+  domain = var.domain
   
   providers = {
     aws.dns = aws.dns

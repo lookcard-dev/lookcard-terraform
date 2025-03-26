@@ -33,8 +33,6 @@ resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {
   ip_protocol                  = "tcp"
 }
 
-
-
 data "aws_security_group" "application_load_balancer_security_group" {
   name = "alb-sg"
 }

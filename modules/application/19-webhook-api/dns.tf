@@ -1,5 +1,6 @@
 data "aws_route53_zone" "zone" {
-  name     = var.general_domain
+  name     = var.domain.general.name
+  zone_id  = var.domain.general.zone_id
   provider = aws.dns
 }
 
@@ -8,7 +9,7 @@ resource "aws_route53_record" "webhook_api" {
   provider = aws.dns
 
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "webhook.${var.general_domain}"
+  name    = "webhook.${var.domain.general.name}"
   type    = "A"
 
   alias {
@@ -42,4 +43,3 @@ resource "aws_acm_certificate_validation" "certificate_validation" {
   certificate_arn         = aws_acm_certificate.certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.certificate_validation : record.fqdn]
 }
-

@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "certificate" {
-  domain_name       = "webhook.${var.general_domain}"
+  domain_name       = "webhook.${var.domain.general.name}"
   validation_method = "DNS"
   provider          = aws.us_east_1
   lifecycle {

@@ -15,12 +15,24 @@ variable "aws_provider" {
 
 variable "domain" {
   type = object({
-    general = string
-    admin   = string
+    general = object({
+      name    = string
+      zone_id = string
+    })
+    admin = object({
+      name    = string
+      zone_id = string
+    })
   })
   default = {
-    general = "develop.not-lookcard.com"
-    admin   = "develop.not-lookcard.com"
+    general = {
+      name    = "develop.not-lookcard.com"
+      zone_id = "Z01111111111111111111"
+    }
+    admin = {
+      name    = "develop.not-lookcard.com"
+      zone_id = "Z01111111111111111111"
+    }
   }
 }
 

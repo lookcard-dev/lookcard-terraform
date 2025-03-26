@@ -81,8 +81,17 @@ variable "image_tag" {
 }
 
 
-variable "general_domain" {
-  type = string
+variable "domain" {
+  type = object({
+    general = object({
+      name = string
+      zone_id = string
+    })
+    admin = object({
+      name = string
+      zone_id = string
+    })
+  })
 }
 
 locals {
