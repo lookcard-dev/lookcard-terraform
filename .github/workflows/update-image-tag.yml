@@ -1,0 +1,42 @@
+name: Update Image Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: "Service name to update"
+        required: true
+      image_tag:
+        description: "New image tag"
+        required: true
+      environment:
+        description: "Environment to update"
+        required: true
+        default: "develop"
+
+jobs:
+  update-image-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Update image tag
+        run: |
+          # Update the image tag in the image_tags JSON file
+          jq --arg svc "${{ github.event.inputs.service_name }}" \
+             --arg tag "${{ github.event.inputs.image_tag }}" \
+             '.[$svc] = $tag' \
+             image_tags/${{ github.event.inputs.environment }}.json > tmp.json && \
+          mv tmp.json image_tags/${{ github.event.inputs.environment }}.json
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add image_tags/${{ github.event.inputs.environment }}.json
+          git commit -m "Update ${{ github.event.inputs.service_name }} image tag to ${{ github.event.inputs.image_tag }}"
+          git push

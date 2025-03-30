@@ -1,23 +1,36 @@
 BRANCH_NAME := $(shell git branch --show-current)
 
+# Terragrunt commands
 init:
-	@terraform init -backend-config="profile=lookcard-terraform" -backend-config="key=$(BRANCH_NAME)/terraform.tfstate"
+	@cd environments/$(BRANCH_NAME) && terragrunt run-all init
 
 plan:
-	@terraform plan -var-file="terraform.$(BRANCH_NAME).tfvars.json"
+	@cd environments/$(BRANCH_NAME) && terragrunt run-all plan
 
 apply:
-	@terraform apply -var-file="terraform.$(BRANCH_NAME).tfvars.json"
+	@cd environments/$(BRANCH_NAME) && terragrunt run-all apply
 
 refresh:
-	@terraform refresh -var-file="terraform.$(BRANCH_NAME).tfvars.json"
+	@cd environments/$(BRANCH_NAME) && terragrunt run-all refresh
 
-#https://www.infracost.io/docs/#quick-start
+# Module-specific commands
+plan-module:
+	@cd environments/$(BRANCH_NAME)/modules/$(MODULE) && terragrunt plan
+
+apply-module:
+	@cd environments/$(BRANCH_NAME)/modules/$(MODULE) && terragrunt apply
+
+# Cost estimation
 cost:
-	@infracost breakdown --path . --terraform-var-file "terraform.$(BRANCH_NAME).tfvars.json"
+	@cd environments/$(BRANCH_NAME) && terragrunt run-all infracost breakdown --terragrunt-non-interactive
 
 compose:
 	@docker compose up -d
 
 visualize:
-	docker run --rm -it -p 9000:9000 -v $(CURDIR):/src im2nguyen/rover:latest -tfVarsFile "terraform.$(BRANCH_NAME).tfvars.json"
+	docker run --rm -it -p 9000:9000 -v $(CURDIR):/src im2nguyen/rover:latest -terragrunt-config environments/$(BRANCH_NAME)/terragrunt.hcl
+
+# Setup scripts
+setup:
+	@./scripts/extract_image_tags.sh
+	@./scripts/generate_environments.sh

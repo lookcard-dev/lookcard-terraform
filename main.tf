@@ -2,6 +2,24 @@ locals {
   is_github_actions = sensitive(try(tobool(coalesce(var.github_actions, "false")), false))
 }
 
+terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      configuration_aliases = [aws.dns, aws.us_east_1]
+    }
+  }
+}
+
+terraform {
+  required_providers {
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 5.0"
+    }
+  }
+}
+
 variable "github_actions" {
   type    = string
   default = "false"

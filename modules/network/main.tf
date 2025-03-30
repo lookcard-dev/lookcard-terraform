@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
-    }
-  }
-}
-
 module "vpc" {
   source              = "./vpc"
   network             = var.network

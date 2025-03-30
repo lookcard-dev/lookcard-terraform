@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns, aws.us_east_1]
-    }
-  }
-}
-
 module "xray-daemon" {
   source              = "./00-xray-daemon"
   aws_provider        = var.aws_provider
@@ -314,9 +305,9 @@ module "webhook-api" {
     module.verification-api.security_group_id,
     module.user-api.security_group_id,
   ]
-  api_gateway    = var.api_gateway
-  elb            = var.elb
-  domain         = var.domain
+  api_gateway = var.api_gateway
+  elb         = var.elb
+  domain      = var.domain
   providers = {
     aws.dns       = aws.dns
     aws.us_east_1 = aws.us_east_1
