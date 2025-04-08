@@ -49,3 +49,15 @@ output "api_gateway_vpc_link_arn" {
 output "api_gateway_vpc_link_id" {
   value = module.api_gateway.vpc_link_id
 }
+
+output "bastion_host_security_group_id" {
+  value = module.bastion_host.bastion_host_security_group_id
+}
+
+output "application_load_balancer_security_group_id" {
+  value = module.elb.application_load_balancer_security_group_id
+}
+
+output "network_load_balancer_security_group_id" {
+  value = module.elb.network_load_balancer_security_group_id
+}

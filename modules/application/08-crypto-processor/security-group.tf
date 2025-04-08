@@ -19,5 +19,10 @@ resource "aws_vpc_security_group_ingress_rule" "sweep_processor_target_ingress_r
   from_port                    = 8080
   to_port                      = 8080
   ip_protocol                  = "tcp"
+  lifecycle {
+    ignore_changes = [
+      referenced_security_group_id
+    ]
+  }
 }
 

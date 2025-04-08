@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.sentry.arn]
+        "Resource" : [var.secret_arns["SENTRY"]]
       }
     ]
   })
@@ -112,12 +112,12 @@ resource "aws_iam_role_policy" "kms_policy" {
       {
         "Effect" : "Allow",
         "Action" : ["kms:GenerateDataKey"],
-        "Resource" : [data.aws_kms_alias.data_generator_key.target_key_arn]
+        "Resource" : [var.kms_key_arns.data.generator]
       },
       {
         "Effect" : "Allow",
         "Action" : ["kms:Encrypt", "kms:Decrypt"],
-        "Resource" : [data.aws_kms_alias.data_encryption_key.target_key_arn]
+        "Resource" : [var.kms_key_arns.data.encryption]
       }
     ]
   })
@@ -133,8 +133,11 @@ resource "aws_iam_role_policy" "s3_policy" {
       {
         "Effect" : "Allow",
         "Action" : ["s3:GetObject", "s3:PutObject"],
-        "Resource" : [data.aws_s3_bucket.data.arn, "${data.aws_s3_bucket.data.arn}/*"]
-      }
+        "Resource" : [
+          "arn:aws:s3:::${var.s3_bucket_names.data}",
+          "arn:aws:s3:::${var.s3_bucket_names.data}/*"
+          ]
+        }
     ]
   })  
 }

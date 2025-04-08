@@ -7,18 +7,6 @@ terraform {
   }
 }
 
-data "aws_secretsmanager_secret" "wallet" {
-  name = "WALLET"
-}
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
-data "aws_secretsmanager_secret" "microsoft" {
-  name = "MICROSOFT"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -59,4 +47,12 @@ variable "allow_to_security_group_ids" {
 
 variable "image_tag" {
   type = string
+}
+
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "repository_urls"{
+  type = map(string)
 }

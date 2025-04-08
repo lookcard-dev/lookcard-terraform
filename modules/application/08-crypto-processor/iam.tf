@@ -63,7 +63,8 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          data.aws_secretsmanager_secret.elliptic.arn
+          var.secret_arns["ELLIPTIC"],
+          var.secret_arns["SENTRY"]
         ]
       }
     ]

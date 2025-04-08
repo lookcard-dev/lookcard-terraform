@@ -1,6 +1,5 @@
-data "aws_route53_zone" "zone" {
-  name = "lookcard.dev"
-  provider = aws.dns
+locals {
+  route53_zone_id = "Z07911131XAX6VLVGVIOY"
 }
 
 data "aws_apprunner_hosted_zone_id" "main" {}
@@ -9,7 +8,7 @@ resource "aws_route53_record" "target" {
   provider = aws.dns
   depends_on = [aws_apprunner_custom_domain_association.custom_domain]
   
-  zone_id = data.aws_route53_zone.zone.zone_id
+  zone_id = local.route53_zone_id
   name    = "faucet.lookcard.dev"
   type    = "A"
 
@@ -35,6 +34,6 @@ resource "aws_route53_record" "certificate_validation" {
   records         = [each.value.record]
   ttl             = 300
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.zone.zone_id
+  zone_id         = local.route53_zone_id
 }
 

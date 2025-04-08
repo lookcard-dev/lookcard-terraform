@@ -14,3 +14,10 @@ output "crypto_liquidity_key_arn" {
   value = module.kms.crypto_liquidity_key_arn
 }
 
+output "secret_arns" {
+  value = module.secret.secret_arns
+}
+
+output "secret_ids" {
+  value = module.secret.secret_ids
+}

@@ -1,14 +1,7 @@
-data "aws_route53_zone" "zone" {
-  name     = var.domain.general.name
-  zone_id  = var.domain.general.zone_id
-  provider = aws.dns
-}
-
-# Create Route53 record to point to API Gateway custom domain
 resource "aws_route53_record" "webhook_api" {
   provider = aws.dns
 
-  zone_id = data.aws_route53_zone.zone.zone_id
+  zone_id = var.domain.general.zone_id
   name    = "webhook.${var.domain.general.name}"
   type    = "A"
 
@@ -34,7 +27,7 @@ resource "aws_route53_record" "certificate_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.zone.zone_id
+  zone_id         = var.domain.general.zone_id
 }
 
 # Wait for certificate validation to complete

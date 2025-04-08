@@ -1,20 +1,3 @@
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
-data "aws_kms_alias" "data_generator_key" {
-  name = "alias/lookcard/data-generator-key"
-}
-
-data "aws_kms_alias" "data_encryption_key" {
-  name = "alias/lookcard/data-encryption-key"
-}
-  
-data "aws_s3_bucket" "data" {
-  bucket = "${var.aws_provider.account_id}-data"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -68,6 +51,26 @@ variable "kms_key_arns" {
   })
 }
 
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+}
+
+variable "s3_bucket_names"{
+  type = object({
+    data = string
+  })
+}
+
+variable "repository_urls"{
+  type = map(string)
+}
+
 locals {
   environment_variables = [
     {
@@ -116,13 +119,13 @@ locals {
     },
     {
       name = "AWS_S3_DATA_BUCKET_NAME"
-      value = data.aws_s3_bucket.data.bucket
+      value = var.s3_bucket_names.data
     }
   ]
   environment_secrets = [
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
+      valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
   ]
 }

@@ -85,6 +85,10 @@ module "storage" {
     datastore = module.network.database_subnet_ids
   }
   components = local.components
+  external_security_group_ids = {
+    bastion_host = module.network.bastion_host_security_group_id
+  }
+  secret_arns = module.security.secret_arns
   depends_on = [module.security, module.network]
 }
 
@@ -160,6 +164,32 @@ module "application" {
     vpc_link_arn = module.network.api_gateway_vpc_link_arn
     vpc_link_id  = module.network.api_gateway_vpc_link_id
   }
+
+  secret_arns = module.security.secret_arns
+
+  external_security_group_ids = {
+    datastore = {
+      cluster = module.storage.datastore_cluster_security_group_id
+      proxy   = module.storage.datastore_proxy_security_group_id
+    }
+    datacache    = module.storage.datacache_security_group_id
+    bastion_host = module.network.bastion_host_security_group_id
+    alb          = module.network.application_load_balancer_security_group_id
+    ecs_cluster  = module.compute.listener_security_group_id
+  }
+
+  s3_bucket = {
+    arns = {
+      log  = module.storage.log_bucket_arn
+      data = module.storage.data_bucket_arn
+    }
+    names = {
+      log  = module.storage.log_bucket_name
+      data = module.storage.data_bucket_name
+    }
+  }
+
+  repository_urls = module.storage.ecr_repository_urls
 
   providers = {
     aws.dns       = aws.dns

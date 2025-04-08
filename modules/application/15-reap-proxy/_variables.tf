@@ -1,8 +1,3 @@
-data "aws_secretsmanager_secret" "reap" {
-  name = "REAP"
-}
-
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -47,15 +42,29 @@ variable "image_tag" {
   type = string
 }
 
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+}
+
+variable "repository_urls"{
+  type = map(string)
+}
+
 locals {
   environment_secrets = [
     {
       name      = "REAP_API_ENDPOINT"
-      valueFrom = "${data.aws_secretsmanager_secret.reap.arn}:API_ENDPOINT::"
+      valueFrom = "${var.secret_arns["REAP"]}:API_ENDPOINT::"
     },
     {
       name      = "REAP_API_KEY"
-      valueFrom = "${data.aws_secretsmanager_secret.reap.arn}:API_KEY::"
+      valueFrom = "${var.secret_arns["REAP"]}:API_KEY::"
     },
   ]
 }

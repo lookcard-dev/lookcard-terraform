@@ -5,7 +5,7 @@ resource "aws_kinesis_firehose_delivery_stream" "sumsub_webhook" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role.arn
-    bucket_arn          = data.aws_s3_bucket.log_bucket.arn
+    bucket_arn          = var.s3_bucket_arns.log
     compression_format  = "GZIP"
     prefix              = "webhook/sumsub/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "webhook/sumsub/error/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
@@ -29,7 +29,7 @@ resource "aws_kinesis_firehose_delivery_stream" "reap_webhook" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role.arn
-    bucket_arn          = data.aws_s3_bucket.log_bucket.arn
+    bucket_arn          = var.s3_bucket_arns.log
     compression_format  = "GZIP"
     prefix              = "webhook/reap/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "webhook/reap/error/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
@@ -53,7 +53,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firebase_webhook" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role.arn
-    bucket_arn          = data.aws_s3_bucket.log_bucket.arn
+    bucket_arn          = var.s3_bucket_arns.log
     compression_format  = "GZIP"
     prefix              = "webhook/firebase/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "webhook/firebase/error/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"

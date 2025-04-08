@@ -34,3 +34,13 @@ variable "components" {
     image_tag = string
   }))
 }
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+}
+
+variable "secret_arns" {
+  type = map(string)
+}

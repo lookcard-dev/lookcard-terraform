@@ -1,7 +1,3 @@
-data "aws_ecr_repository" "repository" {
-  name = var.name
-}
-
 resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
   family             = "crypto-listener_ethereum-sepolia-getblock"
@@ -16,7 +12,8 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -47,7 +44,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -68,7 +65,8 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -99,7 +97,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -121,7 +119,8 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -152,7 +151,7 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:NILE_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["TRONGRID"]}:NILE_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -173,7 +172,8 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -204,7 +204,7 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:TRON_NILE_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:TRON_NILE_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -226,7 +226,8 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -257,7 +258,7 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.trongrid.arn}:MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["TRONGRID"]}:MAINNET_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -278,7 +279,8 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -309,7 +311,7 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -330,7 +332,8 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -361,7 +364,7 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -382,7 +385,8 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -413,7 +417,7 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
@@ -435,7 +439,8 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -466,7 +471,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -487,7 +492,8 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -518,7 +524,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -540,7 +546,8 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -571,7 +578,7 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -593,7 +600,8 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -624,7 +632,7 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -646,7 +654,8 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -677,7 +686,7 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -699,7 +708,8 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -730,7 +740,7 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -751,7 +761,8 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -782,7 +793,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -803,7 +814,8 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -834,7 +846,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -856,7 +868,8 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -887,7 +900,7 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -908,7 +921,8 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -939,7 +953,7 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -961,7 +975,8 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -992,7 +1007,7 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1014,7 +1029,8 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1045,7 +1061,7 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1066,7 +1082,8 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1097,7 +1114,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1118,7 +1135,8 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1149,7 +1167,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1171,7 +1189,8 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1202,7 +1221,7 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1224,7 +1243,8 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1255,7 +1275,7 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1277,7 +1297,8 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1308,7 +1329,7 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1330,7 +1351,8 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1361,7 +1383,7 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1383,7 +1405,8 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1414,7 +1437,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1435,7 +1458,8 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1466,7 +1490,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1488,7 +1512,8 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1519,7 +1544,7 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1541,7 +1566,8 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1572,7 +1598,7 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1594,7 +1620,8 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1625,7 +1652,7 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1647,7 +1674,8 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1678,7 +1706,7 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1700,7 +1728,8 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1731,7 +1760,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1753,7 +1782,8 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1784,7 +1814,7 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1806,7 +1836,8 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1837,7 +1868,7 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1859,7 +1890,8 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1890,7 +1922,7 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1912,7 +1944,8 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1943,7 +1976,7 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -1965,7 +1998,8 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1996,7 +2030,7 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2018,7 +2052,8 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2049,7 +2084,7 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.infura.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["INFURA"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2071,7 +2106,8 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2102,7 +2138,7 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2124,7 +2160,8 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2155,7 +2192,7 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2177,7 +2214,8 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2208,7 +2246,7 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.quicknode.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["QUICKNODE"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2230,7 +2268,8 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2261,7 +2300,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2283,7 +2322,8 @@ resource "aws_ecs_task_definition" "bsc_testnet_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2314,7 +2354,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2336,7 +2376,8 @@ resource "aws_ecs_task_definition" "polygon_amoy_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2367,7 +2408,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2389,7 +2430,8 @@ resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2420,7 +2462,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2442,7 +2484,8 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2473,7 +2516,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2495,7 +2538,8 @@ resource "aws_ecs_task_definition" "optimism_sepolia_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2526,7 +2570,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2548,7 +2592,8 @@ resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2579,7 +2624,7 @@ resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.drpc.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2601,7 +2646,8 @@ resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2632,7 +2678,7 @@ resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.getblock.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["GET_BLOCK"]}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2654,7 +2700,8 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2685,7 +2732,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2707,7 +2754,8 @@ resource "aws_ecs_task_definition" "ethereum_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2738,7 +2786,7 @@ resource "aws_ecs_task_definition" "ethereum_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ETHEREUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:ETHEREUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2760,7 +2808,8 @@ resource "aws_ecs_task_definition" "bsc_testnet_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2791,7 +2840,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2813,7 +2862,8 @@ resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2844,7 +2894,7 @@ resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2866,7 +2916,8 @@ resource "aws_ecs_task_definition" "polygon_amoy_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2897,7 +2948,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2919,7 +2970,8 @@ resource "aws_ecs_task_definition" "polygon_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2950,7 +3002,7 @@ resource "aws_ecs_task_definition" "polygon_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -2972,7 +3024,8 @@ resource "aws_ecs_task_definition" "avalanche_fuji_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3003,7 +3056,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3025,7 +3078,8 @@ resource "aws_ecs_task_definition" "avalanche_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3056,7 +3110,7 @@ resource "aws_ecs_task_definition" "avalanche_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3078,7 +3132,8 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3109,7 +3164,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3131,7 +3186,8 @@ resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3162,7 +3218,7 @@ resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3184,7 +3240,8 @@ resource "aws_ecs_task_definition" "optimism_sepolia_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3215,7 +3272,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3237,7 +3294,8 @@ resource "aws_ecs_task_definition" "optimism_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3268,7 +3326,7 @@ resource "aws_ecs_task_definition" "optimism_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3290,7 +3348,8 @@ resource "aws_ecs_task_definition" "base_sepolia_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3321,7 +3380,7 @@ resource "aws_ecs_task_definition" "base_sepolia_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3343,7 +3402,8 @@ resource "aws_ecs_task_definition" "base_blast_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3374,7 +3434,7 @@ resource "aws_ecs_task_definition" "base_blast_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.blast.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["BLAST"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3396,7 +3456,8 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_publicnode_task_definition"
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3427,7 +3488,7 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_publicnode_task_definition"
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:ETHEREUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3449,7 +3510,8 @@ resource "aws_ecs_task_definition" "bsc_testnet_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3480,7 +3542,7 @@ resource "aws_ecs_task_definition" "bsc_testnet_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:BSC_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3502,7 +3564,8 @@ resource "aws_ecs_task_definition" "polygon_amoy_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3533,7 +3596,7 @@ resource "aws_ecs_task_definition" "polygon_amoy_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:POLYGON_AMOY_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3555,7 +3618,8 @@ resource "aws_ecs_task_definition" "avalanche_fuji_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3586,7 +3650,7 @@ resource "aws_ecs_task_definition" "avalanche_fuji_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:AVALANCHE_FUJI_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3608,7 +3672,8 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_publicnode_task_definition"
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3639,7 +3704,7 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_publicnode_task_definition"
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:ARBITRUM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3661,7 +3726,8 @@ resource "aws_ecs_task_definition" "optimism_sepolia_publicnode_task_definition"
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3692,7 +3758,7 @@ resource "aws_ecs_task_definition" "optimism_sepolia_publicnode_task_definition"
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:OPTIMISM_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3714,7 +3780,8 @@ resource "aws_ecs_task_definition" "base_sepolia_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3745,7 +3812,7 @@ resource "aws_ecs_task_definition" "base_sepolia_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:BASE_SEPOLIA_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3767,7 +3834,8 @@ resource "aws_ecs_task_definition" "bsc_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3798,7 +3866,7 @@ resource "aws_ecs_task_definition" "bsc_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:BSC_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3820,7 +3888,8 @@ resource "aws_ecs_task_definition" "polygon_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3851,7 +3920,7 @@ resource "aws_ecs_task_definition" "polygon_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:POLYGON_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3873,7 +3942,8 @@ resource "aws_ecs_task_definition" "avalanche_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3904,7 +3974,7 @@ resource "aws_ecs_task_definition" "avalanche_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:AVALANCHE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3926,7 +3996,8 @@ resource "aws_ecs_task_definition" "arbitrum_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3957,7 +4028,7 @@ resource "aws_ecs_task_definition" "arbitrum_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:ARBITRUM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -3979,7 +4050,8 @@ resource "aws_ecs_task_definition" "optimism_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -4010,7 +4082,7 @@ resource "aws_ecs_task_definition" "optimism_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:OPTIMISM_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }
@@ -4032,7 +4104,8 @@ resource "aws_ecs_task_definition" "base_publicnode_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "listener"
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -4063,7 +4136,7 @@ resource "aws_ecs_task_definition" "base_publicnode_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${data.aws_secretsmanager_secret.publicnode.arn}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:BASE_MAINNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
         }
       ])
     }

@@ -19,17 +19,24 @@ resource "aws_vpc_security_group_ingress_rule" "target_ingress_rules" {
   from_port                    = 8080
   to_port                      = 8080
   ip_protocol                  = "tcp"
+  lifecycle {
+    ignore_changes = [
+      referenced_security_group_id
+    ]
+  }
 }
 
-data "aws_security_group" "bastion_host_security_group" {
-  name = "bastion-host-sg"
-}
 
 resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {
   security_group_id            = aws_security_group.security_group.id
-  referenced_security_group_id = data.aws_security_group.bastion_host_security_group.id
+  referenced_security_group_id = var.external_security_group_ids.bastion_host
   from_port                    = 8080
   to_port                      = 8080
   ip_protocol                  = "tcp"
+  lifecycle {
+    ignore_changes = [
+      referenced_security_group_id
+    ]
+  }
 }
 

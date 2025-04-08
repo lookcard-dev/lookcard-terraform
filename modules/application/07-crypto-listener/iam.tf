@@ -34,14 +34,14 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          data.aws_secretsmanager_secret.sentry.arn,
-          data.aws_secretsmanager_secret.getblock.arn,
-          data.aws_secretsmanager_secret.trongrid.arn,
-          data.aws_secretsmanager_secret.quicknode.arn,
-          data.aws_secretsmanager_secret.infura.arn,
-          data.aws_secretsmanager_secret.drpc.arn,
-          data.aws_secretsmanager_secret.blast.arn,
-          data.aws_secretsmanager_secret.publicnode.arn
+          var.secret_arns["SENTRY"],
+          var.secret_arns["GET_BLOCK"],
+          var.secret_arns["TRONGRID"],
+          var.secret_arns["QUICKNODE"],
+          var.secret_arns["INFURA"],
+          var.secret_arns["DRPC"],
+          var.secret_arns["BLAST"],
+          var.secret_arns["PUBLIC_NODE"]
         ]
       }
     ]

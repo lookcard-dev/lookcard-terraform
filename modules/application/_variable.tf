@@ -75,6 +75,19 @@ variable "kms_key_arns" {
   })
 }
 
+variable "s3_bucket"{
+  type = object({
+    arns = object({
+      data = string
+      log = string
+    })
+    names = object({
+      data = string
+      log = string
+    })
+  })
+}
+
 variable "elb" {
   type = object({
     application_load_balancer_arn = string
@@ -103,6 +116,27 @@ variable "domain" {
       zone_id = string
     })
   })
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    datastore = object({
+      cluster = string
+      proxy   = string
+    })
+    datacache = string
+    bastion_host = string
+    ecs_cluster = string
+    alb = string
+  })
+}
+
+variable "secret_arns"{
+  type = map(string)
+}
+
+variable "repository_urls"{
+  type = map(string)
 }
 
 locals {

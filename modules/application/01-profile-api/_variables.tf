@@ -1,7 +1,3 @@
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -46,6 +42,20 @@ variable "image_tag" {
   type = string
 }
 
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+} 
+
+variable "repository_urls" {
+  type = map(string)
+}
+
 locals {
   environment_variables = [
     {
@@ -76,7 +86,7 @@ locals {
   environment_secrets = [
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
+      valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
   ]
 }

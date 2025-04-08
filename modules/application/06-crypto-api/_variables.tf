@@ -1,23 +1,3 @@
-data "aws_secretsmanager_secret" "database" {
-  name = "DATABASE"
-}
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
-data "aws_secretsmanager_secret" "tron_save" {
-  name = "TRONSAVE"
-}
-
-data "aws_sqs_queue" "sweep_processor" {
-  name = "Crypto_Processor-Sweep_Processor.fifo"
-}
-
-data "aws_sqs_queue" "withdrawal_processor" {
-  name = "Crypto_Processor-Withdrawal_Processor.fifo"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -100,6 +80,20 @@ variable "sqs_queue_arns" {
   })
 }
 
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string 
+  })
+}
+
+variable "repository_urls"{
+  type = map(string)
+}
+
 locals {
   environment_variables = [
     {
@@ -144,33 +138,33 @@ locals {
     },
     {
       name  = "AWS_SQS_SWEEP_PROCESSOR_QUEUE_URL",
-      value = data.aws_sqs_queue.sweep_processor.url
+      value = var.sqs_queue_urls.sweep_processor
     },
     {
       name  = "AWS_SQS_WITHDRAWAL_PROCESSOR_QUEUE_URL",
-      value = data.aws_sqs_queue.withdrawal_processor.url
+      value = var.sqs_queue_urls.withdrawal_processor
     }
   ]
   environment_secrets = [
     {
       name      = "DATABASE_NAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:dbname::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:username::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:password::"
     },
     {
       name      = "SENTRY_DSN"
-      valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:${upper(replace(var.name, "-", "_"))}_DSN::"
+      valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
     {
       name      = "TRONSAVE_BASE_URL"
-      valueFrom = "${data.aws_secretsmanager_secret.tron_save.arn}:BASE_URL::"
+      valueFrom = "${var.secret_arns["TRONSAVE"]}:BASE_URL::"
     },
   ]
 }

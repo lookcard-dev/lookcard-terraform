@@ -1,7 +1,3 @@
-data "aws_ecr_repository" "repository" {
-  name = var.name
-}
-
 resource "random_uuid" "next_auth_secret" {}
 
 resource "aws_apprunner_custom_domain_association" "custom_domain" {
@@ -57,13 +53,13 @@ resource "aws_apprunner_service" "service" {
           NEXTAUTH_URL = "https://faucet.lookcard.dev"
         }
         runtime_environment_secrets = {
-            PRIVATE_KEY = "${data.aws_secretsmanager_secret.wallet.arn}:FAUCET::"
-            AZURE_AD_CLIENT_ID = "${data.aws_secretsmanager_secret.microsoft.arn}:AZURE_AD_CLIENT_ID::" 
-            AZURE_AD_CLIENT_SECRET = "${data.aws_secretsmanager_secret.microsoft.arn}:AZURE_AD_CLIENT_SECRET::"
-            AZURE_AD_TENANT_ID = "${data.aws_secretsmanager_secret.microsoft.arn}:AZURE_AD_TENANT_ID::"
+            PRIVATE_KEY = "${var.secret_arns["WALLET"]}:FAUCET::"
+            AZURE_AD_CLIENT_ID = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_CLIENT_ID::" 
+            AZURE_AD_CLIENT_SECRET = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_CLIENT_SECRET::"
+            AZURE_AD_TENANT_ID = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_TENANT_ID::"
         }
       }
-      image_identifier      = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      image_identifier      = "${var.repository_urls[var.name]}:${var.image_tag}"
       image_repository_type = "ECR"
     }
   }

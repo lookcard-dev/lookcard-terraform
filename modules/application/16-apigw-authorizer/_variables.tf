@@ -33,3 +33,18 @@ variable "allow_to_security_group_ids"{
 variable "image_tag" {
   type = string
 }
+
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+}
+
+variable "repository_urls"{
+  type = map(string)
+}
+

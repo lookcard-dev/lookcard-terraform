@@ -1,36 +1,3 @@
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
-data "aws_secretsmanager_secret" "trongrid" {
-  name = "TRONGRID"
-}
-
-data "aws_secretsmanager_secret" "getblock" {
-  name = "GET_BLOCK"
-}
-
-data "aws_secretsmanager_secret" "drpc" {
-  name = "DRPC"
-}
-
-data "aws_secretsmanager_secret" "quicknode" {
-  name = "QUICKNODE"
-}
-
-data "aws_secretsmanager_secret" "infura" {
-  name = "INFURA"
-}
-
-data "aws_secretsmanager_secret" "blast" {
-  name = "BLAST"
-}
-
-data "aws_secretsmanager_secret" "publicnode" {
-  name = "PUBLIC_NODE"
-}
-
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -69,6 +36,21 @@ variable "allow_to_security_group_ids" {
 
 variable "image_tag" {
   type = string
+}
+
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+    ecs_cluster = string
+  })
+}
+
+variable "repository_urls"{
+  type = map(string)
 }
 
 locals {

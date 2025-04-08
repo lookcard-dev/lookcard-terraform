@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.sentry.arn, data.aws_secretsmanager_secret.sumsub.arn]
+        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["SUMSUB"]]
       }
     ]
   })
@@ -135,8 +135,8 @@ resource "aws_iam_role_policy" "firehose_s3_access_policy" {
           "s3:PutObject"
         ]
         Resource = [
-          data.aws_s3_bucket.log_bucket.arn,
-          "${data.aws_s3_bucket.log_bucket.arn}/*"
+          var.s3_bucket_arns.log,
+          "${var.s3_bucket_arns.log}/*"
         ]
       },
       {

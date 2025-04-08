@@ -1,7 +1,3 @@
-data "aws_ecr_repository" "repository" {
-  name = var.name
-}
-
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.name
   network_mode             = "awsvpc"
@@ -17,7 +13,8 @@ resource "aws_ecs_task_definition" "task_definition" {
   container_definitions = jsonencode([
     {
       name  = var.name
-      image = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {

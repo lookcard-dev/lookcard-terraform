@@ -1,11 +1,3 @@
-data "aws_secretsmanager_secret" "database" {
-  name = "DATABASE"
-}
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -73,6 +65,14 @@ variable "cluster_id" {
   type = string
 }
 
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "repository_urls"{
+  type = map(string)
+}
+
 locals {
   environment_variables = [
     {
@@ -115,15 +115,15 @@ locals {
   environment_secrets = [
     {
       name      = "DATABASE_NAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:dbname::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:dbname::"
     },
     {
       name      = "DATABASE_USERNAME"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:username::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:username::"
     },
     {
       name      = "DATABASE_PASSWORD"
-      valueFrom = "${data.aws_secretsmanager_secret.database.arn}:password::"
+      valueFrom = "${var.secret_arns["DATABASE"]}:password::"
     },
   ]
 }

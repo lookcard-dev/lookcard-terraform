@@ -25,3 +25,9 @@ variable "allow_from_security_group_ids" {
   type = list(string)
   default = []
 }
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+  })
+}

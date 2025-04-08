@@ -1,15 +1,3 @@
-data "aws_secretsmanager_secret" "database" {
-  name = "DATABASE"
-}
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
-data "aws_secretsmanager_secret" "elliptic" {
-  name = "ELLIPTIC"
-}
-
 variable "aws_provider" {
   type = object({
     region     = string
@@ -44,6 +32,14 @@ variable "allow_to_security_group_ids" {
 
 variable "image_tag" {
   type = string
+}
+
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "repository_urls"{
+  type = map(string)
 }
 
 locals {

@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.sentry.arn]
+        "Resource" : [var.secret_arns["SENTRY"]]
       }
     ]
   })
@@ -75,7 +75,7 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
         ]
       }
     ]
-  })
+  })    
 }
 
 resource "aws_iam_role_policy" "dynamodb_policy" {

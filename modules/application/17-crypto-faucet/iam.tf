@@ -52,7 +52,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.wallet.arn, data.aws_secretsmanager_secret.sentry.arn, data.aws_secretsmanager_secret.microsoft.arn] 
+        "Resource" : [var.secret_arns["WALLET"], var.secret_arns["SENTRY"], var.secret_arns["MICROSOFT"]] 
       }
     ]
   })

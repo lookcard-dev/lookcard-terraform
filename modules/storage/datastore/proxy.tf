@@ -30,7 +30,7 @@ resource "aws_iam_role_policy" "proxy_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ]
-        Resource = [data.aws_secretsmanager_secret.database.arn]
+        Resource = [var.secret_arns["DATABASE"]]
       },
       {
         Effect = "Allow"
@@ -63,7 +63,7 @@ resource "aws_db_proxy" "this" {
   auth {
     auth_scheme = "SECRETS"
     iam_auth    = "DISABLED"
-    secret_arn  = data.aws_secretsmanager_secret.database.arn
+    secret_arn  = var.secret_arns["DATABASE"]
   }
 
   tags = {

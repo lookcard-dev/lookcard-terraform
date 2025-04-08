@@ -1,13 +1,5 @@
-data "aws_ecr_repository" "repository"{
-  name = var.name
-}
-
-data "aws_secretsmanager_secret" "sentry" {
-  name = "SENTRY"
-}
-
 data "aws_secretsmanager_secret_version" "sentry" {
-  secret_id = data.aws_secretsmanager_secret.sentry.id
+  secret_id = var.secret_arns["SENTRY"]
 }
 
 resource "aws_lambda_function" "firebase_authorizer" {
@@ -16,7 +8,7 @@ resource "aws_lambda_function" "firebase_authorizer" {
   role          = aws_iam_role.lambda_function_role.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+  image_uri     = "${var.repository_urls[var.name]}:${var.image_tag}"
   image_config {
     command = ["handlers/firebase.handler"]
   }

@@ -1,15 +1,3 @@
-data "aws_ecr_repository" "repository" {
-  name = var.name
-}
-
-data "aws_ecr_repository" "account_api" {
-  name = "account-api"
-}
-
-data "aws_ecr_repository" "crypto_api" {
-  name = "crypto-api"
-}
-
 resource "aws_ecs_task_definition" "batch_account_statement_generator_task_definition" {
   family             = "cronjob-batch_account_statement_generator"
   network_mode       = "awsvpc"
@@ -24,7 +12,7 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
   container_definitions = jsonencode([
     {
       name    = "generator"
-      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
       command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/01-batch-account-statement-generator/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
@@ -52,12 +40,12 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${var.secret_arns["SENTRY"]}:CRONJOB_DSN::"
       }]
     },
     {
       name  = "account-api"
-      image = "${data.aws_ecr_repository.account_api.repository_url}:${var.api_image_tags.account_api}"
+      image = "${var.repository_urls["account-api"]}:${var.api_image_tags.account_api}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -81,7 +69,7 @@ resource "aws_ecs_task_definition" "batch_account_statement_generator_task_defin
       secrets = concat(local.environment_secrets, [
         {
           name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:ACCOUNT_API_DSN::"
+          valueFrom = "${var.secret_arns["SENTRY"]}:ACCOUNT_API_DSN::"
         },
       ])
       portMappings = [
@@ -119,7 +107,7 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
   container_definitions = jsonencode([
     {
       name    = "processor"
-      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
       command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/02-batch-account-snapshot-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
@@ -147,12 +135,12 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${var.secret_arns["SENTRY"]}:CRONJOB_DSN::"
       }]
     },
     {
       name  = "account-api"
-      image = "${data.aws_ecr_repository.account_api.repository_url}:${var.api_image_tags.account_api}"
+      image = "${var.repository_urls["account-api"]}:${var.api_image_tags.account_api}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -176,7 +164,7 @@ resource "aws_ecs_task_definition" "batch_account_snapshot_processor_task_defini
       secrets = concat(local.environment_secrets, [
         {
           name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:ACCOUNT_API_DSN::"
+          valueFrom = "${var.secret_arns["SENTRY"]}:ACCOUNT_API_DSN::"
         },
       ])
       portMappings = [
@@ -214,7 +202,8 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_deposit_processor_task_de
   container_definitions = jsonencode([
     {
       name    = "processor"
-      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
       command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/03-batch-retry-failed-wallet-deposit-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
@@ -238,12 +227,12 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_deposit_processor_task_de
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${var.secret_arns["SENTRY"]}:CRONJOB_DSN::"
       }]
     },
     {
       name  = "crypto-api"
-      image = "${data.aws_ecr_repository.crypto_api.repository_url}:${var.api_image_tags.crypto_api}"
+      image = "${var.repository_urls["crypto-api"]}:${var.api_image_tags.crypto_api}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -267,7 +256,7 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_deposit_processor_task_de
       secrets = concat(local.environment_secrets, [
         {
           name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRYPTO_API_DSN::"
+          valueFrom = "${var.secret_arns["SENTRY"]}:CRYPTO_API_DSN::"
         },
       ])
       portMappings = [
@@ -305,7 +294,8 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
   container_definitions = jsonencode([
     {
       name    = "processor"
-      image   = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+      essential = true
+      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
       command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/04-batch-retry-failed-wallet-withdrawal-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
@@ -329,12 +319,13 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
       ]
       secrets = [{
         name      = "SENTRY_DSN"
-        valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRONJOB_DSN::"
+        valueFrom = "${var.secret_arns["SENTRY"]}:CRONJOB_DSN::"
       }]
     },
     {
       name  = "crypto-api"
-      image = "${data.aws_ecr_repository.crypto_api.repository_url}:${var.api_image_tags.crypto_api}"
+      essential = true
+      image = "${var.repository_urls["crypto-api"]}:${var.api_image_tags.crypto_api}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -358,7 +349,7 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
       secrets = concat(local.environment_secrets, [
         {
           name      = "SENTRY_DSN"
-          valueFrom = "${data.aws_secretsmanager_secret.sentry.arn}:CRYPTO_API_DSN::"
+          valueFrom = "${var.secret_arns["SENTRY"]}:CRYPTO_API_DSN::"
         },
       ])
       portMappings = [

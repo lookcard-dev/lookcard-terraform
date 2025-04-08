@@ -1,4 +1,3 @@
-# Define the DB subnet group
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "datastore-subnet-group"
   subnet_ids = var.subnet_ids
@@ -10,12 +9,8 @@ resource "random_password" "master_password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-data "aws_secretsmanager_secret" "database" {
-  name = "DATABASE"
-}
-
 resource "aws_secretsmanager_secret_version" "database_secret_version" {
-  secret_id = data.aws_secretsmanager_secret.database.id
+  secret_id = var.secret_arns["DATABASE"]
   secret_string = jsonencode({
     username             = var.runtime_environment
     password             = random_password.master_password.result

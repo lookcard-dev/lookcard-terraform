@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [data.aws_secretsmanager_secret.sentry.arn, data.aws_secretsmanager_secret.firebase.arn]
+        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["FIREBASE"]]
       }
     ]
   })

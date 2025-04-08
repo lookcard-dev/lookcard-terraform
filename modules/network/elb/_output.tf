@@ -17,3 +17,11 @@ output "network_load_balancer_dns_name" {
 output "application_load_balancer_http_listener_arn" {
   value = aws_lb_listener.application_load_balancer_http_listener.arn
 }
+
+output "application_load_balancer_security_group_id" {
+  value = aws_security_group.application_load_balancer_security_group.id
+}
+
+output "network_load_balancer_security_group_id" {
+  value = aws_security_group.network_load_balancer_security_group.id
+}
