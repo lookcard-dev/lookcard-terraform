@@ -12,7 +12,10 @@ terraform {
     bucket         = "390844786071-lookcard-terraform"
     region         = "ap-southeast-1"
     encrypt        = true
-    dynamodb_table = "terraform"
+    use_lockfile = true
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_requesting_account_id  = true
   }
 }
 
