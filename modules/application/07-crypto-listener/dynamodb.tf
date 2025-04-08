@@ -31,7 +31,7 @@ resource "aws_dynamodb_table" "block_recorder" {
 
 # Auto Scaling for block_recorder table
 resource "aws_appautoscaling_target" "block_recorder_read_target" {
-  max_capacity       = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 500 : 1000
+  max_capacity       = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1000 : 2000
   min_capacity       = 10
   resource_id        = "table/${aws_dynamodb_table.block_recorder.name}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
@@ -49,12 +49,12 @@ resource "aws_appautoscaling_policy" "block_recorder_read_policy" {
     predefined_metric_specification {
       predefined_metric_type = "DynamoDBReadCapacityUtilization"
     }
-    target_value = 50.0
+    target_value = 80.0
   }
 }
 
 resource "aws_appautoscaling_target" "block_recorder_write_target" {
-  max_capacity       = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 200 : 500
+  max_capacity       = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 500 : 1000
   min_capacity       = 10
   resource_id        = "table/${aws_dynamodb_table.block_recorder.name}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
@@ -72,7 +72,7 @@ resource "aws_appautoscaling_policy" "block_recorder_write_policy" {
     predefined_metric_specification {
       predefined_metric_type = "DynamoDBWriteCapacityUtilization"
     }
-    target_value = 50.0
+    target_value = 80.0
   }
 }
 
