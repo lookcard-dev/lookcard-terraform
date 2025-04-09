@@ -27,6 +27,7 @@ resource "aws_lambda_function" "sweep_processor" {
   }
   environment {
     variables = {
+      AWS_XRAY_CONTEXT_MISSING      = "IGNORE_ERROR"
       RUNTIME_ENVIRONMENT           = var.runtime_environment
       AWS_XRAY_DAEMON_ENDPOINT      = "xray.daemon.lookcard.local:2337"
       AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/sweep"
@@ -66,6 +67,7 @@ resource "aws_lambda_function" "withdrawal_processor" {
   }
   environment {
     variables = {
+      AWS_XRAY_CONTEXT_MISSING      = "IGNORE_ERROR"
       RUNTIME_ENVIRONMENT           = var.runtime_environment
       AWS_XRAY_DAEMON_ENDPOINT      = "xray.daemon.lookcard.local:2337"
       AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/withdrawal"
