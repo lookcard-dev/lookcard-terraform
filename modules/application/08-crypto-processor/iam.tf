@@ -26,6 +26,11 @@ resource "aws_iam_role_policy_attachment" "AWSLambdaVPCAccessExecutionRole_attac
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "AWSXRayDaemonWriteAccess_attachment" {
+  role       = aws_iam_role.lambda_function_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
 resource "aws_iam_role_policy" "cloudwatch_log" {
   name = "CloudWatchLogPolicy"
   role = aws_iam_role.lambda_function_role.id
