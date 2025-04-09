@@ -3,15 +3,15 @@ variable "network" {
     cidr = object({
       vpc = string
       subnets = object({
-        public = list(string)
-        private = list(string)
+        public   = list(string)
+        private  = list(string)
         database = list(string)
         isolated = list(string)
       })
     })
     nat = object({
       provider = string
-      count = number
+      count    = number
     })
   })
   validation {

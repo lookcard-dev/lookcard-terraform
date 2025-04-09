@@ -11,9 +11,9 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -64,9 +64,9 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -118,9 +118,9 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -171,9 +171,9 @@ resource "aws_ecs_task_definition" "tron_nile_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -225,9 +225,9 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -278,9 +278,9 @@ resource "aws_ecs_task_definition" "tron_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -331,9 +331,9 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -384,9 +384,9 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -438,9 +438,9 @@ resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -491,9 +491,9 @@ resource "aws_ecs_task_definition" "bsc_testnet_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -545,9 +545,9 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -599,9 +599,9 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -653,9 +653,9 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -707,9 +707,9 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -760,9 +760,9 @@ resource "aws_ecs_task_definition" "polygon_amoy_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -813,9 +813,9 @@ resource "aws_ecs_task_definition" "polygon_amoy_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -867,9 +867,9 @@ resource "aws_ecs_task_definition" "polygon_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -920,9 +920,9 @@ resource "aws_ecs_task_definition" "polygon_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -974,9 +974,9 @@ resource "aws_ecs_task_definition" "polygon_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1028,9 +1028,9 @@ resource "aws_ecs_task_definition" "polygon_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1081,9 +1081,9 @@ resource "aws_ecs_task_definition" "avalanche_fuji_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1134,9 +1134,9 @@ resource "aws_ecs_task_definition" "avalanche_fuji_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1188,9 +1188,9 @@ resource "aws_ecs_task_definition" "avalanche_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1242,9 +1242,9 @@ resource "aws_ecs_task_definition" "avalanche_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1296,9 +1296,9 @@ resource "aws_ecs_task_definition" "avalanche_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1350,9 +1350,9 @@ resource "aws_ecs_task_definition" "avalanche_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1404,9 +1404,9 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1457,9 +1457,9 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1511,9 +1511,9 @@ resource "aws_ecs_task_definition" "arbitrum_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1565,9 +1565,9 @@ resource "aws_ecs_task_definition" "arbitrum_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1619,9 +1619,9 @@ resource "aws_ecs_task_definition" "arbitrum_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1673,9 +1673,9 @@ resource "aws_ecs_task_definition" "arbitrum_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1727,9 +1727,9 @@ resource "aws_ecs_task_definition" "optimism_sepolia_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1781,9 +1781,9 @@ resource "aws_ecs_task_definition" "optimism_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1835,9 +1835,9 @@ resource "aws_ecs_task_definition" "optimism_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1889,9 +1889,9 @@ resource "aws_ecs_task_definition" "optimism_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1943,9 +1943,9 @@ resource "aws_ecs_task_definition" "optimism_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -1997,9 +1997,9 @@ resource "aws_ecs_task_definition" "base_sepolia_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2051,9 +2051,9 @@ resource "aws_ecs_task_definition" "base_infura_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2105,9 +2105,9 @@ resource "aws_ecs_task_definition" "base_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2159,9 +2159,9 @@ resource "aws_ecs_task_definition" "base_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2213,9 +2213,9 @@ resource "aws_ecs_task_definition" "base_quicknode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2267,9 +2267,9 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2321,9 +2321,9 @@ resource "aws_ecs_task_definition" "bsc_testnet_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2375,9 +2375,9 @@ resource "aws_ecs_task_definition" "polygon_amoy_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2429,9 +2429,9 @@ resource "aws_ecs_task_definition" "avalanche_fuji_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2483,9 +2483,9 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2537,9 +2537,9 @@ resource "aws_ecs_task_definition" "optimism_sepolia_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2591,9 +2591,9 @@ resource "aws_ecs_task_definition" "base_sepolia_drpc_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2645,9 +2645,9 @@ resource "aws_ecs_task_definition" "base_sepolia_getblock_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2699,9 +2699,9 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2753,9 +2753,9 @@ resource "aws_ecs_task_definition" "ethereum_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2807,9 +2807,9 @@ resource "aws_ecs_task_definition" "bsc_testnet_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2861,9 +2861,9 @@ resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2915,9 +2915,9 @@ resource "aws_ecs_task_definition" "polygon_amoy_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -2969,9 +2969,9 @@ resource "aws_ecs_task_definition" "polygon_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3023,9 +3023,9 @@ resource "aws_ecs_task_definition" "avalanche_fuji_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3077,9 +3077,9 @@ resource "aws_ecs_task_definition" "avalanche_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3131,9 +3131,9 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3185,9 +3185,9 @@ resource "aws_ecs_task_definition" "arbitrum_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3239,9 +3239,9 @@ resource "aws_ecs_task_definition" "optimism_sepolia_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3293,9 +3293,9 @@ resource "aws_ecs_task_definition" "optimism_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3347,9 +3347,9 @@ resource "aws_ecs_task_definition" "base_sepolia_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3401,9 +3401,9 @@ resource "aws_ecs_task_definition" "base_blast_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3455,9 +3455,9 @@ resource "aws_ecs_task_definition" "ethereum_sepolia_publicnode_task_definition"
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3509,9 +3509,9 @@ resource "aws_ecs_task_definition" "bsc_testnet_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3563,9 +3563,9 @@ resource "aws_ecs_task_definition" "polygon_amoy_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3617,9 +3617,9 @@ resource "aws_ecs_task_definition" "avalanche_fuji_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3671,9 +3671,9 @@ resource "aws_ecs_task_definition" "arbitrum_sepolia_publicnode_task_definition"
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3725,9 +3725,9 @@ resource "aws_ecs_task_definition" "optimism_sepolia_publicnode_task_definition"
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3779,9 +3779,9 @@ resource "aws_ecs_task_definition" "base_sepolia_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3833,9 +3833,9 @@ resource "aws_ecs_task_definition" "bsc_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3887,9 +3887,9 @@ resource "aws_ecs_task_definition" "polygon_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3941,9 +3941,9 @@ resource "aws_ecs_task_definition" "avalanche_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -3995,9 +3995,9 @@ resource "aws_ecs_task_definition" "arbitrum_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -4049,9 +4049,9 @@ resource "aws_ecs_task_definition" "optimism_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -4103,9 +4103,9 @@ resource "aws_ecs_task_definition" "base_publicnode_task_definition" {
   }
   container_definitions = jsonencode([
     {
-      name  = "listener"
+      name      = "listener"
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {

@@ -4,9 +4,9 @@ resource "aws_cloudwatch_metric_alarm" "canary_failure_alarm" {
   evaluation_periods  = 1
   metric_name         = "SuccessPercent"
   namespace           = "CloudWatchSynthetics"
-  period              = 10  
+  period              = 10
   statistic           = "Average"
-  threshold           = 100  # SuccessPercent < 100
+  threshold           = 100 # SuccessPercent < 100
 
   alarm_actions = [
     "arn:aws:sns:ap-southeast-1:471112511410:chatbot-critical-alert"

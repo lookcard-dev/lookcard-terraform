@@ -1,11 +1,11 @@
 variable "domain" {
   type = object({
     general = object({
-      name = string
+      name    = string
       zone_id = string
     })
     admin = object({
-      name = string
+      name    = string
       zone_id = string
     })
   })

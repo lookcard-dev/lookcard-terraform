@@ -19,14 +19,14 @@ variable "name" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -44,7 +44,7 @@ variable "external_security_group_ids" {
   })
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 

@@ -15,10 +15,10 @@ resource "aws_dynamodb_table" "batch_account_statement_generator_unprocessed" {
   }
 
   global_secondary_index {
-    name               = "id-cycle-index"
-    hash_key           = "id"
-    range_key          = "cycle"
-    projection_type    = "ALL"
+    name            = "id-cycle-index"
+    hash_key        = "id"
+    range_key       = "cycle"
+    projection_type = "ALL"
   }
 }
 
@@ -38,9 +38,9 @@ resource "aws_dynamodb_table" "batch_account_snapshot_processor_unprocessed" {
   }
 
   global_secondary_index {
-    name               = "id-cycle-index"
-    hash_key           = "id"
-    range_key          = "cycle"
-    projection_type    = "ALL"
+    name            = "id-cycle-index"
+    hash_key        = "id"
+    range_key       = "cycle"
+    projection_type = "ALL"
   }
 }

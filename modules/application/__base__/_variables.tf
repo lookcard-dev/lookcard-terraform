@@ -27,9 +27,9 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
@@ -47,7 +47,7 @@ variable "datacache" {
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 

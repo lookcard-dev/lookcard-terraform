@@ -37,7 +37,7 @@
 #   }
 
 #   enabled = true
-  
+
 #   aliases = ["download.${var.environment.domain}"]
 
 #   viewer_certificate {

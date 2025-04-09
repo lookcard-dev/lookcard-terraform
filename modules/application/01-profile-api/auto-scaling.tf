@@ -27,7 +27,7 @@ resource "aws_appautoscaling_policy" "ecs_cpu_policy" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-    target_value = 80.0  # Target CPU utilization (%)
+    target_value       = 80.0 # Target CPU utilization (%)
     scale_in_cooldown  = 300  # 5 minutes
     scale_out_cooldown = 300  # 5 minutes
   }
@@ -47,7 +47,7 @@ resource "aws_appautoscaling_policy" "ecs_memory_policy" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageMemoryUtilization"
     }
-    target_value = 80.0  # Target Memory utilization (%)
+    target_value       = 80.0 # Target Memory utilization (%)
     scale_in_cooldown  = 300  # 5 minutes
     scale_out_cooldown = 300  # 5 minutes
   }

@@ -45,11 +45,11 @@ variable "secret_arns" {
 variable "external_security_group_ids" {
   type = object({
     bastion_host = string
-    ecs_cluster = string
+    ecs_cluster  = string
   })
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 
@@ -70,6 +70,10 @@ locals {
     {
       name  = "AWS_DYNAMODB_GUARD_RECORDER_TABLE_NAME"
       value = aws_dynamodb_table.guard_recorder.name
+    },
+    {
+      name  = "LOG_LEVEL"
+      value = "info"
     }
   ]
   environment_secrets = []

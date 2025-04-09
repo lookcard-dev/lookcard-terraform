@@ -66,12 +66,12 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
       {
         "Effect" : "Allow",
         "Action" : [
-            "logs:DescribeLogStreams",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
+          "logs:DescribeLogStreams",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ],
         "Resource" : [
-            "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
         ]
       }
     ]

@@ -1,10 +1,10 @@
 module "bastion" {
-  source = "./bastion"
+  source  = "./bastion"
   network = var.network
 }
 
 module "monitor" {
-  source = "./monitor"
-  syn_canary_s3_bucket = var.syn_canary_s3_bucket
+  source                  = "./monitor"
+  syn_canary_s3_bucket    = var.syn_canary_s3_bucket
   sns_subscriptions_email = var.sns_subscriptions_email
 }

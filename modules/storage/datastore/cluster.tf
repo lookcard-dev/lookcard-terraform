@@ -33,18 +33,18 @@ resource "aws_rds_cluster" "cluster" {
   master_password        = random_password.master_password.result
   db_subnet_group_name   = aws_db_subnet_group.subnet_group.name
   vpc_security_group_ids = [aws_security_group.cluster_security_group.id]
-  
+
   backup_retention_period = var.runtime_environment == "production" ? 30 : 7
   preferred_backup_window = "03:00-04:00"
-  copy_tags_to_snapshot  = true
-  
+  copy_tags_to_snapshot   = true
+
   preferred_maintenance_window = "Mon:04:00-Mon:05:00"
-  
-  storage_encrypted      = true
+
+  storage_encrypted                   = true
   iam_database_authentication_enabled = true
-  
-  deletion_protection    = var.runtime_environment == "production"
-  skip_final_snapshot    = var.runtime_environment != "production"
+
+  deletion_protection       = var.runtime_environment == "production"
+  skip_final_snapshot       = var.runtime_environment != "production"
   final_snapshot_identifier = var.runtime_environment == "production" ? "final-snapshot" : null
 
   allow_major_version_upgrade = false
@@ -54,37 +54,37 @@ resource "aws_rds_cluster" "cluster" {
     min_capacity = 0.5
   }
 
-  performance_insights_enabled    = true
+  performance_insights_enabled          = true
   performance_insights_retention_period = var.runtime_environment == "production" ? 180 : 7
 
   enable_http_endpoint = true
 }
 
 resource "aws_rds_cluster_instance" "writer" {
-  identifier         = "writer"
-  cluster_identifier = aws_rds_cluster.cluster.id
-  instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.cluster.engine
-  engine_version     = aws_rds_cluster.cluster.engine_version
-  publicly_accessible = false
-  performance_insights_enabled    = true
-  
-  monitoring_interval            = var.runtime_environment == "production" ? 10 : 0  # Only enable monitoring in production
-  monitoring_role_arn           = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
+  identifier                   = "writer"
+  cluster_identifier           = aws_rds_cluster.cluster.id
+  instance_class               = "db.serverless"
+  engine                       = aws_rds_cluster.cluster.engine
+  engine_version               = aws_rds_cluster.cluster.engine_version
+  publicly_accessible          = false
+  performance_insights_enabled = true
+
+  monitoring_interval = var.runtime_environment == "production" ? 10 : 0 # Only enable monitoring in production
+  monitoring_role_arn = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
 }
 
 resource "aws_rds_cluster_instance" "reader" {
-  count              = var.runtime_environment == "production"? 1 : 0
-  identifier         = "reader-${count.index + 1}"
-  cluster_identifier = aws_rds_cluster.cluster.id
-  instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.cluster.engine
-  engine_version     = aws_rds_cluster.cluster.engine_version
-  publicly_accessible = false
-  performance_insights_enabled    = true
-  
-  monitoring_interval            = var.runtime_environment == "production" ? 10 : 0  # Only enable monitoring in production
-  monitoring_role_arn           = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
+  count                        = var.runtime_environment == "production" ? 1 : 0
+  identifier                   = "reader-${count.index + 1}"
+  cluster_identifier           = aws_rds_cluster.cluster.id
+  instance_class               = "db.serverless"
+  engine                       = aws_rds_cluster.cluster.engine
+  engine_version               = aws_rds_cluster.cluster.engine_version
+  publicly_accessible          = false
+  performance_insights_enabled = true
+
+  monitoring_interval = var.runtime_environment == "production" ? 10 : 0 # Only enable monitoring in production
+  monitoring_role_arn = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
 }
 
 resource "aws_iam_role" "rds_monitoring_role" {

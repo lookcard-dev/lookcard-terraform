@@ -14,8 +14,8 @@ resource "aws_dynamodb_table" "domain" {
   }
 
   global_secondary_index {
-    name               = "ownerProfileId-index"
-    hash_key           = "ownerProfileId"
-    projection_type    = "ALL"
+    name            = "ownerProfileId-index"
+    hash_key        = "ownerProfileId"
+    projection_type = "ALL"
   }
 }

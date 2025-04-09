@@ -13,7 +13,7 @@ variable "runtime_environment" {
   }
 }
 
-variable "vpc_id"{
+variable "vpc_id" {
   type = string
 }
 
@@ -21,7 +21,7 @@ variable "subnet_ids" {
   type = object({
     datacache = list(string)
     datastore = list(string)
-  })  
+  })
 }
 
 variable "components" {
@@ -29,7 +29,7 @@ variable "components" {
     name = string
     hostname = object({
       internal = string
-      public = optional(string)
+      public   = optional(string)
     })
     image_tag = string
   }))

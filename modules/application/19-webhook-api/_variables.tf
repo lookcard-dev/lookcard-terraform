@@ -72,11 +72,11 @@ variable "image_tag" {
 variable "domain" {
   type = object({
     general = object({
-      name = string
+      name    = string
       zone_id = string
     })
     admin = object({
-      name = string
+      name    = string
       zone_id = string
     })
   })
@@ -89,7 +89,7 @@ variable "secret_arns" {
 variable "external_security_group_ids" {
   type = object({
     bastion_host = string
-    alb = string
+    alb          = string
   })
 }
 
@@ -99,7 +99,7 @@ variable "s3_bucket_arns" {
   })
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 

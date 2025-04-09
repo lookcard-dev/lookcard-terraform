@@ -13,7 +13,7 @@ variable "runtime_environment" {
   }
 }
 
-variable "vpc_id"{
+variable "vpc_id" {
   type = string
 }
 
@@ -22,7 +22,7 @@ variable "subnet_ids" {
 }
 
 variable "allow_from_security_group_ids" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 

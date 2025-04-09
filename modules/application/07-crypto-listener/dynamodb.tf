@@ -1,11 +1,11 @@
 resource "aws_dynamodb_table" "block_recorder" {
-  name         = "Crypto_Listener-Block_Recorder"
-  billing_mode = "PROVISIONED"
+  name           = "Crypto_Listener-Block_Recorder"
+  billing_mode   = "PROVISIONED"
   read_capacity  = 10
   write_capacity = 10
-  hash_key     = "node"
-  range_key    = "number"
-  
+  hash_key       = "node"
+  range_key      = "number"
+
   ttl {
     attribute_name = "ttl"
     enabled        = true
@@ -77,11 +77,11 @@ resource "aws_appautoscaling_policy" "block_recorder_write_policy" {
 }
 
 resource "aws_dynamodb_table" "guard_recorder" {
-  name         = "Crypto_Listener-Guard_Recorder"
-  billing_mode = "PROVISIONED"
+  name           = "Crypto_Listener-Guard_Recorder"
+  billing_mode   = "PROVISIONED"
   read_capacity  = 2
   write_capacity = 2
-  hash_key     = "node"
+  hash_key       = "node"
 
   ttl {
     attribute_name = "ttl"

@@ -53,6 +53,6 @@ variable "secret_arns" {
   type = map(string)
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }

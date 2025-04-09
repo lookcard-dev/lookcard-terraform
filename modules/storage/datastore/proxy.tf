@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "proxy_policy" {
         Resource = ["*"]
         Condition = {
           StringEquals = {
-            "kms:ViaService": "secretsmanager.${var.aws_provider.region}.amazonaws.com"
+            "kms:ViaService" : "secretsmanager.${var.aws_provider.region}.amazonaws.com"
           }
         }
       }
@@ -50,13 +50,13 @@ resource "aws_iam_role_policy" "proxy_policy" {
 
 # RDS Proxy
 resource "aws_db_proxy" "this" {
-  count = var.runtime_environment == "production" ? 1 : 0
+  count                  = var.runtime_environment == "production" ? 1 : 0
   name                   = "database-proxy"
   debug_logging          = var.runtime_environment != "production"
   engine_family          = "POSTGRESQL"
   idle_client_timeout    = 1800
-  require_tls           = true
-  role_arn              = aws_iam_role.proxy_role.arn
+  require_tls            = true
+  role_arn               = aws_iam_role.proxy_role.arn
   vpc_security_group_ids = [aws_security_group.proxy_security_group.id]
   vpc_subnet_ids         = var.subnet_ids
 
@@ -74,7 +74,7 @@ resource "aws_db_proxy" "this" {
 
 # Default target group with connection pooling settings
 resource "aws_db_proxy_default_target_group" "this" {
-  count = var.runtime_environment == "production" ? 1 : 0
+  count         = var.runtime_environment == "production" ? 1 : 0
   db_proxy_name = aws_db_proxy.this[0].name
 
   connection_pool_config {
@@ -87,15 +87,15 @@ resource "aws_db_proxy_default_target_group" "this" {
 
 # Proxy target
 resource "aws_db_proxy_target" "this" {
-  count = var.runtime_environment == "production" ? 1 : 0
+  count                 = var.runtime_environment == "production" ? 1 : 0
   db_cluster_identifier = aws_rds_cluster.cluster.id
-  db_proxy_name        = aws_db_proxy.this[0].name
-  target_group_name    = aws_db_proxy_default_target_group.this[0].name
+  db_proxy_name         = aws_db_proxy.this[0].name
+  target_group_name     = aws_db_proxy_default_target_group.this[0].name
 }
 
 # Read-only endpoint for the proxy
 resource "aws_db_proxy_endpoint" "readonly" {
-  count = var.runtime_environment == "production" ? 1 : 0
+  count                  = var.runtime_environment == "production" ? 1 : 0
   db_proxy_name          = aws_db_proxy.this[0].name
   db_proxy_endpoint_name = "database-proxy-readonly"
   vpc_subnet_ids         = var.subnet_ids

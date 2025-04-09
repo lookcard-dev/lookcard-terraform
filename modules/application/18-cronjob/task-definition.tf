@@ -201,10 +201,10 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_deposit_processor_task_de
   }
   container_definitions = jsonencode([
     {
-      name    = "processor"
+      name      = "processor"
       essential = true
-      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
-      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/03-batch-retry-failed-wallet-deposit-processor/index.js"]
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
+      command   = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/03-batch-retry-failed-wallet-deposit-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -293,10 +293,10 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
   }
   container_definitions = jsonencode([
     {
-      name    = "processor"
+      name      = "processor"
       essential = true
-      image   = "${var.repository_urls[var.name]}:${var.image_tag}"
-      command = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/04-batch-retry-failed-wallet-withdrawal-processor/index.js"]
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
+      command   = ["dumb-init", "node", "--import", "./src/utils/aws-xray-instrument.js", "--import", "./src/workflows/04-batch-retry-failed-wallet-withdrawal-processor/index.js"]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -304,7 +304,7 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
           "awslogs-group"         = "/ecs/cronjob/batch_retry_wallet_withdrawal_processor",
           "awslogs-region"        = "ap-southeast-1",
           "awslogs-stream-prefix" = "ecs",
-          }
+        }
       }
       readonlyRootFilesystem = true
       environment = [
@@ -323,9 +323,9 @@ resource "aws_ecs_task_definition" "batch_retry_wallet_withdrawal_processor_task
       }]
     },
     {
-      name  = "crypto-api"
+      name      = "crypto-api"
       essential = true
-      image = "${var.repository_urls["crypto-api"]}:${var.api_image_tags.crypto_api}"
+      image     = "${var.repository_urls["crypto-api"]}:${var.api_image_tags.crypto_api}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {

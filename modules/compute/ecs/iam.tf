@@ -17,7 +17,7 @@ resource "aws_iam_role" "instance_role" {
 }
 
 resource "aws_iam_policy" "instance_role_cloudwatch_policy" {
-  name        = "CloudWatchPolicy"
+  name = "CloudWatchPolicy"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

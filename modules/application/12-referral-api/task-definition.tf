@@ -1,10 +1,10 @@
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = var.name
-  network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  family             = var.name
+  network_mode       = "awsvpc"
+  cpu                = "256"
+  memory             = "512"
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -12,9 +12,9 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = var.name
+      name      = var.name
       essential = true
-      image = "${var.repository_urls[var.name]}:${var.image_tag}"
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         }
       }
       environment = local.environment_variables
-      secrets = local.environment_secrets
+      secrets     = local.environment_secrets
       portMappings = [
         {
           name          = "8080-tcp",
@@ -39,10 +39,10 @@ resource "aws_ecs_task_definition" "task_definition" {
 
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost:8080/healthcheckz || exit 1"]
-        interval    = 30   # seconds between health checks
-        timeout     = 5    # health check timeout in seconds
-        retries     = 3    # number of retries before marking container unhealthy
-        startPeriod = 10   # time to wait before performing first health check
+        interval    = 30 # seconds between health checks
+        timeout     = 5  # health check timeout in seconds
+        retries     = 3  # number of retries before marking container unhealthy
+        startPeriod = 10 # time to wait before performing first health check
       }
     }
   ])

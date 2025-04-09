@@ -13,7 +13,7 @@ variable "runtime_environment" {
   }
 }
 
-variable "vpc_id"{
+variable "vpc_id" {
   type = string
 }
 
@@ -22,6 +22,6 @@ variable "subnet_ids" {
 }
 
 variable "certificate_arns" {
-  type = list(string)
+  type    = list(string)
   default = []
 }

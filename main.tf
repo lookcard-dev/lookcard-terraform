@@ -9,10 +9,10 @@ variable "github_actions" {
 
 terraform {
   backend "s3" {
-    bucket         = "390844786071-lookcard-terraform"
-    region         = "ap-southeast-1"
-    encrypt        = true
-    use_lockfile = true
+    bucket                      = "390844786071-lookcard-terraform"
+    region                      = "ap-southeast-1"
+    encrypt                     = true
+    use_lockfile                = true
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_requesting_account_id  = true
@@ -92,7 +92,7 @@ module "storage" {
     bastion_host = module.network.bastion_host_security_group_id
   }
   secret_arns = module.security.secret_arns
-  depends_on = [module.security, module.network]
+  depends_on  = [module.security, module.network]
 }
 
 module "compute" {

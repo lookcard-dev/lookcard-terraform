@@ -14,8 +14,8 @@ resource "aws_dynamodb_table" "profile" {
   }
 
   global_secondary_index {
-    name               = "principal-index"
-    hash_key           = "principal"
-    projection_type    = "ALL"
+    name            = "principal-index"
+    hash_key        = "principal"
+    projection_type = "ALL"
   }
 }

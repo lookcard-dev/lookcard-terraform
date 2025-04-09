@@ -27,9 +27,9 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
@@ -47,7 +47,7 @@ variable "datacache" {
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -65,7 +65,7 @@ variable "external_security_group_ids" {
   })
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 
@@ -130,7 +130,7 @@ locals {
       valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
     {
-      name = "FIREBASE_CREDENTIALS"
+      name      = "FIREBASE_CREDENTIALS"
       valueFrom = "${var.secret_arns["FIREBASE"]}:CREDENTIALS::"
     }
   ]

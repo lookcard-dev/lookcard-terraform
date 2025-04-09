@@ -1,10 +1,10 @@
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = var.name
-  network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
-  task_role_arn            = aws_iam_role.task_role.arn
-  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  family             = var.name
+  network_mode       = "awsvpc"
+  cpu                = "256"
+  memory             = "512"
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -12,8 +12,8 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = var.name
-      image = "amazon/aws-xray-daemon"
+      name       = var.name
+      image      = "amazon/aws-xray-daemon"
       entryPoint = ["/xray", "-t", "0.0.0.0:2337", "-b", "0.0.0.0:2337"]
       logConfiguration = {
         logDriver = "awslogs",

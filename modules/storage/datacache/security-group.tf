@@ -11,9 +11,9 @@ resource "aws_security_group" "cluster_security_group" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "cluster_egress_rule" {
-  security_group_id            = aws_security_group.cluster_security_group.id
-  cidr_ipv4                    = "0.0.0.0/0"
-  ip_protocol                  = "-1"
+  security_group_id = aws_security_group.cluster_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {

@@ -1,6 +1,6 @@
 resource "aws_security_group" "bastion_host_security_group" {
-  name        = "bastion-host-sg"
-  vpc_id      = var.vpc_id
+  name   = "bastion-host-sg"
+  vpc_id = var.vpc_id
   ingress {
     from_port   = 0
     to_port     = 0

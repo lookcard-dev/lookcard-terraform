@@ -54,7 +54,7 @@ resource "aws_iam_role" "task_role" {
         }
       }
     ]
-  }) 
+  })
 }
 
 resource "aws_iam_role_policy" "cloudwatch_log" {

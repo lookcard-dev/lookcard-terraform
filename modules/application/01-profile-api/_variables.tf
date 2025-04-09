@@ -27,14 +27,14 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -50,7 +50,7 @@ variable "external_security_group_ids" {
   type = object({
     bastion_host = string
   })
-} 
+}
 
 variable "repository_urls" {
   type = map(string)
@@ -78,8 +78,8 @@ locals {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
       value = aws_cloudwatch_log_group.app_log_group.name
     },
-    { 
-      name = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME",
+    {
+      name  = "AWS_DYNAMODB_PROFILE_DATA_TABLE_NAME",
       value = aws_dynamodb_table.profile.name
     }
   ]

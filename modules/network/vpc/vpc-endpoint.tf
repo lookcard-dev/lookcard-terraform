@@ -23,10 +23,10 @@ resource "aws_vpc_endpoint" "dynamodb_gateway" {
 }
 
 resource "aws_security_group" "ecr_api" {
-  depends_on  = [aws_vpc.vpc]
-  name        = "ecr-api-endpoint-sg"
-  vpc_id      = aws_vpc.vpc.id
-  
+  depends_on = [aws_vpc.vpc]
+  name       = "ecr-api-endpoint-sg"
+  vpc_id     = aws_vpc.vpc.id
+
   ingress {
     from_port   = 443
     to_port     = 443
@@ -51,10 +51,10 @@ resource "aws_security_group" "ecr_api" {
 # }
 
 resource "aws_security_group" "ecr_dkr" {
-  depends_on  = [aws_vpc.vpc]
-  name        = "ecr-dkr-endpoint-sg"
-  vpc_id      = aws_vpc.vpc.id
-  
+  depends_on = [aws_vpc.vpc]
+  name       = "ecr-dkr-endpoint-sg"
+  vpc_id     = aws_vpc.vpc.id
+
   ingress {
     from_port   = 443
     to_port     = 443
@@ -79,10 +79,10 @@ resource "aws_security_group" "ecr_dkr" {
 # }
 
 resource "aws_security_group" "sqs" {
-  depends_on  = [aws_vpc.vpc]
-  name        = "sqs-endpoint-sg"
-  vpc_id      = aws_vpc.vpc.id
-  
+  depends_on = [aws_vpc.vpc]
+  name       = "sqs-endpoint-sg"
+  vpc_id     = aws_vpc.vpc.id
+
   ingress {
     from_port   = 443
     to_port     = 443
@@ -107,10 +107,10 @@ resource "aws_security_group" "sqs" {
 # }
 
 resource "aws_security_group" "secrets_manager" {
-  depends_on  = [aws_vpc.vpc]
-  name        = "secretsmanager-endpoint-sg"
-  vpc_id      = aws_vpc.vpc.id
-  
+  depends_on = [aws_vpc.vpc]
+  name       = "secretsmanager-endpoint-sg"
+  vpc_id     = aws_vpc.vpc.id
+
   ingress {
     from_port   = 443
     to_port     = 443
@@ -135,10 +135,10 @@ resource "aws_security_group" "secrets_manager" {
 # }
 
 resource "aws_security_group" "firehose" {
-  depends_on  = [aws_vpc.vpc]
-  name        = "firehose-endpoint-sg"
-  vpc_id      = aws_vpc.vpc.id
-  
+  depends_on = [aws_vpc.vpc]
+  name       = "firehose-endpoint-sg"
+  vpc_id     = aws_vpc.vpc.id
+
   ingress {
     from_port   = 443
     to_port     = 443

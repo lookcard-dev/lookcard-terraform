@@ -27,14 +27,14 @@ variable "namespace_id" {
 
 variable "network" {
   type = object({
-    vpc_id            = string
-    private_subnet_ids = list(string)
-    public_subnet_ids  = list(string)
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
     isolated_subnet_ids = list(string)
   })
 }
 
-variable "allow_to_security_group_ids"{
+variable "allow_to_security_group_ids" {
   type = list(string)
 }
 
@@ -45,7 +45,7 @@ variable "image_tag" {
 variable "kms_key_arns" {
   type = object({
     data = object({
-      generator = string
+      generator  = string
       encryption = string
     })
   })
@@ -61,13 +61,13 @@ variable "external_security_group_ids" {
   })
 }
 
-variable "s3_bucket_names"{
+variable "s3_bucket_names" {
   type = object({
     data = string
   })
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 
@@ -94,31 +94,31 @@ locals {
       value = aws_cloudwatch_log_group.app_log_group.name
     },
     {
-      name = "AWS_DYNAMODB_DATA_TABLE_NAME"
+      name  = "AWS_DYNAMODB_DATA_TABLE_NAME"
       value = aws_dynamodb_table.data.name
     },
     {
-      name = "AWS_DYNAMODB_NONCE_TABLE_NAME"
+      name  = "AWS_DYNAMODB_NONCE_TABLE_NAME"
       value = aws_dynamodb_table.nonce.name
     },
     {
-      name = "AWS_KMS_GENERATOR_KEY_ID"
+      name  = "AWS_KMS_GENERATOR_KEY_ID"
       value = var.kms_key_arns.data.generator
     },
     {
-      name = "AWS_KMS_ENCRYPTION_KEY_ID"
+      name  = "AWS_KMS_ENCRYPTION_KEY_ID"
       value = var.kms_key_arns.data.encryption
     },
     {
-      name = "AWS_KMS_GENERATOR_KEY_ARN"
+      name  = "AWS_KMS_GENERATOR_KEY_ARN"
       value = var.kms_key_arns.data.generator
     },
     {
-      name = "AWS_KMS_ENCRYPTION_KEY_ARN"
+      name  = "AWS_KMS_ENCRYPTION_KEY_ARN"
       value = var.kms_key_arns.data.encryption
     },
     {
-      name = "AWS_S3_DATA_BUCKET_NAME"
+      name  = "AWS_S3_DATA_BUCKET_NAME"
       value = var.s3_bucket_names.data
     }
   ]

@@ -3,7 +3,7 @@ data "aws_secretsmanager_secret_version" "sentry" {
 }
 
 resource "aws_lambda_function" "firebase_authorizer" {
-  count = var.image_tag == "latest" ? 0 : 1
+  count         = var.image_tag == "latest" ? 0 : 1
   function_name = "Firebase_Authorizer"
   role          = aws_iam_role.lambda_function_role.arn
   architectures = ["x86_64"]
@@ -23,17 +23,17 @@ resource "aws_lambda_function" "firebase_authorizer" {
   }
   environment {
     variables = {
-        RUNTIME_ENVIRONMENT = var.runtime_environment
-        AWS_XRAY_DAEMON_ENDPOINT = "xray.daemon.lookcard.local:2337"
-        AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/apigw-authorizer/firebase"
-        SENTRY_DSN = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["FIREBASE_AUTHORIZER_DSN"]
-        NODE_OPTIONS="-import @sentry/aws-serverless/awslambda-auto"
+      RUNTIME_ENVIRONMENT           = var.runtime_environment
+      AWS_XRAY_DAEMON_ENDPOINT      = "xray.daemon.lookcard.local:2337"
+      AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/apigw-authorizer/firebase"
+      SENTRY_DSN                    = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["FIREBASE_AUTHORIZER_DSN"]
+      NODE_OPTIONS                  = "-import @sentry/aws-serverless/awslambda-auto"
     }
   }
 }
 
 resource "aws_lambda_permission" "api_gateway" {
-  count = var.image_tag == "latest" ? 0 : 1
+  count         = var.image_tag == "latest" ? 0 : 1
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"

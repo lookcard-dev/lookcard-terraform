@@ -27,7 +27,7 @@ module "profile-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
-  secret_arns                = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -44,7 +44,7 @@ module "data-api" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   kms_key_arns                = var.kms_key_arns
   s3_bucket_names             = var.s3_bucket.names
-  secret_arns                = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -59,7 +59,7 @@ module "config-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
-  secret_arns                = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -78,9 +78,9 @@ module "user-api" {
     module.profile-api.security_group_id,
     module.data-api.security_group_id
   ]
-  datacache = var.datacache
-  datastore = var.datastore
-  secret_arns = var.secret_arns
+  datacache                   = var.datacache
+  datastore                   = var.datastore
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -102,9 +102,9 @@ module "account-api" {
     module.user-api.security_group_id,
     module.crypto-api.security_group_id
   ]
-  datacache = var.datacache
-  datastore = var.datastore
-  secret_arns = var.secret_arns
+  datacache                   = var.datacache
+  datastore                   = var.datastore
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -136,7 +136,7 @@ module "crypto-api" {
     sweep_processor      = module.crypto-processor.sweep_processor_queue_arn
     withdrawal_processor = module.crypto-processor.withdrawal_processor_queue_arn
   }
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -153,7 +153,7 @@ module "crypto-listener" {
     module.xray-daemon.security_group_id,
     module.crypto-api.security_group_id
   ]
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -174,8 +174,8 @@ module "crypto-processor" {
     module.notification-api.security_group_id,
     module.user-api.security_group_id
   ]
-  secret_arns = var.secret_arns
-  repository_urls             = var.repository_urls
+  secret_arns     = var.secret_arns
+  repository_urls = var.repository_urls
 }
 
 module "authentication-api" {
@@ -191,7 +191,7 @@ module "authentication-api" {
     module.xray-daemon.security_group_id,
     module.profile-api.security_group_id
   ]
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -209,9 +209,9 @@ module "verification-api" {
     module.xray-daemon.security_group_id,
     module.data-api.security_group_id,
   ]
-  datacache = var.datacache
-  datastore = var.datastore
-  secret_arns = var.secret_arns
+  datacache                   = var.datacache
+  datastore                   = var.datastore
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -226,7 +226,7 @@ module "notification-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -243,7 +243,7 @@ module "referral-api" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   datastore                   = var.datastore
   datacache                   = var.datacache
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -258,7 +258,7 @@ module "domain-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -275,7 +275,7 @@ module "reseller-api" {
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
   datastore                   = var.datastore
   datacache                   = var.datacache
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -290,7 +290,7 @@ module "reap-proxy" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = [module.xray-daemon.security_group_id]
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -306,8 +306,8 @@ module "apigw-authorizer" {
     module.xray-daemon.security_group_id,
     module.authentication-api.security_group_id,
     module.profile-api.security_group_id
-    ]
-  secret_arns = var.secret_arns
+  ]
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
 }
@@ -325,8 +325,8 @@ module "crypto-faucet" {
   providers = {
     aws.dns = aws.dns
   }
-  secret_arns = var.secret_arns
-  repository_urls             = var.repository_urls
+  secret_arns     = var.secret_arns
+  repository_urls = var.repository_urls
 }
 
 module "cronjob" {
@@ -348,8 +348,8 @@ module "cronjob" {
     account_api = var.components["account-api"].image_tag
     crypto_api  = var.components["crypto-api"].image_tag
   }
-  secret_arns = var.secret_arns
-  repository_urls             = var.repository_urls
+  secret_arns     = var.secret_arns
+  repository_urls = var.repository_urls
 }
 
 module "webhook-api" {
@@ -366,15 +366,15 @@ module "webhook-api" {
     module.verification-api.security_group_id,
     module.user-api.security_group_id,
   ]
-  api_gateway    = var.api_gateway
-  elb            = var.elb
-  domain         = var.domain
+  api_gateway = var.api_gateway
+  elb         = var.elb
+  domain      = var.domain
   providers = {
     aws.dns       = aws.dns
     aws.us_east_1 = aws.us_east_1
   }
-  secret_arns = var.secret_arns
+  secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
-  s3_bucket_arns = var.s3_bucket.arns
+  s3_bucket_arns              = var.s3_bucket.arns
   repository_urls             = var.repository_urls
 }

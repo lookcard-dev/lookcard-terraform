@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source                = "hashicorp/aws"
       configuration_aliases = [aws.dns]
     }
   }
@@ -10,7 +10,7 @@ terraform {
 module "certificate" {
   source = "./certificate"
   domain = var.domain
-  
+
   providers = {
     aws.dns = aws.dns
   }
@@ -25,7 +25,7 @@ module "secret" {
 }
 
 module "iam" {
-  source = "./iam"
+  source              = "./iam"
   runtime_environment = var.runtime_environment
-  aws_provider = var.aws_provider
+  aws_provider        = var.aws_provider
 }

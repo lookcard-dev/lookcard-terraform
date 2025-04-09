@@ -25,7 +25,7 @@ resource "aws_ecr_lifecycle_policy" "lifecycle_policy" {
   depends_on = [aws_ecr_repository.repository]
   for_each   = var.components
   repository = each.key
-  policy = <<EOF
+  policy     = <<EOF
 {
   "rules": [
     {

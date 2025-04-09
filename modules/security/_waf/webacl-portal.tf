@@ -1,7 +1,7 @@
 resource "aws_wafv2_web_acl" "portal" {
   provider = aws.us_east_1
-  name  = "portal"
-  scope = "CLOUDFRONT"
+  name     = "portal"
+  scope    = "CLOUDFRONT"
   default_action {
     allow {
 
@@ -53,7 +53,7 @@ resource "aws_wafv2_web_acl" "portal" {
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "portal" {
-  provider = aws.us_east_1
+  provider                = aws.us_east_1
   log_destination_configs = [var.waf_logging_s3_bucket]
   resource_arn            = aws_wafv2_web_acl.portal.arn
 }

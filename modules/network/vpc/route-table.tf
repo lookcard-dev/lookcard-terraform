@@ -23,7 +23,7 @@ resource "aws_route_table" "private_route_table" {
   dynamic "route" {
     for_each = var.network.nat.provider == "gateway" ? [1] : []
     content {
-      cidr_block = "0.0.0.0/0"
+      cidr_block     = "0.0.0.0/0"
       nat_gateway_id = element(aws_nat_gateway.nat_gateway[*].id, count.index % var.network.nat.count)
     }
   }

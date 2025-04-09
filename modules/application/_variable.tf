@@ -75,25 +75,25 @@ variable "kms_key_arns" {
   })
 }
 
-variable "s3_bucket"{
+variable "s3_bucket" {
   type = object({
     arns = object({
       data = string
-      log = string
+      log  = string
     })
     names = object({
       data = string
-      log = string
+      log  = string
     })
   })
 }
 
 variable "elb" {
   type = object({
-    application_load_balancer_arn = string
-    application_load_balancer_dns_name = string
-    network_load_balancer_arn     = string
-    network_load_balancer_dns_name = string
+    application_load_balancer_arn               = string
+    application_load_balancer_dns_name          = string
+    network_load_balancer_arn                   = string
+    network_load_balancer_dns_name              = string
     application_load_balancer_http_listener_arn = string
   })
 }
@@ -108,11 +108,11 @@ variable "api_gateway" {
 variable "domain" {
   type = object({
     general = object({
-      name = string
+      name    = string
       zone_id = string
     })
     admin = object({
-      name = string
+      name    = string
       zone_id = string
     })
   })
@@ -124,18 +124,18 @@ variable "external_security_group_ids" {
       cluster = string
       proxy   = string
     })
-    datacache = string
+    datacache    = string
     bastion_host = string
-    ecs_cluster = string
-    alb = string
+    ecs_cluster  = string
+    alb          = string
   })
 }
 
-variable "secret_arns"{
+variable "secret_arns" {
   type = map(string)
 }
 
-variable "repository_urls"{
+variable "repository_urls" {
   type = map(string)
 }
 
