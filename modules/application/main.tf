@@ -149,6 +149,7 @@ module "crypto-listener" {
   runtime_environment = var.runtime_environment
   cluster_id          = var.cluster_ids.listener
   network             = var.network
+  datacache           = var.datacache
   allow_to_security_group_ids = [
     module.xray-daemon.security_group_id,
     module.crypto-api.security_group_id

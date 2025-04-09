@@ -156,6 +156,7 @@ locals {
     module.crypto-api.security_group_id,
     module.referral-api.security_group_id,
     module.verification-api.security_group_id,
+    module.crypto-listener.security_group_id,
     try(module.crypto-faucet[0].security_group_id, null)
   ])
 }
