@@ -110,6 +110,10 @@ locals {
     {
       name  = "DATABASE_SCHEMA"
       value = replace(var.name, "-", "_")
+    },
+    {
+      name  = "PUPPETEER_CHROME_EXECUTABLE_PATH",
+      value = "/usr/bin/google-chrome"
     }
   ]
   environment_secrets = [
