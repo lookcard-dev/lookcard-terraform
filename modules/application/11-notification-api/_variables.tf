@@ -104,6 +104,14 @@ locals {
       name      = "FIREBASE_CREDENTIALS"
       valueFrom = "${var.secret_arns["FIREBASE"]}:CREDENTIALS::"
     },
+    {
+      name      = "TELEGRAM_BOT_TOKEN"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:BOT_TOKEN::"
+    },
+    {
+      name      = "TELEGRAM_NOTIFICATION_CHANNEL_CHAT_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:NOTIFICATION_CHANNEL_CHAT_ID::"
+    }
   ]
 }
 
