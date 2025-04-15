@@ -94,6 +94,9 @@ resource "aws_launch_template" "listener_arm64" {
   iam_instance_profile {
     name = aws_iam_instance_profile.instance_profile.name
   }
+  credit_specification {
+    cpu_credits = "standard"
+  }
   instance_market_options {
     market_type = var.runtime_environment == "production" ? null : "spot"
   }
@@ -136,6 +139,9 @@ resource "aws_launch_template" "listener_amd64" {
   vpc_security_group_ids = [aws_security_group.ec2_cluster_security_group.id]
   iam_instance_profile {
     name = aws_iam_instance_profile.instance_profile.name
+  }
+  credit_specification {
+    cpu_credits = "standard"
   }
   instance_market_options {
     market_type = var.runtime_environment == "production" ? null : "spot"
