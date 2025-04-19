@@ -25,6 +25,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "waf_log" {
   rule {
     id     = "transition_to_ia_and_glacier"
     status = "Enabled"
+    filter {
+      prefix = ""
+    }
 
     transition {
       days          = 30
@@ -60,6 +63,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "log" {
   rule {
     id     = "log_lifecycle"
     status = "Enabled"
+    filter {
+      prefix = ""
+    }
 
     transition {
       days          = 30
