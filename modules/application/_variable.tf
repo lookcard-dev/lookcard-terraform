@@ -115,6 +115,10 @@ variable "domain" {
       name    = string
       zone_id = string
     })
+    developer = object({
+      name    = string
+      zone_id = string
+    })
   })
 }
 

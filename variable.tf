@@ -23,6 +23,10 @@ variable "domain" {
       name    = string
       zone_id = string
     })
+    developer = object({
+      name    = string
+      zone_id = string
+    })
   })
   default = {
     general = {
@@ -30,6 +34,10 @@ variable "domain" {
       zone_id = "Z01111111111111111111"
     }
     admin = {
+      name    = "develop.not-lookcard.com"
+      zone_id = "Z01111111111111111111"
+    }
+    developer = {
       name    = "develop.not-lookcard.com"
       zone_id = "Z01111111111111111111"
     }

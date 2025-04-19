@@ -34,3 +34,20 @@ variable "runtime_environment" {
     error_message = "runtime_environment must be one of: develop, testing, staging, production, or sandbox"
   }
 }
+
+variable "domain" {
+  type = object({
+    general = object({
+      name    = string
+      zone_id = string
+    })
+    admin = object({
+      name    = string
+      zone_id = string
+    })
+    developer = object({
+      name    = string
+      zone_id = string
+    })
+  })
+}

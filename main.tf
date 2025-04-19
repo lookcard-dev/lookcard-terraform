@@ -3,6 +3,7 @@ module "network" {
   network             = var.network
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
+  domain              = var.domain
   providers = {
     aws.dns = aws.dns
   }
