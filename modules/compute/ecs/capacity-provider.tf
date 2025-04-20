@@ -2,9 +2,15 @@ resource "aws_ecs_cluster_capacity_providers" "administrative" {
   cluster_name       = aws_ecs_cluster.administrative.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+    base              = var.runtime_environment == "production" ? 1 : 0
+    weight            = var.runtime_environment == "production" ? 2 : 0
+    capacity_provider = "FARGATE"
+  }
+
+  default_capacity_provider_strategy {
+    base              = var.runtime_environment == "production" ? 0 : 1
+    weight            = var.runtime_environment == "production" ? 1 : 0
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 
@@ -12,9 +18,15 @@ resource "aws_ecs_cluster_capacity_providers" "composite_application" {
   cluster_name       = aws_ecs_cluster.composite_application.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+    base              = var.runtime_environment == "production" ? 1 : 0
+    weight            = var.runtime_environment == "production" ? 2 : 0
+    capacity_provider = "FARGATE"
+  }
+
+  default_capacity_provider_strategy {
+    base              = var.runtime_environment == "production" ? 0 : 1
+    weight            = var.runtime_environment == "production" ? 1 : 0
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 
@@ -22,9 +34,15 @@ resource "aws_ecs_cluster_capacity_providers" "core_application" {
   cluster_name       = aws_ecs_cluster.core_application.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+    base              = var.runtime_environment == "production" ? 1 : 0
+    weight            = var.runtime_environment == "production" ? 2 : 0
+    capacity_provider = "FARGATE"
+  }
+
+  default_capacity_provider_strategy {
+    base              = var.runtime_environment == "production" ? 0 : 1
+    weight            = var.runtime_environment == "production" ? 1 : 0
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 
@@ -33,7 +51,7 @@ resource "aws_ecs_cluster_capacity_providers" "cronjob" {
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
-    weight            = 100
+    weight            = 1
     capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
   }
 }
@@ -97,9 +115,9 @@ resource "aws_launch_template" "listener_arm64" {
   credit_specification {
     cpu_credits = "standard"
   }
-  instance_market_options {
-    market_type = var.runtime_environment == "production" ? null : "spot"
-  }
+  # instance_market_options {
+  #   market_type = var.runtime_environment == "production" ? null : "spot"
+  # }
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -143,9 +161,9 @@ resource "aws_launch_template" "listener_amd64" {
   credit_specification {
     cpu_credits = "standard"
   }
-  instance_market_options {
-    market_type = var.runtime_environment == "production" ? null : "spot"
-  }
+  # instance_market_options {
+  #   market_type = var.runtime_environment == "production" ? null : "spot"
+  # }
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -181,10 +199,29 @@ resource "aws_autoscaling_group" "listener_amd64" {
   max_size              = var.runtime_environment == "production" ? 12 : 6
   name                  = "listener-amd64"
   protect_from_scale_in = true
-  launch_template {
-    id      = aws_launch_template.listener_amd64.id
-    version = "$Latest"
+  mixed_instances_policy {
+    instances_distribution {
+      on_demand_base_capacity = 0
+      on_demand_percentage_above_base_capacity = var.runtime_environment == "production" ? 50 : 0
+      spot_allocation_strategy = "capacity-optimized"
+    }
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.listener_amd64.id
+        version            = "$Latest"
+      }
+      override {
+        instance_type     = "t3.small"
+        weighted_capacity = "1"
+      }
+      override {
+        instance_type     = "t3a.small"
+        weighted_capacity = "1"
+      }
+    } 
   }
+  
+ 
   vpc_zone_identifier = var.subnet_ids
   tag {
     key                 = "AmazonECSManaged"
