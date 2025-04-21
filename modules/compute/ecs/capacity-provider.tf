@@ -193,12 +193,21 @@ resource "aws_launch_template" "listener_amd64" {
 
 resource "aws_autoscaling_group" "listener_arm64" {
   min_size              = 0
-  max_size              = 0
+  max_size              = var.runtime_environment == "production" ? 12 : 6
   name                  = "listener-arm64"
   protect_from_scale_in = true
-  launch_template {
-    id      = aws_launch_template.listener_arm64.id
-    version = "$Latest"
+   mixed_instances_policy {
+    instances_distribution {
+      on_demand_base_capacity = 0
+      on_demand_percentage_above_base_capacity = var.runtime_environment == "production" ? 50 : 0
+      spot_allocation_strategy = "capacity-optimized"
+    }
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.listener_arm64.id
+        version            = "$Latest"
+      }
+    } 
   }
   vpc_zone_identifier = var.subnet_ids
   tag {
@@ -234,8 +243,6 @@ resource "aws_autoscaling_group" "listener_amd64" {
       }
     } 
   }
-  
- 
   vpc_zone_identifier = var.subnet_ids
   tag {
     key                 = "AmazonECSManaged"

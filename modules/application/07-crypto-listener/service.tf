@@ -5,7 +5,7 @@ resource "aws_ecs_service" "tron_nile_trongrid_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -21,7 +21,7 @@ resource "aws_ecs_service" "tron_nile_getblock_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -37,7 +37,7 @@ resource "aws_ecs_service" "ethereum_sepolia_getblock_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -53,7 +53,7 @@ resource "aws_ecs_service" "bsc_testnet_getblock_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -69,7 +69,7 @@ resource "aws_ecs_service" "base_sepolia_getblock_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -85,7 +85,7 @@ resource "aws_ecs_service" "optimism_sepolia_blast_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -101,7 +101,7 @@ resource "aws_ecs_service" "ethereum_sepolia_publicnode_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -117,7 +117,7 @@ resource "aws_ecs_service" "bsc_testnet_publicnode_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -133,7 +133,7 @@ resource "aws_ecs_service" "base_sepolia_publicnode_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
@@ -149,7 +149,7 @@ resource "aws_ecs_service" "optimism_sepolia_publicnode_ecs_service" {
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
-    capacity_provider = "LISTENER_EC2_AMD64"
+    capacity_provider = "LISTENER_EC2_ARM64"
     weight            = 1
   }
   ordered_placement_strategy {
