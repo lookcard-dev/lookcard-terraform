@@ -1,7 +1,3 @@
-data "aws_ecr_repository" "repository" {
-  name = var.name
-}
-
 data "aws_secretsmanager_secret_version" "sentry" {
   secret_id = var.secret_arns["SENTRY"]
 }
@@ -12,7 +8,7 @@ resource "aws_lambda_function" "sweep_processor" {
   role          = aws_iam_role.lambda_function_role.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+  image_uri     = "${var.repository_urls[var.name]}:${var.image_tag}"
   image_config {
     command = ["src/workflows/sweep/index.handler"]
   }
@@ -52,7 +48,7 @@ resource "aws_lambda_function" "withdrawal_processor" {
   role          = aws_iam_role.lambda_function_role.arn
   architectures = ["x86_64"]
   package_type  = "Image"
-  image_uri     = "${data.aws_ecr_repository.repository.repository_url}:${var.image_tag}"
+  image_uri     = "${var.repository_urls[var.name]}:${var.image_tag}"
   image_config {
     command = ["src/workflows/withdrawal/index.handler"]
   }

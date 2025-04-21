@@ -37,4 +37,10 @@ resource "aws_ecs_service" "ecs_service" {
     container_name   = "webhook-api"
     container_port   = 8080
   }
+
+  lifecycle {
+    ignore_changes = [
+      capacity_provider_strategy
+    ]
+  }
 }

@@ -11,7 +11,6 @@ resource "aws_instance" "instance" {
   subnet_id               = var.subnet_ids[0]
   vpc_security_group_ids  = [aws_security_group.bastion_host_security_group.id]
   iam_instance_profile    = aws_iam_instance_profile.bastion_host_instance_profile.name
-  disable_api_termination = true
   source_dest_check       = false
 
   root_block_device {

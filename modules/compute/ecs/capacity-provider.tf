@@ -154,6 +154,10 @@ resource "aws_launch_template" "listener_arm64" {
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
   )
+  
+  lifecycle {
+    ignore_changes = [image_id]
+  }
 }
 
 resource "aws_launch_template" "listener_amd64" {
@@ -181,6 +185,10 @@ resource "aws_launch_template" "listener_amd64" {
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
   )
+  
+  lifecycle {
+    ignore_changes = [image_id]
+  }
 }
 
 resource "aws_autoscaling_group" "listener_arm64" {
