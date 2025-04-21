@@ -9,7 +9,7 @@ resource "aws_ecs_cluster_capacity_providers" "administrative" {
 
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 0 : 1
-    weight            = var.runtime_environment == "production" ? 1 : 0
+    weight            = 1
     capacity_provider = "FARGATE_SPOT"
   }
 }
@@ -25,7 +25,7 @@ resource "aws_ecs_cluster_capacity_providers" "composite_application" {
 
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 0 : 1
-    weight            = var.runtime_environment == "production" ? 1 : 0
+    weight            = 1
     capacity_provider = "FARGATE_SPOT"
   }
 }
@@ -41,7 +41,7 @@ resource "aws_ecs_cluster_capacity_providers" "core_application" {
 
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 0 : 1
-    weight            = var.runtime_environment == "production" ? 1 : 0
+    weight            = 1
     capacity_provider = "FARGATE_SPOT"
   }
 }
@@ -195,7 +195,7 @@ resource "aws_autoscaling_group" "listener_arm64" {
 }
 
 resource "aws_autoscaling_group" "listener_amd64" {
-  min_size              = var.runtime_environment == "production" ? 4 : 2
+  min_size              = 0
   max_size              = var.runtime_environment == "production" ? 12 : 6
   name                  = "listener-amd64"
   protect_from_scale_in = true
