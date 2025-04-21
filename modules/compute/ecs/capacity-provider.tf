@@ -80,6 +80,9 @@ resource "aws_ecs_capacity_provider" "listener_arm64" {
     managed_draining               = "ENABLED"
     managed_scaling {
       status = "ENABLED"
+      instance_warmup_period = 300
+      minimum_scaling_step_size = 1
+      maximum_scaling_step_size = 1
     }
   }
 }
@@ -92,6 +95,9 @@ resource "aws_ecs_capacity_provider" "listener_amd64" {
     managed_draining               = "ENABLED"
     managed_scaling {
       status = "ENABLED"
+      instance_warmup_period = 300
+      minimum_scaling_step_size = 1
+      maximum_scaling_step_size = 1
     }
   }
 }

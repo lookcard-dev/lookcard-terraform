@@ -30,4 +30,9 @@ resource "aws_ecs_service" "ecs_service" {
   service_registries {
     registry_arn = aws_service_discovery_service.discovery_service.arn
   }
+  lifecycle {
+    ignore_changes = [
+      capacity_provider_strategy
+    ]
+  }
 }
