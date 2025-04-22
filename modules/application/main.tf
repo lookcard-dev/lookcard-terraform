@@ -370,3 +370,20 @@ module "webhook-api" {
   s3_bucket_arns              = var.s3_bucket.arns
   repository_urls             = var.repository_urls
 }
+
+module "approval-api" {
+  source              = "./20-approval-api"
+  aws_provider        = var.aws_provider
+  name                = "approval-api"
+  image_tag           = var.components["approval-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id          = var.cluster_ids.core_application
+  namespace_id        = var.namespace_id
+  network             = var.network
+  allow_to_security_group_ids = []
+  secret_arns                 = var.secret_arns
+  external_security_group_ids = var.external_security_group_ids
+  datacache                   = var.datacache
+  datastore                   = var.datastore
+  repository_urls             = var.repository_urls
+} 
