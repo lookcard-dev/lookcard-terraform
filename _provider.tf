@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.95.0"
     }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "6.30.0"
+    }
   }
 }
 
@@ -64,4 +68,9 @@ provider "aws" {
   skip_credentials_validation = true
   skip_metadata_api_check     = true
   skip_requesting_account_id  = true
+}
+
+provider "google-beta" {
+  user_project_override = true
+  project               = var.GCP_PROJECT_ID
 }

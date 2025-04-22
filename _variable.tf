@@ -362,3 +362,11 @@ variable "DNS__AWS_SESSION_TOKEN" {
   sensitive = true
   default   = null
 }
+
+variable "GCP_PROJECT_ID" {
+  type      = string
+  nullable  = true
+  sensitive = true
+  default   = null
+}
+
