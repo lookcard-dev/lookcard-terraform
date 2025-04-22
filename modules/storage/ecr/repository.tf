@@ -3,17 +3,14 @@ resource "aws_ecr_repository" "repository" {
   name                 = each.key
   image_tag_mutability = "IMMUTABLE"
   image_scanning_configuration {
-    scan_on_push = false
-  }
-  lifecycle {
-    ignore_changes = all
+    scan_on_push = true
   }
 }
 
 resource "aws_ecr_registry_scanning_configuration" "scanning_config" {
-  scan_type = "ENHANCED"
+  scan_type = "BASIC"
   rule {
-    scan_frequency = "CONTINUOUS_SCAN"
+    scan_frequency = "SCAN_ON_PUSH"
     repository_filter {
       filter      = "*"
       filter_type = "WILDCARD"
