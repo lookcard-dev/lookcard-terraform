@@ -95,6 +95,7 @@ variable "image_tag" {
     "reap-proxy"         = "latest"
     "apigw-authorizer"   = "latest"
     "webhook-api"        = "latest"
+    "approval-api"       = "latest"
   }
 }
 
@@ -308,6 +309,13 @@ locals {
         internal = "webhook.api"
       }
       image_tag = var.image_tag["webhook-api"]
+    }
+    "approval-api" = {
+      name = "approval-api"
+      hostname = {
+        internal = "approval.api"
+      }
+      image_tag = var.image_tag["approval-api"]
     }
   }
 }
