@@ -153,6 +153,7 @@ locals {
     module.reseller-api.security_group_id,
     module.approval-api.security_group_id,
     module.cronjob.security_group_id,
+    module.card-api.security_group_id,
   ]
 
   datacache_access_security_group_ids = compact([
@@ -164,6 +165,7 @@ locals {
     module.reseller-api.security_group_id,
     module.approval-api.security_group_id,
     try(module.crypto-faucet[0].security_group_id, null),
-    var.external_security_group_ids.ecs_cluster
+    var.external_security_group_ids.ecs_cluster,
+    module.card-api.security_group_id,
   ])
 }
