@@ -109,8 +109,8 @@ locals {
       valueFrom = "${var.secret_arns["TELEGRAM"]}:BOT_TOKEN::"
     },
     {
-      name      = "TELEGRAM_NOTIFICATION_GROUP_ID"
-      valueFrom = "${var.secret_arns["TELEGRAM"]}:NOTIFICATION_GROUP_ID::"
+      name      = "TELEGRAM_NOTIFICATION_GROUP_CHAT_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:NOTIFICATION_GROUP_CHAT_ID::"
     },
     {
       name      = "TELEGRAM_NOTIFICATION_GENERAL_MESSAGE_THREAD_ID"
