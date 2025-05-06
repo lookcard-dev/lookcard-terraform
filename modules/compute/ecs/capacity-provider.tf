@@ -79,8 +79,8 @@ resource "aws_ecs_capacity_provider" "listener_arm64" {
     managed_termination_protection = "ENABLED"
     managed_draining               = "ENABLED"
     managed_scaling {
-      status = "ENABLED"
-      instance_warmup_period = 300
+      status                    = "ENABLED"
+      instance_warmup_period    = 300
       minimum_scaling_step_size = 1
       maximum_scaling_step_size = 1
     }
@@ -94,8 +94,8 @@ resource "aws_ecs_capacity_provider" "listener_amd64" {
     managed_termination_protection = "ENABLED"
     managed_draining               = "ENABLED"
     managed_scaling {
-      status = "ENABLED"
-      instance_warmup_period = 300
+      status                    = "ENABLED"
+      instance_warmup_period    = 300
       minimum_scaling_step_size = 1
       maximum_scaling_step_size = 1
     }
@@ -154,7 +154,7 @@ resource "aws_launch_template" "listener_arm64" {
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
   )
-  
+
   lifecycle {
     ignore_changes = [image_id]
   }
@@ -185,7 +185,7 @@ resource "aws_launch_template" "listener_amd64" {
     cluster = "${aws_ecs_cluster.listener.name}"
     EOT
   )
-  
+
   lifecycle {
     ignore_changes = [image_id]
   }
@@ -196,18 +196,18 @@ resource "aws_autoscaling_group" "listener_arm64" {
   max_size              = var.runtime_environment == "production" ? 12 : 6
   name                  = "listener-arm64"
   protect_from_scale_in = true
-   mixed_instances_policy {
+  mixed_instances_policy {
     instances_distribution {
-      on_demand_base_capacity = 0
+      on_demand_base_capacity                  = 0
       on_demand_percentage_above_base_capacity = var.runtime_environment == "production" ? 50 : 0
-      spot_allocation_strategy = "capacity-optimized"
+      spot_allocation_strategy                 = "capacity-optimized"
     }
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.listener_arm64.id
         version            = "$Latest"
       }
-    } 
+    }
   }
   vpc_zone_identifier = var.subnet_ids
   tag {
@@ -224,9 +224,9 @@ resource "aws_autoscaling_group" "listener_amd64" {
   protect_from_scale_in = true
   mixed_instances_policy {
     instances_distribution {
-      on_demand_base_capacity = 0
+      on_demand_base_capacity                  = 0
       on_demand_percentage_above_base_capacity = var.runtime_environment == "production" ? 50 : 0
-      spot_allocation_strategy = "capacity-optimized"
+      spot_allocation_strategy                 = "capacity-optimized"
     }
     launch_template {
       launch_template_specification {
@@ -241,7 +241,7 @@ resource "aws_autoscaling_group" "listener_amd64" {
         instance_type     = "t3a.small"
         weighted_capacity = "1"
       }
-    } 
+    }
   }
   vpc_zone_identifier = var.subnet_ids
   tag {

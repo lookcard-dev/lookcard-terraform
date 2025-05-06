@@ -13,7 +13,7 @@ data "aws_subnet" "selected" {
 # Create an Elastic IP for the instance
 resource "aws_eip" "jumpserver_eip" {
   domain = "vpc"
-  
+
   tags = {
     Name        = "jumpserver-eip"
     Environment = var.runtime_environment

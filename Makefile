@@ -1,5 +1,8 @@
 BRANCH_NAME := $(shell git branch --show-current)
 
+fmt:
+	@terraform fmt -recursive
+
 init:
 	@terraform init -backend-config="profile=lookcard-terraform" -backend-config="key=$(BRANCH_NAME)/terraform.tfstate"
 

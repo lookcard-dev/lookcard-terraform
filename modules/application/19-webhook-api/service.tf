@@ -16,7 +16,7 @@ resource "aws_ecs_service" "ecs_service" {
     enable   = true
     rollback = true
   }
-  
+
 
   desired_count = var.image_tag == "latest" ? 0 : (
     var.runtime_environment == "production" ? 2 : 1

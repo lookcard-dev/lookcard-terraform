@@ -17,7 +17,7 @@ resource "aws_ecs_service" "ecs_service" {
     enable   = true
     rollback = true
   }
-  
+
   desired_count = var.runtime_environment == "production" ? 2 : 1
   cluster       = var.cluster_id
 

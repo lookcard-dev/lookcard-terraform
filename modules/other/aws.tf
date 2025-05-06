@@ -15,24 +15,24 @@ resource "aws_account_primary_contact" "primary" {
 
 resource "aws_account_alternate_contact" "operations" {
   alternate_contact_type = "OPERATIONS"
-  name          = "Mike Ng"
-  title         = "Chief Technology Officer"
-  email_address = "mike.ng@lookcard.dev"
-  phone_number  = "+85267631730"
+  name                   = "Mike Ng"
+  title                  = "Chief Technology Officer"
+  email_address          = "mike.ng@lookcard.dev"
+  phone_number           = "+85267631730"
 }
 
 resource "aws_account_alternate_contact" "security" {
   alternate_contact_type = "SECURITY"
-  name          = "Mike Ng"
-  title         = "Chief Technology Officer"
-  email_address = "mike.ng@lookcard.dev"
-  phone_number  = "+85267631730"
+  name                   = "Mike Ng"
+  title                  = "Chief Technology Officer"
+  email_address          = "mike.ng@lookcard.dev"
+  phone_number           = "+85267631730"
 }
 
 resource "aws_account_alternate_contact" "billing" {
   alternate_contact_type = "BILLING"
-  name          = "Mike Ng"
-  title         = "Chief Technology Officer"
-  email_address = "mike.ng@lookcard.dev"
-  phone_number  = "+85267631730"
+  name                   = "Mike Ng"
+  title                  = "Chief Technology Officer"
+  email_address          = "mike.ng@lookcard.dev"
+  phone_number           = "+85267631730"
 }
