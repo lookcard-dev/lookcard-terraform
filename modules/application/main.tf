@@ -405,6 +405,7 @@ module "card-api" {
     module.profile-api.security_group_id,
     module.user-api.security_group_id,
     module.verification-api.security_group_id,
+    module.reap-proxy.security_group_id
   ]
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
