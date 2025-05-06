@@ -357,6 +357,7 @@ module "webhook-api" {
   allow_to_security_group_ids = [
     module.verification-api.security_group_id,
     module.user-api.security_group_id,
+    module.card-api.security_group_id,
   ]
   api_gateway = var.api_gateway
   elb         = var.elb
