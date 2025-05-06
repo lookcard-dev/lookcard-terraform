@@ -129,6 +129,14 @@ locals {
       name      = "SENTRY_DSN"
       valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
+    {
+      name      = "REAP_RSA_PUBLIC_KEY_BASE64"
+      valueFrom = "${var.secret_arns["REAP"]}:RSA_PUBLIC_KEY_BASE64::"
+    },
+    {
+      name      = "REAP_RSA_PRIVATE_KEY_BASE64"
+      valueFrom = "${var.secret_arns["REAP"]}:RSA_PRIVATE_KEY_BASE64::"
+    },
   ]
 }
 
