@@ -106,6 +106,10 @@ variable "repository_urls" {
 locals {
   environment_variables = [
     {
+      name = "SERVICE_NAME",
+      value = var.name
+    },
+    {
       name  = "PORT"
       value = "8080"
     },
