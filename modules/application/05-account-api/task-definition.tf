@@ -1,8 +1,8 @@
 resource "aws_ecs_task_definition" "task_definition" {
   family             = var.name
   network_mode       = "awsvpc"
-  cpu                = "512"
-  memory             = "1024"
+  cpu                = "256"
+  memory             = "512"
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
