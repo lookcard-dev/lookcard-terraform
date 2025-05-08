@@ -101,8 +101,8 @@ locals {
       valueFrom = "${var.secret_arns["TWILIO"]}:MESSAGING_SERVICE_SID::"
     },
     {
-      name      = "FIREBASE_CREDENTIALS"
-      valueFrom = "${var.secret_arns["FIREBASE"]}:CREDENTIALS::"
+      name      = "FIREBASE_CREDENTIALS_BASE64"
+      valueFrom = "${var.secret_arns["FIREBASE"]}:CREDENTIALS_BASE64::"
     },
     {
       name      = "TELEGRAM_BOT_TOKEN"
