@@ -97,8 +97,8 @@ locals {
       valueFrom = "${var.secret_arns["TWILIO"]}:AUTH_TOKEN::"
     },
     {
-      name      = "TWILIO_MESSAGING_SERVICE_ID"
-      valueFrom = "${var.secret_arns["TWILIO"]}:MESSAGING_SERVICE_ID::"
+      name      = "TWILIO_MESSAGING_SERVICE_SID"
+      valueFrom = "${var.secret_arns["TWILIO"]}:MESSAGING_SERVICE_SID::"
     },
     {
       name      = "FIREBASE_CREDENTIALS"
