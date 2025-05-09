@@ -118,6 +118,10 @@ locals {
     {
       name  = "PUPPETEER_CHROME_EXECUTABLE_PATH",
       value = "/usr/bin/google-chrome"
+    },
+    {
+      name  = "PUPPETEER_ENABLE",
+      value = "1"
     }
   ]
   environment_secrets = [
