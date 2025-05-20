@@ -27,7 +27,7 @@ resource "aws_rds_cluster" "cluster" {
   cluster_identifier     = "datastore"
   engine                 = "aurora-postgresql"
   engine_mode            = "provisioned"
-  engine_version         = "16.1"
+  engine_version         = "16.6"
   database_name          = var.runtime_environment
   master_username        = var.runtime_environment
   master_password        = random_password.master_password.result
