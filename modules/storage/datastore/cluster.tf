@@ -82,6 +82,7 @@ resource "aws_rds_cluster_instance" "reader" {
   engine_version               = aws_rds_cluster.cluster.engine_version
   publicly_accessible          = false
   performance_insights_enabled = true
+  auto_minor_version_upgrade   = false
 
   monitoring_interval = var.runtime_environment == "production" ? 10 : 0 # Only enable monitoring in production
   monitoring_role_arn = var.runtime_environment == "production" ? aws_iam_role.rds_monitoring_role.arn : null
