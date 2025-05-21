@@ -33,8 +33,9 @@ module "storage" {
   external_security_group_ids = {
     bastion_host = module.network.bastion_host_security_group_id
   }
-  secret_arns = module.security.secret_arns
-  depends_on  = [module.security, module.network]
+  secret_arns  = module.security.secret_arns
+  namespace_id = module.network.cloudmap_namespace_id
+  depends_on   = [module.security, module.network]
 }
 
 module "compute" {
@@ -50,7 +51,6 @@ module "application" {
   source              = "./modules/application"
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
-  depends_on          = [module.network, module.storage, module.compute, module.security]
 
   network = {
     vpc_id              = module.network.vpc_id
@@ -68,15 +68,6 @@ module "application" {
   }
 
   namespace_id = module.network.cloudmap_namespace_id
-
-  datastore = {
-    writer_endpoint = module.storage.datastore_writer_endpoint
-    reader_endpoint = module.storage.datastore_reader_endpoint
-  }
-
-  datacache = {
-    endpoint = module.storage.datacache_endpoint
-  }
 
   components = local.components
 

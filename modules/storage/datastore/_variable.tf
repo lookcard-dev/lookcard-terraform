@@ -35,3 +35,7 @@ variable "external_security_group_ids" {
 variable "secret_arns" {
   type = map(string)
 }
+
+variable "namespace_id" {
+  type = string
+}

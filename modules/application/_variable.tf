@@ -36,18 +36,6 @@ variable "network" {
   })
 }
 
-variable "datastore" {
-  type = object({
-    writer_endpoint = string
-    reader_endpoint = string
-  })
-}
-
-variable "datacache" {
-  type = object({
-    endpoint = string
-  })
-}
 
 variable "components" {
   type = map(object({

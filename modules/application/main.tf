@@ -77,8 +77,7 @@ module "user-api" {
     module.profile-api.security_group_id,
     module.data-api.security_group_id
   ]
-  datacache                   = var.datacache
-  datastore                   = var.datastore
+
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
@@ -100,8 +99,7 @@ module "account-api" {
     module.user-api.security_group_id,
     module.crypto-api.security_group_id
   ]
-  datacache                   = var.datacache
-  datastore                   = var.datastore
+
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
@@ -122,8 +120,6 @@ module "crypto-api" {
     module.data-api.security_group_id,
     module.account-api.security_group_id
   ]
-  datacache    = var.datacache
-  datastore    = var.datastore
   kms_key_arns = var.kms_key_arns
   sqs_queue_urls = {
     sweep_processor      = module.crypto-processor.sweep_processor_queue_url
@@ -146,7 +142,6 @@ module "crypto-listener" {
   runtime_environment = var.runtime_environment
   cluster_id          = var.cluster_ids.listener
   network             = var.network
-  datacache           = var.datacache
   allow_to_security_group_ids = [
     module.crypto-api.security_group_id
   ]
@@ -203,8 +198,6 @@ module "verification-api" {
   allow_to_security_group_ids = [
     module.data-api.security_group_id,
   ]
-  datacache                   = var.datacache
-  datastore                   = var.datastore
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
@@ -235,8 +228,6 @@ module "referral-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = []
-  datastore                   = var.datastore
-  datacache                   = var.datacache
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
@@ -267,8 +258,6 @@ module "reseller-api" {
   namespace_id                = var.namespace_id
   network                     = var.network
   allow_to_security_group_ids = []
-  datastore                   = var.datastore
-  datacache                   = var.datacache
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
@@ -314,7 +303,6 @@ module "crypto-faucet" {
   runtime_environment         = var.runtime_environment
   network                     = var.network
   allow_to_security_group_ids = []
-  datacache                   = var.datacache
   providers = {
     aws.dns = aws.dns
   }
@@ -334,8 +322,6 @@ module "cronjob" {
     account_api = module.account-api.security_group_id
     crypto_api  = module.crypto-api.security_group_id
   }
-  datacache  = var.datacache
-  datastore  = var.datastore
   cluster_id = var.cluster_ids.cronjob
   api_image_tags = {
     account_api = var.components["account-api"].image_tag
@@ -384,9 +370,8 @@ module "approval-api" {
   allow_to_security_group_ids = []
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
-  datacache                   = var.datacache
-  datastore                   = var.datastore
-  repository_urls             = var.repository_urls
+
+  repository_urls = var.repository_urls
 }
 
 module "card-api" {
@@ -411,7 +396,6 @@ module "card-api" {
   ]
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
-  datacache                   = var.datacache
-  datastore                   = var.datastore
-  repository_urls             = var.repository_urls
+
+  repository_urls = var.repository_urls
 }

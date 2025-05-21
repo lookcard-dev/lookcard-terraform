@@ -30,12 +30,6 @@ variable "network" {
   })
 }
 
-variable "datacache" {
-  type = object({
-    endpoint = string
-  })
-}
-
 variable "allow_to_security_group_ids" {
   type = list(string)
 }
@@ -67,7 +61,7 @@ locals {
     },
     {
       name  = "REDIS_HOST"
-      value = var.datacache.endpoint
+      value = "datacache.lookcard.local"
     },
     {
       name  = "AWS_XRAY_DAEMON_ENDPOINT"

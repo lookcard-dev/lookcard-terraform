@@ -48,18 +48,6 @@ variable "api_image_tags" {
   })
 }
 
-variable "datastore" {
-  type = object({
-    writer_endpoint = string
-    reader_endpoint = string
-  })
-}
-
-variable "datacache" {
-  type = object({
-    endpoint = string
-  })
-}
 
 variable "cluster_id" {
   type = string
@@ -93,15 +81,15 @@ locals {
     },
     {
       name  = "REDIS_HOST"
-      value = var.datacache.endpoint
+      value = "datacache.lookcard.local"
     },
     {
       name  = "DATABASE_HOST"
-      value = var.datastore.writer_endpoint
+      value = "rw.datastore.lookcard.local"
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = var.datastore.reader_endpoint
+      value = "ro.datastore.lookcard.local"
     },
     {
       name  = "DATABASE_PORT"
