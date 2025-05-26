@@ -34,6 +34,19 @@ variable "network" {
   })
 }
 
+variable "datastore" {
+  type = object({
+    writer_endpoint = string
+    reader_endpoint = string
+  })
+}
+
+variable "datacache" {
+  type = object({
+    endpoint = string
+  })
+}
+
 variable "allow_to_security_group_ids" {
   type = list(string)
 }
@@ -84,15 +97,15 @@ locals {
     },
     {
       name  = "REDIS_HOST"
-      value = "datacache.lookcard.local"
+      value = var.datacache.endpoint
     },
     {
       name  = "DATABASE_HOST"
-      value = "rw.datastore.lookcard.local"
+      value = var.datastore.writer_endpoint
     },
     {
       name  = "DATABASE_READ_HOST"
-      value = "ro.datastore.lookcard.local"
+      value = var.datastore.reader_endpoint
     },
     {
       name  = "DATABASE_PORT"

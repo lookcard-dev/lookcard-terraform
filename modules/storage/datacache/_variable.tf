@@ -31,7 +31,3 @@ variable "external_security_group_ids" {
     bastion_host = string
   })
 }
-
-variable "namespace_id" {
-  type = string
-}

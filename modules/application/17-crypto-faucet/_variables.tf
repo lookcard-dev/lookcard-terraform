@@ -35,6 +35,12 @@ variable "network" {
   })
 }
 
+variable "datacache" {
+  type = object({
+    endpoint = string
+  })
+}
+
 variable "allow_to_security_group_ids" {
   type = list(string)
 }

@@ -24,10 +24,6 @@ variable "subnet_ids" {
   })
 }
 
-variable "namespace_id" {
-  type = string
-}
-
 variable "components" {
   type = map(object({
     name = string

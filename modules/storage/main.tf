@@ -11,7 +11,6 @@ module "datacache" {
   vpc_id                      = var.vpc_id
   subnet_ids                  = var.subnet_ids.datacache
   external_security_group_ids = var.external_security_group_ids
-  namespace_id                = var.namespace_id
 }
 
 module "datastore" {
@@ -22,7 +21,6 @@ module "datastore" {
   subnet_ids                  = var.subnet_ids.datastore
   external_security_group_ids = var.external_security_group_ids
   secret_arns                 = var.secret_arns
-  namespace_id                = var.namespace_id
 }
 
 module "ecr" {

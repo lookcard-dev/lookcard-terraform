@@ -47,7 +47,7 @@ resource "aws_apprunner_service" "service" {
         port = "8080"
         runtime_environment_variables = {
           ENVIRONMENT     = var.runtime_environment
-          REDIS_URL       = "rediss://datacache.lookcard.local:6379"
+          REDIS_URL       = "rediss://${var.datacache.endpoint}:6379"
           HOSTNAME        = "0.0.0.0"
           NEXTAUTH_SECRET = random_uuid.next_auth_secret.result
           NEXTAUTH_URL    = "https://faucet.lookcard.dev"
