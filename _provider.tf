@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "6.30.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
   }
 }
 
@@ -73,4 +77,8 @@ provider "aws" {
 provider "google-beta" {
   user_project_override = true
   project               = var.GCP_PROJECT_ID
+}
+
+provider "cloudflare" {
+  api_token = var.CLOUDFLARE_API_TOKEN
 }

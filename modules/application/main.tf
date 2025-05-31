@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns, aws.us_east_1]
-    }
-  }
-}
-
 module "xray-daemon" {
   source              = "./00-xray-daemon"
   aws_provider        = var.aws_provider
@@ -315,8 +306,10 @@ module "crypto-faucet" {
   network                     = var.network
   allow_to_security_group_ids = []
   datacache                   = var.datacache
+  domain                      = var.domain
   providers = {
-    aws.dns = aws.dns
+    aws.us_east_1 = aws.us_east_1
+    cloudflare    = cloudflare
   }
   secret_arns     = var.secret_arns
   repository_urls = var.repository_urls
@@ -363,8 +356,8 @@ module "webhook-api" {
   elb         = var.elb
   domain      = var.domain
   providers = {
-    aws.dns       = aws.dns
     aws.us_east_1 = aws.us_east_1
+    cloudflare    = cloudflare
   }
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids

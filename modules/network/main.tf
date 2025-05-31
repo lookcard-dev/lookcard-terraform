@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
-    }
-  }
-}
-
 module "vpc" {
   source              = "./vpc"
   network             = var.network
@@ -36,13 +27,6 @@ module "elb" {
   vpc_id              = module.vpc.vpc_id
   subnet_ids          = module.vpc.isolated_subnet_ids
   depends_on          = [module.vpc]
-}
-
-module "dns" {
-  source = "./dns"
-  providers = {
-    aws.dns = aws.dns
-  }
 }
 
 module "api_gateway" {

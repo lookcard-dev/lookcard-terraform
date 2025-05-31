@@ -2,7 +2,11 @@ terraform {
   required_providers {
     aws = {
       source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
+      configuration_aliases = [aws.us_east_1]
+    }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
     }
   }
 }
@@ -55,4 +59,13 @@ variable "secret_arns" {
 
 variable "repository_urls" {
   type = map(string)
+}
+
+variable "domain" {
+  type = object({
+    developer = object({
+      name    = string
+      zone_id = string
+    })
+  })
 }

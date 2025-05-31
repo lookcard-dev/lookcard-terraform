@@ -1,26 +1,15 @@
-locals {
-  route53_zone_id = "Z07911131XAX6VLVGVIOY"
-}
-
-data "aws_apprunner_hosted_zone_id" "main" {}
-
-resource "aws_route53_record" "target" {
-  provider   = aws.dns
+resource "cloudflare_dns_record" "target" {
   depends_on = [aws_apprunner_custom_domain_association.custom_domain]
 
-  zone_id = local.route53_zone_id
-  name    = "faucet.lookcard.dev"
-  type    = "A"
-
-  alias {
-    name                   = aws_apprunner_custom_domain_association.custom_domain.dns_target
-    zone_id                = data.aws_apprunner_hosted_zone_id.main.id
-    evaluate_target_health = true
-  }
+  zone_id = var.domain.developer.zone_id
+  name    = "faucet"
+  content = aws_apprunner_custom_domain_association.custom_domain.dns_target
+  type    = "CNAME"
+  ttl     = 1 # Use 1 for proxied records (automatic)
+  proxied = true # Enable Cloudflare proxy for additional security and performance
 }
 
-resource "aws_route53_record" "certificate_validation" {
-  provider = aws.dns
+resource "cloudflare_dns_record" "certificate_validation" {
   for_each = {
     for record in aws_apprunner_custom_domain_association.custom_domain.certificate_validation_records : record.name => {
       name   = record.name
@@ -29,11 +18,11 @@ resource "aws_route53_record" "certificate_validation" {
     }
   }
 
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 300
-  type            = each.value.type
-  zone_id         = local.route53_zone_id
+  zone_id = var.domain.developer.zone_id
+  name    = each.value.name  # Use the name directly as it's already a full FQDN
+  content = each.value.record
+  type    = each.value.type
+  ttl     = 3600
+  proxied = false
 }
 

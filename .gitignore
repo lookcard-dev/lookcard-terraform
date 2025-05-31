@@ -6,3 +6,9 @@ terraform.tfvars.*.json
 plan.json
 plan.out
 .rover
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.sandbox

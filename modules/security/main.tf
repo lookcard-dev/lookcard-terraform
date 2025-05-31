@@ -1,21 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source                = "hashicorp/aws"
-      configuration_aliases = [aws.dns]
-    }
-  }
-}
-
-module "certificate" {
-  source = "./certificate"
-  domain = var.domain
-
-  providers = {
-    aws.dns = aws.dns
-  }
-}
-
 module "kms" {
   source = "./kms"
 }
