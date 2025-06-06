@@ -409,7 +409,7 @@ module "card-api" {
   repository_urls             = var.repository_urls
 }
 
-module "testlab " {
+module "testlab" {
   source                      = "./22-testlab"
   aws_provider                = var.aws_provider
   name                        = "testlab"
