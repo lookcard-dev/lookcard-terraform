@@ -19,7 +19,7 @@ resource "cloudflare_dns_record" "certificate_validation" {
   }
 
   zone_id = var.domain.general.zone_id
-  name    = each.value.name  # Use the name directly as it's already a full FQDN
+  name    = each.value.name
   content = each.value.record
   type    = each.value.type
   ttl     = 3600
