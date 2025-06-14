@@ -21,3 +21,7 @@ output "administrative_cluster_id" {
 output "cronjob_cluster_id" {
   value = aws_ecs_cluster.cronjob.id
 }
+
+output "supabase_cluster_id" {
+  value = aws_ecs_cluster.supabase.id
+}

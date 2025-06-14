@@ -58,6 +58,7 @@ module "application" {
     core_application      = module.compute.core_application_cluster_id
     administrative        = module.compute.administrative_cluster_id
     cronjob               = module.compute.cronjob_cluster_id
+    supabase              = module.compute.supabase_cluster_id
   }
 
   namespace_id = module.network.cloudmap_namespace_id
@@ -91,11 +92,17 @@ module "application" {
   domain = var.domain
 
   elb = {
-    application_load_balancer_arn               = module.network.application_load_balancer_arn
-    network_load_balancer_arn                   = module.network.network_load_balancer_arn
-    application_load_balancer_dns_name          = module.network.application_load_balancer_dns_name
-    network_load_balancer_dns_name              = module.network.network_load_balancer_dns_name
+    application_load_balancer_arn = module.network.application_load_balancer_arn
+    network_load_balancer_arn     = module.network.network_load_balancer_arn
+
+    application_load_balancer_dns_name = module.network.application_load_balancer_dns_name
+    network_load_balancer_dns_name     = module.network.network_load_balancer_dns_name
+
+    application_load_balancer_arn_suffix = module.network.application_load_balancer_arn_suffix
+    network_load_balancer_arn_suffix     = module.network.network_load_balancer_arn_suffix
+
     application_load_balancer_http_listener_arn = module.network.application_load_balancer_http_listener_arn
+
   }
 
   api_gateway = {

@@ -38,6 +38,14 @@ output "network_load_balancer_dns_name" {
   value = module.elb.network_load_balancer_dns_name
 }
 
+output "application_load_balancer_arn_suffix" {
+  value = module.elb.application_load_balancer_arn_suffix
+}
+
+output "network_load_balancer_arn_suffix" {
+  value = module.elb.network_load_balancer_arn_suffix
+}
+
 output "application_load_balancer_http_listener_arn" {
   value = module.elb.application_load_balancer_http_listener_arn
 }

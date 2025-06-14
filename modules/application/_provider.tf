@@ -5,8 +5,8 @@ terraform {
       configuration_aliases = [aws.us_east_1]
     }
     cloudflare = {
-      source = "cloudflare/cloudflare"
-      version = "~> 5.0"
+      source                = "cloudflare/cloudflare"
+      version               = "~> 5.0"
       configuration_aliases = [cloudflare]
     }
   }

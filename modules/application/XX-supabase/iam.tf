@@ -1,5 +1,5 @@
 resource "aws_iam_role" "task_execution_role" {
-  name = "${var.name}-task-execution-role"
+  name = "supabase-task-execution-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -33,14 +33,24 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [var.secret_arns["DATABASE"], var.secret_arns["SENTRY"]]
+        "Resource" : [var.secret_arns["DATABASE"], var.secret_arns["SUPABASE"], var.secret_arns["SMTP"], var.secret_arns["TWILIO"]]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ],
+        "Resource" : [
+          aws_ssm_parameter.kong_config.arn
+        ]
       }
     ]
   })
 }
 
 resource "aws_iam_role" "task_role" {
-  name = "${var.name}-task-role"
+  name = "supabase-task-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -57,21 +67,43 @@ resource "aws_iam_role" "task_role" {
   })
 }
 
-resource "aws_iam_role_policy" "cloudwatch_log" {
-  name = "CloudWatchLogPolicy"
-  role = aws_iam_role.task_role.id
+# Note: App Runner role not needed for public ECR repositories
+
+# IAM role for the App Runner instance
+resource "aws_iam_role" "instance_role" {
+  name = "supabase-instance-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "tasks.apprunner.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# Note: App Runner policy attachment not needed for public ECR repositories
+
+resource "aws_iam_role_policy" "app_runner_secrets_read_only" {
+  name = "AppRunnerSecretsReadOnlyPolicy"
+  role = aws_iam_role.instance_role.id
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
         "Effect" : "Allow",
         "Action" : [
-          "logs:DescribeLogStreams",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
         ],
         "Resource" : [
-          "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+          var.secret_arns["DATABASE"],
+          var.secret_arns["SUPABASE"],
         ]
       }
     ]

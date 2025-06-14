@@ -5,7 +5,7 @@ resource "cloudflare_dns_record" "target" {
   name    = "faucet"
   content = aws_apprunner_custom_domain_association.custom_domain.dns_target
   type    = "CNAME"
-  ttl     = 1 # Use 1 for proxied records (automatic)
+  ttl     = 1    # Use 1 for proxied records (automatic)
   proxied = true # Enable Cloudflare proxy for additional security and performance
 }
 
@@ -19,7 +19,7 @@ resource "cloudflare_dns_record" "certificate_validation" {
   }
 
   zone_id = var.domain.developer.zone_id
-  name    = each.value.name  # Use the name directly as it's already a full FQDN
+  name    = each.value.name # Use the name directly as it's already a full FQDN
   content = each.value.record
   type    = each.value.type
   ttl     = 3600

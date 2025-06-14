@@ -21,3 +21,7 @@ output "administrative_cluster_id" {
 output "cronjob_cluster_id" {
   value = module.ecs.cronjob_cluster_id
 }
+
+output "supabase_cluster_id" {
+  value = module.ecs.supabase_cluster_id
+}

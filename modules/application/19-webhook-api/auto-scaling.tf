@@ -55,3 +55,24 @@ resource "aws_appautoscaling_policy" "ecs_memory_policy" {
     scale_out_cooldown = 300  # 5 minutes
   }
 }
+
+
+# ALB Request Count Based Scaling for Kong (since it's the entry point)
+resource "aws_appautoscaling_policy" "alb_request_count_policy" {
+  count              = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name               = "${var.name}-alb-request-count-policy"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[0].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ALBRequestCountPerTarget"
+      resource_label         = "${var.elb.application_load_balancer_arn_suffix}/${aws_lb_target_group.webhook_api.arn_suffix}"
+    }
+    target_value       = 1000.0
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
+  }
+}

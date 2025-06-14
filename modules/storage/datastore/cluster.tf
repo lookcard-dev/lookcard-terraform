@@ -4,9 +4,8 @@ resource "aws_db_subnet_group" "subnet_group" {
 }
 
 resource "random_password" "master_password" {
-  length           = 32
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  length  = 32
+  special = false
 }
 
 resource "aws_secretsmanager_secret_version" "database_secret_version" {

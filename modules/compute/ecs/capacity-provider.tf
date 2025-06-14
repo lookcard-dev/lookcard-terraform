@@ -3,7 +3,7 @@ resource "aws_ecs_cluster_capacity_providers" "administrative" {
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 1 : 0
-    weight            = var.runtime_environment == "production" ? 2 : 0
+    weight            = var.runtime_environment == "production" ? 1 : 0
     capacity_provider = "FARGATE"
   }
 
@@ -19,7 +19,7 @@ resource "aws_ecs_cluster_capacity_providers" "composite_application" {
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 1 : 0
-    weight            = var.runtime_environment == "production" ? 2 : 0
+    weight            = var.runtime_environment == "production" ? 1 : 0
     capacity_provider = "FARGATE"
   }
 
@@ -35,7 +35,7 @@ resource "aws_ecs_cluster_capacity_providers" "core_application" {
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 1 : 0
-    weight            = var.runtime_environment == "production" ? 2 : 0
+    weight            = var.runtime_environment == "production" ? 1 : 0
     capacity_provider = "FARGATE"
   }
 
@@ -53,6 +53,22 @@ resource "aws_ecs_cluster_capacity_providers" "cronjob" {
     base              = 1
     weight            = 1
     capacity_provider = var.runtime_environment == "production" ? "FARGATE" : "FARGATE_SPOT"
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "supabase" {
+  cluster_name       = aws_ecs_cluster.supabase.name
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
+  default_capacity_provider_strategy {
+    base              = var.runtime_environment == "production" ? 1 : 0
+    weight            = var.runtime_environment == "production" ? 1 : 0
+    capacity_provider = "FARGATE"
+  }
+
+  default_capacity_provider_strategy {
+    base              = var.runtime_environment == "production" ? 0 : 1
+    weight            = 1
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 

@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "monthly_batch_account_statement_generator" {
   # state               = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
-  state = "DISABLED"
+  state               = "DISABLED"
   name                = "Monthly_Batch_Account_Statement_Generator"
   description         = "Triggers the batch account statement generator task every month at 7 AM"
   schedule_expression = "cron(0 7 1 * ? *)" # At 07:00 AM, on day 1 of every month
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_event_target" "monthly_batch_account_statement_generato
 
 resource "aws_cloudwatch_event_rule" "daily_batch_account_snapshot_processor" {
   # state               = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
-  state = "DISABLED"
+  state               = "DISABLED"
   name                = "Daily_Batch_Account_Snapshot_Processor"
   description         = "Triggers the daily batch account snapshot processor task every day at 1 AM"
   schedule_expression = "cron(0 1 * * ? *)" # At 01:00 AM, every day
@@ -50,7 +50,7 @@ resource "aws_cloudwatch_event_target" "daily_batch_account_snapshot_processor_e
 
 resource "aws_cloudwatch_event_rule" "hourly_batch_retry_wallet_deposit_processor" {
   # state               = var.image_tag == "latest" ? "DISABLED" : "ENABLED"
-  state = "DISABLED"
+  state               = "DISABLED"
   name                = "Hourly_Batch_Retry_Wallet_Deposit_Processor"
   description         = "Triggers the hourly batch retry wallet deposit processor task every hour"
   schedule_expression = "cron(0 * * * ? *)" # At minute 0, every hour, every day

@@ -3,7 +3,7 @@ resource "cloudflare_dns_record" "webhook_api" {
   name    = "webhook.${var.domain.general.name}"
   content = aws_api_gateway_domain_name.webhook_domain.cloudfront_domain_name
   type    = "CNAME"
-  ttl     = 1 # Use 1 for proxied records (automatic)
+  ttl     = 1    # Use 1 for proxied records (automatic)
   proxied = true # Enable Cloudflare proxy for additional security and performance
 }
 
@@ -16,9 +16,9 @@ resource "cloudflare_dns_record" "certificate_validation" {
     }
   }
   zone_id = var.domain.general.zone_id
-  name    = each.value.name  # Use the name directly as it's already a full FQDN
+  name    = each.value.name # Use the name directly as it's already a full FQDN
   content = each.value.record
-  type    = each.value.type 
+  type    = each.value.type
   ttl     = 3600
   proxied = false
 }

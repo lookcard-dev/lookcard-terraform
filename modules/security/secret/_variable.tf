@@ -27,7 +27,9 @@ variable "secrets" {
     "TRONSAVE",
     "BLAST",
     "PUBLIC_NODE",
-    "TELEGRAM"
+    "TELEGRAM",
+    "SUPABASE",
+    "SMTP"
   ]
   nullable = true
 }

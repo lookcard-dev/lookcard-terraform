@@ -5,7 +5,7 @@ resource "cloudflare_dns_record" "target" {
   name    = "lab.${var.domain.general.name}"
   content = aws_apprunner_custom_domain_association.custom_domain.dns_target
   type    = "CNAME"
-  ttl     = 1 # Use 1 for proxied records (automatic)
+  ttl     = 1    # Use 1 for proxied records (automatic)
   proxied = true # Enable Cloudflare proxy for additional security and performance
 }
 

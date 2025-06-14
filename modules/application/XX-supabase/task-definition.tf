@@ -1,8 +1,9 @@
-resource "aws_ecs_task_definition" "task_definition" {
-  family             = var.name
+# GoTrue (Authentication Service) Task Definition
+resource "aws_ecs_task_definition" "gotrue" {
+  family             = "supabase-gotrue"
   network_mode       = "awsvpc"
-  cpu                = "512"
-  memory             = "1024"
+  cpu                = "256"
+  memory             = "512"
   task_role_arn      = aws_iam_role.task_role.arn
   execution_role_arn = aws_iam_role.task_execution_role.arn
   runtime_platform {
@@ -12,21 +13,20 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = var.name
-      image = "supabase/gotrue:v2.176.1"
+      name  = "gotrue"
+      image = "supabase/gotrue:v2.174.0"
 
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${var.name}",
+          "awslogs-group"         = "/ecs/supabase/gotrue",
           "awslogs-region"        = var.aws_provider.region,
           "awslogs-stream-prefix" = "ecs",
         }
       }
-
+      // https://git.resel.fr/openresel/docker/supabase-auth/-/blob/master/example.env
       environment = [
-        # Basic GoTrue Configuration
         {
           name  = "PORT"
           value = "9999"
@@ -43,8 +43,6 @@ resource "aws_ecs_task_definition" "task_definition" {
           name  = "GOTRUE_LOG_LEVEL"
           value = var.runtime_environment == "production" ? "info" : "debug"
         },
-
-        # JWT Configuration
         {
           name  = "GOTRUE_JWT_EXP"
           value = "3600"
@@ -57,8 +55,6 @@ resource "aws_ecs_task_definition" "task_definition" {
           name  = "GOTRUE_JWT_DEFAULT_GROUP_NAME"
           value = "authenticated"
         },
-
-        # User Management
         {
           name  = "GOTRUE_DISABLE_SIGNUP"
           value = "false"
@@ -71,8 +67,6 @@ resource "aws_ecs_task_definition" "task_definition" {
           name  = "GOTRUE_EXTERNAL_PHONE_ENABLED"
           value = "false"
         },
-
-        # Email Configuration
         {
           name  = "GOTRUE_MAILER_AUTOCONFIRM"
           value = var.runtime_environment == "develop" ? "true" : "false"
@@ -95,69 +89,56 @@ resource "aws_ecs_task_definition" "task_definition" {
           name  = "GOTRUE_SECURITY_UPDATE_PASSWORD_REQUIRE_REAUTHENTICATION"
           value = "true"
         },
-
-        # API Configuration - Public Auth API
         {
           name  = "API_EXTERNAL_URL"
-          value = "https://auth.${var.domain.general.name}"
+          value = "https://supabase.${var.domain.general.name}"
         },
         {
           name  = "GOTRUE_API_EXTERNAL_URL"
-          value = "https://auth.${var.domain.general.name}"
+          value = "https://supabase.${var.domain.general.name}"
         },
-
-        # Database
-        {
-          name  = "DB_NAMESPACE"
-          value = "auth"
-        },
-
-        # Environment
         {
           name  = "RUNTIME_ENVIRONMENT"
           value = var.runtime_environment
         },
-
-        # Rate Limiting
         {
           name  = "GOTRUE_RATE_LIMIT_EMAIL_SENT"
           value = "30"
         },
-
-        # Password Requirements
         {
           name  = "GOTRUE_PASSWORD_MIN_LENGTH"
           value = "8"
+        },
+        {
+          name  = "GOTRUE_SITE_URL"
+          value = "https://app.${var.domain.general.name}"
+        },
+        {
+          name  = "GOTRUE_URI_ALLOW_LIST"
+          value = "https://app.${var.domain.general.name},https://admin.${var.domain.admin.name},http://localhost:3000"
+        },
+        {
+          name  = "GOTRUE_SMTP_SENDER_NAME"
+          value = "no-reply@${var.domain.general.name}"
+        },
+        {
+          name  = "GOTRUE_SMS_PROVIDER",
+          value = "twilio"
         }
       ]
 
       secrets = [
-        # Database Connection - GoTrue expects DATABASE_URL
         {
-          name      = "DATABASE_URL"
-          valueFrom = "${var.secret_arns["DATABASE"]}:supabase_database_url::"
+          name      = "GOTRUE_DB_DATABASE_URL"
+          valueFrom = "${var.secret_arns["SUPABASE"]}:database_url::"
         },
-
-        # JWT Secret
         {
           name      = "GOTRUE_JWT_SECRET"
           valueFrom = "${var.secret_arns["SUPABASE"]}:jwt_secret::"
         },
-
-        # Site Configuration
-        {
-          name      = "GOTRUE_SITE_URL"
-          valueFrom = "${var.secret_arns["SUPABASE"]}:site_url::"
-        },
-        {
-          name      = "GOTRUE_URI_ALLOW_LIST"
-          valueFrom = "${var.secret_arns["SUPABASE"]}:uri_allow_list::"
-        },
-
-        # SMTP Configuration
         {
           name      = "GOTRUE_SMTP_HOST"
-          valueFrom = "${var.secret_arns["SMTP"]}:host::"
+          valueFrom = "${var.secret_arns["SMTP"]}:server::"
         },
         {
           name      = "GOTRUE_SMTP_PORT"
@@ -175,11 +156,17 @@ resource "aws_ecs_task_definition" "task_definition" {
           name      = "GOTRUE_SMTP_ADMIN_EMAIL"
           valueFrom = "${var.secret_arns["SMTP"]}:admin_email::"
         },
-
-        # Optional: Sentry for error tracking
         {
-          name      = "SENTRY_DSN"
-          valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
+          name      = "GOTRUE_SMS_TWILIO_AUTH_TOKEN",
+          valueFrom = "${var.secret_arns["TWILIO"]}:AUTH_TOKEN::"
+        },
+        {
+          name      = "GOTRUE_SMS_TWILIO_ACCOUNT_SID",
+          valueFrom = "${var.secret_arns["TWILIO"]}:ACCOUNT_SID::"
+        },
+        {
+          name      = "GOTRUE_SMS_TWILIO_MESSAGE_SERVICE_SID",
+          valueFrom = "${var.secret_arns["TWILIO"]}:MESSAGING_SERVICE_SID::"
         }
       ]
 
@@ -193,128 +180,10 @@ resource "aws_ecs_task_definition" "task_definition" {
         },
       ]
 
-      # GoTrue doesn't require readonly root filesystem for auth operations
       readonlyRootFilesystem = false
 
       healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:9999/health || exit 1"]
-        interval    = 30 # seconds between health checks
-        timeout     = 10 # health check timeout in seconds
-        retries     = 3  # number of retries before marking container unhealthy
-        startPeriod = 60 # time to wait before performing first health check
-      }
-    }
-  ])
-}
-
-# Supabase Studio (Admin Dashboard) Task Definition
-resource "aws_ecs_task_definition" "studio_task_definition" {
-  family             = "${var.name}-studio"
-  network_mode       = "awsvpc"
-  cpu                = "256"
-  memory             = "512"
-  task_role_arn      = aws_iam_role.task_role.arn
-  execution_role_arn = aws_iam_role.task_execution_role.arn
-  runtime_platform {
-    cpu_architecture        = "ARM64"
-    operating_system_family = "LINUX"
-  }
-
-  container_definitions = jsonencode([
-    {
-      name  = "${var.name}-studio"
-      image = "supabase/studio:20241029-46e1e40"
-
-      logConfiguration = {
-        logDriver = "awslogs",
-        options = {
-          "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${var.name}-studio",
-          "awslogs-region"        = var.aws_provider.region,
-          "awslogs-stream-prefix" = "ecs",
-        }
-      }
-
-      environment = [
-        # Studio Configuration
-        {
-          name  = "STUDIO_PG_META_URL"
-          value = "http://${var.name}-meta.${var.namespace_id}:8080"
-        },
-        {
-          name  = "SUPABASE_AUTH_URL"
-          value = "http://${var.name}.${var.namespace_id}:9999"
-        },
-        {
-          name  = "SUPABASE_REST_URL"
-          value = "http://${var.name}-rest.${var.namespace_id}:3000"
-        },
-        {
-          name  = "SUPABASE_PUBLIC_URL"
-          value = "https://supabase.${var.domain.admin.name}"
-        },
-        {
-          name  = "SUPABASE_URL"
-          value = "https://supabase.${var.domain.admin.name}"
-        },
-        {
-          name  = "NEXT_PUBLIC_SUPABASE_URL"
-          value = "https://supabase.${var.domain.admin.name}"
-        }
-      ]
-
-      secrets = [
-        # Database Connection - For Studio's database access
-        {
-          name      = "POSTGRES_HOST"
-          valueFrom = "${var.secret_arns["DATABASE"]}:host::"
-        },
-        {
-          name      = "POSTGRES_DB"
-          valueFrom = "${var.secret_arns["DATABASE"]}:dbname::"
-        },
-        {
-          name      = "POSTGRES_USER"
-          valueFrom = "${var.secret_arns["DATABASE"]}:username::"
-        },
-        {
-          name      = "POSTGRES_PASSWORD"
-          valueFrom = "${var.secret_arns["DATABASE"]}:password::"
-        },
-        {
-          name      = "POSTGRES_PORT"
-          valueFrom = "${var.secret_arns["DATABASE"]}:port::"
-        },
-
-        # Supabase Configuration
-        {
-          name      = "SUPABASE_ANON_KEY"
-          valueFrom = "${var.secret_arns["SUPABASE"]}:anon_key::"
-        },
-        {
-          name      = "SUPABASE_SERVICE_KEY"
-          valueFrom = "${var.secret_arns["SUPABASE"]}:service_role_key::"
-        },
-        {
-          name      = "NEXT_PUBLIC_SUPABASE_ANON_KEY"
-          valueFrom = "${var.secret_arns["SUPABASE"]}:anon_key::"
-        }
-      ]
-
-      portMappings = [
-        {
-          name          = "studio-port",
-          containerPort = 3000,
-          hostPort      = 3000,
-          protocol      = "tcp",
-          appProtocol   = "http",
-        },
-      ]
-
-      readonlyRootFilesystem = false
-
-      healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+        command     = ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health"]
         interval    = 30
         timeout     = 10
         retries     = 3
@@ -324,9 +193,8 @@ resource "aws_ecs_task_definition" "studio_task_definition" {
   ])
 }
 
-# PostgREST (Auto-generated REST API) Task Definition
-resource "aws_ecs_task_definition" "rest_task_definition" {
-  family             = "${var.name}-rest"
+resource "aws_ecs_task_definition" "postgrest" {
+  family             = "supabase-postgrest"
   network_mode       = "awsvpc"
   cpu                = "256"
   memory             = "512"
@@ -339,24 +207,31 @@ resource "aws_ecs_task_definition" "rest_task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = "${var.name}-rest"
-      image = "postgrest/postgrest:v12.2.3"
+      name  = "postgrest"
+      image = "postgrest/postgrest:v12.2.8"
 
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${var.name}-rest",
+          "awslogs-group"         = "/ecs/supabase/postgrest",
           "awslogs-region"        = var.aws_provider.region,
           "awslogs-stream-prefix" = "ecs",
         }
       }
 
       environment = [
-        # PostgREST Configuration
+        {
+          name  = "PGRST_SERVER_HOST"
+          value = "0.0.0.0"
+        },
+        {
+          name  = "PGRST_SERVER_PORT"
+          value = "3000"
+        },
         {
           name  = "PGRST_DB_SCHEMA"
-          value = "public,auth"
+          value = "public,storage,graphql_public"
         },
         {
           name  = "PGRST_DB_ANON_ROLE"
@@ -367,27 +242,24 @@ resource "aws_ecs_task_definition" "rest_task_definition" {
           value = "false"
         },
         {
-          name  = "PGRST_APP_SETTINGS_JWT_AUD"
-          value = "authenticated"
+          name  = "PGRST_APP_SETTINGS_JWT_SECRET"
+          value = "super-secret-jwt-token-with-at-least-32-characters-long"
         },
         {
-          name  = "PGRST_SERVER_HOST"
-          value = "0.0.0.0"
+          name  = "PGRST_APP_SETTINGS_JWT_EXP"
+          value = "3600"
         },
         {
-          name  = "PGRST_SERVER_PORT"
-          value = "3000"
+          name  = "PGRST_LOG_LEVEL"
+          value = var.runtime_environment == "production" ? "info" : "debug"
         }
       ]
 
       secrets = [
-        # Database Connection - PostgREST expects PGRST_DB_URI
         {
           name      = "PGRST_DB_URI"
-          valueFrom = "${var.secret_arns["DATABASE"]}:supabase_database_url::"
+          valueFrom = "${var.secret_arns["SUPABASE"]}:database_url::"
         },
-
-        # JWT Configuration
         {
           name      = "PGRST_JWT_SECRET"
           valueFrom = "${var.secret_arns["SUPABASE"]}:jwt_secret::"
@@ -396,7 +268,7 @@ resource "aws_ecs_task_definition" "rest_task_definition" {
 
       portMappings = [
         {
-          name          = "rest-port",
+          name          = "postgrest-port",
           containerPort = 3000,
           hostPort      = 3000,
           protocol      = "tcp",
@@ -404,10 +276,10 @@ resource "aws_ecs_task_definition" "rest_task_definition" {
         },
       ]
 
-      readonlyRootFilesystem = true
+      readonlyRootFilesystem = false
 
       healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
+        command     = ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
         interval    = 30
         timeout     = 10
         retries     = 3
@@ -417,9 +289,9 @@ resource "aws_ecs_task_definition" "rest_task_definition" {
   ])
 }
 
-# Postgres Meta (Database Management API) Task Definition
-resource "aws_ecs_task_definition" "meta_task_definition" {
-  family             = "${var.name}-meta"
+# Kong (API Gateway) Task Definition
+resource "aws_ecs_task_definition" "kong" {
+  family             = "supabase-kong"
   network_mode       = "awsvpc"
   cpu                = "256"
   memory             = "512"
@@ -432,14 +304,176 @@ resource "aws_ecs_task_definition" "meta_task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = "${var.name}-meta"
+      name  = "kong"
+      image = "kong:3.9.1-ubuntu"
+
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/supabase/kong",
+          "awslogs-region"        = var.aws_provider.region,
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+
+      environment = [
+        # Kong Declarative Configuration Mode
+        {
+          name  = "KONG_DATABASE"
+          value = "off"
+        },
+        {
+          name  = "KONG_DECLARATIVE_CONFIG"
+          value = "/etc/kong/kong.yml"
+        },
+        {
+          name  = "KONG_PROXY_LISTEN"
+          value = "0.0.0.0:8000"
+        },
+        {
+          name  = "KONG_ADMIN_LISTEN"
+          value = "0.0.0.0:8001"
+        },
+        {
+          name  = "KONG_PROXY_ACCESS_LOG"
+          value = "/dev/stdout"
+        },
+        {
+          name  = "KONG_ADMIN_ACCESS_LOG"
+          value = "/dev/stdout"
+        },
+        {
+          name  = "KONG_PROXY_ERROR_LOG"
+          value = "/dev/stderr"
+        },
+        {
+          name  = "KONG_ADMIN_ERROR_LOG"
+          value = "/dev/stderr"
+        },
+        {
+          name  = "KONG_LOG_LEVEL"
+          value = var.runtime_environment == "production" ? "notice" : "debug"
+        },
+        {
+          name  = "KONG_PLUGINS"
+          value = "bundled,cors,rate-limiting,request-transformer,response-transformer"
+        },
+        {
+          name  = "KONG_PREFIX"
+          value = "/usr/local/kong"
+        },
+        {
+          name  = "KONG_NGINX_DAEMON"
+          value = "off"
+        },
+        {
+          name  = "KONG_DNS_ORDER",
+          value = "LAST,A,CNAME"
+        },
+        {
+          name  = "KONG_STATUS_LISTEN",
+          value = "0.0.0.0:8100"
+        }
+      ]
+      secrets = [
+        {
+          name      = "KONG_DECLARATIVE_CONFIG_STRING"
+          valueFrom = aws_ssm_parameter.kong_config.arn
+        }
+      ]
+      entryPoint = ["/bin/sh", "-c"]
+      command = [
+        <<-EOF
+          set -e
+          
+          # Display Kong version and environment info
+          echo "Starting Kong configuration setup..."
+          echo "Kong version: $(kong version)"
+          echo "Environment: ${var.runtime_environment}"
+          
+          # Create Kong configuration directory
+          echo "Creating /etc/kong directory..."
+          mkdir -p /etc/kong
+          
+          # Write Kong declarative configuration
+          echo "Writing Kong configuration to /etc/kong/kong.yml..."
+          echo "$KONG_DECLARATIVE_CONFIG_STRING" > /etc/kong/kong.yml
+          
+          # Display configuration info for debugging
+          echo "Configuration file created. File info:"
+          ls -la /etc/kong/
+          echo "Configuration file contents (first 20 lines):"
+          head -20 /etc/kong/kong.yml
+          
+          # Validate Kong configuration
+          echo "Validating Kong configuration..."
+          kong config parse /etc/kong/kong.yml
+          
+          # Start Kong in foreground mode
+          echo "Starting Kong in foreground mode..."
+          exec kong start --v
+          EOF
+      ]
+
+      portMappings = [
+        {
+          name          = "kong-proxy-port",
+          containerPort = 8000,
+          hostPort      = 8000,
+          protocol      = "tcp",
+          appProtocol   = "http",
+        },
+        {
+          name          = "kong-admin-port",
+          containerPort = 8001,
+          hostPort      = 8001,
+          protocol      = "tcp",
+          appProtocol   = "http",
+          }, {
+          name          = "kong-status-port",
+          containerPort = 8100,
+          hostPort      = 8100,
+          protocol      = "tcp",
+          appProtocol   = "http",
+        },
+      ]
+
+      readonlyRootFilesystem = false
+
+      healthCheck = {
+        command     = ["CMD", "kong", "health"]
+        interval    = 30
+        timeout     = 10
+        retries     = 3
+        startPeriod = 60
+      }
+    }
+  ])
+}
+
+resource "aws_ecs_task_definition" "postgres_meta" {
+  family             = "supabase-postgres-meta"
+  network_mode       = "awsvpc"
+  cpu                = "256"
+  memory             = "512"
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "ARM64"
+    operating_system_family = "LINUX"
+  }
+
+  container_definitions = jsonencode([
+    {
+      name  = "postgres-meta"
       image = "supabase/postgres-meta:v0.84.2"
 
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${var.name}-meta",
+          "awslogs-group"         = "/ecs/supabase/postgres-meta",
           "awslogs-region"        = var.aws_provider.region,
           "awslogs-stream-prefix" = "ecs",
         }
@@ -458,18 +492,16 @@ resource "aws_ecs_task_definition" "meta_task_definition" {
         {
           name  = "PG_META_DB_SSL"
           value = "prefer"
+        },
+        {
+          name  = "PG_META_DB_NAME"
+          value = "supabase"
         }
       ]
-
       secrets = [
-        # Database Connection - Individual secrets for postgres-meta
         {
           name      = "PG_META_DB_HOST"
           valueFrom = "${var.secret_arns["DATABASE"]}:host::"
-        },
-        {
-          name      = "PG_META_DB_NAME"
-          valueFrom = "${var.secret_arns["DATABASE"]}:dbname::"
         },
         {
           name      = "PG_META_DB_USER"
@@ -492,14 +524,6 @@ resource "aws_ecs_task_definition" "meta_task_definition" {
       ]
 
       readonlyRootFilesystem = false
-
-      healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
-        interval    = 30
-        timeout     = 10
-        retries     = 3
-        startPeriod = 60
-      }
     }
   ])
 }

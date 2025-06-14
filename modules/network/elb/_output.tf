@@ -25,3 +25,11 @@ output "application_load_balancer_security_group_id" {
 output "network_load_balancer_security_group_id" {
   value = aws_security_group.network_load_balancer_security_group.id
 }
+
+output "application_load_balancer_arn_suffix" {
+  value = aws_lb.application_load_balancer.arn_suffix
+}
+
+output "network_load_balancer_arn_suffix" {
+  value = aws_lb.network_load_balancer.arn_suffix
+}

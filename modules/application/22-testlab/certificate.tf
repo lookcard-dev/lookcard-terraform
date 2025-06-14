@@ -5,11 +5,11 @@ resource "aws_acm_certificate" "certificate" {
 }
 
 resource "cloudflare_certificate_pack" "certificate_pack" {
-  zone_id = var.domain.general.zone_id
+  zone_id               = var.domain.general.zone_id
   certificate_authority = "google"
-  hosts = ["lab.${var.domain.general.name}"]
-  type = "advanced"
-  validation_method = "txt"
-  validity_days = 90
-  cloudflare_branding = false
+  hosts                 = ["lab.${var.domain.general.name}"]
+  type                  = "advanced"
+  validation_method     = "txt"
+  validity_days         = 90
+  cloudflare_branding   = false
 }
