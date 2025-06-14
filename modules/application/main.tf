@@ -159,7 +159,8 @@ module "crypto-processor" {
     module.profile-api.security_group_id,
     module.config-api.security_group_id,
     module.notification-api.security_group_id,
-    module.user-api.security_group_id
+    module.user-api.security_group_id,
+    module.card-api.security_group_id,
   ]
   secret_arns     = var.secret_arns
   repository_urls = var.repository_urls
