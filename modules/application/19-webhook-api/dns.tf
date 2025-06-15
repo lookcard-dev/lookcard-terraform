@@ -21,6 +21,7 @@ resource "cloudflare_dns_record" "certificate_validation" {
   type    = each.value.type
   ttl     = 3600
   proxied = false
+  comment = "Webhook API Certificate Validation"
 }
 
 # Wait for certificate validation to complete

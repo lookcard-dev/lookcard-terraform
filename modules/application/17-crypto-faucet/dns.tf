@@ -24,5 +24,6 @@ resource "cloudflare_dns_record" "certificate_validation" {
   type    = each.value.type
   ttl     = 3600
   proxied = false
+  comment = "Crypto Faucet Certificate Validation"
 }
 
