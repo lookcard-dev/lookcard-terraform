@@ -29,7 +29,8 @@ variable "secrets" {
     "PUBLIC_NODE",
     "TELEGRAM",
     "SUPABASE",
-    "SMTP"
+    "SMTP",
+    "CLOUDFLARE"
   ]
   nullable = true
 }
