@@ -1,29 +1,29 @@
-# resource "cloudflare_dns_record" "target" {
-#   depends_on = [aws_apprunner_custom_domain_association.custom_domain]
+resource "cloudflare_dns_record" "target" {
+  depends_on = [aws_apprunner_custom_domain_association.custom_domain]
 
-#   zone_id = var.domain.general.zone_id
-#   name    = "app.${var.domain.general.name}"
-#   content = aws_apprunner_custom_domain_association.custom_domain.dns_target
-#   type    = "CNAME"
-#   ttl     = 1 
-#   proxied = true
-#   comment = "Web App"
-# }
+  zone_id = var.domain.general.zone_id
+  name    = "app.${var.domain.general.name}"
+  content = aws_apprunner_custom_domain_association.custom_domain.dns_target
+  type    = "CNAME"
+  ttl     = 1
+  proxied = true
+  comment = "Web App"
+}
 
-# resource "cloudflare_dns_record" "certificate_validation" {
-#   for_each = {
-#     for record in aws_apprunner_custom_domain_association.custom_domain.certificate_validation_records : record.name => {
-#       name   = record.name
-#       record = record.value
-#       type   = record.type
-#     }
-#   }
+resource "cloudflare_dns_record" "certificate_validation" {
+  for_each = {
+    for record in aws_apprunner_custom_domain_association.custom_domain.certificate_validation_records : record.name => {
+      name   = record.name
+      record = record.value
+      type   = record.type
+    }
+  }
 
-#   zone_id = var.domain.general.zone_id
-#   name    = each.value.name
-#   content = each.value.record
-#   type    = each.value.type
-#   ttl     = 3600
-#   proxied = false
-# }
+  zone_id = var.domain.general.zone_id
+  name    = each.value.name
+  content = each.value.record
+  type    = each.value.type
+  ttl     = 3600
+  proxied = false
+}
 
