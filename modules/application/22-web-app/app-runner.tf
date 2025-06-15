@@ -20,8 +20,11 @@ resource "aws_apprunner_observability_configuration" "observability" {
 
 resource "aws_apprunner_auto_scaling_configuration_version" "autoscaling" {
   auto_scaling_configuration_name = "web-app-autoscaling"
-  max_size                        = 1
-  min_size                        = 1
+
+  max_concurrency = var.runtime_environment == "production" ? 100 : 50
+  max_size        = var.runtime_environment == "production" ? 25 : 3
+  min_size        = var.runtime_environment == "production" ? 3 : 1
+
   tags = {
     Name = "web-app-autoscaling"
   }
@@ -71,8 +74,8 @@ resource "aws_apprunner_service" "service" {
   }
 
   instance_configuration {
-    cpu               = "256"
-    memory            = "512"
+    cpu               = "512"
+    memory            = "1024"
     instance_role_arn = aws_iam_role.instance_role.arn
   }
 
