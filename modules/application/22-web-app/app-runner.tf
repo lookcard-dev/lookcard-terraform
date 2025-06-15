@@ -66,6 +66,7 @@ resource "aws_apprunner_service" "service" {
           AZURE_AD_TENANT_ID            = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_TENANT_ID::"
           NEXT_PUBLIC_SUPABASE_URL      = "${var.secret_arns["SUPABASE"]}:URL::"
           NEXT_PUBLIC_SUPABASE_ANON_KEY = "${var.secret_arns["SUPABASE"]}:ANON_KEY::"
+          SUPABASE_SERVICE_ROLE_KEY     = "${var.secret_arns["SUPABASE"]}:SERVICE_ROLE_KEY::"
         }
       }
       image_identifier      = "${var.repository_urls[var.name]}:${var.image_tag}"
