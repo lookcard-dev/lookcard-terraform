@@ -435,20 +435,20 @@ module "testlab" {
   repository_urls = var.repository_urls
 }
 
-module "supabase" {
-  source              = "./XX-supabase"
-  aws_provider        = var.aws_provider
-  runtime_environment = var.runtime_environment
-  network             = var.network
-  cluster_id          = var.cluster_ids.supabase
-  namespace_id        = var.namespace_id
-  domain              = var.domain
-  providers = {
-    aws.us_east_1 = aws.us_east_1
-    cloudflare    = cloudflare
-  }
-  secret_arns                 = var.secret_arns
-  external_security_group_ids = var.external_security_group_ids
-  api_gateway                 = var.api_gateway
-  elb                         = var.elb
-}
+# module "supabase" {
+#   source              = "./XX-supabase"
+#   aws_provider        = var.aws_provider
+#   runtime_environment = var.runtime_environment
+#   network             = var.network
+#   cluster_id          = var.cluster_ids.supabase
+#   namespace_id        = var.namespace_id
+#   domain              = var.domain
+#   providers = {
+#     aws.us_east_1 = aws.us_east_1
+#     cloudflare    = cloudflare
+#   }
+#   secret_arns                 = var.secret_arns
+#   external_security_group_ids = var.external_security_group_ids
+#   api_gateway                 = var.api_gateway
+#   elb                         = var.elb
+# }
