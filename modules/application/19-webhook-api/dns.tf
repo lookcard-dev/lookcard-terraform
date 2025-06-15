@@ -3,8 +3,9 @@ resource "cloudflare_dns_record" "webhook_api" {
   name    = "webhook.${var.domain.general.name}"
   content = aws_api_gateway_domain_name.webhook_domain.cloudfront_domain_name
   type    = "CNAME"
-  ttl     = 1    # Use 1 for proxied records (automatic)
-  proxied = true # Enable Cloudflare proxy for additional security and performance
+  ttl     = 1
+  proxied = true
+  comment = "Webhook API"
 }
 
 resource "cloudflare_dns_record" "certificate_validation" {

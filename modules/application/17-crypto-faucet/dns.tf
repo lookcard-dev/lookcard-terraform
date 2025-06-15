@@ -5,8 +5,9 @@ resource "cloudflare_dns_record" "target" {
   name    = "faucet"
   content = aws_apprunner_custom_domain_association.custom_domain.dns_target
   type    = "CNAME"
-  ttl     = 1    # Use 1 for proxied records (automatic)
-  proxied = true # Enable Cloudflare proxy for additional security and performance
+  ttl     = 1
+  proxied = true
+  comment = "Crypto Faucet"
 }
 
 resource "cloudflare_dns_record" "certificate_validation" {
