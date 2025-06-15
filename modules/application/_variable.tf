@@ -157,9 +157,6 @@ locals {
     module.approval-api.security_group_id,
     module.cronjob.security_group_id,
     module.card-api.security_group_id,
-    module.supabase.postgrest_security_group_id,
-    module.supabase.postgres_meta_security_group_id,
-    module.supabase.gotrue_security_group_id,
   ]
 
   datacache_access_security_group_ids = compact([
