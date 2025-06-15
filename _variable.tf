@@ -96,7 +96,7 @@ variable "image_tag" {
     "apigw-authorizer"   = "latest"
     "webhook-api"        = "latest"
     "approval-api"       = "latest"
-    "testlab"            = "latest"
+    "web-app"            = "latest"
   }
 }
 
@@ -318,12 +318,12 @@ locals {
       }
       image_tag = var.image_tag["approval-api"]
     }
-    "testlab" = {
-      name = "testlab"
+    "web-app" = {
+      name = "web-app"
       hostname = {
-        internal = "testlab"
+        internal = "app"
       }
-      image_tag = var.image_tag["testlab"]
+      image_tag = var.image_tag["web-app"]
     }
   }
 }
