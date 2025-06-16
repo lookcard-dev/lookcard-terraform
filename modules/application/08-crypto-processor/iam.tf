@@ -75,3 +75,26 @@ resource "aws_iam_role_policy" "secrets_read_only" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "dynamodb_read_write" {
+  name = "DynamoDBReadWritePolicy"
+  role = aws_iam_role.lambda_function_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem"
+        ],
+        "Resource" : [
+          aws_dynamodb_table.transaction_monitoring_result.arn
+        ]
+      }
+    ]
+  })
+}
+

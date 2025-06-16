@@ -23,13 +23,14 @@ resource "aws_lambda_function" "sweep_processor" {
   }
   environment {
     variables = {
-      AWS_XRAY_CONTEXT_MISSING      = "IGNORE_ERROR"
-      RUNTIME_ENVIRONMENT           = var.runtime_environment
-      AWS_XRAY_DAEMON_ENDPOINT      = "xray.daemon.lookcard.local:2337"
-      AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/sweep"
-      NODE_OPTIONS                  = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
-      SENTRY_DSN                    = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
-      ELLIPTIC_SECRET_ARN           = var.secret_arns["ELLIPTIC"]
+      AWS_XRAY_CONTEXT_MISSING                              = "IGNORE_ERROR"
+      RUNTIME_ENVIRONMENT                                   = var.runtime_environment
+      AWS_XRAY_DAEMON_ENDPOINT                              = "xray.daemon.lookcard.local:2337"
+      AWS_CLOUDWATCH_LOG_GROUP_NAME                         = "/lookcard/crypto-processor/sweep"
+      NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
+      SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
+      ELLIPTIC_SECRET_ARN                                   = var.secret_arns["ELLIPTIC"]
+      AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
     }
   }
 }
@@ -63,13 +64,14 @@ resource "aws_lambda_function" "withdrawal_processor" {
   }
   environment {
     variables = {
-      AWS_XRAY_CONTEXT_MISSING      = "IGNORE_ERROR"
-      RUNTIME_ENVIRONMENT           = var.runtime_environment
-      AWS_XRAY_DAEMON_ENDPOINT      = "xray.daemon.lookcard.local:2337"
-      AWS_CLOUDWATCH_LOG_GROUP_NAME = "/lookcard/crypto-processor/withdrawal"
-      NODE_OPTIONS                  = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
-      SENTRY_DSN                    = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
-      ELLIPTIC_SECRET_ARN           = var.secret_arns["ELLIPTIC"]
+      AWS_XRAY_CONTEXT_MISSING                              = "IGNORE_ERROR"
+      RUNTIME_ENVIRONMENT                                   = var.runtime_environment
+      AWS_XRAY_DAEMON_ENDPOINT                              = "xray.daemon.lookcard.local:2337"
+      AWS_CLOUDWATCH_LOG_GROUP_NAME                         = "/lookcard/crypto-processor/withdrawal"
+      NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
+      SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
+      ELLIPTIC_SECRET_ARN                                   = var.secret_arns["ELLIPTIC"]
+      AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
     }
   }
 }
