@@ -1,48 +1,265 @@
- Infrastructure Deployment README
+# LookCard Terraform Infrastructure
 
-This repository contains infrastructure as code (IaC) for deploying various services on AWS using Terraform modules. The infrastructure is designed to support a set of microservices for the Look Card platform in a staging environment. Below is an overview of the architecture and instructions for deployment.
+## Purpose
 
- Architecture Overview
+The LookCard Terraform Infrastructure project provides **comprehensive Infrastructure as Code (IaC)** for the LookCard fintech platform on AWS. It orchestrates a sophisticated microservices architecture supporting crypto-backed credit/debit card services, managing over 20 microservices, databases, networking, security, and monitoring components across multiple environments.
 
-The infrastructure is deployed in the `ap-southeast-1` region (Singapore) and consists of the following components:
+This infrastructure enables LookCard to operate as a compliant fintech platform with enterprise-grade security, scalability, and reliability for financial services, cryptocurrency operations, and regulatory compliance.
 
-- Amazon ECS Clusters: Hosting microservices like Authentication, Blockchain, Card, Notification, Reporting, Transaction, Users, Utility, and more.
-- Amazon RDS: Managed relational database service for application data storage.
-- Amazon DynamoDB: NoSQL database service for fast and flexible data storage.
-- Amazon S3: Object storage for various purposes including static website hosting, file uploads, and CDN logs storage.
-- Amazon VPC: Virtual Private Cloud for networking isolation.
-- Amazon CloudFront: Content Delivery Network for serving static assets with low latency.
-- Amazon API Gateway: Service for creating, publishing, maintaining, monitoring, and securing APIs.
-- AWS CloudWatch: For monitoring and alerting purposes.
-- AWS Lambda: Serverless functions for handling background tasks.
-- Amazon Route 53: DNS service for managing domain names.
+## Domain Role
 
- Deployment Instructions
+**Infrastructure & DevOps Domain**
 
-Follow these steps to deploy the infrastructure:
+The Terraform Infrastructure is responsible for:
+- Complete AWS infrastructure provisioning and management
+- Multi-environment deployment (develop, staging, production, sandbox)
+- Microservices container orchestration via Amazon ECS
+- Database infrastructure (Aurora PostgreSQL, ElastiCache Redis, DynamoDB)
+- Networking, security, and compliance infrastructure
+- CI/CD and deployment automation support
 
-1. Clone the Repository: Clone this repository to your local machine.
+## Key Features & Infrastructure Components
 
-2. Install Terraform: Make sure you have Terraform installed on your machine. You can download it from [terraform.io](https://www.terraform.io/downloads.html) and follow the installation instructions.
+### Multi-Environment Architecture
+- **Region**: Primary deployment in `ap-southeast-1` (Singapore)
+- **Environments**: develop, testing, staging, production, sandbox
+- **Branch-based Deployment**: Git branch names determine environment configurations
+- **State Management**: S3 backend with branch-specific state isolation
 
-3. Set up AWS Credentials: Ensure you have set up your AWS credentials with appropriate permissions. You can set them up using AWS CLI or by configuring environment variables.
+### Compute Infrastructure
+- **6 ECS Clusters**: Specialized clusters for different service types
+  - `core-application`: Core financial services (account, card, user APIs)
+  - `composite-application`: Composite services (reseller, webhook APIs)
+  - `listener`: Event-driven services (crypto transaction monitoring)
+  - `administrative`: Administrative and management services
+  - `cronjob`: Scheduled tasks and batch processing
+  - `supabase`: Database and authentication services
 
-4. Update Variables: Review and update the variables in `variables.tf` file as per your requirements. These variables include VPC CIDR blocks, subnet CIDR blocks, bucket names, domain names, etc.
+### Microservices Architecture (22+ Services)
+- **Core Financial**: account-api, card-api, user-api, verification-api
+- **Cryptocurrency**: crypto-api, crypto-listener, crypto-processor
+- **Supporting Services**: profile-api, data-api, config-api, notification-api
+- **Integration**: webhook-api, reap-proxy, authentication-api
+- **Frontend**: web-app (Next.js via AWS App Runner)
 
-5. Deploy Infrastructure: Run `terraform init` to initialize the Terraform configuration. Then run `terraform apply` to create the infrastructure. Confirm by typing `yes` when prompted.
+### Database Infrastructure
+- **Aurora PostgreSQL Serverless v2**: Primary relational database
+  - Engine version 16.6 with multi-AZ deployment
+  - Serverless scaling (0.5-8.0 capacity units)
+  - RDS Proxy for connection pooling
+  - IAM authentication and Performance Insights
+- **ElastiCache Redis**: Multi-AZ caching layer
+- **DynamoDB**: NoSQL storage for specific microservices
 
-6. Accessing Resources: After deployment, Terraform will output important information such as URLs, ARNs, and IDs of resources created. Use this information to access the deployed resources.
+## Infrastructure Overview
 
-7. Cleaning Up: To tear down the infrastructure, run `terraform destroy` and confirm by typing `yes` when prompted. This will remove all the resources created by Terraform.
-
-8.Chaged IAM For Static Resouers Sercers Manager arn
-
-
- Contributing
-
-If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request. Contributions are welcome!
-
-
-```bash
-terraform init -backend-config="profile=lookcard-terraform" -backend-config="key=develop/terraform.tfstate"
+### Networking Architecture
 ```
+VPC (10.0.0.0/16)
+├── Public Subnets (10.0.24.0/23, 10.0.26.0/23, 10.0.28.0/23)
+├── Private Subnets (10.0.0.0/21, 10.0.8.0/21, 10.0.16.0/21)
+├── Database Subnets (10.0.36.0/24, 10.0.37.0/24, 10.0.38.0/24)
+└── Isolated Subnets (10.0.30.0/23, 10.0.32.0/23, 10.0.34.0/23)
+```
+
+### Load Balancing & API Gateway
+- **Application Load Balancer (ALB)**: HTTP/HTTPS traffic distribution
+- **Network Load Balancer (NLB)**: High-performance TCP traffic
+- **API Gateway**: External API exposure with VPC Link integration
+- **Service Discovery**: AWS Cloud Map for internal communication
+
+### Security Infrastructure
+- **AWS Secrets Manager**: Encrypted credential management with KMS
+- **KMS Key Management**: Multiple keys for data, crypto operations, liquidity
+- **Security Groups**: Least-privilege network access controls
+- **VPC Endpoints**: Secure AWS service access
+- **Bastion Host**: Secure administrative access
+
+## Service Dependencies
+
+### AWS Services
+- **Compute**: ECS, Lambda, App Runner
+- **Database**: Aurora PostgreSQL, ElastiCache Redis, DynamoDB
+- **Storage**: S3, ECR (container registry)
+- **Networking**: VPC, ALB, NLB, API Gateway, Route 53, CloudFront
+- **Security**: IAM, KMS, Secrets Manager, Security Groups
+- **Monitoring**: CloudWatch, X-Ray, Container Insights
+
+### External Providers
+- **Cloudflare**: DNS and CDN services
+- **GitHub**: CI/CD integration and source control
+
+### Multi-Account Structure
+- **Application Account**: Primary AWS account for infrastructure
+- **DNS Account**: Separate account for DNS management
+- **Cross-account IAM**: Secure resource access across accounts
+
+## Technologies Used
+
+### Infrastructure as Code
+- **Terraform**: Infrastructure provisioning and management
+- **HCL**: HashiCorp Configuration Language
+- **Terraform Modules**: Reusable infrastructure components
+- **Remote State**: S3 backend with DynamoDB locking
+
+### Deployment & Automation
+- **Makefile**: Simplified deployment commands
+- **Branch-based Environments**: Git integration for environment management
+- **Environment Variables**: `.env` files and AWS Secrets Manager
+- **Container Orchestration**: Amazon ECS with Fargate
+
+### DevOps Tools
+- **Infracost**: Cost analysis and optimization
+- **Docker**: Container management and registry (ECR)
+- **GitHub Actions**: CI/CD pipeline integration
+- **Rover**: Terraform visualization
+
+## Configuration & Environment
+
+### Branch-Based Environment Management
+```bash
+# Environment mapping based on Git branch
+develop → Development environment
+staging → Staging environment  
+production → Production environment
+testing → Testing environment
+sandbox → Sandbox environment
+```
+
+### Required Tools
+```bash
+# Core tools
+terraform >= 1.0
+aws-cli >= 2.0
+docker >= 20.0
+make
+
+# Optional tools
+infracost        # Cost analysis
+terraform-docs   # Documentation generation
+rover           # Infrastructure visualization
+```
+
+### Environment Variables
+```bash
+# AWS Configuration
+AWS_PROFILE=lookcard-terraform
+AWS_REGION=ap-southeast-1
+AWS_ACCOUNT_ID=your-account-id
+
+# Terraform Configuration
+TF_VAR_environment=develop
+TF_VAR_git_branch=develop
+TF_VAR_git_commit_hash=your-commit-hash
+
+# Domain Configuration
+TF_VAR_domain_name=lookcard.com
+TF_VAR_dns_account_id=your-dns-account-id
+```
+
+## Deployment & Runtime
+
+### Infrastructure Commands
+```bash
+# Initialize Terraform with environment-specific backend
+make init
+
+# Preview infrastructure changes
+make plan
+
+# Apply infrastructure changes
+make apply
+
+# Format Terraform files
+make fmt
+
+# Refresh Terraform state
+make refresh
+
+# Cost analysis
+make cost
+```
+
+### Manual Terraform Commands
+```bash
+# Initialize with specific branch
+terraform init -backend-config="profile=lookcard-terraform" \
+               -backend-config="key=develop/terraform.tfstate"
+
+# Plan with environment variables
+terraform plan -var-file="terraform.develop.tfvars.json"
+
+# Apply with environment variables
+terraform apply -var-file="terraform.develop.tfvars.json"
+```
+
+### Environment-Specific Configurations
+- **Development**: Single-AZ, reduced monitoring, cost-optimized
+- **Staging**: Production-like with reduced capacity
+- **Production**: Multi-AZ, full monitoring, auto-scaling, backup enabled
+- **Testing**: Lightweight for integration testing
+- **Sandbox**: Isolated environment for experimentation
+
+## Security Considerations
+
+### Compliance & Governance
+- **SOC 2 Type II**: Infrastructure patterns for compliance
+- **PCI DSS**: Payment card industry security standards
+- **Data Encryption**: Encryption at rest and in transit
+- **Access Control**: IAM roles with least-privilege principles
+
+### Network Security
+- **VPC Isolation**: Private subnets for sensitive workloads
+- **Security Groups**: Granular network access controls
+- **VPC Endpoints**: Secure AWS service communication
+- **Network ACLs**: Additional network-layer security
+
+### Data Protection
+- **Encryption at Rest**: KMS-encrypted databases and storage
+- **Secrets Management**: AWS Secrets Manager with automatic rotation
+- **Backup Strategy**: Automated backups with configurable retention
+- **Audit Logging**: Comprehensive CloudTrail and CloudWatch logging
+
+### Identity & Access Management
+- **Cross-account Roles**: Secure multi-account access
+- **Service Roles**: Dedicated IAM roles for each service
+- **Temporary Credentials**: STS for time-limited access
+- **MFA Requirements**: Multi-factor authentication for admin access
+
+## Monitoring & Observability
+
+### Comprehensive Monitoring Stack
+- **AWS X-Ray**: Distributed tracing across all microservices
+- **CloudWatch**: Metrics, logs, and alerting
+- **Container Insights**: ECS performance monitoring (production)
+- **Performance Insights**: Database performance monitoring
+
+### Cost Management
+- **Environment-specific Scaling**: Optimized resource allocation
+- **Infracost Integration**: Automated cost analysis
+- **Resource Tagging**: Comprehensive cost tracking
+- **Scheduled Scaling**: Development environment cost optimization
+
+## High Availability & Disaster Recovery
+
+### Multi-AZ Architecture
+- **Database Layer**: Aurora with read replicas
+- **Cache Layer**: ElastiCache with automatic failover
+- **Compute Layer**: ECS across multiple availability zones
+- **Load Balancing**: Health checks and automatic failover
+
+### Backup & Recovery
+- **Database Backups**: Automated with point-in-time recovery
+- **Infrastructure State**: Versioned Terraform state files
+- **Container Images**: Immutable images in ECR with lifecycle policies
+- **Configuration Management**: Versioned environment configurations
+
+### Scalability Features
+- **Auto Scaling**: ECS services with capacity providers
+- **Serverless Components**: Aurora Serverless v2, Lambda functions
+- **CDN Integration**: CloudFront for global content delivery
+- **API Rate Limiting**: Gateway throttling and quota management
+
+---
+
+*This infrastructure serves as the foundation for LookCard's fintech platform, providing enterprise-grade security, compliance, and scalability for cryptocurrency-backed financial services while maintaining operational excellence and cost efficiency.*
