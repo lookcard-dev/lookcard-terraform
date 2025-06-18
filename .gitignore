@@ -1,0 +1,14 @@
+.terraform
+.terraform.tfstate.lock.info
+terraform.tfvars.*.json
+.DS_Store
+.infracost
+plan.json
+plan.out
+.rover
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.sandbox

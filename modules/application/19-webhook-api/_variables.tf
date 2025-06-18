@@ -1,0 +1,161 @@
+terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      configuration_aliases = [aws.us_east_1]
+    }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
+  }
+}
+
+variable "aws_provider" {
+  type = object({
+    region     = string
+    account_id = string
+  })
+}
+
+variable "runtime_environment" {
+  type = string
+  validation {
+    condition     = contains(["develop", "testing", "staging", "production", "sandbox"], var.runtime_environment)
+    error_message = "runtime_environment must be one of: develop, testing, staging, production, or sandbox"
+  }
+}
+
+variable "api_gateway" {
+  type = object({
+    vpc_link_arn = string
+    vpc_link_id  = string
+  })
+}
+
+variable "elb" {
+  type = object({
+    network_load_balancer_arn                   = string
+    network_load_balancer_dns_name              = string
+    application_load_balancer_arn               = string
+    application_load_balancer_dns_name          = string
+    application_load_balancer_http_listener_arn = string
+    application_load_balancer_arn_suffix        = string
+    network_load_balancer_arn_suffix            = string
+  })
+}
+
+variable "name" {
+  type = string
+}
+
+variable "cluster_id" {
+  type = string
+}
+
+variable "namespace_id" {
+  type = string
+}
+
+variable "network" {
+  type = object({
+    vpc_id              = string
+    private_subnet_ids  = list(string)
+    public_subnet_ids   = list(string)
+    isolated_subnet_ids = list(string)
+  })
+}
+
+variable "allow_to_security_group_ids" {
+  type = list(string)
+}
+
+variable "image_tag" {
+  type = string
+}
+
+
+variable "domain" {
+  type = object({
+    general = object({
+      name    = string
+      zone_id = string
+    })
+    admin = object({
+      name    = string
+      zone_id = string
+    })
+  })
+}
+
+variable "secret_arns" {
+  type = map(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    bastion_host = string
+    alb          = string
+  })
+}
+
+variable "s3_bucket_arns" {
+  type = object({
+    log = string
+  })
+}
+
+variable "repository_urls" {
+  type = map(string)
+}
+
+locals {
+  environment_variables = [
+    {
+      name  = "SERVICE_NAME",
+      value = var.name
+    },
+    {
+      name  = "PORT"
+      value = "8080"
+    },
+    {
+      name  = "CORS_ORIGINS"
+      value = "*"
+    },
+    {
+      name  = "RUNTIME_ENVIRONMENT"
+      value = var.runtime_environment
+    },
+    {
+      name  = "AWS_XRAY_DAEMON_ENDPOINT"
+      value = "xray.daemon.lookcard.local:2337"
+    },
+    {
+      name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
+      value = aws_cloudwatch_log_group.app_log_group.name
+    },
+    {
+      name  = "AWS_FIREHOSE_SUMSUB_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.sumsub_webhook.name
+    },
+    {
+      name  = "AWS_FIREHOSE_REAP_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.reap_webhook.name
+    },
+    {
+      name  = "AWS_FIREHOSE_FIREBASE_WEBHOOK_DELIVERY_STREAM_NAME"
+      value = aws_kinesis_firehose_delivery_stream.firebase_webhook.name
+    }
+  ]
+  environment_secrets = [
+    {
+      name      = "SENTRY_DSN"
+      valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
+    },
+    {
+      name      = "SUMSUB_WEBHOOK_SECRET"
+      valueFrom = "${var.secret_arns["SUMSUB"]}:WEBHOOK_SECRET::"
+    }
+  ]
+}
