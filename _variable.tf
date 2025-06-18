@@ -5,11 +5,6 @@ variable "aws_provider" {
       region     = string
       profile    = string
     })
-    dns = object({
-      account_id = string
-      region     = string
-      profile    = string
-    })
   })
 }
 
@@ -106,11 +101,6 @@ locals {
       region     = var.aws_provider.application.region
       account_id = var.aws_provider.application.account_id
       profile    = local.is_github_actions ? null : var.aws_provider.application.profile
-    }
-    dns = {
-      region     = var.aws_provider.dns.region
-      account_id = var.aws_provider.dns.account_id
-      profile    = local.is_github_actions ? null : var.aws_provider.dns.profile
     }
   }
   components = {
@@ -227,20 +217,6 @@ locals {
       }
       image_tag = var.image_tag["apigw-authorizer"]
     }
-    "sumsub-webhook" = {
-      name = "sumsub-webhook"
-      hostname = {
-        internal = "sumsub.webhook"
-      }
-      image_tag = lookup(var.image_tag, "sumsub-webhook", "latest")
-    }
-    "reap-webhook" = {
-      name = "reap-webhook"
-      hostname = {
-        internal = "reap.webhook"
-      }
-      image_tag = lookup(var.image_tag, "reap-webhook", "latest")
-    }
     "reap-proxy" = {
       name = "reap-proxy"
       hostname = {
@@ -268,27 +244,6 @@ locals {
         internal = "app.api"
       }
       image_tag = var.image_tag["app-api"]
-    }
-    "enrollment-api" = {
-      name = "enrollment-api"
-      hostname = {
-        internal = "enrollment.api"
-      }
-      image_tag = var.image_tag["enrollment-api"]
-    }
-    "register-api" = {
-      name = "register-api"
-      hostname = {
-        internal = "register.api"
-      }
-      image_tag = var.image_tag["register-api"]
-    }
-    "firebase-webhook" = {
-      name = "firebase-webhook"
-      hostname = {
-        internal = "firebase.webhook"
-      }
-      image_tag = var.image_tag["firebase-webhook"]
     }
     "cronjob" = {
       name = "cronjob"
