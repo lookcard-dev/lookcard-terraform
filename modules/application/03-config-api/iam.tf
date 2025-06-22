@@ -89,7 +89,9 @@ resource "aws_iam_role_policy" "dynamodb_policy" {
         "Action" : [
           "dynamodb:Query",
           "dynamodb:GetItem",
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:BatchGetItem"
         ],
         "Resource" : [
           aws_dynamodb_table.data.arn,
