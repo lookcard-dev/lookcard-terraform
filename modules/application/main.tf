@@ -90,7 +90,8 @@ module "account-api" {
     module.profile-api.security_group_id,
     module.data-api.security_group_id,
     module.user-api.security_group_id,
-    module.crypto-api.security_group_id
+    module.crypto-api.security_group_id,
+    module.card-api.security_group_id
   ]
   datacache                   = var.datacache
   datastore                   = var.datastore
