@@ -7,16 +7,18 @@ resource "aws_ecr_repository" "repository" {
   }
 }
 
-resource "aws_ecr_registry_scanning_configuration" "scanning_config" {
-  scan_type = "BASIC"
-  rule {
-    scan_frequency = "SCAN_ON_PUSH"
-    repository_filter {
-      filter      = "*"
-      filter_type = "WILDCARD"
-    }
-  }
-}
+# Commenting out registry-level scanning configuration due to AWS provider inconsistency issues
+# Individual repositories already have scan_on_push = true which provides the same functionality
+# resource "aws_ecr_registry_scanning_configuration" "scanning_config" {
+#   scan_type = "BASIC"
+#   rule {
+#     scan_frequency = "SCAN_ON_PUSH"
+#     repository_filter {
+#       filter      = "*"
+#       filter_type = "WILDCARD"
+#     }
+#   }
+# }
 
 resource "aws_ecr_lifecycle_policy" "lifecycle_policy" {
   depends_on = [aws_ecr_repository.repository]

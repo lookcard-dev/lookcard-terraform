@@ -20,7 +20,6 @@ variable "cluster_ids" {
     core_application      = string
     administrative        = string
     cronjob               = string
-    supabase              = string
   })
 }
 

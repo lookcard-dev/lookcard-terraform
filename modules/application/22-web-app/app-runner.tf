@@ -75,8 +75,8 @@ resource "aws_apprunner_service" "service" {
   }
 
   instance_configuration {
-    cpu               = "512"
-    memory            = "1024"
+    cpu               = var.runtime_environment == "production" ? "1024" : "256"
+    memory            = var.runtime_environment == "production" ? "2048" : "512"
     instance_role_arn = aws_iam_role.instance_role.arn
   }
 

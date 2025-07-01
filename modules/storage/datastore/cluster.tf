@@ -54,7 +54,7 @@ resource "aws_rds_cluster" "cluster" {
   }
 
   performance_insights_enabled          = true
-  performance_insights_retention_period = var.runtime_environment == "production" ? 180 : 7
+  performance_insights_retention_period = var.runtime_environment == "production" ? 186 : 7
 
   enable_http_endpoint = true
 }

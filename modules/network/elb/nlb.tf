@@ -6,10 +6,14 @@ resource "aws_lb" "network_load_balancer" {
   security_groups                                              = [aws_security_group.network_load_balancer_security_group.id]
   enforce_security_group_inbound_rules_on_private_link_traffic = "off"
 
-  access_logs {
-    enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
-    bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/network/access_logs"
+  # Only enable access logs if log bucket exists
+  dynamic "access_logs" {
+    for_each = local.log_bucket_name != null ? [1] : []
+    content {
+      enabled = true
+      bucket  = local.log_bucket_name
+      prefix  = "ELB/network/access_logs"
+    }
   }
 }
 

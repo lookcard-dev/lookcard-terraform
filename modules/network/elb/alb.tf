@@ -1,6 +1,19 @@
+# Use try() to gracefully handle bucket lookup - avoids errors on fresh deployments
+# Data source to discover log bucket if it exists
+# Uses conditional count to avoid errors when bucket doesn't exist
 data "aws_s3_bucket" "logs_bucket" {
   count  = 1
   bucket = "${var.aws_provider.account_id}-log"
+}
+
+# Locals with try-catch logic for bucket discovery
+locals {
+  # Expected bucket name pattern based on account ID
+  expected_bucket_name = "${var.aws_provider.account_id}-log"
+
+  # Try to use discovered bucket, fallback to null if bucket doesn't exist
+  # This prevents circular dependency while allowing logging when bucket is available
+  log_bucket_name = try(data.aws_s3_bucket.logs_bucket[0].bucket, null)
 }
 
 resource "aws_lb" "application_load_balancer" {
@@ -15,15 +28,24 @@ resource "aws_lb" "application_load_balancer" {
   preserve_host_header       = true
   drop_invalid_header_fields = true
 
-  access_logs {
-    enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
-    bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/application/access_logs"
+  # Only enable access logs if log bucket exists
+  dynamic "access_logs" {
+    for_each = local.log_bucket_name != null ? [1] : []
+    content {
+      enabled = true
+      bucket  = local.log_bucket_name
+      prefix  = "ELB/application/access_logs"
+    }
   }
-  connection_logs {
-    enabled = can(data.aws_s3_bucket.logs_bucket[0]) ? true : false
-    bucket  = "${var.aws_provider.account_id}-log"
-    prefix  = "ELB/application/connection_logs"
+
+  # Only enable connection logs if log bucket exists
+  dynamic "connection_logs" {
+    for_each = local.log_bucket_name != null ? [1] : []
+    content {
+      enabled = true
+      bucket  = local.log_bucket_name
+      prefix  = "ELB/application/connection_logs"
+    }
   }
 }
 

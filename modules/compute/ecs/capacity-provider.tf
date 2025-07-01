@@ -56,22 +56,6 @@ resource "aws_ecs_cluster_capacity_providers" "cronjob" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "supabase" {
-  cluster_name       = aws_ecs_cluster.supabase.name
-  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
-  default_capacity_provider_strategy {
-    base              = var.runtime_environment == "production" ? 1 : 0
-    weight            = var.runtime_environment == "production" ? 1 : 0
-    capacity_provider = "FARGATE"
-  }
-
-  default_capacity_provider_strategy {
-    base              = var.runtime_environment == "production" ? 0 : 1
-    weight            = 1
-    capacity_provider = "FARGATE_SPOT"
-  }
-}
-
 resource "aws_ecs_cluster_capacity_providers" "listener" {
   cluster_name       = aws_ecs_cluster.listener.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT", "LISTENER_EC2_ARM64", "LISTENER_EC2_AMD64"]

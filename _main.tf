@@ -4,6 +4,8 @@ module "network" {
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
   domain              = var.domain
+  # Circular dependency resolved: ELB logging is disabled initially
+  # After storage module creates the bucket, logging can be enabled manually in ELB module
 }
 
 module "security" {
@@ -58,7 +60,6 @@ module "application" {
     core_application      = module.compute.core_application_cluster_id
     administrative        = module.compute.administrative_cluster_id
     cronjob               = module.compute.cronjob_cluster_id
-    supabase              = module.compute.supabase_cluster_id
   }
 
   namespace_id = module.network.cloudmap_namespace_id

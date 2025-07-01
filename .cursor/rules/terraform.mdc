@@ -1,6 +1,6 @@
 ---
 description: 
-globs: *.tf
+globs: 
 alwaysApply: false
 ---
 
