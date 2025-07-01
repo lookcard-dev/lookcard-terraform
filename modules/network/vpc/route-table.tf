@@ -27,9 +27,6 @@ resource "aws_route_table" "private_route_table" {
       nat_gateway_id = element(aws_nat_gateway.nat_gateway[*].id, count.index % var.network.nat.count)
     }
   }
-  lifecycle {
-    ignore_changes = [route]
-  }
   tags = {
     Name = "private-subnet-route-table-${count.index + 1}"
   }
