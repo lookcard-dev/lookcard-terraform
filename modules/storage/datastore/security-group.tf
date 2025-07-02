@@ -59,3 +59,17 @@ resource "aws_vpc_security_group_ingress_rule" "proxy_bastion_host_ingress_rule"
     ]
   }
 }
+
+resource "aws_vpc_security_group_ingress_rule" "proxy_cluster_ingress_rule" {
+  count                        = var.runtime_environment == "production" ? 1 : 0
+  security_group_id            = aws_security_group.cluster_security_group.id
+  referenced_security_group_id = aws_security_group.proxy_security_group.id
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  lifecycle {
+    ignore_changes = [
+      referenced_security_group_id
+    ]
+  }
+}
