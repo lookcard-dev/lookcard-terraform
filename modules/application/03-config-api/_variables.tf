@@ -34,6 +34,12 @@ variable "network" {
   })
 }
 
+variable "datacache" {
+  type = object({
+    endpoint = string
+  })
+}
+
 variable "allow_to_security_group_ids" {
   type = list(string)
 }
@@ -89,7 +95,11 @@ locals {
     {
       name  = "AWS_DYNAMODB_CONFIG_HISTORY_TABLE_NAME"
       value = aws_dynamodb_table.history.name
-    }
+    },
+    {
+      name  = "REDIS_HOST"
+      value = var.datacache.endpoint
+    },
   ]
   environment_secrets = [
     {

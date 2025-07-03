@@ -21,6 +21,7 @@ module "profile-api" {
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
+  datacache                   = var.datacache
 }
 
 module "data-api" {
@@ -38,6 +39,7 @@ module "data-api" {
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
+  datacache                   = var.datacache
 }
 
 module "config-api" {
@@ -53,6 +55,7 @@ module "config-api" {
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
   repository_urls             = var.repository_urls
+  datacache                   = var.datacache
 }
 
 module "user-api" {

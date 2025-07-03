@@ -34,6 +34,12 @@ variable "network" {
   })
 }
 
+variable "datacache" {
+  type = object({
+    endpoint = string
+  })
+}
+
 variable "allow_to_security_group_ids" {
   type = list(string)
 }
@@ -124,6 +130,10 @@ locals {
     {
       name  = "AWS_S3_DATA_BUCKET_NAME"
       value = var.s3_bucket_names.data
+    },
+    {
+      name  = "REDIS_HOST"
+      value = var.datacache.endpoint
     }
   ]
   environment_secrets = [
