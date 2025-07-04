@@ -117,12 +117,18 @@ locals {
       valueFrom = "${var.secret_arns["TELEGRAM"]}:GENERAL_MESSAGE_THREAD_ID::"
     },
     {
-      name      = "TELEGRAM_NOTIFICATION_TREASURY_EVENT_MESSAGE_THREAD_ID"
-      valueFrom = "${var.secret_arns["TELEGRAM"]}:TREASURY_EVENT_MESSAGE_THREAD_ID::"
+      name      = "TELEGRAM_NOTIFICATION_ALERT_MESSAGE_THREAD_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:ALERT_MESSAGE_THREAD_ID::"
+      }, {
+      name      = "TELEGRAM_NOTIFICATION_TREASURY_MESSAGE_THREAD_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:TREASURY_MESSAGE_THREAD_ID::"
     },
     {
-      name      = "TELEGRAM_NOTIFICATION_DEPOSIT_AND_WITHDRAWAL_MESSAGE_THREAD_ID"
-      valueFrom = "${var.secret_arns["TELEGRAM"]}:DEPOSIT_AND_WITHDRAWAL_MESSAGE_THREAD_ID::"
+      name      = "TELEGRAM_NOTIFICATION_DEPOSIT_MESSAGE_THREAD_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:DEPOSIT_MESSAGE_THREAD_ID::"
+      }, {
+      name      = "TELEGRAM_NOTIFICATION_WITHDRAWAL_MESSAGE_THREAD_ID"
+      valueFrom = "${var.secret_arns["TELEGRAM"]}:WITHDRAWAL_MESSAGE_THREAD_ID::"
     },
     {
       name      = "TELEGRAM_NOTIFICATION_CARD_TRANSACTION_MESSAGE_THREAD_ID"
