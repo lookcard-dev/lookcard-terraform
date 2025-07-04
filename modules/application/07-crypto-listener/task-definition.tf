@@ -568,7 +568,7 @@ resource "aws_ecs_task_definition" "bsc_infura_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -622,7 +622,7 @@ resource "aws_ecs_task_definition" "bsc_getblock_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -676,7 +676,7 @@ resource "aws_ecs_task_definition" "bsc_drpc_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -730,7 +730,7 @@ resource "aws_ecs_task_definition" "bsc_quicknode_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -2884,7 +2884,7 @@ resource "aws_ecs_task_definition" "bsc_blast_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
@@ -3856,7 +3856,7 @@ resource "aws_ecs_task_definition" "bsc_publicnode_task_definition" {
         },
         {
           name  = "NODE_BLOCKCHAIN_ID",
-          value = "bsc"
+          value = "bnb-smart-chain"
         },
         {
           name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
