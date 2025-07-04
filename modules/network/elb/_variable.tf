@@ -13,6 +13,10 @@ variable "runtime_environment" {
   }
 }
 
+variable "bastion_host_security_group_id" {
+  type = string
+}
+
 variable "vpc_id" {
   type = string
 }

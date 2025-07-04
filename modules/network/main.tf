@@ -21,12 +21,13 @@ module "bastion_host" {
 }
 
 module "elb" {
-  source              = "./elb"
-  aws_provider        = var.aws_provider
-  runtime_environment = var.runtime_environment
-  vpc_id              = module.vpc.vpc_id
-  subnet_ids          = module.vpc.isolated_subnet_ids
-  depends_on          = [module.vpc]
+  source                         = "./elb"
+  aws_provider                   = var.aws_provider
+  runtime_environment            = var.runtime_environment
+  vpc_id                         = module.vpc.vpc_id
+  subnet_ids                     = module.vpc.isolated_subnet_ids
+  bastion_host_security_group_id = module.bastion_host.bastion_host_security_group_id
+  depends_on                     = [module.vpc]
 }
 
 module "api_gateway" {
