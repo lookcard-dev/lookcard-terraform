@@ -1,5 +1,5 @@
 resource "aws_service_discovery_service" "discovery_service" {
-  name = replace(var.name, "-", ".")
+  name = "fusionauth"
   dns_config {
     namespace_id = var.namespace_id
     dns_records {
@@ -12,14 +12,14 @@ resource "aws_service_discovery_service" "discovery_service" {
 resource "aws_ecs_service" "ecs_service" {
   name            = var.name
   task_definition = aws_ecs_task_definition.task_definition.arn
+
   deployment_circuit_breaker {
     enable   = true
     rollback = true
   }
 
-  desired_count = var.image_tag == "latest" ? 0 : (
-    var.runtime_environment == "production" ? 2 : 1
-  )
+  desired_count = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 2 : 1
+
   cluster = var.cluster_id
 
   network_configuration {
@@ -33,8 +33,8 @@ resource "aws_ecs_service" "ecs_service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.service_target_group.arn
-    container_name   = "webhook-api"
-    container_port   = 8080
+    container_name   = "fusionauth"
+    container_port   = 9011
   }
 
   lifecycle {

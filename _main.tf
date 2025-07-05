@@ -58,7 +58,7 @@ module "application" {
     core_application      = module.compute.core_application_cluster_id
     administrative        = module.compute.administrative_cluster_id
     cronjob               = module.compute.cronjob_cluster_id
-    supabase              = module.compute.supabase_cluster_id
+    authentication        = module.compute.authentication_cluster_id
   }
 
   namespace_id = module.network.cloudmap_namespace_id

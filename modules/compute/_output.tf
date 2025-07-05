@@ -22,6 +22,6 @@ output "cronjob_cluster_id" {
   value = module.ecs.cronjob_cluster_id
 }
 
-output "supabase_cluster_id" {
-  value = module.ecs.supabase_cluster_id
+output "authentication_cluster_id" {
+  value = module.ecs.authentication_cluster_id
 }

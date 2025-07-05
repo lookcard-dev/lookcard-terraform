@@ -1,3 +1,23 @@
+module "fusionauth" {
+  source                      = "./XX-fusionauth"
+  aws_provider                = var.aws_provider
+  name                        = "fusionauth"
+  runtime_environment         = var.runtime_environment
+  cluster_id                  = var.cluster_ids.authentication
+  namespace_id                = var.namespace_id
+  network                     = var.network
+  datastore                   = var.datastore
+  secret_arns                 = var.secret_arns
+  elb                         = var.elb
+  api_gateway                 = var.api_gateway
+  domain                      = var.domain
+  external_security_group_ids = var.external_security_group_ids
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+    cloudflare    = cloudflare
+  }
+}
+
 module "xray-daemon" {
   source              = "./00-xray-daemon"
   aws_provider        = var.aws_provider

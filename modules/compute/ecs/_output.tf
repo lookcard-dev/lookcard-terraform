@@ -22,6 +22,6 @@ output "cronjob_cluster_id" {
   value = aws_ecs_cluster.cronjob.id
 }
 
-output "supabase_cluster_id" {
-  value = aws_ecs_cluster.supabase.id
+output "authentication_cluster_id" {
+  value = aws_ecs_cluster.authentication.id
 }

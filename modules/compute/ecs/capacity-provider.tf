@@ -56,8 +56,8 @@ resource "aws_ecs_cluster_capacity_providers" "cronjob" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "supabase" {
-  cluster_name       = aws_ecs_cluster.supabase.name
+resource "aws_ecs_cluster_capacity_providers" "authentication" {
+  cluster_name       = aws_ecs_cluster.authentication.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = var.runtime_environment == "production" ? 1 : 0
