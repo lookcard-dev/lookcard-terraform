@@ -13,3 +13,13 @@ resource "cloudflare_certificate_pack" "certificate_pack" {
   validity_days         = 90
   cloudflare_branding   = false
 }
+
+resource "cloudflare_certificate_pack" "admin_certificate_pack" {
+  zone_id               = var.domain.admin.zone_id
+  certificate_authority = "google"
+  hosts                 = ["fusionauth.${var.domain.admin.name}"]
+  type                  = "advanced"
+  validation_method     = "txt"
+  validity_days         = 90
+  cloudflare_branding   = false
+}

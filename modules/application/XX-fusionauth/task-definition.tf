@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   container_definitions = jsonencode([
     {
-      name  = var.name
+      name  = "fusionauth"
       image = "fusionauth/fusionauth-app:1.57.1"
       logConfiguration = {
         logDriver = "awslogs",
@@ -77,26 +77,30 @@ resource "aws_ecs_task_definition" "task_definition" {
         startPeriod = 10 # time to wait before performing first health check
       }
     },
-    # {
-    #   name  = "cloudflared"
-    #   image = "cloudflared/cloudflared:latest"
-    #   logConfiguration = {
-    #     logDriver = "awslogs",
-    #     options = {
-    #       "awslogs-create-group"  = "true",
-    #       "awslogs-group"         = "/ecs/${var.name}",
-    #       "awslogs-region"        = "ap-southeast-1",
-    #       "awslogs-stream-prefix" = "cloudflared",
-    #     }
-    #   }
-    #   essential = true
-    #   command = [
-    #     "tunnel",
-    #     "--no-autoupdate",
-    #     "run",
-    #     "--token",
-    #     random_password.tunnel_secret.result
-    #   ]
-    # }
+    {
+      name  = "cloudflared"
+      image = "cloudflare/cloudflared:2025.7.0"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/${var.name}",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "cloudflared",
+        }
+      }
+      essential = true
+      secrets = [
+        {
+          name      = "TUNNEL_TOKEN"
+          valueFrom = "${var.secret_arns["CLOUDFLARE"]}:FUSIONAUTH_TUNNEL_SECRET::"
+        },
+      ]
+      command = [
+        "tunnel",
+        "--no-autoupdate",
+        "run"
+      ]
+    }
   ])
 }

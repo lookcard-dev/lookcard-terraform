@@ -8,16 +8,6 @@ resource "cloudflare_dns_record" "general_dns_record" {
   comment = "FusionAuth"
 }
 
-# resource "cloudflare_dns_record" "admin_dns_record" {
-#   zone_id = var.domain.admin.zone_id
-#   name    = "fusionauth.${var.domain.admin.name}"
-#   content = cloudflare_zero_trust_tunnel_cloudflared.tunnel.hostname
-#   type    = "CNAME"
-#   ttl     = 1
-#   proxied = true
-#   comment = "FusionAuth"
-# }
-
 resource "cloudflare_dns_record" "certificate_validation" {
   for_each = {
     for dvo in aws_acm_certificate.certificate.domain_validation_options : dvo.domain_name => {
