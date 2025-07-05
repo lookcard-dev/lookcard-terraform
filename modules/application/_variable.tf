@@ -160,6 +160,7 @@ locals {
     module.config-api.security_group_id,
     module.data-api.security_group_id,
     module.profile-api.security_group_id,
+    module.fusionauth.security_group_id,
   ]
 
   datacache_access_security_group_ids = compact([
