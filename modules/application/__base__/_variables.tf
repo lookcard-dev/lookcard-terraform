@@ -34,19 +34,6 @@ variable "network" {
   })
 }
 
-variable "elb" {
-  type = object({
-    network_load_balancer_arn                   = string
-    network_load_balancer_dns_name              = string
-    application_load_balancer_arn               = string
-    application_load_balancer_dns_name          = string
-    application_load_balancer_http_listener_arn = string
-    application_load_balancer_arn_suffix        = string
-    network_load_balancer_arn_suffix            = string
-  })
-}
-
-
 variable "datastore" {
   type = object({
     writer_endpoint = string
