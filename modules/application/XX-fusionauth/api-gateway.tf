@@ -456,51 +456,704 @@ resource "aws_api_gateway_integration_response" "admin_proxy_block_integration_r
   ]
 }
 
-# Create catch-all proxy resource for everything else
-resource "aws_api_gateway_resource" "proxy" {
+# Create allowed public API resources
+
+# /api/user/* - User registration and management
+resource "aws_api_gateway_resource" "api_user_path" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "user"
+}
+
+resource "aws_api_gateway_resource" "api_user_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_user_path.id
   path_part   = "{proxy+}"
 }
 
-# Catch-all method for root path
-resource "aws_api_gateway_method" "root_proxy" {
+# /api/login - User login
+resource "aws_api_gateway_resource" "api_login_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "login"
+}
+
+# /api/logout - User logout
+resource "aws_api_gateway_resource" "api_logout_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "logout"
+}
+
+# /api/jwt/* - JWT token operations
+resource "aws_api_gateway_resource" "api_jwt_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "jwt"
+}
+
+resource "aws_api_gateway_resource" "api_jwt_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_jwt_path.id
+  path_part   = "{proxy+}"
+}
+
+# /api/passwordless/* - Passwordless authentication
+resource "aws_api_gateway_resource" "api_passwordless_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "passwordless"
+}
+
+resource "aws_api_gateway_resource" "api_passwordless_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_passwordless_path.id
+  path_part   = "{proxy+}"
+}
+
+# /api/two-factor/* - Two-factor authentication
+resource "aws_api_gateway_resource" "api_two_factor_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "two-factor"
+}
+
+resource "aws_api_gateway_resource" "api_two_factor_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_two_factor_path.id
+  path_part   = "{proxy+}"
+}
+
+# /api/status - Health check endpoint
+resource "aws_api_gateway_resource" "api_status_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.api_path.id
+  path_part   = "status"
+}
+
+# /oauth2/* - OAuth endpoints
+resource "aws_api_gateway_resource" "oauth2_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
+  path_part   = "oauth2"
+}
+
+resource "aws_api_gateway_resource" "oauth2_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.oauth2_path.id
+  path_part   = "{proxy+}"
+}
+
+# /.well-known/* - Well-known endpoints for OAuth discovery
+resource "aws_api_gateway_resource" "well_known_path" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
+  path_part   = ".well-known"
+}
+
+resource "aws_api_gateway_resource" "well_known_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  parent_id   = aws_api_gateway_resource.well_known_path.id
+  path_part   = "{proxy+}"
+}
+
+# Methods and integrations for allowed paths
+
+# /api/user/* methods
+resource "aws_api_gateway_method" "api_user_method" {
   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
+  resource_id   = aws_api_gateway_resource.api_user_path.id
   http_method   = "ANY"
   authorization = "NONE"
 }
 
-# Catch-all method for all other paths
-resource "aws_api_gateway_method" "proxy_method" {
+resource "aws_api_gateway_method" "api_user_proxy_method" {
   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.proxy.id
+  resource_id   = aws_api_gateway_resource.api_user_proxy.id
   http_method   = "ANY"
   authorization = "NONE"
 }
 
-# Integration for root path (proxy to FusionAuth)
-resource "aws_api_gateway_integration" "root_proxy_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
-  resource_id             = aws_api_gateway_rest_api.rest_api.root_resource_id
-  http_method             = aws_api_gateway_method.root_proxy.http_method
-  integration_http_method = "ANY"
-  type                    = "HTTP_PROXY"
-  connection_type         = "VPC_LINK"
-  connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://auth.${var.domain.general.name}/"
+# /api/login method
+resource "aws_api_gateway_method" "api_login_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_login_path.id
+  http_method   = "POST"
+  authorization = "NONE"
 }
 
-# Integration for all other paths (proxy to FusionAuth)
-resource "aws_api_gateway_integration" "proxy_integration" {
+# /api/logout method
+resource "aws_api_gateway_method" "api_logout_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_logout_path.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+# /api/jwt/* methods
+resource "aws_api_gateway_method" "api_jwt_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_jwt_path.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_jwt_proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+# /api/passwordless/* methods
+resource "aws_api_gateway_method" "api_passwordless_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_passwordless_path.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_passwordless_proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+# /api/two-factor/* methods
+resource "aws_api_gateway_method" "api_two_factor_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_two_factor_path.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_two_factor_proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+# /api/status method
+resource "aws_api_gateway_method" "api_status_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_status_path.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+# /oauth2/* methods
+resource "aws_api_gateway_method" "oauth2_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.oauth2_path.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "oauth2_proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.oauth2_proxy.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+# /.well-known/* methods
+resource "aws_api_gateway_method" "well_known_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.well_known_path.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "well_known_proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.well_known_proxy.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+# Integrations for allowed paths
+
+# /api/user/* integrations
+resource "aws_api_gateway_integration" "api_user_integration" {
   rest_api_id             = aws_api_gateway_rest_api.rest_api.id
-  resource_id             = aws_api_gateway_resource.proxy.id
-  http_method             = aws_api_gateway_method.proxy_method.http_method
+  resource_id             = aws_api_gateway_resource.api_user_path.id
+  http_method             = aws_api_gateway_method.api_user_method.http_method
   integration_http_method = "ANY"
   type                    = "HTTP_PROXY"
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
-  uri                     = "http://auth.${var.domain.general.name}/{proxy}"
+  uri                     = "http://auth.${var.domain.general.name}/api/user"
+}
+
+resource "aws_api_gateway_integration" "api_user_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_user_proxy.id
+  http_method             = aws_api_gateway_method.api_user_proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/user/{proxy}"
+}
+
+# /api/login integration
+resource "aws_api_gateway_integration" "api_login_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_login_path.id
+  http_method             = aws_api_gateway_method.api_login_method.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/login"
+}
+
+# /api/logout integration
+resource "aws_api_gateway_integration" "api_logout_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_logout_path.id
+  http_method             = aws_api_gateway_method.api_logout_method.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/logout"
+}
+
+# /api/jwt/* integrations
+resource "aws_api_gateway_integration" "api_jwt_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_jwt_path.id
+  http_method             = aws_api_gateway_method.api_jwt_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/jwt"
+}
+
+resource "aws_api_gateway_integration" "api_jwt_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method             = aws_api_gateway_method.api_jwt_proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/jwt/{proxy}"
+}
+
+# /api/passwordless/* integrations
+resource "aws_api_gateway_integration" "api_passwordless_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_passwordless_path.id
+  http_method             = aws_api_gateway_method.api_passwordless_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/passwordless"
+}
+
+resource "aws_api_gateway_integration" "api_passwordless_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method             = aws_api_gateway_method.api_passwordless_proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/passwordless/{proxy}"
+}
+
+# /api/two-factor/* integrations
+resource "aws_api_gateway_integration" "api_two_factor_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_two_factor_path.id
+  http_method             = aws_api_gateway_method.api_two_factor_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/two-factor"
+}
+
+resource "aws_api_gateway_integration" "api_two_factor_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method             = aws_api_gateway_method.api_two_factor_proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/two-factor/{proxy}"
+}
+
+# /api/status integration
+resource "aws_api_gateway_integration" "api_status_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.api_status_path.id
+  http_method             = aws_api_gateway_method.api_status_method.http_method
+  integration_http_method = "GET"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/api/status"
+}
+
+# /oauth2/* integrations
+resource "aws_api_gateway_integration" "oauth2_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.oauth2_path.id
+  http_method             = aws_api_gateway_method.oauth2_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/oauth2"
+}
+
+resource "aws_api_gateway_integration" "oauth2_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.oauth2_proxy.id
+  http_method             = aws_api_gateway_method.oauth2_proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/oauth2/{proxy}"
+}
+
+# /.well-known/* integrations
+resource "aws_api_gateway_integration" "well_known_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.well_known_path.id
+  http_method             = aws_api_gateway_method.well_known_method.http_method
+  integration_http_method = "GET"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/.well-known"
+}
+
+resource "aws_api_gateway_integration" "well_known_proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rest_api.id
+  resource_id             = aws_api_gateway_resource.well_known_proxy.id
+  http_method             = aws_api_gateway_method.well_known_proxy_method.http_method
+  integration_http_method = "GET"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://auth.${var.domain.general.name}/.well-known/{proxy}"
+}
+
+# Method responses for allowed paths
+
+# /api/user/* method responses
+resource "aws_api_gateway_method_response" "api_user_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_path.id
+  http_method = aws_api_gateway_method.api_user_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "api_user_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_proxy.id
+  http_method = aws_api_gateway_method.api_user_proxy_method.http_method
+  status_code = "200"
+}
+
+# /api/login method response
+resource "aws_api_gateway_method_response" "api_login_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_login_path.id
+  http_method = aws_api_gateway_method.api_login_method.http_method
+  status_code = "200"
+}
+
+# /api/logout method response
+resource "aws_api_gateway_method_response" "api_logout_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_logout_path.id
+  http_method = aws_api_gateway_method.api_logout_method.http_method
+  status_code = "200"
+}
+
+# /api/jwt/* method responses
+resource "aws_api_gateway_method_response" "api_jwt_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_path.id
+  http_method = aws_api_gateway_method.api_jwt_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "api_jwt_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method = aws_api_gateway_method.api_jwt_proxy_method.http_method
+  status_code = "200"
+}
+
+# /api/passwordless/* method responses
+resource "aws_api_gateway_method_response" "api_passwordless_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_path.id
+  http_method = aws_api_gateway_method.api_passwordless_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "api_passwordless_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method = aws_api_gateway_method.api_passwordless_proxy_method.http_method
+  status_code = "200"
+}
+
+# /api/two-factor/* method responses
+resource "aws_api_gateway_method_response" "api_two_factor_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_path.id
+  http_method = aws_api_gateway_method.api_two_factor_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "api_two_factor_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method = aws_api_gateway_method.api_two_factor_proxy_method.http_method
+  status_code = "200"
+}
+
+# /api/status method response
+resource "aws_api_gateway_method_response" "api_status_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_status_path.id
+  http_method = aws_api_gateway_method.api_status_method.http_method
+  status_code = "200"
+}
+
+# /oauth2/* method responses
+resource "aws_api_gateway_method_response" "oauth2_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_path.id
+  http_method = aws_api_gateway_method.oauth2_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "oauth2_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_proxy.id
+  http_method = aws_api_gateway_method.oauth2_proxy_method.http_method
+  status_code = "200"
+}
+
+# /.well-known/* method responses
+resource "aws_api_gateway_method_response" "well_known_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_path.id
+  http_method = aws_api_gateway_method.well_known_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_method_response" "well_known_proxy_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_proxy.id
+  http_method = aws_api_gateway_method.well_known_proxy_method.http_method
+  status_code = "200"
+}
+
+# Integration responses for allowed paths
+
+# /api/user/* integration responses
+resource "aws_api_gateway_integration_response" "api_user_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_path.id
+  http_method = aws_api_gateway_method.api_user_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_user_response,
+    aws_api_gateway_integration.api_user_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_user_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_proxy.id
+  http_method = aws_api_gateway_method.api_user_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_user_proxy_response,
+    aws_api_gateway_integration.api_user_proxy_integration
+  ]
+}
+
+# /api/login integration response
+resource "aws_api_gateway_integration_response" "api_login_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_login_path.id
+  http_method = aws_api_gateway_method.api_login_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_login_response,
+    aws_api_gateway_integration.api_login_integration
+  ]
+}
+
+# /api/logout integration response
+resource "aws_api_gateway_integration_response" "api_logout_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_logout_path.id
+  http_method = aws_api_gateway_method.api_logout_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_logout_response,
+    aws_api_gateway_integration.api_logout_integration
+  ]
+}
+
+# /api/jwt/* integration responses
+resource "aws_api_gateway_integration_response" "api_jwt_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_path.id
+  http_method = aws_api_gateway_method.api_jwt_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_jwt_response,
+    aws_api_gateway_integration.api_jwt_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_jwt_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method = aws_api_gateway_method.api_jwt_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_jwt_proxy_response,
+    aws_api_gateway_integration.api_jwt_proxy_integration
+  ]
+}
+
+# /api/passwordless/* integration responses
+resource "aws_api_gateway_integration_response" "api_passwordless_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_path.id
+  http_method = aws_api_gateway_method.api_passwordless_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_passwordless_response,
+    aws_api_gateway_integration.api_passwordless_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_passwordless_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method = aws_api_gateway_method.api_passwordless_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_passwordless_proxy_response,
+    aws_api_gateway_integration.api_passwordless_proxy_integration
+  ]
+}
+
+# /api/two-factor/* integration responses
+resource "aws_api_gateway_integration_response" "api_two_factor_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_path.id
+  http_method = aws_api_gateway_method.api_two_factor_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_two_factor_response,
+    aws_api_gateway_integration.api_two_factor_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_two_factor_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method = aws_api_gateway_method.api_two_factor_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_two_factor_proxy_response,
+    aws_api_gateway_integration.api_two_factor_proxy_integration
+  ]
+}
+
+# /api/status integration response
+resource "aws_api_gateway_integration_response" "api_status_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_status_path.id
+  http_method = aws_api_gateway_method.api_status_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.api_status_response,
+    aws_api_gateway_integration.api_status_integration
+  ]
+}
+
+# /oauth2/* integration responses
+resource "aws_api_gateway_integration_response" "oauth2_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_path.id
+  http_method = aws_api_gateway_method.oauth2_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.oauth2_response,
+    aws_api_gateway_integration.oauth2_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "oauth2_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_proxy.id
+  http_method = aws_api_gateway_method.oauth2_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.oauth2_proxy_response,
+    aws_api_gateway_integration.oauth2_proxy_integration
+  ]
+}
+
+# /.well-known/* integration responses
+resource "aws_api_gateway_integration_response" "well_known_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_path.id
+  http_method = aws_api_gateway_method.well_known_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.well_known_response,
+    aws_api_gateway_integration.well_known_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "well_known_proxy_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_proxy.id
+  http_method = aws_api_gateway_method.well_known_proxy_method.http_method
+  status_code = "200"
+
+  depends_on = [
+    aws_api_gateway_method_response.well_known_proxy_response,
+    aws_api_gateway_integration.well_known_proxy_integration
+  ]
 }
 
 # Deploy the API
@@ -510,8 +1163,21 @@ resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
     aws_api_gateway_integration.admin_block_integration,
     aws_api_gateway_integration.admin_proxy_block_integration,
-    aws_api_gateway_integration.root_proxy_integration,
-    aws_api_gateway_integration.proxy_integration,
+    aws_api_gateway_integration.api_user_integration,
+    aws_api_gateway_integration.api_user_proxy_integration,
+    aws_api_gateway_integration.api_login_integration,
+    aws_api_gateway_integration.api_logout_integration,
+    aws_api_gateway_integration.api_jwt_integration,
+    aws_api_gateway_integration.api_jwt_proxy_integration,
+    aws_api_gateway_integration.api_passwordless_integration,
+    aws_api_gateway_integration.api_passwordless_proxy_integration,
+    aws_api_gateway_integration.api_two_factor_integration,
+    aws_api_gateway_integration.api_two_factor_proxy_integration,
+    aws_api_gateway_integration.api_status_integration,
+    aws_api_gateway_integration.oauth2_integration,
+    aws_api_gateway_integration.oauth2_proxy_integration,
+    aws_api_gateway_integration.well_known_integration,
+    aws_api_gateway_integration.well_known_proxy_integration,
     aws_api_gateway_integration_response.admin_block_integration_response,
     aws_api_gateway_integration_response.admin_proxy_block_integration_response
   ]
@@ -524,15 +1190,55 @@ resource "aws_api_gateway_deployment" "deployment" {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.admin_path.id,
       aws_api_gateway_resource.admin_proxy.id,
-      aws_api_gateway_resource.proxy.id,
+      aws_api_gateway_resource.api_user_path.id,
+      aws_api_gateway_resource.api_user_proxy.id,
+      aws_api_gateway_resource.api_login_path.id,
+      aws_api_gateway_resource.api_logout_path.id,
+      aws_api_gateway_resource.api_jwt_path.id,
+      aws_api_gateway_resource.api_jwt_proxy.id,
+      aws_api_gateway_resource.api_passwordless_path.id,
+      aws_api_gateway_resource.api_passwordless_proxy.id,
+      aws_api_gateway_resource.api_two_factor_path.id,
+      aws_api_gateway_resource.api_two_factor_proxy.id,
+      aws_api_gateway_resource.api_status_path.id,
+      aws_api_gateway_resource.oauth2_path.id,
+      aws_api_gateway_resource.oauth2_proxy.id,
+      aws_api_gateway_resource.well_known_path.id,
+      aws_api_gateway_resource.well_known_proxy.id,
       aws_api_gateway_method.admin_block.id,
       aws_api_gateway_method.admin_proxy_block.id,
-      aws_api_gateway_method.root_proxy.id,
-      aws_api_gateway_method.proxy_method.id,
+      aws_api_gateway_method.api_user_method.id,
+      aws_api_gateway_method.api_user_proxy_method.id,
+      aws_api_gateway_method.api_login_method.id,
+      aws_api_gateway_method.api_logout_method.id,
+      aws_api_gateway_method.api_jwt_method.id,
+      aws_api_gateway_method.api_jwt_proxy_method.id,
+      aws_api_gateway_method.api_passwordless_method.id,
+      aws_api_gateway_method.api_passwordless_proxy_method.id,
+      aws_api_gateway_method.api_two_factor_method.id,
+      aws_api_gateway_method.api_two_factor_proxy_method.id,
+      aws_api_gateway_method.api_status_method.id,
+      aws_api_gateway_method.oauth2_method.id,
+      aws_api_gateway_method.oauth2_proxy_method.id,
+      aws_api_gateway_method.well_known_method.id,
+      aws_api_gateway_method.well_known_proxy_method.id,
       aws_api_gateway_integration.admin_block_integration.id,
       aws_api_gateway_integration.admin_proxy_block_integration.id,
-      aws_api_gateway_integration.root_proxy_integration.id,
-      aws_api_gateway_integration.proxy_integration.id,
+      aws_api_gateway_integration.api_user_integration.id,
+      aws_api_gateway_integration.api_user_proxy_integration.id,
+      aws_api_gateway_integration.api_login_integration.id,
+      aws_api_gateway_integration.api_logout_integration.id,
+      aws_api_gateway_integration.api_jwt_integration.id,
+      aws_api_gateway_integration.api_jwt_proxy_integration.id,
+      aws_api_gateway_integration.api_passwordless_integration.id,
+      aws_api_gateway_integration.api_passwordless_proxy_integration.id,
+      aws_api_gateway_integration.api_two_factor_integration.id,
+      aws_api_gateway_integration.api_two_factor_proxy_integration.id,
+      aws_api_gateway_integration.api_status_integration.id,
+      aws_api_gateway_integration.oauth2_integration.id,
+      aws_api_gateway_integration.oauth2_proxy_integration.id,
+      aws_api_gateway_integration.well_known_integration.id,
+      aws_api_gateway_integration.well_known_proxy_integration.id,
     ]))
   }
 }
