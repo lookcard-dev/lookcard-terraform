@@ -39,6 +39,10 @@ resource "aws_ecs_task_definition" "task_definition" {
         {
           name  = "FUSIONAUTH_APP_HTTP_PORT",
           value = "9011"
+        },
+        {
+          name  = "FUSIONAUTH_APP_CONSOLE_LOG_LEVEL",
+          value = "info"
         }
       ]
       secrets = [

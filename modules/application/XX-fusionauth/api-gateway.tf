@@ -1156,13 +1156,865 @@ resource "aws_api_gateway_integration_response" "well_known_proxy_integration_re
   ]
 }
 
+# ====================================================================
+# CORS CONFIGURATION - OPTIONS Methods for All Allowed Endpoints
+# ====================================================================
+
+# CORS for /api/user/*
+resource "aws_api_gateway_method" "api_user_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_user_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_user_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_user_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/login
+resource "aws_api_gateway_method" "api_login_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_login_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/logout
+resource "aws_api_gateway_method" "api_logout_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_logout_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/jwt/*
+resource "aws_api_gateway_method" "api_jwt_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_jwt_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_jwt_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/passwordless/*
+resource "aws_api_gateway_method" "api_passwordless_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_passwordless_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_passwordless_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/two-factor/*
+resource "aws_api_gateway_method" "api_two_factor_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_two_factor_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "api_two_factor_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /api/status
+resource "aws_api_gateway_method" "api_status_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.api_status_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /oauth2/*
+resource "aws_api_gateway_method" "oauth2_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.oauth2_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "oauth2_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.oauth2_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# CORS for /.well-known/*
+resource "aws_api_gateway_method" "well_known_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.well_known_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "well_known_proxy_options" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.well_known_proxy.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# ====================================================================
+# CORS Method Responses
+# ====================================================================
+
+# CORS method responses for /api/user/*
+resource "aws_api_gateway_method_response" "api_user_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_path.id
+  http_method = aws_api_gateway_method.api_user_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "api_user_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_proxy.id
+  http_method = aws_api_gateway_method.api_user_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/login
+resource "aws_api_gateway_method_response" "api_login_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_login_path.id
+  http_method = aws_api_gateway_method.api_login_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/logout
+resource "aws_api_gateway_method_response" "api_logout_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_logout_path.id
+  http_method = aws_api_gateway_method.api_logout_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/jwt/*
+resource "aws_api_gateway_method_response" "api_jwt_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_path.id
+  http_method = aws_api_gateway_method.api_jwt_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "api_jwt_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method = aws_api_gateway_method.api_jwt_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/passwordless/*
+resource "aws_api_gateway_method_response" "api_passwordless_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_path.id
+  http_method = aws_api_gateway_method.api_passwordless_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "api_passwordless_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method = aws_api_gateway_method.api_passwordless_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/two-factor/*
+resource "aws_api_gateway_method_response" "api_two_factor_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_path.id
+  http_method = aws_api_gateway_method.api_two_factor_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "api_two_factor_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method = aws_api_gateway_method.api_two_factor_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /api/status
+resource "aws_api_gateway_method_response" "api_status_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_status_path.id
+  http_method = aws_api_gateway_method.api_status_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /oauth2/*
+resource "aws_api_gateway_method_response" "oauth2_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_path.id
+  http_method = aws_api_gateway_method.oauth2_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "oauth2_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_proxy.id
+  http_method = aws_api_gateway_method.oauth2_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# CORS method responses for /.well-known/*
+resource "aws_api_gateway_method_response" "well_known_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_path.id
+  http_method = aws_api_gateway_method.well_known_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "well_known_proxy_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_proxy.id
+  http_method = aws_api_gateway_method.well_known_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Max-Age"       = true
+  }
+}
+
+# ====================================================================
+# CORS Mock Integrations
+# ====================================================================
+
+# CORS mock integrations for /api/user/*
+resource "aws_api_gateway_integration" "api_user_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_path.id
+  http_method = aws_api_gateway_method.api_user_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "api_user_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_proxy.id
+  http_method = aws_api_gateway_method.api_user_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/login
+resource "aws_api_gateway_integration" "api_login_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_login_path.id
+  http_method = aws_api_gateway_method.api_login_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/logout
+resource "aws_api_gateway_integration" "api_logout_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_logout_path.id
+  http_method = aws_api_gateway_method.api_logout_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/jwt/*
+resource "aws_api_gateway_integration" "api_jwt_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_path.id
+  http_method = aws_api_gateway_method.api_jwt_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "api_jwt_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method = aws_api_gateway_method.api_jwt_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/passwordless/*
+resource "aws_api_gateway_integration" "api_passwordless_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_path.id
+  http_method = aws_api_gateway_method.api_passwordless_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "api_passwordless_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method = aws_api_gateway_method.api_passwordless_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/two-factor/*
+resource "aws_api_gateway_integration" "api_two_factor_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_path.id
+  http_method = aws_api_gateway_method.api_two_factor_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "api_two_factor_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method = aws_api_gateway_method.api_two_factor_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /api/status
+resource "aws_api_gateway_integration" "api_status_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_status_path.id
+  http_method = aws_api_gateway_method.api_status_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /oauth2/*
+resource "aws_api_gateway_integration" "oauth2_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_path.id
+  http_method = aws_api_gateway_method.oauth2_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "oauth2_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_proxy.id
+  http_method = aws_api_gateway_method.oauth2_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# CORS mock integrations for /.well-known/*
+resource "aws_api_gateway_integration" "well_known_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_path.id
+  http_method = aws_api_gateway_method.well_known_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+resource "aws_api_gateway_integration" "well_known_proxy_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_proxy.id
+  http_method = aws_api_gateway_method.well_known_proxy_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
+# ====================================================================
+# CORS Integration Responses
+# ====================================================================
+
+# CORS integration responses for /api/user/*
+resource "aws_api_gateway_integration_response" "api_user_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_path.id
+  http_method = aws_api_gateway_method.api_user_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_user_options_response,
+    aws_api_gateway_integration.api_user_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_user_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_user_proxy.id
+  http_method = aws_api_gateway_method.api_user_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_user_proxy_options_response,
+    aws_api_gateway_integration.api_user_proxy_options_integration
+  ]
+}
+
+# CORS integration responses for /api/login
+resource "aws_api_gateway_integration_response" "api_login_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_login_path.id
+  http_method = aws_api_gateway_method.api_login_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_login_options_response,
+    aws_api_gateway_integration.api_login_options_integration
+  ]
+}
+
+# CORS integration responses for /api/logout
+resource "aws_api_gateway_integration_response" "api_logout_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_logout_path.id
+  http_method = aws_api_gateway_method.api_logout_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_logout_options_response,
+    aws_api_gateway_integration.api_logout_options_integration
+  ]
+}
+
+# CORS integration responses for /api/jwt/*
+resource "aws_api_gateway_integration_response" "api_jwt_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_path.id
+  http_method = aws_api_gateway_method.api_jwt_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_jwt_options_response,
+    aws_api_gateway_integration.api_jwt_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_jwt_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_jwt_proxy.id
+  http_method = aws_api_gateway_method.api_jwt_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_jwt_proxy_options_response,
+    aws_api_gateway_integration.api_jwt_proxy_options_integration
+  ]
+}
+
+# CORS integration responses for /api/passwordless/*
+resource "aws_api_gateway_integration_response" "api_passwordless_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_path.id
+  http_method = aws_api_gateway_method.api_passwordless_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_passwordless_options_response,
+    aws_api_gateway_integration.api_passwordless_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_passwordless_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_passwordless_proxy.id
+  http_method = aws_api_gateway_method.api_passwordless_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_passwordless_proxy_options_response,
+    aws_api_gateway_integration.api_passwordless_proxy_options_integration
+  ]
+}
+
+# CORS integration responses for /api/two-factor/*
+resource "aws_api_gateway_integration_response" "api_two_factor_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_path.id
+  http_method = aws_api_gateway_method.api_two_factor_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_two_factor_options_response,
+    aws_api_gateway_integration.api_two_factor_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "api_two_factor_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_two_factor_proxy.id
+  http_method = aws_api_gateway_method.api_two_factor_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_two_factor_proxy_options_response,
+    aws_api_gateway_integration.api_two_factor_proxy_options_integration
+  ]
+}
+
+# CORS integration responses for /api/status
+resource "aws_api_gateway_integration_response" "api_status_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.api_status_path.id
+  http_method = aws_api_gateway_method.api_status_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.api_status_options_response,
+    aws_api_gateway_integration.api_status_options_integration
+  ]
+}
+
+# CORS integration responses for /oauth2/*
+resource "aws_api_gateway_integration_response" "oauth2_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_path.id
+  http_method = aws_api_gateway_method.oauth2_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.oauth2_options_response,
+    aws_api_gateway_integration.oauth2_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "oauth2_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.oauth2_proxy.id
+  http_method = aws_api_gateway_method.oauth2_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.oauth2_proxy_options_response,
+    aws_api_gateway_integration.oauth2_proxy_options_integration
+  ]
+}
+
+# CORS integration responses for /.well-known/*
+resource "aws_api_gateway_integration_response" "well_known_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_path.id
+  http_method = aws_api_gateway_method.well_known_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.well_known_options_response,
+    aws_api_gateway_integration.well_known_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "well_known_proxy_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  resource_id = aws_api_gateway_resource.well_known_proxy.id
+  http_method = aws_api_gateway_method.well_known_proxy_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Max-Age"       = "'86400'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.well_known_proxy_options_response,
+    aws_api_gateway_integration.well_known_proxy_options_integration
+  ]
+}
+
 # Deploy the API
 resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
 
   depends_on = [
+    # Block integrations
     aws_api_gateway_integration.admin_block_integration,
     aws_api_gateway_integration.admin_proxy_block_integration,
+    aws_api_gateway_integration_response.admin_block_integration_response,
+    aws_api_gateway_integration_response.admin_proxy_block_integration_response,
+    
+    # API integrations
     aws_api_gateway_integration.api_user_integration,
     aws_api_gateway_integration.api_user_proxy_integration,
     aws_api_gateway_integration.api_login_integration,
@@ -1178,8 +2030,40 @@ resource "aws_api_gateway_deployment" "deployment" {
     aws_api_gateway_integration.oauth2_proxy_integration,
     aws_api_gateway_integration.well_known_integration,
     aws_api_gateway_integration.well_known_proxy_integration,
-    aws_api_gateway_integration_response.admin_block_integration_response,
-    aws_api_gateway_integration_response.admin_proxy_block_integration_response
+    
+    # CORS integrations
+    aws_api_gateway_integration.api_user_options_integration,
+    aws_api_gateway_integration.api_user_proxy_options_integration,
+    aws_api_gateway_integration.api_login_options_integration,
+    aws_api_gateway_integration.api_logout_options_integration,
+    aws_api_gateway_integration.api_jwt_options_integration,
+    aws_api_gateway_integration.api_jwt_proxy_options_integration,
+    aws_api_gateway_integration.api_passwordless_options_integration,
+    aws_api_gateway_integration.api_passwordless_proxy_options_integration,
+    aws_api_gateway_integration.api_two_factor_options_integration,
+    aws_api_gateway_integration.api_two_factor_proxy_options_integration,
+    aws_api_gateway_integration.api_status_options_integration,
+    aws_api_gateway_integration.oauth2_options_integration,
+    aws_api_gateway_integration.oauth2_proxy_options_integration,
+    aws_api_gateway_integration.well_known_options_integration,
+    aws_api_gateway_integration.well_known_proxy_options_integration,
+    
+    # CORS integration responses
+    aws_api_gateway_integration_response.api_user_options_integration_response,
+    aws_api_gateway_integration_response.api_user_proxy_options_integration_response,
+    aws_api_gateway_integration_response.api_login_options_integration_response,
+    aws_api_gateway_integration_response.api_logout_options_integration_response,
+    aws_api_gateway_integration_response.api_jwt_options_integration_response,
+    aws_api_gateway_integration_response.api_jwt_proxy_options_integration_response,
+    aws_api_gateway_integration_response.api_passwordless_options_integration_response,
+    aws_api_gateway_integration_response.api_passwordless_proxy_options_integration_response,
+    aws_api_gateway_integration_response.api_two_factor_options_integration_response,
+    aws_api_gateway_integration_response.api_two_factor_proxy_options_integration_response,
+    aws_api_gateway_integration_response.api_status_options_integration_response,
+    aws_api_gateway_integration_response.oauth2_options_integration_response,
+    aws_api_gateway_integration_response.oauth2_proxy_options_integration_response,
+    aws_api_gateway_integration_response.well_known_options_integration_response,
+    aws_api_gateway_integration_response.well_known_proxy_options_integration_response
   ]
 
   lifecycle {
