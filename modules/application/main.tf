@@ -12,6 +12,7 @@ module "fusionauth" {
   api_gateway                 = var.api_gateway
   domain                      = var.domain
   external_security_group_ids = var.external_security_group_ids
+  allow_to_security_group_ids = [module.web-app.security_group_id]
   providers = {
     aws.us_east_1 = aws.us_east_1
     cloudflare    = cloudflare

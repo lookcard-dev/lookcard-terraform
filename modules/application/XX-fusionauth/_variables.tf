@@ -89,6 +89,9 @@ variable "external_security_group_ids" {
   })
 }
 
+variable "allow_to_security_group_ids" {
+  type = list(string)
+}
 
 variable "domain" {
   type = object({
