@@ -107,354 +107,354 @@ resource "aws_api_gateway_resource" "api_webhook_proxy" {
 }
 
 # Block /admin with 403 Forbidden
-resource "aws_api_gateway_method" "admin_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.admin_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "admin_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.admin_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /admin/* with 403 Forbidden
-resource "aws_api_gateway_method" "admin_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.admin_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "admin_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.admin_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/system/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_system_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_system_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_system_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_system_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_system_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_system_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_system_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_system_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/application/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_application_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_application_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_application_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_application_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_application_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_application_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_application_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_application_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/tenant/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_tenant_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_tenant_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_tenant_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_tenant_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_tenant_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_tenant_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_tenant_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_tenant_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/key/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_key_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_key_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_key_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_key_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_key_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_key_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_key_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_key_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/lambda/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_lambda_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_lambda_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_lambda_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_lambda_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_lambda_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_lambda_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_lambda_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_lambda_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Block /api/webhook/* with 403 Forbidden
-resource "aws_api_gateway_method" "api_webhook_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_webhook_path.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_webhook_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_webhook_path.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
-resource "aws_api_gateway_method" "api_webhook_proxy_block" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.api_webhook_proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
+# resource "aws_api_gateway_method" "api_webhook_proxy_block" {
+#   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+#   resource_id   = aws_api_gateway_resource.api_webhook_proxy.id
+#   http_method   = "ANY"
+#   authorization = "NONE"
+# }
 
 # Mock integration for /admin (returns 403)
-resource "aws_api_gateway_integration" "admin_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_path.id
-  http_method = aws_api_gateway_method.admin_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "admin_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_path.id
+#   http_method = aws_api_gateway_method.admin_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integration for /admin/* (returns 403)
-resource "aws_api_gateway_integration" "admin_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_proxy.id
-  http_method = aws_api_gateway_method.admin_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "admin_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_proxy.id
+#   http_method = aws_api_gateway_method.admin_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/system/*
-resource "aws_api_gateway_integration" "api_system_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_system_path.id
-  http_method = aws_api_gateway_method.api_system_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_system_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_system_path.id
+#   http_method = aws_api_gateway_method.api_system_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_system_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_system_proxy.id
-  http_method = aws_api_gateway_method.api_system_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_system_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_system_proxy.id
+#   http_method = aws_api_gateway_method.api_system_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/application/*
-resource "aws_api_gateway_integration" "api_application_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_application_path.id
-  http_method = aws_api_gateway_method.api_application_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_application_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_application_path.id
+#   http_method = aws_api_gateway_method.api_application_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_application_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_application_proxy.id
-  http_method = aws_api_gateway_method.api_application_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_application_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_application_proxy.id
+#   http_method = aws_api_gateway_method.api_application_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/tenant/*
-resource "aws_api_gateway_integration" "api_tenant_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_tenant_path.id
-  http_method = aws_api_gateway_method.api_tenant_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_tenant_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_tenant_path.id
+#   http_method = aws_api_gateway_method.api_tenant_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_tenant_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_tenant_proxy.id
-  http_method = aws_api_gateway_method.api_tenant_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_tenant_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_tenant_proxy.id
+#   http_method = aws_api_gateway_method.api_tenant_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/key/*
-resource "aws_api_gateway_integration" "api_key_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_key_path.id
-  http_method = aws_api_gateway_method.api_key_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_key_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_key_path.id
+#   http_method = aws_api_gateway_method.api_key_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_key_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_key_proxy.id
-  http_method = aws_api_gateway_method.api_key_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_key_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_key_proxy.id
+#   http_method = aws_api_gateway_method.api_key_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/lambda/*
-resource "aws_api_gateway_integration" "api_lambda_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_lambda_path.id
-  http_method = aws_api_gateway_method.api_lambda_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_lambda_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_lambda_path.id
+#   http_method = aws_api_gateway_method.api_lambda_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_lambda_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_lambda_proxy.id
-  http_method = aws_api_gateway_method.api_lambda_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_lambda_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_lambda_proxy.id
+#   http_method = aws_api_gateway_method.api_lambda_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Mock integrations for /api/webhook/*
-resource "aws_api_gateway_integration" "api_webhook_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_webhook_path.id
-  http_method = aws_api_gateway_method.api_webhook_block.http_method
-  type        = "MOCK"
+# resource "aws_api_gateway_integration" "api_webhook_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_webhook_path.id
+#   http_method = aws_api_gateway_method.api_webhook_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
-
-resource "aws_api_gateway_integration" "api_webhook_proxy_block_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.api_webhook_proxy.id
-  http_method = aws_api_gateway_method.api_webhook_proxy_block.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = jsonencode({
-      statusCode = 403
-    })
-  }
-}
+# resource "aws_api_gateway_integration" "api_webhook_proxy_block_integration" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.api_webhook_proxy.id
+#   http_method = aws_api_gateway_method.api_webhook_proxy_block.http_method
+#   type        = "MOCK"
+# 
+#   request_templates = {
+#     "application/json" = jsonencode({
+#       statusCode = 403
+#     })
+#   }
+# }
 
 # Method response for /admin (403)
-resource "aws_api_gateway_method_response" "admin_block_response" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_path.id
-  http_method = aws_api_gateway_method.admin_block.http_method
-  status_code = "403"
-}
+# resource "aws_api_gateway_method_response" "admin_block_response" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_path.id
+#   http_method = aws_api_gateway_method.admin_block.http_method
+#   status_code = "403"
+# }
 
 # Method response for /admin/* (403)
-resource "aws_api_gateway_method_response" "admin_proxy_block_response" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_proxy.id
-  http_method = aws_api_gateway_method.admin_proxy_block.http_method
-  status_code = "403"
-}
+# resource "aws_api_gateway_method_response" "admin_proxy_block_response" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_proxy.id
+#   http_method = aws_api_gateway_method.admin_proxy_block.http_method
+#   status_code = "403"
+# }
 
 # Integration response for /admin (403)
-resource "aws_api_gateway_integration_response" "admin_block_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_path.id
-  http_method = aws_api_gateway_method.admin_block.http_method
-  status_code = "403"
-
-  response_templates = {
-    "application/json" = jsonencode({
-      message = "Access to admin paths is forbidden"
-    })
-  }
-
-  depends_on = [
-    aws_api_gateway_method_response.admin_block_response,
-    aws_api_gateway_integration.admin_block_integration
-  ]
-}
+# resource "aws_api_gateway_integration_response" "admin_block_integration_response" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_path.id
+#   http_method = aws_api_gateway_method.admin_block.http_method
+#   status_code = "403"
+# 
+#   response_templates = {
+#     "application/json" = jsonencode({
+#       message = "Access to admin paths is forbidden"
+#     })
+#   }
+# 
+#   depends_on = [
+#     aws_api_gateway_method_response.admin_block_response,
+#     aws_api_gateway_integration.admin_block_integration
+#   ]
+# }
 
 # Integration response for /admin/* (403)
-resource "aws_api_gateway_integration_response" "admin_proxy_block_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.admin_proxy.id
-  http_method = aws_api_gateway_method.admin_proxy_block.http_method
-  status_code = "403"
-
-  response_templates = {
-    "application/json" = jsonencode({
-      message = "Access to admin paths is forbidden"
-    })
-  }
-
-  depends_on = [
-    aws_api_gateway_method_response.admin_proxy_block_response,
-    aws_api_gateway_integration.admin_proxy_block_integration
-  ]
-}
+# resource "aws_api_gateway_integration_response" "admin_proxy_block_integration_response" {
+#   rest_api_id = aws_api_gateway_rest_api.rest_api.id
+#   resource_id = aws_api_gateway_resource.admin_proxy.id
+#   http_method = aws_api_gateway_method.admin_proxy_block.http_method
+#   status_code = "403"
+# 
+#   response_templates = {
+#     "application/json" = jsonencode({
+#       message = "Access to admin paths is forbidden"
+#     })
+#   }
+# 
+#   depends_on = [
+#     aws_api_gateway_method_response.admin_proxy_block_response,
+#     aws_api_gateway_integration.admin_proxy_block_integration
+#   ]
+# }
 
 # Create allowed public API resources
 
@@ -2009,10 +2009,10 @@ resource "aws_api_gateway_deployment" "deployment" {
 
   depends_on = [
     # Block integrations
-    aws_api_gateway_integration.admin_block_integration,
-    aws_api_gateway_integration.admin_proxy_block_integration,
-    aws_api_gateway_integration_response.admin_block_integration_response,
-    aws_api_gateway_integration_response.admin_proxy_block_integration_response,
+    # aws_api_gateway_integration.admin_block_integration,
+    # aws_api_gateway_integration.admin_proxy_block_integration,
+    # aws_api_gateway_integration_response.admin_block_integration_response,
+    # aws_api_gateway_integration_response.admin_proxy_block_integration_response,
     
     # API integrations
     aws_api_gateway_integration.api_user_integration,
@@ -2089,8 +2089,8 @@ resource "aws_api_gateway_deployment" "deployment" {
       aws_api_gateway_resource.oauth2_proxy.id,
       aws_api_gateway_resource.well_known_path.id,
       aws_api_gateway_resource.well_known_proxy.id,
-      aws_api_gateway_method.admin_block.id,
-      aws_api_gateway_method.admin_proxy_block.id,
+      # aws_api_gateway_method.admin_block.id,
+      # aws_api_gateway_method.admin_proxy_block.id,
       aws_api_gateway_method.api_user_method.id,
       aws_api_gateway_method.api_user_proxy_method.id,
       aws_api_gateway_method.api_login_method.id,
@@ -2106,8 +2106,8 @@ resource "aws_api_gateway_deployment" "deployment" {
       aws_api_gateway_method.oauth2_proxy_method.id,
       aws_api_gateway_method.well_known_method.id,
       aws_api_gateway_method.well_known_proxy_method.id,
-      aws_api_gateway_integration.admin_block_integration.id,
-      aws_api_gateway_integration.admin_proxy_block_integration.id,
+      # aws_api_gateway_integration.admin_block_integration.id,
+      # aws_api_gateway_integration.admin_proxy_block_integration.id,
       aws_api_gateway_integration.api_user_integration.id,
       aws_api_gateway_integration.api_user_proxy_integration.id,
       aws_api_gateway_integration.api_login_integration.id,
