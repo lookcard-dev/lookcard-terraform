@@ -18,12 +18,6 @@ variable "aws_provider" {
   })
 }
 
-# variable "cloudflare_provider" {
-#   type = object({
-#     account_id = string
-#   })
-# }
-
 variable "runtime_environment" {
   type = string
   validation {
@@ -90,6 +84,10 @@ variable "external_security_group_ids" {
 }
 
 variable "allow_to_security_group_ids" {
+  type = list(string)
+}
+
+variable "allow_from_security_group_ids" {
   type = list(string)
 }
 
