@@ -453,6 +453,7 @@ module "web-app" {
     module.card-api.security_group_id,
     module.config-api.security_group_id,
     module.approval-api.security_group_id,
+    module.fusionauth.security_group_id,
   ]
   domain = var.domain
   providers = {
