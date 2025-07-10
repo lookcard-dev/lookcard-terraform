@@ -14,10 +14,10 @@ resource "aws_route_table" "private_route_table" {
   count  = length(var.network.cidr.subnets.private)
   vpc_id = aws_vpc.vpc.id
   dynamic "route" {
-    for_each = var.network.nat.provider == "instance" ? [] : [for i in range(0, var.network.nat.count) : i]
+    for_each = var.network.nat.provider == "instance" ? [1] : []
     content {
       cidr_block           = "0.0.0.0/0"
-      network_interface_id = aws_instance.nat_instance[route.value].primary_network_interface_id
+      network_interface_id = element(aws_instance.nat_instance[*].primary_network_interface_id, count.index % var.network.nat.count)
     }
   }
   dynamic "route" {
@@ -26,9 +26,6 @@ resource "aws_route_table" "private_route_table" {
       cidr_block     = "0.0.0.0/0"
       nat_gateway_id = element(aws_nat_gateway.nat_gateway[*].id, count.index % var.network.nat.count)
     }
-  }
-  lifecycle {
-    ignore_changes = [route]
   }
   tags = {
     Name = "private-subnet-route-table-${count.index + 1}"

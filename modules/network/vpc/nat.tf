@@ -33,7 +33,7 @@ module "nat-instance" {
   source                        = "RaJiska/fck-nat/aws"
   count                         = var.network.nat.provider == "instance" ? var.network.nat.count : 0
   name                          = "nat-instance-${count.index + 1}"
-  instance_type                 = var.runtime_environment == "production" ? "t4g.micro" : "t4g.nano"
+  instance_type                 = var.runtime_environment == "production" ? "t4g.medium" : "t4g.nano"
   vpc_id                        = aws_vpc.vpc.id
   subnet_id                     = aws_subnet.public_subnet[count.index].id
   eip_allocation_ids            = [aws_eip.nat_eip[count.index].id]

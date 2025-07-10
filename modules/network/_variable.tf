@@ -51,3 +51,6 @@ variable "domain" {
     })
   })
 }
+
+# Removed log_bucket_name variable to avoid circular dependency
+# The ELB module will discover the log bucket internally

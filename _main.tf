@@ -4,6 +4,8 @@ module "network" {
   aws_provider        = local.aws_provider.application
   runtime_environment = var.runtime_environment
   domain              = var.domain
+  # Circular dependency resolved: ELB logging is disabled initially
+  # After storage module creates the bucket, logging can be enabled manually in ELB module
 }
 
 module "security" {
