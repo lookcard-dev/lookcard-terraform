@@ -30,7 +30,8 @@ variable "secrets" {
     "TELEGRAM",
     "SUPABASE",
     "SMTP",
-    "CLOUDFLARE"
+    "CLOUDFLARE",
+    "FUSIONAUTH"
   ]
   nullable = true
 }

@@ -26,7 +26,6 @@ resource "aws_vpc_security_group_ingress_rule" "target_ingress_rules" {
   }
 }
 
-
 resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {
   security_group_id            = aws_security_group.security_group.id
   referenced_security_group_id = var.external_security_group_ids.bastion_host

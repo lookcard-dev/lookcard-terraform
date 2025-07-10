@@ -49,24 +49,24 @@ resource "aws_apprunner_service" "service" {
       image_configuration {
         port = "8080"
         runtime_environment_variables = {
-          ENVIRONMENT     = var.runtime_environment
-          HOSTNAME        = "0.0.0.0"
-          NEXTAUTH_SECRET = random_uuid.next_auth_secret.result
-          NEXTAUTH_URL    = "https://app.${var.domain.general.name}"
-          REAP_API_URL    = "http://reap.proxy.lookcard.local:8080"
-          PROFILE_API_URL = "http://profile.api.lookcard.local:8080"
-          USER_API_URL    = "http://user.api.lookcard.local:8080"
-          ACCOUNT_API_URL = "http://account.api.lookcard.local:8080"
-          CARD_API_URL    = "http://card.api.lookcard.local:8080"
-          CRYPTO_API_URL  = "http://crypto.api.lookcard.local:8080"
+          ENVIRONMENT      = var.runtime_environment
+          HOSTNAME         = "0.0.0.0"
+          NEXTAUTH_SECRET  = random_uuid.next_auth_secret.result
+          NEXTAUTH_URL     = "https://app.${var.domain.general.name}"
+          REAP_API_URL     = "http://reap.proxy.lookcard.local:8080"
+          PROFILE_API_URL  = "http://profile.api.lookcard.local:8080"
+          USER_API_URL     = "http://user.api.lookcard.local:8080"
+          ACCOUNT_API_URL  = "http://account.api.lookcard.local:8080"
+          CARD_API_URL     = "http://card.api.lookcard.local:8080"
+          CRYPTO_API_URL   = "http://crypto.api.lookcard.local:8080"
+          CONFIG_API_URL   = "http://config.api.lookcard.local:8080"
+          APPROVAL_API_URL = "http://approval.api.lookcard.local:8080"
+          FUSIONAUTH_URL   = "http://fusionauth.lookcard.local:9011"
         }
         runtime_environment_secrets = {
-          AZURE_AD_CLIENT_ID            = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_CLIENT_ID::"
-          AZURE_AD_CLIENT_SECRET        = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_CLIENT_SECRET::"
-          AZURE_AD_TENANT_ID            = "${var.secret_arns["MICROSOFT"]}:AZURE_AD_TENANT_ID::"
-          NEXT_PUBLIC_SUPABASE_URL      = "${var.secret_arns["SUPABASE"]}:URL::"
-          NEXT_PUBLIC_SUPABASE_ANON_KEY = "${var.secret_arns["SUPABASE"]}:ANON_KEY::"
-          SUPABASE_SERVICE_ROLE_KEY     = "${var.secret_arns["SUPABASE"]}:SERVICE_ROLE_KEY::"
+          FUSIONAUTH_APPLICATION_ID = "${var.secret_arns["FUSIONAUTH"]}:APPLICATION_ID::"
+          FUSIONAUTH_TENANT_ID      = "${var.secret_arns["FUSIONAUTH"]}:TENANT_ID::"
+          FUSIONAUTH_API_KEY        = "${var.secret_arns["FUSIONAUTH"]}:API_KEY::"
         }
       }
       image_identifier      = "${var.repository_urls[var.name]}:${var.image_tag}"

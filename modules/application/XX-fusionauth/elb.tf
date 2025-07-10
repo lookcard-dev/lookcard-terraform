@@ -1,24 +1,36 @@
+# Target group for the ECS service
 resource "aws_lb_target_group" "service_target_group" {
-  name        = "webhook-api-tg"
-  port        = 8080
+  name        = "${var.name}-tg"
+  port        = 9011
   protocol    = "HTTP"
   vpc_id      = var.network.vpc_id
   target_type = "ip"
 
   health_check {
-    path                = "/healthcheckz"
-    port                = "traffic-port"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
+    enabled             = true
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
     timeout             = 5
     interval            = 30
+    path                = "/api/status"
     matcher             = "200"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "${var.name}-target-group"
   }
 }
 
+# Listener rule to route traffic to the target group
 resource "aws_lb_listener_rule" "service_listener_rule" {
   listener_arn = var.elb.application_load_balancer_http_listener_arn
-  priority     = 10
+  priority     = 101
 
   action {
     type             = "forward"
@@ -27,7 +39,7 @@ resource "aws_lb_listener_rule" "service_listener_rule" {
 
   condition {
     host_header {
-      values = ["webhook.${var.domain.general.name}"]
+      values = ["auth.${var.domain.general.name}"]
     }
   }
 }

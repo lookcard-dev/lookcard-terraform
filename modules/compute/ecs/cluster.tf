@@ -37,3 +37,11 @@ resource "aws_ecs_cluster" "cronjob" {
     value = var.runtime_environment == "production" ? "enabled" : "disabled"
   }
 }
+
+resource "aws_ecs_cluster" "authentication" {
+  name = "authentication"
+  setting {
+    name  = "containerInsights"
+    value = var.runtime_environment == "production" ? "enabled" : "disabled"
+  }
+}

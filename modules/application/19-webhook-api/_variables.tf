@@ -74,7 +74,6 @@ variable "image_tag" {
   type = string
 }
 
-
 variable "domain" {
   type = object({
     general = object({
