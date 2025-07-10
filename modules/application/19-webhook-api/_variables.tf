@@ -155,6 +155,10 @@ locals {
     {
       name      = "SUMSUB_WEBHOOK_SECRET"
       valueFrom = "${var.secret_arns["SUMSUB"]}:WEBHOOK_SECRET::"
+    },
+    {
+      name      = "REAP_WEBHOOK_PUBLIC_KEY_BASE64"
+      valueFrom = "${var.secret_arns["REAP"]}:WEBHOOK_PUBLIC_KEY_BASE64::"
     }
   ]
 }
