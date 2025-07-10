@@ -437,27 +437,27 @@ module "card-api" {
   repository_urls             = var.repository_urls
 }
 
-# module "web-app" {
-#   source              = "./22-web-app"
-#   aws_provider        = var.aws_provider
-#   name                = "web-app"
-#   image_tag           = var.components["web-app"].image_tag
-#   runtime_environment = var.runtime_environment
-#   network             = var.network
-#   allow_to_security_group_ids = [
-#     module.authentication-api.security_group_id,
-#     module.crypto-api.security_group_id,
-#     module.account-api.security_group_id,
-#     module.profile-api.security_group_id,
-#     module.user-api.security_group_id,
-#     module.reap-proxy.security_group_id,
-#     module.card-api.security_group_id,
-#   ]
-#   domain = var.domain
-#   providers = {
-#     aws.us_east_1 = aws.us_east_1
-#     cloudflare    = cloudflare
-#   }
-#   secret_arns     = var.secret_arns
-#   repository_urls = var.repository_urls
-# }
+module "web-app" {
+  source              = "./22-web-app"
+  aws_provider        = var.aws_provider
+  name                = "web-app"
+  image_tag           = var.components["web-app"].image_tag
+  runtime_environment = var.runtime_environment
+  network             = var.network
+  allow_to_security_group_ids = [
+    module.authentication-api.security_group_id,
+    module.crypto-api.security_group_id,
+    module.account-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.user-api.security_group_id,
+    module.reap-proxy.security_group_id,
+    module.card-api.security_group_id,
+  ]
+  domain = var.domain
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+    cloudflare    = cloudflare
+  }
+  secret_arns     = var.secret_arns
+  repository_urls = var.repository_urls
+}

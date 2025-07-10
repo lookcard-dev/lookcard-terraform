@@ -141,5 +141,9 @@ locals {
       name      = "SENTRY_DSN"
       valueFrom = "${var.secret_arns["SENTRY"]}:${upper(replace(var.name, "-", "_"))}_DSN::"
     },
+    {
+      name      = "COINRANKING_API_KEY"
+      valueFrom = "${var.secret_arns["COINRANKING"]}:API_KEY::"
+    }
   ]
 }
