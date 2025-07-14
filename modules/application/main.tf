@@ -452,6 +452,7 @@ module "web-app" {
     module.user-api.security_group_id,
     module.reap-proxy.security_group_id,
     module.card-api.security_group_id,
+    module.config-api.security_group_id,
   ]
   domain = var.domain
   providers = {
