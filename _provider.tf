@@ -61,19 +61,6 @@ provider "aws" {
   skip_requesting_account_id  = true
 }
 
-provider "aws" {
-  alias      = "dns"
-  region     = "us-east-1"
-  profile    = local.is_github_actions ? null : local.aws_provider.dns.profile
-  access_key = var.DNS__AWS_ACCESS_KEY_ID
-  secret_key = var.DNS__AWS_SECRET_ACCESS_KEY
-  token      = var.DNS__AWS_SESSION_TOKEN
-
-  skip_credentials_validation = true
-  skip_metadata_api_check     = true
-  skip_requesting_account_id  = true
-}
-
 provider "google-beta" {
   user_project_override = true
   project               = var.GCP_PROJECT_ID
