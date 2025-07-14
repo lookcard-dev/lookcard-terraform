@@ -52,7 +52,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [var.secret_arns["FUSIONAUTH"]]
+        "Resource" : [var.secret_arns["MICROSOFT"]]
       }
     ]
   })
