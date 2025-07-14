@@ -4142,3 +4142,57 @@ resource "aws_ecs_task_definition" "base_publicnode_task_definition" {
     }
   ])
 }
+
+# Solana Testnet PublicNode Task Definition
+resource "aws_ecs_task_definition" "solana_testnet_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  family             = "crypto-listener_solana-testnet-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "ARM64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name      = "listener"
+      essential = true
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/solana/testnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "solana-testnet-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "solana"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "solana-testnet"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/solana/testnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "SOLANA_HTTP_RPC_URL"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:SOLANA_TESTNET_JSON_RPC_WEBSOCKET_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}

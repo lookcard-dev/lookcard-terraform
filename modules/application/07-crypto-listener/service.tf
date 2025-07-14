@@ -158,6 +158,22 @@ resource "aws_ecs_service" "optimism_sepolia_publicnode_ecs_service" {
   }
 }
 
+# resource "aws_ecs_service" "solana_testnet_publicnode_ecs_service" {
+#   count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+#   name            = "solana-testnet_publicnode"
+#   task_definition = aws_ecs_task_definition.solana_testnet_publicnode_task_definition[0].arn
+#   desired_count   = var.image_tag == "latest" ? 0 : 1
+#   cluster         = var.cluster_id
+#   capacity_provider_strategy {
+#     capacity_provider = "LISTENER_EC2_ARM64"
+#     weight            = 1
+#   }
+#   ordered_placement_strategy {
+#     type  = "spread"
+#     field = "instanceId"
+#   }
+# }
+
 # Mainnet Services
 
 # Tron Mainnet Services
