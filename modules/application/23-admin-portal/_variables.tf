@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      configuration_aliases = [aws.us_east_1]
+    }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
+  }
+}
+
 variable "aws_provider" {
   type = object({
     region     = string
@@ -44,7 +57,7 @@ variable "repository_urls" {
 
 variable "domain" {
   type = object({
-    general = object({
+    admin = object({
       name    = string
       zone_id = string
     })

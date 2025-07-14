@@ -1,13 +1,13 @@
 resource "cloudflare_dns_record" "target" {
   depends_on = [aws_apprunner_custom_domain_association.custom_domain]
 
-  zone_id = var.domain.general.zone_id
-  name    = "app.${var.domain.general.name}"
+  zone_id = var.domain.admin.zone_id
+  name    = "admin.${var.domain.admin.name}"
   content = aws_apprunner_custom_domain_association.custom_domain.dns_target
   type    = "CNAME"
   ttl     = 1
   proxied = true
-  comment = "Web App"
+  comment = "Admin Portal"
 }
 
 resource "cloudflare_dns_record" "certificate_validation" {
@@ -25,6 +25,6 @@ resource "cloudflare_dns_record" "certificate_validation" {
   type    = each.value.type
   ttl     = 3600
   proxied = false
-  comment = "Web App Certificate Validation"
+  comment = "Admin Portal Certificate Validation"
 }
 

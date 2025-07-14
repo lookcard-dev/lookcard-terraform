@@ -92,6 +92,7 @@ variable "image_tag" {
     "webhook-api"        = "latest"
     "approval-api"       = "latest"
     "web-app"            = "latest"
+    "admin-portal"       = "latest"
   }
 }
 
@@ -280,6 +281,13 @@ locals {
       }
       image_tag = var.image_tag["web-app"]
     }
+    "admin-portal" = {
+      name = "admin-portal"
+      hostname = {
+        internal = "admin"
+      }
+      image_tag = var.image_tag["admin-portal"]
+    }
   }
 }
 
@@ -299,27 +307,6 @@ variable "APPLICATION__AWS_SECRET_ACCESS_KEY" {
 }
 
 variable "APPLICATION__AWS_SESSION_TOKEN" {
-  type      = string
-  nullable  = true
-  sensitive = true
-  default   = null
-}
-
-variable "DNS__AWS_ACCESS_KEY_ID" {
-  type      = string
-  nullable  = true
-  sensitive = true
-  default   = null
-}
-
-variable "DNS__AWS_SECRET_ACCESS_KEY" {
-  type      = string
-  nullable  = true
-  sensitive = true
-  default   = null
-}
-
-variable "DNS__AWS_SESSION_TOKEN" {
   type      = string
   nullable  = true
   sensitive = true
