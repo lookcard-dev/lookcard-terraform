@@ -477,6 +477,8 @@ module "admin-portal" {
     module.user-api.security_group_id,
     module.reap-proxy.security_group_id,
     module.card-api.security_group_id,
+    module.verification-api.security_group_id,
+    module.approval-api.security_group_id,
   ]
   domain = var.domain
   providers = {
