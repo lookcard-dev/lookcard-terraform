@@ -13,7 +13,7 @@ resource "aws_lambda_function" "sweep_processor" {
     command = ["src/workflows/sweep/index.handler"]
   }
   timeout     = 900
-  memory_size = 256
+  memory_size = 10240
   tracing_config {
     mode = "Active"
   }
@@ -29,7 +29,6 @@ resource "aws_lambda_function" "sweep_processor" {
       AWS_CLOUDWATCH_LOG_GROUP_NAME                         = "/lookcard/crypto-processor/sweep"
       NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
       SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
-      ELLIPTIC_SECRET_ARN                                   = var.secret_arns["ELLIPTIC"]
       AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
     }
   }
@@ -54,7 +53,7 @@ resource "aws_lambda_function" "withdrawal_processor" {
     command = ["src/workflows/withdrawal/index.handler"]
   }
   timeout     = 900
-  memory_size = 256
+  memory_size = 512
   tracing_config {
     mode = "Active"
   }
@@ -70,7 +69,6 @@ resource "aws_lambda_function" "withdrawal_processor" {
       AWS_CLOUDWATCH_LOG_GROUP_NAME                         = "/lookcard/crypto-processor/withdrawal"
       NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
       SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
-      ELLIPTIC_SECRET_ARN                                   = var.secret_arns["ELLIPTIC"]
       AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
     }
   }

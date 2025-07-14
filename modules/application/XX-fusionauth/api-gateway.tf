@@ -2013,7 +2013,7 @@
 #     # aws_api_gateway_integration.admin_proxy_block_integration,
 #     # aws_api_gateway_integration_response.admin_block_integration_response,
 #     # aws_api_gateway_integration_response.admin_proxy_block_integration_response,
-    
+
 #     # API integrations
 #     aws_api_gateway_integration.api_user_integration,
 #     aws_api_gateway_integration.api_user_proxy_integration,
@@ -2030,7 +2030,7 @@
 #     aws_api_gateway_integration.oauth2_proxy_integration,
 #     aws_api_gateway_integration.well_known_integration,
 #     aws_api_gateway_integration.well_known_proxy_integration,
-    
+
 #     # CORS integrations
 #     aws_api_gateway_integration.api_user_options_integration,
 #     aws_api_gateway_integration.api_user_proxy_options_integration,
@@ -2047,7 +2047,7 @@
 #     aws_api_gateway_integration.oauth2_proxy_options_integration,
 #     aws_api_gateway_integration.well_known_options_integration,
 #     aws_api_gateway_integration.well_known_proxy_options_integration,
-    
+
 #     # CORS integration responses
 #     aws_api_gateway_integration_response.api_user_options_integration_response,
 #     aws_api_gateway_integration_response.api_user_proxy_options_integration_response,

@@ -1013,3 +1013,17 @@ resource "aws_cloudwatch_log_group" "base_publicnode_ecs_log_group" {
 }
 
 ##### End of Base #####
+
+##### Start of Solana Testnet #####
+resource "aws_cloudwatch_log_group" "solana_testnet_publicnode_application_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/lookcard/crypto-listener/solana/testnet/publicnode"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+
+resource "aws_cloudwatch_log_group" "solana_testnet_publicnode_ecs_log_group" {
+  count             = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 1
+  name              = "/ecs/crypto-listener/solana/testnet/publicnode"
+  retention_in_days = var.runtime_environment == "production" ? 30 : 3
+}
+##### End of Solana Testnet #####
