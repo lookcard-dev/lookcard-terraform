@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["POSTMARK"], var.secret_arns["TWILIO"], var.secret_arns["FIREBASE"], var.secret_arns["TELEGRAM"]]
+        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["POSTMARK"], var.secret_arns["TWILIO"], var.secret_arns["FIREBASE"], var.secret_arns["TELEGRAM"], var.secret_arns["JPUSH"]]
       }
     ]
   })
