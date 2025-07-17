@@ -133,7 +133,11 @@ locals {
     {
       name      = "TELEGRAM_NOTIFICATION_CARD_TRANSACTION_MESSAGE_THREAD_ID"
       valueFrom = "${var.secret_arns["TELEGRAM"]}:CARD_TRANSACTION_MESSAGE_THREAD_ID::"
-    }
+    },
+    {
+      name      = "JPUSH_API_KEY"
+      valueFrom = "${var.secret_arns["SUMSUB"]}:API_KEY::"
+    },
   ]
 }
 

@@ -31,7 +31,8 @@ variable "secrets" {
     "SUPABASE",
     "SMTP",
     "CLOUDFLARE",
-    "FUSIONAUTH"
+    "FUSIONAUTH",
+    "JPUSH"
   ]
   nullable = true
 }
