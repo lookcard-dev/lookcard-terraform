@@ -136,7 +136,7 @@ locals {
     },
     {
       name      = "JPUSH_API_KEY"
-      valueFrom = "${var.secret_arns["SUMSUB"]}:API_KEY::"
+      valueFrom = "${var.secret_arns["JPUSH"]}:API_KEY::"
     },
   ]
 }
