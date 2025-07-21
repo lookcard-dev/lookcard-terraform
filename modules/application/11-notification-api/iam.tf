@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "secrets_read_only" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["POSTMARK"], var.secret_arns["TWILIO"], var.secret_arns["FIREBASE"], var.secret_arns["TELEGRAM"], var.secret_arns["JPUSH"]]
+        "Resource" : [var.secret_arns["SENTRY"], var.secret_arns["POSTMARK"], var.secret_arns["TWILIO"], var.secret_arns["FIREBASE"], var.secret_arns["TELEGRAM"], var.secret_arns["JPUSH"], var.secret_arns["WEB_PUSH"]]
       }
     ]
   })
@@ -72,6 +72,30 @@ resource "aws_iam_role_policy" "cloudwatch_log" {
         ],
         "Resource" : [
           "${aws_cloudwatch_log_group.app_log_group.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "dynamodb_policy" {
+  name = "DynamoDBPolicy"
+  role = aws_iam_role.task_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Query",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:BatchGetItem"
+        ],
+        "Resource" : [
+          aws_dynamodb_table.web_push_subscription.arn,
+          "${aws_dynamodb_table.web_push_subscription.arn}/index/*",
         ]
       }
     ]

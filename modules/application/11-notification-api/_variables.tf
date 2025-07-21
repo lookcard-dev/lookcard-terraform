@@ -78,6 +78,10 @@ locals {
       name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME"
       value = aws_cloudwatch_log_group.app_log_group.name
     },
+    {
+      name  = "AWS_DYNAMODB_WEB_PUSH_SUBSCRIPTION_TABLE_NAME",
+      value = aws_dynamodb_table.web_push_subscription.name
+    }
   ]
   environment_secrets = [
     {
@@ -137,6 +141,14 @@ locals {
     {
       name      = "JPUSH_API_KEY"
       valueFrom = "${var.secret_arns["JPUSH"]}:API_KEY::"
+    },
+    {
+      name      = "WEB_PUSH_VAPID_PUBLIC_KEY"
+      valueFrom = "${var.secret_arns["WEB_PUSH"]}:VAPID_PUBLIC_KEY::"
+    },
+    {
+      name      = "WEB_PUSH_VAPID_PRIVATE_KEY"
+      valueFrom = "${var.secret_arns["WEB_PUSH"]}:VAPID_PRIVATE_KEY::"
     },
   ]
 }
