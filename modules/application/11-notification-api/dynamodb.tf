@@ -13,4 +13,10 @@ resource "aws_dynamodb_table" "web_push_subscription" {
     name = "ownerProfileId"
     type = "S"
   }
+
+  global_secondary_index {
+    name            = "ownerProfileId-index"
+    hash_key        = "ownerProfileId"
+    projection_type = "ALL"
+  }
 }
