@@ -170,6 +170,10 @@ locals {
       name      = "TRONSAVE_BASE_URL"
       valueFrom = "${var.secret_arns["TRONSAVE"]}:BASE_URL::"
     },
+    {
+      name      = "TRONGRID_API_KEY"
+      valueFrom = "${var.secret_arns["TRONGRID"]}:API_KEY::"
+    }
   ]
 }
 
