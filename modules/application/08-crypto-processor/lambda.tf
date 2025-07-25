@@ -30,7 +30,7 @@ resource "aws_lambda_function" "sweep_processor" {
       NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
       SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
       AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
-      SUMSUB_SECRET_ARN                                     = var.secret_arns["SUMSUB_SECRET_ARN"]
+      SUMSUB_SECRET_ARN                                     = var.secret_arns["SUMSUB"]
     }
   }
 }
@@ -71,7 +71,7 @@ resource "aws_lambda_function" "withdrawal_processor" {
       NODE_OPTIONS                                          = "--import ./src/utils/sentry-instrument.js --import ./src/utils/aws-xray-instrument.js"
       SENTRY_DSN                                            = jsondecode(data.aws_secretsmanager_secret_version.sentry.secret_string)["CRYPTO_PROCESSOR_DSN"]
       AWS_DYNAMODB_TRANSACTION_MONITORING_RESULT_TABLE_NAME = aws_dynamodb_table.transaction_monitoring_result.name
-      SUMSUB_SECRET_ARN                                     = var.secret_arns["SUMSUB_SECRET_ARN"]
+      SUMSUB_SECRET_ARN                                     = var.secret_arns["SUMSUB"]
 
     }
   }
