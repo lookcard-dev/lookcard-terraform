@@ -39,4 +39,3 @@ resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {
     ]
   }
 }
-

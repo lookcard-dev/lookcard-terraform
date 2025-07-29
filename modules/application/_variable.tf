@@ -155,7 +155,6 @@ locals {
     module.verification-api.security_group_id,
     module.reseller-api.security_group_id,
     module.approval-api.security_group_id,
-    module.cronjob.security_group_id,
     module.card-api.security_group_id,
     module.config-api.security_group_id,
     module.data-api.security_group_id,

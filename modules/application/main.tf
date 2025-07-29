@@ -344,26 +344,11 @@ module "crypto-faucet" {
 }
 
 module "cronjob" {
-  source                      = "./18-cronjob"
-  aws_provider                = var.aws_provider
-  name                        = "cronjob"
-  image_tag                   = var.components["cronjob"].image_tag
-  runtime_environment         = var.runtime_environment
-  network                     = var.network
-  allow_to_security_group_ids = []
-  external_security_group_ids = {
-    account_api = module.account-api.security_group_id
-    crypto_api  = module.crypto-api.security_group_id
-  }
-  datacache  = var.datacache
-  datastore  = var.datastore
-  cluster_id = var.cluster_ids.cronjob
-  api_image_tags = {
-    account_api = var.components["account-api"].image_tag
-    crypto_api  = var.components["crypto-api"].image_tag
-  }
-  secret_arns     = var.secret_arns
-  repository_urls = var.repository_urls
+  source              = "./18-cronjob"
+  aws_provider        = var.aws_provider
+  runtime_environment = var.runtime_environment
+  network             = var.network
+  cluster_id          = var.cluster_ids.cronjob
 }
 
 module "webhook-api" {

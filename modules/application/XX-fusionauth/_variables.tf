@@ -80,6 +80,7 @@ variable "secret_arns" {
 variable "external_security_group_ids" {
   type = object({
     alb = string
+    bastion_host = string
   })
 }
 

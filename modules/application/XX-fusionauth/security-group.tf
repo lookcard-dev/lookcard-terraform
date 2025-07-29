@@ -10,7 +10,6 @@ resource "aws_vpc_security_group_egress_rule" "base_egress_rule" {
   ip_protocol       = "-1"
 }
 
-
 resource "aws_vpc_security_group_ingress_rule" "application_load_balancer_ingress_rule" {
   security_group_id            = aws_security_group.security_group.id
   referenced_security_group_id = var.external_security_group_ids.alb
@@ -47,4 +46,17 @@ resource "aws_vpc_security_group_ingress_rule" "allow_from_ingress_rules" {
   from_port                    = 9011
   to_port                      = 9011
   ip_protocol                  = "tcp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "bastion_host_ingress_rule" {
+  security_group_id            = aws_security_group.security_group.id
+  referenced_security_group_id = var.external_security_group_ids.bastion_host
+  from_port                    = 9011
+  to_port                      = 9011
+  ip_protocol                  = "tcp"
+  lifecycle {
+    ignore_changes = [
+      referenced_security_group_id
+    ]
+  }
 }
