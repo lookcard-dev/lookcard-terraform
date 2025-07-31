@@ -152,6 +152,10 @@ resource "aws_ecs_task_definition" "tron_nile_trongrid_task_definition" {
         {
           name      = "RPC_ENDPOINT"
           valueFrom = "${var.secret_arns["TRONGRID"]}:NILE_JSON_RPC_HTTP_ENDPOINT::"
+        },
+        {
+          name      = "TRONGRID_API_KEY"
+          valueFrom = "${var.secret_arns["TRONGRID"]}:API_KEY::"
         }
       ])
     }
@@ -259,6 +263,10 @@ resource "aws_ecs_task_definition" "tron_trongrid_task_definition" {
         {
           name      = "RPC_ENDPOINT"
           valueFrom = "${var.secret_arns["TRONGRID"]}:MAINNET_JSON_RPC_HTTP_ENDPOINT::"
+        },
+        {
+          name      = "TRONGRID_API_KEY"
+          valueFrom = "${var.secret_arns["TRONGRID"]}:API_KEY::"
         }
       ])
     }
