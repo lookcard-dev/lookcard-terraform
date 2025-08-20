@@ -14,6 +14,12 @@ resource "aws_api_gateway_resource" "sumsub_path" {
   path_part   = "sumsub"
 }
 
+resource "aws_api_gateway_resource" "sumsub_kyt_path" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  parent_id   = aws_api_gateway_resource.sumsub_path.id
+  path_part   = "kyt"
+}
+
 resource "aws_api_gateway_resource" "reap_path" {
   rest_api_id = aws_api_gateway_rest_api.webhook_api.id
   parent_id   = aws_api_gateway_rest_api.webhook_api.root_resource_id
@@ -42,6 +48,25 @@ resource "aws_api_gateway_integration" "sumsub_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = var.api_gateway.vpc_link_id
   uri                     = "http://webhook.${var.domain.general.name}/sumsub"
+}
+
+# Set up POST method for /sumsub/kyt
+resource "aws_api_gateway_method" "sumsub_kyt_post" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "sumsub_kyt_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.webhook_api.id
+  resource_id             = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method             = aws_api_gateway_method.sumsub_kyt_post.http_method
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  connection_type         = "VPC_LINK"
+  connection_id           = var.api_gateway.vpc_link_id
+  uri                     = "http://webhook.${var.domain.general.name}/sumsub/kyt"
 }
 
 # Set up POST method for /reap
@@ -90,6 +115,13 @@ resource "aws_api_gateway_method" "sumsub_options" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method" "sumsub_kyt_options" {
+  rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
+  resource_id   = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
 resource "aws_api_gateway_method" "reap_options" {
   rest_api_id   = aws_api_gateway_rest_api.webhook_api.id
   resource_id   = aws_api_gateway_resource.reap_path.id
@@ -132,6 +164,32 @@ resource "aws_api_gateway_integration" "sumsub_options_integration" {
   }
 }
 
+resource "aws_api_gateway_method_response" "sumsub_kyt_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method = aws_api_gateway_method.sumsub_kyt_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "sumsub_kyt_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method = aws_api_gateway_method.sumsub_kyt_options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = jsonencode({
+      statusCode = 200
+    })
+  }
+}
+
 # Now add the integration response with proper dependency
 resource "aws_api_gateway_integration_response" "sumsub_options_integration_response" {
   rest_api_id = aws_api_gateway_rest_api.webhook_api.id
@@ -148,6 +206,24 @@ resource "aws_api_gateway_integration_response" "sumsub_options_integration_resp
   depends_on = [
     aws_api_gateway_method_response.sumsub_options_response,
     aws_api_gateway_integration.sumsub_options_integration
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "sumsub_kyt_options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.webhook_api.id
+  resource_id = aws_api_gateway_resource.sumsub_kyt_path.id
+  http_method = aws_api_gateway_method.sumsub_kyt_options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.sumsub_kyt_options_response,
+    aws_api_gateway_integration.sumsub_kyt_options_integration
   ]
 }
 
@@ -246,12 +322,15 @@ resource "aws_api_gateway_deployment" "deployment" {
 
   depends_on = [
     aws_api_gateway_integration.sumsub_integration,
+    aws_api_gateway_integration.sumsub_kyt_integration,
     aws_api_gateway_integration.reap_integration,
     aws_api_gateway_integration.firebase_integration,
     aws_api_gateway_integration.sumsub_options_integration,
+    aws_api_gateway_integration.sumsub_kyt_options_integration,
     aws_api_gateway_integration.reap_options_integration,
     aws_api_gateway_integration.firebase_options_integration,
     aws_api_gateway_integration_response.sumsub_options_integration_response,
+    aws_api_gateway_integration_response.sumsub_kyt_options_integration_response,
     aws_api_gateway_integration_response.reap_options_integration_response,
     aws_api_gateway_integration_response.firebase_options_integration_response
   ]
@@ -263,15 +342,19 @@ resource "aws_api_gateway_deployment" "deployment" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.sumsub_path.id,
+      aws_api_gateway_resource.sumsub_kyt_path.id,
       aws_api_gateway_resource.reap_path.id,
       aws_api_gateway_resource.firebase_path.id,
       aws_api_gateway_integration.sumsub_integration.id,
+      aws_api_gateway_integration.sumsub_kyt_integration.id,
       aws_api_gateway_integration.reap_integration.id,
       aws_api_gateway_integration.firebase_integration.id,
       aws_api_gateway_method.sumsub_post.id,
+      aws_api_gateway_method.sumsub_kyt_post.id,
       aws_api_gateway_method.reap_post.id,
       aws_api_gateway_method.firebase_post.id,
       aws_api_gateway_method.sumsub_options.id,
+      aws_api_gateway_method.sumsub_kyt_options.id,
       aws_api_gateway_method.reap_options.id,
       aws_api_gateway_method.firebase_options.id,
     ]))
