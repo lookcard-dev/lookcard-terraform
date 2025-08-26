@@ -33,7 +33,8 @@ variable "secrets" {
     "CLOUDFLARE",
     "FUSIONAUTH",
     "JPUSH",
-    "WEB_PUSH"
+    "WEB_PUSH",
+    "ALCHEMY_PAY"
   ]
   nullable = true
 }
