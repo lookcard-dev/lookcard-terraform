@@ -421,6 +421,7 @@ module "card-api" {
   datacache                   = var.datacache
   datastore                   = var.datastore
   repository_urls             = var.repository_urls
+  domain                      = var.domain
 }
 
 module "web-app" {

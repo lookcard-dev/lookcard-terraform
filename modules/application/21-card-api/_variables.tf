@@ -69,6 +69,16 @@ variable "repository_urls" {
   type = map(string)
 }
 
+variable "domain" {
+  type = object({
+    general = object({
+      name    = string
+      zone_id = string
+    })
+  })
+}
+
+
 locals {
   environment_variables = [
     {
@@ -114,6 +124,18 @@ locals {
     {
       name  = "DATABASE_SCHEMA"
       value = replace(var.name, "-", "_")
+    },
+    {
+      name  = "SSE_WEBHOOK_SECRET"
+      value = "R7NcCezdxDMtr#Sy"
+    },
+    {
+      name  = "SSE_WEBHOOK_URL"
+      value = "https://app.${var.domain.general.name}"
+    },
+    {
+      name  = "USE_PUBLIC_SSE_ENDPOINT",
+      value = "true"
     }
   ]
   environment_secrets = [
