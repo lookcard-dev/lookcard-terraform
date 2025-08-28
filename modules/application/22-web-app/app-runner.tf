@@ -49,24 +49,35 @@ resource "aws_apprunner_service" "service" {
       image_configuration {
         port = "8080"
         runtime_environment_variables = {
-          RUNTIME_ENVIRONMENT = var.runtime_environment
-          HOSTNAME            = "0.0.0.0"
-          NEXTAUTH_SECRET     = random_uuid.next_auth_secret.result
-          NEXTAUTH_URL        = "https://app.${var.domain.general.name}"
-          REAP_API_URL        = "http://reap.proxy.lookcard.local:8080"
-          PROFILE_API_URL     = "http://profile.api.lookcard.local:8080"
-          USER_API_URL        = "http://user.api.lookcard.local:8080"
-          ACCOUNT_API_URL     = "http://account.api.lookcard.local:8080"
-          CARD_API_URL        = "http://card.api.lookcard.local:8080"
-          CRYPTO_API_URL      = "http://crypto.api.lookcard.local:8080"
-          CONFIG_API_URL      = "http://config.api.lookcard.local:8080"
-          APPROVAL_API_URL    = "http://approval.api.lookcard.local:8080"
-          FUSIONAUTH_URL      = "http://fusionauth.lookcard.local:9011"
+          RUNTIME_ENVIRONMENT                 = var.runtime_environment
+          HOSTNAME                            = "0.0.0.0"
+          NEXTAUTH_SECRET                     = random_uuid.next_auth_secret.result
+          NEXTAUTH_URL                        = "https://app.${var.domain.general.name}"
+          REAP_API_URL                        = "http://reap.proxy.lookcard.local:8080"
+          PROFILE_API_URL                     = "http://profile.api.lookcard.local:8080"
+          USER_API_URL                        = "http://user.api.lookcard.local:8080"
+          ACCOUNT_API_URL                     = "http://account.api.lookcard.local:8080"
+          CARD_API_URL                        = "http://card.api.lookcard.local:8080"
+          CRYPTO_API_URL                      = "http://crypto.api.lookcard.local:8080"
+          CONFIG_API_URL                      = "http://config.api.lookcard.local:8080"
+          APPROVAL_API_URL                    = "http://approval.api.lookcard.local:8080"
+          REFERRAL_API_URL                    = "http://referral.api.lookcard.local:8080"
+          FUSIONAUTH_URL                      = "http://fusionauth.lookcard.local:9011"
+          NEXT_PUBLIC_ENABLE_REWARD_COMPONENT = "true"
+          NEXT_PUBLIC_ENABLE_ONRAMP_PROVIDERS = "true"
+          NEXT_PUBLIC_ENABLE_ALCHEMY_PAY      = "true"
+          NEXT_PUBLIC_ALCHEMY_PAY_ENVIRONMENT = "test"
+          ALCHEMY_PAY_ENVIRONMENT             = "true"
         }
         runtime_environment_secrets = {
-          FUSIONAUTH_APPLICATION_ID = "${var.secret_arns["FUSIONAUTH"]}:APPLICATION_ID::"
-          FUSIONAUTH_TENANT_ID      = "${var.secret_arns["FUSIONAUTH"]}:TENANT_ID::"
-          FUSIONAUTH_API_KEY        = "${var.secret_arns["FUSIONAUTH"]}:API_KEY::"
+          FUSIONAUTH_APPLICATION_ID      = "${var.secret_arns["FUSIONAUTH"]}:APPLICATION_ID::"
+          FUSIONAUTH_TENANT_ID           = "${var.secret_arns["FUSIONAUTH"]}:TENANT_ID::"
+          FUSIONAUTH_API_KEY             = "${var.secret_arns["FUSIONAUTH"]}:API_KEY::"
+          NEXT_PUBLIC_ALCHEMY_PAY_APP_ID = "${var.secret_arns["ALCHEMY_PAY"]}:APP_ID::"
+          ALCHEMY_PAY_APP_ID             = "${var.secret_arns["ALCHEMY_PAY"]}:APP_ID::"
+          ALCHEMY_PAY_SECRET_KEY         = "${var.secret_arns["ALCHEMY_PAY"]}:SECRET_KEY::"
+          ALCHEMY_PAY_API_URL            = "${var.secret_arns["ALCHEMY_PAY"]}:API_URL::"
+          ALCHEMY_PAY_BASE_URL           = "${var.secret_arns["ALCHEMY_PAY"]}:BASE_URL::"
         }
       }
       image_identifier      = "${var.repository_urls[var.name]}:${var.image_tag}"
