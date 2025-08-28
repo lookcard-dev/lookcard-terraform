@@ -68,6 +68,22 @@ locals {
       value = "http://data.api.lookcard.local:8080"
     },
     {
+      name  = "CONFIG_API_URL"
+      value = "http://config.api.lookcard.local:8080"
+    },
+    {
+      name  = "REAP_API_URL"
+      value = "http://reap.proxy.lookcard.local:8080"
+    },
+    {
+      name  = "REFERRAL_API_URL"
+      value = "http://referral.api.lookcard.local:8080"
+    },
+    {
+      name  = "FUSIONAUTH_URL"
+      value = "http://fusionauth.lookcard.local:9011"
+    },
+    {
       name  = "NEXTAUTH_SECRET"
       value = random_uuid.next_auth_secret.result
     },
