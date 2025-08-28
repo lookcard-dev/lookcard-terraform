@@ -199,7 +199,7 @@ resource "aws_cloudfront_distribution" "web_app" {
     viewer_protocol_policy = "redirect-to-https"
 
     # Next.js specific cache policy
-    cache_policy_id = aws_cloudfront_cache_policy.nextjs_ssr.id
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
 
     # Origin request policy for forwarding headers/cookies
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_and_cloudfront_headers.id
@@ -212,44 +212,44 @@ resource "aws_cloudfront_distribution" "web_app" {
   }
 
   # Cache behavior for API routes (bypass cache completely)
-  ordered_cache_behavior {
-    path_pattern           = "/api/*"
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id       = "${var.name}-alb"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
+  # ordered_cache_behavior {
+  #   path_pattern           = "/api/*"
+  #   allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+  #   cached_methods         = ["GET", "HEAD", "OPTIONS"]
+  #   target_origin_id       = "${var.name}-alb"
+  #   compress               = true
+  #   viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_and_cloudfront_headers.id
-    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.cors_and_security_headers.id
-  }
+  #   cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+  #   origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_and_cloudfront_headers.id
+  #   response_headers_policy_id = data.aws_cloudfront_response_headers_policy.cors_and_security_headers.id
+  # }
 
   # Cache behavior for Next.js static assets (aggressive caching)
-  ordered_cache_behavior {
-    path_pattern           = "/_next/static/*"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "${var.name}-alb"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
+  # ordered_cache_behavior {
+  #   path_pattern           = "/_next/static/*"
+  #   allowed_methods        = ["GET", "HEAD"]
+  #   cached_methods         = ["GET", "HEAD"]
+  #   target_origin_id       = "${var.name}-alb"
+  #   compress               = true
+  #   viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.cors_s3_origin.id
-  }
+  #   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
+  #   origin_request_policy_id = data.aws_cloudfront_origin_request_policy.cors_s3_origin.id
+  # }
 
-  # Cache behavior for public assets (images, fonts, etc.)
-  ordered_cache_behavior {
-    path_pattern           = "/public/*"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "${var.name}-alb"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
+  # # Cache behavior for public assets (images, fonts, etc.)
+  # ordered_cache_behavior {
+  #   path_pattern           = "/public/*"
+  #   allowed_methods        = ["GET", "HEAD"]
+  #   cached_methods         = ["GET", "HEAD"]
+  #   target_origin_id       = "${var.name}-alb"
+  #   compress               = true
+  #   viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.cors_s3_origin.id
-  }
+  #   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
+  #   origin_request_policy_id = data.aws_cloudfront_origin_request_policy.cors_s3_origin.id
+  # }
 
   # Geographic restrictions (adjust for fintech compliance)
   restrictions {
