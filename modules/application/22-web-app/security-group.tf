@@ -23,8 +23,8 @@ resource "aws_vpc_security_group_ingress_rule" "target_ingress_rules" {
 
   security_group_id            = var.allow_to_security_group_ids[count.index]
   referenced_security_group_id = aws_security_group.security_group.id
-  from_port                    = 3000 # Next.js port
-  to_port                      = 3000
+  from_port                    = 8080
+  to_port                      = 8080
   ip_protocol                  = "tcp"
 
   lifecycle {

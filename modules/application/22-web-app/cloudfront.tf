@@ -202,10 +202,10 @@ resource "aws_cloudfront_distribution" "web_app" {
     cache_policy_id = aws_cloudfront_cache_policy.nextjs_ssr.id
 
     # Origin request policy for forwarding headers/cookies
-    # origin_request_policy_id = aws_cloudfront_origin_request_policy.web_app.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_and_cloudfront_headers.id
 
     # Security headers
-    # response_headers_policy_id = aws_cloudfront_response_headers_policy.web_app_security.id
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.cors_and_security_headers.id
 
     # Trusted key groups for signed URLs (if needed for premium features)
     trusted_key_groups = []
@@ -220,9 +220,9 @@ resource "aws_cloudfront_distribution" "web_app" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
-    # origin_request_policy_id = aws_cloudfront_origin_request_policy.web_app.id
-    # response_headers_policy_id = aws_cloudfront_response_headers_policy.web_app_security.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_and_cloudfront_headers.id
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.cors_and_security_headers.id
   }
 
   # Cache behavior for Next.js static assets (aggressive caching)
@@ -234,7 +234,7 @@ resource "aws_cloudfront_distribution" "web_app" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.cors_s3_origin.id
   }
 
@@ -295,4 +295,12 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
 
 data "aws_cloudfront_origin_request_policy" "cors_s3_origin" {
   name = "Managed-CORS-S3Origin"
+}
+
+data "aws_cloudfront_origin_request_policy" "all_viewer_and_cloudfront_headers" {
+  name = "Managed-AllViewerAndCloudFrontHeaders-2022-06"
+}
+
+data "aws_cloudfront_response_headers_policy" "cors_and_security_headers" {
+  name = "Managed-CORS-and-SecurityHeadersPolicy"
 }
