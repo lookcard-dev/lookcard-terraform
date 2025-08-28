@@ -39,8 +39,39 @@ variable "network" {
   })
 }
 
+variable "cluster_id" {
+  type        = string
+  description = "ECS cluster ID"
+}
+
+variable "namespace_id" {
+  type        = string
+  description = "Service discovery namespace ID"
+}
+
+variable "elb" {
+  type = object({
+    network_load_balancer_arn                   = string
+    network_load_balancer_dns_name              = string
+    application_load_balancer_arn               = string
+    application_load_balancer_dns_name          = string
+    application_load_balancer_http_listener_arn = string
+    application_load_balancer_arn_suffix        = string
+    network_load_balancer_arn_suffix            = string
+  })
+  description = "Load balancer configuration"
+}
+
 variable "allow_to_security_group_ids" {
   type = list(string)
+}
+
+variable "external_security_group_ids" {
+  type = object({
+    alb    = string
+    bastion = optional(string)
+  })
+  description = "External security group IDs for access rules"
 }
 
 variable "image_tag" {
@@ -62,4 +93,10 @@ variable "domain" {
       zone_id = string
     })
   })
+}
+
+variable "web_acl_id" {
+  type        = string
+  description = "Web Application Firewall ACL ID"
+  default     = null
 }

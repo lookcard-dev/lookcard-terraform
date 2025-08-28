@@ -446,8 +446,12 @@ module "web-app" {
     aws.us_east_1 = aws.us_east_1
     cloudflare    = cloudflare
   }
-  secret_arns     = var.secret_arns
-  repository_urls = var.repository_urls
+  secret_arns                 = var.secret_arns
+  repository_urls             = var.repository_urls
+  cluster_id                  = var.cluster_ids.composite_application
+  namespace_id                = var.namespace_id
+  elb                         = var.elb
+  external_security_group_ids = var.external_security_group_ids
 }
 
 module "admin-portal" {
