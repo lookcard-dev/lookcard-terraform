@@ -432,6 +432,59 @@ resource "aws_ecs_task_definition" "tron_quicknode_task_definition" {
   ])
 }
 
+resource "aws_ecs_task_definition" "tron_publicnode_task_definition" {
+  count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 1
+  family             = "crypto-listener_tron-publicnode"
+  network_mode       = "bridge"
+  memory             = 256
+  task_role_arn      = aws_iam_role.task_role.arn
+  execution_role_arn = aws_iam_role.task_execution_role.arn
+  runtime_platform {
+    cpu_architecture        = "ARM64"
+    operating_system_family = "LINUX"
+  }
+  container_definitions = jsonencode([
+    {
+      name      = "listener"
+      essential = true
+      image     = "${var.repository_urls[var.name]}:${var.image_tag}"
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-create-group"  = "true",
+          "awslogs-group"         = "/ecs/crypto-listener/tron/mainnet/publicnode",
+          "awslogs-region"        = "ap-southeast-1",
+          "awslogs-stream-prefix" = "ecs",
+        }
+      }
+      environment = concat(local.environment_variables, [
+        {
+          name  = "NODE_ID",
+          value = "tron-publicnode"
+        },
+        {
+          name  = "NODE_ECO",
+          value = "tron"
+        },
+        {
+          name  = "NODE_BLOCKCHAIN_ID",
+          value = "tron"
+        },
+        {
+          name  = "AWS_CLOUDWATCH_LOG_GROUP_NAME",
+          value = "/lookcard/crypto-listener/tron/mainnet/publicnode"
+        }
+      ])
+      secrets = concat(local.environment_secrets, [
+        {
+          name      = "RPC_ENDPOINT"
+          valueFrom = "${var.secret_arns["PUBLIC_NODE"]}:TRON_MAINNET_HTTP_ENDPOINT::"
+        }
+      ])
+    }
+  ])
+}
+
 # BSC Testnet Task Definitions
 resource "aws_ecs_task_definition" "bsc_testnet_infura_task_definition" {
   count              = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0

@@ -178,7 +178,7 @@ resource "aws_ecs_service" "optimism_sepolia_publicnode_ecs_service" {
 
 # Tron Mainnet Services
 resource "aws_ecs_service" "tron_trongrid_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "tron_trongrid"
   task_definition = aws_ecs_task_definition.tron_trongrid_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -209,9 +209,25 @@ resource "aws_ecs_service" "tron_getblock_ecs_service" {
   }
 }
 
+resource "aws_ecs_service" "tron_publicnode_ecs_service" {
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
+  name            = "tron_publicnode"
+  task_definition = aws_ecs_task_definition.tron_publicnode_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_ARM64"
+    weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+}
+
 # BSC Mainnet Services
 resource "aws_ecs_service" "bsc_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "bsc_getblock"
   task_definition = aws_ecs_task_definition.bsc_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -260,7 +276,7 @@ resource "aws_ecs_service" "bsc_blast_ecs_service" {
 
 # Base Mainnet Services
 resource "aws_ecs_service" "base_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "base_getblock"
   task_definition = aws_ecs_task_definition.base_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -309,7 +325,7 @@ resource "aws_ecs_service" "base_blast_ecs_service" {
 
 # Optimism Mainnet Services
 resource "aws_ecs_service" "optimism_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "optimism_getblock"
   task_definition = aws_ecs_task_definition.optimism_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
