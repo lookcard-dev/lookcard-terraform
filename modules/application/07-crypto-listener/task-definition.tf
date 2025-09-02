@@ -372,7 +372,7 @@ resource "aws_ecs_task_definition" "tron_drpc_task_definition" {
       secrets = concat(local.environment_secrets, [
         {
           name      = "RPC_ENDPOINT"
-          valueFrom = "${var.secret_arns["DRPC"]}:TRON_MAINNET_HTTP_ENDPOINT::"
+          valueFrom = "${var.secret_arns["DRPC"]}:TRON_MAINNET_JSON_RPC_HTTP_ENDPOINT::"
         }
       ])
     }
