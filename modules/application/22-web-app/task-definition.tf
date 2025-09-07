@@ -106,6 +106,10 @@ locals {
     {
       name  = "ALCHEMY_PAY_ENVIRONMENT"
       value = var.runtime_environment == "production" ? "prod" : "test"
+    },
+    {
+      name  = "SSE_WEBHOOK_SECRET",
+      value = "R7NcCezdxDMtr#Sy"
     }
   ]
 
