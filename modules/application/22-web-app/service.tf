@@ -1,6 +1,6 @@
 resource "aws_service_discovery_service" "discovery_service" {
   name = replace(var.name, "-", ".")
-  
+
   dns_config {
     namespace_id = var.namespace_id
     dns_records {
@@ -27,7 +27,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   desired_count = var.image_tag == "latest" ? 0 : (
-    var.runtime_environment == "production" ? 2 : 1
+    var.runtime_environment == "production" ? 1 : 1
   )
 
   network_configuration {
