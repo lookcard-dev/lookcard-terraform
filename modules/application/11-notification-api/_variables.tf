@@ -81,6 +81,10 @@ locals {
     {
       name  = "AWS_DYNAMODB_WEB_PUSH_SUBSCRIPTION_TABLE_NAME",
       value = aws_dynamodb_table.web_push_subscription.name
+    },
+    {
+      name  = "AWS_DYNAMODB_JPUSH_SUBSCRIPTION_TABLE_NAME",
+      value = aws_dynamodb_table.jpush_subscription.name
     }
   ]
   environment_secrets = [
