@@ -246,15 +246,21 @@ module "notification-api" {
 }
 
 module "referral-api" {
-  source                      = "./12-referral-api"
-  aws_provider                = var.aws_provider
-  name                        = "referral-api"
-  image_tag                   = var.components["referral-api"].image_tag
-  runtime_environment         = var.runtime_environment
-  cluster_id                  = var.cluster_ids.core_application
-  namespace_id                = var.namespace_id
-  network                     = var.network
-  allow_to_security_group_ids = []
+  source              = "./12-referral-api"
+  aws_provider        = var.aws_provider
+  name                = "referral-api"
+  image_tag           = var.components["referral-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id          = var.cluster_ids.core_application
+  namespace_id        = var.namespace_id
+  network             = var.network
+  allow_to_security_group_ids = [
+    module.user-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.config-api.security_group_id,
+    module.account-api.security_group_id,
+    module.notification-api.security_group_id,
+  ]
   datastore                   = var.datastore
   datacache                   = var.datacache
   secret_arns                 = var.secret_arns
