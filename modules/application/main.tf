@@ -447,6 +447,7 @@ module "web-app" {
     module.card-api.security_group_id,
     module.config-api.security_group_id,
     module.verification-api.security_group_id,
+    module.referral-api.security_group_id,
   ]
   domain = var.domain
   providers = {
