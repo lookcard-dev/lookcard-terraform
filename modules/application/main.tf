@@ -138,7 +138,8 @@ module "crypto-api" {
     module.config-api.security_group_id,
     module.profile-api.security_group_id,
     module.data-api.security_group_id,
-    module.account-api.security_group_id
+    module.account-api.security_group_id,
+    module.referral-api.security_group_id
   ]
   datacache    = var.datacache
   datastore    = var.datastore
@@ -420,7 +421,8 @@ module "card-api" {
     module.user-api.security_group_id,
     module.verification-api.security_group_id,
     module.reap-proxy.security_group_id,
-    module.notification-api.security_group_id
+    module.notification-api.security_group_id,
+    module.referral-api.security_group_id
   ]
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
