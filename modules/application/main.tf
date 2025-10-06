@@ -262,6 +262,7 @@ module "referral-api" {
     module.account-api.security_group_id,
     module.notification-api.security_group_id,
     module.crypto-processor.security_group_id,
+    module.card-api.security_group_id,
   ]
   datastore                   = var.datastore
   datacache                   = var.datacache
