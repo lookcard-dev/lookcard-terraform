@@ -136,6 +136,10 @@ locals {
     {
       name  = "USE_PUBLIC_SSE_ENDPOINT",
       value = "true"
+    },
+    {
+      name  = "FEATURE_REFERRAL_REWARDS_ENABLED",
+      value = "true"
     }
   ]
   environment_secrets = [

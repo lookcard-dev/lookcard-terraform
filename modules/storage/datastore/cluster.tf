@@ -26,7 +26,7 @@ resource "aws_rds_cluster" "cluster" {
   cluster_identifier     = "datastore"
   engine                 = "aurora-postgresql"
   engine_mode            = "provisioned"
-  engine_version         = "16.6"
+  engine_version         = "16.8"
   database_name          = var.runtime_environment
   master_username        = var.runtime_environment
   master_password        = random_password.master_password.result
@@ -49,7 +49,7 @@ resource "aws_rds_cluster" "cluster" {
   allow_major_version_upgrade = false
 
   serverlessv2_scaling_configuration {
-    max_capacity = var.runtime_environment == "production" ? 8.0 : 1.0
+    max_capacity = var.runtime_environment == "production" ? 4.0 : 1.0
     min_capacity = 0.5
   }
 

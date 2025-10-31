@@ -138,7 +138,8 @@ module "crypto-api" {
     module.config-api.security_group_id,
     module.profile-api.security_group_id,
     module.data-api.security_group_id,
-    module.account-api.security_group_id
+    module.account-api.security_group_id,
+    module.referral-api.security_group_id
   ]
   datacache    = var.datacache
   datastore    = var.datastore
@@ -246,15 +247,23 @@ module "notification-api" {
 }
 
 module "referral-api" {
-  source                      = "./12-referral-api"
-  aws_provider                = var.aws_provider
-  name                        = "referral-api"
-  image_tag                   = var.components["referral-api"].image_tag
-  runtime_environment         = var.runtime_environment
-  cluster_id                  = var.cluster_ids.core_application
-  namespace_id                = var.namespace_id
-  network                     = var.network
-  allow_to_security_group_ids = []
+  source              = "./12-referral-api"
+  aws_provider        = var.aws_provider
+  name                = "referral-api"
+  image_tag           = var.components["referral-api"].image_tag
+  runtime_environment = var.runtime_environment
+  cluster_id          = var.cluster_ids.core_application
+  namespace_id        = var.namespace_id
+  network             = var.network
+  allow_to_security_group_ids = [
+    module.user-api.security_group_id,
+    module.profile-api.security_group_id,
+    module.config-api.security_group_id,
+    module.account-api.security_group_id,
+    module.notification-api.security_group_id,
+    module.crypto-processor.security_group_id,
+    module.card-api.security_group_id,
+  ]
   datastore                   = var.datastore
   datacache                   = var.datacache
   secret_arns                 = var.secret_arns
@@ -414,7 +423,8 @@ module "card-api" {
     module.user-api.security_group_id,
     module.verification-api.security_group_id,
     module.reap-proxy.security_group_id,
-    module.notification-api.security_group_id
+    module.notification-api.security_group_id,
+    module.referral-api.security_group_id
   ]
   secret_arns                 = var.secret_arns
   external_security_group_ids = var.external_security_group_ids
@@ -441,6 +451,7 @@ module "web-app" {
     module.card-api.security_group_id,
     module.config-api.security_group_id,
     module.verification-api.security_group_id,
+    module.referral-api.security_group_id,
   ]
   domain = var.domain
   providers = {

@@ -7,7 +7,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
     var.runtime_environment == "production" ? 12 : 1
   )
   min_capacity = var.image_tag == "latest" ? 0 : (
-    var.runtime_environment == "production" ? 2 : 1
+    var.runtime_environment == "production" ? 1 : 1
   )
   resource_id        = "service/${var.cluster_id}/${var.name}"
   scalable_dimension = "ecs:service:DesiredCount"
