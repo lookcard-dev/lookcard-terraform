@@ -226,7 +226,7 @@ resource "aws_ecs_service" "tron_publicnode_ecs_service" {
 }
 
 resource "aws_ecs_service" "tron_drpc_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
   name            = "tron_drpc"
   task_definition = aws_ecs_task_definition.tron_drpc_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
