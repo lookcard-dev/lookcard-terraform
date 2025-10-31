@@ -50,7 +50,7 @@ resource "aws_iam_role_policy" "proxy_policy" {
 
 # RDS Proxy
 resource "aws_db_proxy" "this" {
-  count                  = var.runtime_environment == "production" ? 1 : 0
+  count                  = var.runtime_environment == "production" ? 0 : 0
   name                   = "database-proxy"
   debug_logging          = var.runtime_environment != "production"
   engine_family          = "POSTGRESQL"
@@ -74,7 +74,7 @@ resource "aws_db_proxy" "this" {
 
 # Default target group with connection pooling settings
 resource "aws_db_proxy_default_target_group" "this" {
-  count         = var.runtime_environment == "production" ? 1 : 0
+  count         = var.runtime_environment == "production" ? 0 : 0
   db_proxy_name = aws_db_proxy.this[0].name
 
   connection_pool_config {
@@ -87,7 +87,7 @@ resource "aws_db_proxy_default_target_group" "this" {
 
 # Proxy target
 resource "aws_db_proxy_target" "this" {
-  count                 = var.runtime_environment == "production" ? 1 : 0
+  count                 = var.runtime_environment == "production" ? 0 : 0
   db_cluster_identifier = aws_rds_cluster.cluster.id
   db_proxy_name         = aws_db_proxy.this[0].name
   target_group_name     = aws_db_proxy_default_target_group.this[0].name
@@ -95,7 +95,7 @@ resource "aws_db_proxy_target" "this" {
 
 # Read-only endpoint for the proxy
 resource "aws_db_proxy_endpoint" "readonly" {
-  count                  = var.runtime_environment == "production" ? 1 : 0
+  count                  = var.runtime_environment == "production" ? 0 : 0
   db_proxy_name          = aws_db_proxy.this[0].name
   db_proxy_endpoint_name = "database-proxy-readonly"
   vpc_subnet_ids         = var.subnet_ids
