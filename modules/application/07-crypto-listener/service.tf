@@ -243,7 +243,7 @@ resource "aws_ecs_service" "tron_drpc_ecs_service" {
 
 # BSC Mainnet Services
 resource "aws_ecs_service" "bsc_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
   name            = "bsc_getblock"
   task_definition = aws_ecs_task_definition.bsc_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -275,7 +275,7 @@ resource "aws_ecs_service" "bsc_publicnode_ecs_service" {
 }
 
 resource "aws_ecs_service" "bsc_blast_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "bsc_blast"
   task_definition = aws_ecs_task_definition.bsc_blast_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -292,7 +292,7 @@ resource "aws_ecs_service" "bsc_blast_ecs_service" {
 
 # Base Mainnet Services
 resource "aws_ecs_service" "base_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
   name            = "base_getblock"
   task_definition = aws_ecs_task_definition.base_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -324,7 +324,7 @@ resource "aws_ecs_service" "base_publicnode_ecs_service" {
 }
 
 resource "aws_ecs_service" "base_blast_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "base_blast"
   task_definition = aws_ecs_task_definition.base_blast_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -341,7 +341,7 @@ resource "aws_ecs_service" "base_blast_ecs_service" {
 
 # Optimism Mainnet Services
 resource "aws_ecs_service" "optimism_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
   name            = "optimism_getblock"
   task_definition = aws_ecs_task_definition.optimism_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -373,9 +373,75 @@ resource "aws_ecs_service" "optimism_publicnode_ecs_service" {
 }
 
 resource "aws_ecs_service" "optimism_blast_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "optimism_blast"
   task_definition = aws_ecs_task_definition.optimism_blast_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_ARM64"
+    weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+}
+
+# QuickNode Mainnet Services
+
+resource "aws_ecs_service" "tron_quicknode_ecs_service" {
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name            = "tron_quicknode"
+  task_definition = aws_ecs_task_definition.tron_quicknode_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_ARM64"
+    weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+}
+
+resource "aws_ecs_service" "bsc_quicknode_ecs_service" {
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name            = "bsc_quicknode"
+  task_definition = aws_ecs_task_definition.bsc_quicknode_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_ARM64"
+    weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+}
+
+resource "aws_ecs_service" "base_quicknode_ecs_service" {
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name            = "base_quicknode"
+  task_definition = aws_ecs_task_definition.base_quicknode_task_definition[0].arn
+  desired_count   = var.image_tag == "latest" ? 0 : 1
+  cluster         = var.cluster_id
+  capacity_provider_strategy {
+    capacity_provider = "LISTENER_EC2_ARM64"
+    weight            = 1
+  }
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+}
+
+resource "aws_ecs_service" "optimism_quicknode_ecs_service" {
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  name            = "optimism_quicknode"
+  task_definition = aws_ecs_task_definition.optimism_quicknode_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
   cluster         = var.cluster_id
   capacity_provider_strategy {
