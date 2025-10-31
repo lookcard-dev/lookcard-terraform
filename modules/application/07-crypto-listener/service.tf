@@ -15,7 +15,7 @@ resource "aws_ecs_service" "tron_nile_trongrid_ecs_service" {
 }
 
 resource "aws_ecs_service" "tron_nile_getblock_ecs_service" {
-  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 1 : 0
+  count           = var.runtime_environment == "develop" || var.runtime_environment == "testing" ? 0 : 0
   name            = "tron-nile_getblock"
   task_definition = aws_ecs_task_definition.tron_nile_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -194,7 +194,7 @@ resource "aws_ecs_service" "tron_trongrid_ecs_service" {
 }
 
 resource "aws_ecs_service" "tron_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "tron_getblock"
   task_definition = aws_ecs_task_definition.tron_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -226,7 +226,7 @@ resource "aws_ecs_service" "tron_publicnode_ecs_service" {
 }
 
 resource "aws_ecs_service" "tron_drpc_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "tron_drpc"
   task_definition = aws_ecs_task_definition.tron_drpc_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -243,7 +243,7 @@ resource "aws_ecs_service" "tron_drpc_ecs_service" {
 
 # BSC Mainnet Services
 resource "aws_ecs_service" "bsc_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "bsc_getblock"
   task_definition = aws_ecs_task_definition.bsc_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -292,7 +292,7 @@ resource "aws_ecs_service" "bsc_blast_ecs_service" {
 
 # Base Mainnet Services
 resource "aws_ecs_service" "base_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "base_getblock"
   task_definition = aws_ecs_task_definition.base_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
@@ -341,7 +341,7 @@ resource "aws_ecs_service" "base_blast_ecs_service" {
 
 # Optimism Mainnet Services
 resource "aws_ecs_service" "optimism_getblock_ecs_service" {
-  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 1 : 0
+  count           = var.runtime_environment == "production" || var.runtime_environment == "staging" ? 0 : 0
   name            = "optimism_getblock"
   task_definition = aws_ecs_task_definition.optimism_getblock_task_definition[0].arn
   desired_count   = var.image_tag == "latest" ? 0 : 1
