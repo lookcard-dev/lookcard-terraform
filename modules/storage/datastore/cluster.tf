@@ -49,7 +49,7 @@ resource "aws_rds_cluster" "cluster" {
   allow_major_version_upgrade = false
 
   serverlessv2_scaling_configuration {
-    max_capacity = var.runtime_environment == "production" ? 1 : 0.5
+    max_capacity = var.runtime_environment == "production" ? 1 : 1
     min_capacity = 0.5
   }
 
