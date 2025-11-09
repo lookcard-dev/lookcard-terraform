@@ -49,7 +49,7 @@ resource "aws_rds_cluster" "cluster" {
   allow_major_version_upgrade = false
 
   serverlessv2_scaling_configuration {
-    max_capacity = var.runtime_environment == "production" ? 1 : 1
+    max_capacity = var.runtime_environment == "production" ? 2 : 1
     min_capacity = 0.5
   }
 
@@ -73,7 +73,7 @@ resource "aws_rds_cluster_instance" "writer" {
 }
 
 resource "aws_rds_cluster_instance" "reader" {
-  count                        = var.runtime_environment == "production" ? 0 : 0
+  count                        = var.runtime_environment == "production" ? 1 : 0
   identifier                   = "reader-${count.index + 1}"
   cluster_identifier           = aws_rds_cluster.cluster.id
   instance_class               = "db.serverless"
